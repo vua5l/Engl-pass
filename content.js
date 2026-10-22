@@ -1,0 +1,581 @@
+
+/* ===== إعدادات الكورس العامة وسجل الدروس ===== */
+var LESSONS = window.LESSONS = {};
+
+var DATA = window.DATA = {
+  learner: {
+    levelEn: "Early A2",
+    level: "بداية A2",
+    goalEn: "Study & Work · IELTS 6.5–7",
+    goal: "الدراسة والعمل",
+    dailyEn: "45–60 min / day",
+    daily: "45–60 دقيقة"
+  },
+
+  stages: [
+    { code: "A2", nameEn: "Solid Foundation", name: "الأساس المتين", metaEn: "12 units · ~4–5 months", meta: "12 وحدة · نحو 12 أسبوعًا",
+      focusEn: "Core tenses, comparisons, future, modals, and your first work email and paragraph.",
+      focus: "الأزمنة الأساسية، المقارنة، المستقبل، الأفعال المساعدة، وأول إيميل وفقرة بقلمك.", status: "current" },
+    { code: "B1", nameEn: "Independence", name: "الاستقلالية", metaEn: "20 units · ~8–9 months", meta: "20 وحدة · نحو 20 أسبوعًا",
+      focusEn: "Perfect tenses, passive voice, reported speech, conditionals, and formal emails.",
+      focus: "الأزمنة التامة، المبني للمجهول، الكلام المنقول، الجمل الشرطية، وكتابة الإيميلات الرسمية والفقرات.", status: "locked" },
+    { code: "B2", nameEn: "Academic & Professional", name: "الإنجليزية الأكاديمية والمهنية", metaEn: "After B1 · IELTS Prep", meta: "بعد إتمام B1",
+      focusEn: "Academic articles, essays, presentations, meetings, and IELTS task types.",
+      focus: "قراءة المقالات العلمية، كتابة المقال، العروض التقديمية، والاجتماعات ومقابلات العمل.", status: "locked" }
+  ],
+
+  week: [
+    { dEn: "Sun", d: "أحد", tEn: "Lesson", t: "درس", k: "lesson" },
+    { dEn: "Mon", d: "اثنين", tEn: "Lesson", t: "درس", k: "lesson" },
+    { dEn: "Tue", d: "ثلاثاء", tEn: "Lesson", t: "درس", k: "lesson" },
+    { dEn: "Wed", d: "أربعاء", tEn: "Lesson", t: "درس", k: "lesson" },
+    { dEn: "Thu", d: "خميس", tEn: "Lesson", t: "درس", k: "lesson" },
+    { dEn: "Fri", d: "جمعة", tEn: "Review & Test", t: "مراجعة واختبار", k: "test" },
+    { dEn: "Sat", d: "سبت", tEn: "Rest", t: "راحة", k: "rest" }
+  ],
+
+  anatomy: [
+    { k: "recall", nEn: "Active Recall", n: "مراجعة بالاسترجاع النشط", m: 5,
+      dEn: "Recall and type previous words, legal phrases, and mistakes from memory before seeing the answer.",
+      d: "إكمال من الذاكرة قبل ظهور الإجابة لكلمات وعبارات وأخطاء سابقة، وكتابة الكلمة بلوحة المفاتيح فيجتمع الاسترجاع والإملاء." },
+    { k: "vocab", nEn: "New Phrases", n: "عبارات جديدة", m: 8,
+      dEn: "Key words and collocations from the lesson plus a level-appropriate legal phrase, with human audio and Oxford Dictionary links.",
+      d: "كلمات وعبارات من نص الدرس ومقطعه، منها عبارة قانونية بمستوى المتعلم، مع سماع نطقها البشري وترديدها." },
+    { k: "grammar", nEn: "Grammar", n: "قواعد", m: 12,
+      dEn: "Simple English explanation first (with Arabic on tap), then guided exercises with one question per screen.",
+      d: "فهم القاعدة بالإنجليزي المبسّط أولًا (والعربي عند الطلب)، ثم تمارين موجّهة بسؤال في كل شاشة." },
+    { k: "reading", nEn: "Reading or Listening", n: "قراءة أو استماع", m: 17,
+      dEn: "First reading with a comfortable timer for the main idea, then second reading with word meanings and evidence-based questions.",
+      d: "حسب توزيع الأسبوع (3 أيام قراءة ويومان استماع)، على مراحل متدرجة مع أسئلة الفهم ودليلها." },
+    { k: "writing", nEn: "Writing", n: "كتابة", m: 10,
+      dEn: "Free production using the rule and vocabulary in at least 4 separate sentences, with instant feedback separating spelling from grammar.",
+      d: "استخدام حر للقاعدة والكلمات في 4 جمل منفصلة على الأقل، مع نموذج وتصحيح فوري يفصل الإملاء عن غيره." },
+    { k: "quiz", nEn: "Short Quiz & Error Analysis", n: "اختبار قصير وتحليل الأخطاء", m: 8,
+      dEn: "80% to pass, followed by a structured review of your lesson mistakes and their causes.",
+      d: "النجاح من 80%، ثم مراجعة أخطاء الدرس وتحليل أسبابها حسب نوعها." }
+  ],
+
+  units: [
+    { n: 1, en: "Life & Work Around the World", ar: "الحياة والعمل حول العالم", gEn: "Present Simple & Continuous", g: "المضارع البسيط والمضارع المستمر", open: true },
+    { n: 2, en: "Great Journeys", ar: "رحلات عظيمة", gEn: "Past Simple (Regular & Irregular)", g: "الماضي البسيط (المنتظم والشاذ)" },
+    { n: 3, en: "Moments in Science", ar: "لحظات في تاريخ العلم", gEn: "Past Continuous with when & while", g: "الماضي المستمر مع when و while" },
+    { n: 4, en: "Cities of the World", ar: "مدن العالم", gEn: "Comparatives & Superlatives", g: "المقارنة والتفضيل" },
+    { n: 5, en: "Food & Health", ar: "الغذاء والصحة", gEn: "Countable & Uncountable · much / many / a few", g: "المعدود وغير المعدود، و much / many / a few" },
+    { n: 6, en: "Plans & Trips", ar: "خطط ورحلات", gEn: "Future: going to & will", g: "المستقبل: going to و will" },
+    { n: 7, en: "Life Experiences", ar: "تجارب الحياة", gEn: "Present Perfect with ever & never", g: "المضارع التام مع ever و never" },
+    { n: 8, en: "Rules at Work & University", ar: "أنظمة العمل والجامعة", gEn: "Modals: must / have to / should / can", g: "must / have to / should / can" },
+    { n: 9, en: "How Things Work", ar: "كيف تعمل الأشياء", gEn: "Present Simple Passive", g: "المبني للمجهول في المضارع" },
+    { n: 10, en: "Healthy Habits", ar: "عادات صحية", gEn: "Verb + -ing & Verb + to", g: "الفعل + ing والفعل + to" },
+    { n: 11, en: "Our Planet", ar: "كوكبنا", gEn: "First Conditional", g: "الجملة الشرطية الأولى" },
+    { n: 12, en: "People Who Changed the World", ar: "أشخاص غيّروا العالم", gEn: "Relative Clauses: who / which / that", g: "who / which / that" }
+  ],
+
+  unit0Lessons: [
+    { id: "u0l1", n: 1, en: "First Day at the Law Office", subEn: "Be (am / is / are) vs. Do (do / does)", ar: "الفرق بين be و do في الإثبات والنفي والسؤال", shortAr: "الفرق بين be و do", icon: "book", open: true },
+    { id: "u0l2", n: 2, en: "Two Cases in Court", subEn: "Singular & Plural Agreement (Is there / Are there)", ar: "المطابقة مع المفرد والجمع و There is / There are", shortAr: "المطابقة مع المفرد والجمع", icon: "globe", open: true },
+    { id: "u0l3", n: 3, en: "Where Were You Yesterday?", subEn: "Past of Be: Was & Were", ar: "الماضي بـ was و were في الإثبات والنفي والسؤال", shortAr: "الماضي بـ was و were", icon: "clock", open: true },
+    { id: "u0l4", n: 4, en: "Four Clear Sentences", subEn: "Capital Letters, Periods & Word Order", ar: "الحرف الكبير والنقطة وفصل الجمل وترتيبها", shortAr: "الحرف الكبير والنقطة", icon: "pen", open: true },
+    { id: "u0l5", n: 5, en: "Spelling Patterns in Action", subEn: "Core Spelling (-ing, -s, -ful) & Foundation Review", ar: "أنماط الإملاء الأساسية ومراجعة التأسيس", shortAr: "أنماط الإملاء ومراجعة التأسيس", icon: "trophy", open: true }
+  ],
+
+  unit1Lessons: [
+    { id: "u1l1", n: 1, en: "Hello from Antarctica", subEn: "Present Simple vs. Present Continuous", ar: "المضارع البسيط مقابل المستمر", shortAr: "المضارع البسيط والمستمر", icon: "penguin", open: true },
+    { id: "u1l2", n: 2, en: "The Night Shift", subEn: "Questions & Short Answers", ar: "مقابلة مع ممرضة: الأسئلة والإجابات القصيرة", shortAr: "الأسئلة والإجابات القصيرة", icon: "moon" },
+    { id: "u1l3", n: 3, en: "How Often Do You Sleep Well?", subEn: "Adverbs of Frequency & Word Order", ar: "كلمات التكرار وموقعها في الجملة", shortAr: "كلمات التكرار", icon: "clock" },
+    { id: "u1l4", n: 4, en: "Habits and Cultures", subEn: "Stative Verbs: know / want / need / prefer", ar: "أفعال الحالة: know / want / need / prefer", shortAr: "أفعال الحالة", icon: "globe" },
+    { id: "u1l5", n: 5, en: "Your First Work Email", subEn: "Writing: Short Work or Study Email", ar: "كتابة: إيميل مهني قصير عن عملك أو دراستك", shortAr: "إيميل مهني قصير", icon: "mail" },
+    { id: "u1l6", n: 6, en: "Unit Review & Test", subEn: "Unit 1 Review & Mastery Test", ar: "مراجعة الوحدة واختبارها", shortAr: "مراجعة الوحدة واختبارها", icon: "trophy", test: true }
+  ],
+
+  /* ---------- المرحلة 3: قائمة الـ 60 فعلًا شاذًا شائعًا (بأنماطها الصوتية للتكرار المتباعد) ---------- */
+  irregularGroups: [
+    { k: "all", en: "All (60)", ar: "الكل (60)" },
+    { k: "abb", en: "Past = Participle (29)", ar: "الماضي = التصريف الثالث" },
+    { k: "abc", en: "3 Different Forms (19)", ar: "ثلاث صيغ مختلفة" },
+    { k: "same", en: "Unchanged A-A-A (9)", ar: "ثابت في الصيغ الثلاث" },
+    { k: "aba", en: "Base = Participle (3)", ar: "الأول = الثالث" }
+  ],
+
+  irregularVerbs: [
+    /* Same A-A-A (9) */
+    { base: "cut", past: "cut", pp: "cut", ar: "يقطع / يقص", g: "same" },
+    { base: "put", past: "put", pp: "put", ar: "يضع", g: "same" },
+    { base: "set", past: "set", pp: "set", ar: "يضبط / يحدد", g: "same" },
+    { base: "let", past: "let", pp: "let", ar: "يسمح / يدع", g: "same" },
+    { base: "cost", past: "cost", pp: "cost", ar: "يكلّف", g: "same" },
+    { base: "hit", past: "hit", pp: "hit", ar: "يضرب / يصدم", g: "same" },
+    { base: "hurt", past: "hurt", pp: "hurt", ar: "يؤلم / يؤذي", g: "same" },
+    { base: "shut", past: "shut", pp: "shut", ar: "يغلق", g: "same" },
+    { base: "read", past: "read", pp: "read", ar: "يقرأ (تُنطق بالماضي red)", g: "same" },
+
+    /* Base = Participle A-B-A (3) */
+    { base: "come", past: "came", pp: "come", ar: "يأتي", g: "aba" },
+    { base: "become", past: "became", pp: "become", ar: "يصبح", g: "aba" },
+    { base: "run", past: "ran", pp: "run", ar: "يركض / يدير", g: "aba" },
+
+    /* Past = Participle A-B-B (29) */
+    { base: "have", past: "had", pp: "had", ar: "يملك / يتناول", g: "abb" },
+    { base: "make", past: "made", pp: "made", ar: "يصنع / يجعل", g: "abb" },
+    { base: "say", past: "said", pp: "said", ar: "يقول", g: "abb" },
+    { base: "pay", past: "paid", pp: "paid", ar: "يدفع (مالًا)", g: "abb" },
+    { base: "tell", past: "told", pp: "told", ar: "يخبر", g: "abb" },
+    { base: "sell", past: "sold", pp: "sold", ar: "يبيع", g: "abb" },
+    { base: "find", past: "found", pp: "found", ar: "يجد", g: "abb" },
+    { base: "think", past: "thought", pp: "thought", ar: "يعتقد / يفكر", g: "abb" },
+    { base: "buy", past: "bought", pp: "bought", ar: "يشتري", g: "abb" },
+    { base: "bring", past: "brought", pp: "brought", ar: "يحضر / يجلب", g: "abb" },
+    { base: "teach", past: "taught", pp: "taught", ar: "يعلّم / يدرّس", g: "abb" },
+    { base: "catch", past: "caught", pp: "caught", ar: "يمسك / يلحق بـ", g: "abb" },
+    { base: "feel", past: "felt", pp: "felt", ar: "يشعر", g: "abb" },
+    { base: "keep", past: "kept", pp: "kept", ar: "يحتفظ بـ / يواصل", g: "abb" },
+    { base: "sleep", past: "slept", pp: "slept", ar: "ينام", g: "abb" },
+    { base: "leave", past: "left", pp: "left", ar: "يغادر / يترك", g: "abb" },
+    { base: "meet", past: "met", pp: "met", ar: "يقابل / يلتقي", g: "abb" },
+    { base: "mean", past: "meant", pp: "meant", ar: "يعني / يقصد", g: "abb" },
+    { base: "send", past: "sent", pp: "sent", ar: "يرسل", g: "abb" },
+    { base: "spend", past: "spent", pp: "spent", ar: "يقضي (وقتًا) / ينفق", g: "abb" },
+    { base: "build", past: "built", pp: "built", ar: "يبني", g: "abb" },
+    { base: "lend", past: "lent", pp: "lent", ar: "يقرض / يعير", g: "abb" },
+    { base: "lose", past: "lost", pp: "lost", ar: "يفقد / يخسر", g: "abb" },
+    { base: "win", past: "won", pp: "won", ar: "يفوز", g: "abb" },
+    { base: "sit", past: "sat", pp: "sat", ar: "يجلس", g: "abb" },
+    { base: "stand", past: "stood", pp: "stood", ar: "يقف", g: "abb" },
+    { base: "understand", past: "understood", pp: "understood", ar: "يفهم", g: "abb" },
+    { base: "hear", past: "heard", pp: "heard", ar: "يسمع", g: "abb" },
+    { base: "hold", past: "held", pp: "held", ar: "يمسك / يعقد (اجتماعًا)", g: "abb" },
+
+    /* 3 Different Forms A-B-C (19) */
+    { base: "be", past: "was / were", pp: "been", ar: "يكون", g: "abc" },
+    { base: "do", past: "did", pp: "done", ar: "يفعل / يؤدي", g: "abc" },
+    { base: "go", past: "went", pp: "gone", ar: "يذهب", g: "abc" },
+    { base: "see", past: "saw", pp: "seen", ar: "يرى", g: "abc" },
+    { base: "take", past: "took", pp: "taken", ar: "يأخذ", g: "abc" },
+    { base: "give", past: "gave", pp: "given", ar: "يعطي", g: "abc" },
+    { base: "know", past: "knew", pp: "known", ar: "يعرف", g: "abc" },
+    { base: "write", past: "wrote", pp: "written", ar: "يكتب", g: "abc" },
+    { base: "speak", past: "spoke", pp: "spoken", ar: "يتحدث", g: "abc" },
+    { base: "break", past: "broke", pp: "broken", ar: "يكسر", g: "abc" },
+    { base: "choose", past: "chose", pp: "chosen", ar: "يختار", g: "abc" },
+    { base: "forget", past: "forgot", pp: "forgotten", ar: "ينسى", g: "abc" },
+    { base: "drive", past: "drove", pp: "driven", ar: "يقود", g: "abc" },
+    { base: "eat", past: "ate", pp: "eaten", ar: "يأكل", g: "abc" },
+    { base: "fall", past: "fell", pp: "fallen", ar: "يسقط", g: "abc" },
+    { base: "begin", past: "began", pp: "begun", ar: "يبدأ", g: "abc" },
+    { base: "drink", past: "drank", pp: "drunk", ar: "يشرب", g: "abc" },
+    { base: "fly", past: "flew", pp: "flown", ar: "يطير / يسافر جوًا", g: "abc" },
+    { base: "wear", past: "wore", pp: "worn", ar: "يرتدي", g: "abc" }
+  ],
+
+  /* ---------- المرحلة 3: مختبر الأخطاء المزروع بأنماط الاختبار التشخيصي ---------- */
+  errorLabCatalog: [
+    {
+      key: "be_verb",
+      en: "Using 'be' & 'do' with Verbs",
+      ar: "استعمال be و do مع الأفعال",
+      seedCount: 4,
+      fromDiag: true,
+      wrongEx: "She is go to work. / He will passing the exam.",
+      rightEx: "She goes to work. / He will pass the exam.",
+      ruleEn: "Do not put am/is/are before a base verb in Present Simple, do not drop am/is/are before verb-ing, and use a base verb after will/can/must.",
+      ruleAr: "لا نضع am/is/are قبل الفعل الأصلي في البسيط، ولا نحذفها قبل الفعل المنتهي بـ ing في المستمر، وبعد will/can يأتي الفعل بأصله المجرد.",
+      drills: [
+        { s: "My brother ___ in a law office every day.", opts: ["works", "is work", "working"], a: 0,
+          whyEn: "'every day' is a habit → Present Simple without 'is' (works).",
+          why: "عادة يومية بالمضارع البسيط بدون is ومع إضافة s للمفرد." },
+        { s: "Right now, the lawyers ___ a contract in the meeting room.", opts: ["read", "are reading", "is reading"], a: 1,
+          whyEn: "'Right now' + plural subject (lawyers) → are reading.",
+          why: "Right now تدل على المستمر، والفاعل جمع فنستخدم are reading." }
+      ]
+    },
+    {
+      key: "agreement",
+      en: "Subject–Verb & Plural Agreement",
+      ar: "المطابقة مع المفرد والجمع",
+      seedCount: 4,
+      fromDiag: true,
+      wrongEx: "Is there any restaurants? / These phones is made here.",
+      rightEx: "Are there any restaurants? / These phones are made here.",
+      ruleEn: "Match singular subjects (he/she/it) with is/was/does/verb+s, and plural nouns (restaurants, phones) with are/were/do/base verb.",
+      ruleAr: "طابق الفاعل المفرد مع is/was/does والفعل المضاف له s، وطابق الجمع مع are/were/do والفعل المجرد.",
+      drills: [
+        { s: "___ there any new messages from the university today?", opts: ["Is", "Are", "Does"], a: 1,
+          whyEn: "'messages' is plural, so we use 'Are there…?'",
+          why: "كلمة messages جمع، لذلك نسأل بـ Are there وليس Is there." },
+        { s: "Our team leader ___ the data every morning.", opts: ["check", "checks", "checking"], a: 1,
+          whyEn: "'Our team leader' is singular (he/she) → checks.",
+          why: "قائد الفريق مفرد غائب، فنضيف s للفعل في المضارع البسيط." }
+      ]
+    },
+    {
+      key: "spelling",
+      en: "Spelling Patterns & Capital 'I'",
+      ar: "أنماط الإملاء والحرف الكبير للضمير I",
+      seedCount: 4,
+      fromDiag: true,
+      wrongEx: "studing · rainning · butefull · i work",
+      rightEx: "studying · raining · beautiful · I work",
+      ruleEn: "1) Keep 'y' before -ing (studying). 2) Do not double a consonant after two vowels (raining). 3) Suffix -ful has one 'l' (beautiful). 4) Always capitalize 'I'.",
+      ruleAr: "١) لا تحذف y قبل ing (studying). ٢) لا تضاعف الحرف الساكن بعد حرفي علة (raining). ٣) المقطع ful بلام واحدة (beautiful). ٤) ضمير المتكلم I كبير دائمًا.",
+      drills: [
+        { s: "Which spelling is correct for 'study + ing'?", opts: ["studing", "studying", "studeying"], a: 1,
+          whyEn: "Never drop 'y' when adding -ing: study → studying.",
+          why: "تبقى الـ y كما هي عند إضافة ing: studying." },
+        { s: "Choose the sentence with correct spelling and capitalization:", opts: ["i am writting a report.", "I am writing a report.", "I am writeing a report."], a: 1,
+          whyEn: "Always capitalize 'I', and drop silent -e without doubling 't' (write → writing).",
+          why: "الضمير I يُكتب كبيرًا، ونحذف الـ e الصامتة من write دون مضاعفة الـ t." }
+      ]
+    },
+    {
+      key: "articles_prep",
+      en: "Articles (a / an / the) & Prepositions",
+      ar: "أدوات التعريف (a / an / the) وحروف الجر",
+      seedCount: 3,
+      fromDiag: true,
+      wrongEx: "My brother is lawyer. / The life is busy. / good in English",
+      rightEx: "My brother is a lawyer. / Life is busy. / good at English",
+      ruleEn: "1) Always use 'a / an' before singular jobs (a lawyer, a scientist). 2) No 'the' before general ideas (Life, Health). 3) Say 'good at' a skill.",
+      ruleAr: "١) نضع a أو an قبل المهن المفردة (a lawyer). ٢) لا نضع the قبل الأسماء بمعناها العام (Life). ٣) نقول good at مع المهارات والمواد.",
+      drills: [
+        { s: "My sister is ___ scientist at a research station.", opts: ["a", "the", "— (no article)"], a: 0,
+          whyEn: "Use 'a' or 'an' before a singular job: a scientist.",
+          why: "نستخدم a قبل الوظيفة المفردة: a scientist." },
+        { s: "Kenji is very good ___ cooking Japanese food.", opts: ["in", "at", "on"], a: 1,
+          whyEn: "Collocation: 'good at' + activity/skill.",
+          why: "الصفة good بمعنى ماهر تأخذ حرف الجر at وليس in." }
+      ]
+    },
+    {
+      key: "tense",
+      en: "Tense Choice & Signal Words",
+      ar: "اختيار الزمن وكلمات الإشارة",
+      seedCount: 3,
+      fromDiag: true,
+      wrongEx: "I don't understand yesterday. / Look! They jump.",
+      rightEx: "I didn't understand yesterday. / Look! They are jumping.",
+      ruleEn: "Match the verb tense to the time signal: every day/usually → Present Simple; right now/this month → Present Continuous; yesterday → Past Simple.",
+      ruleAr: "اربط زمن الفعل بكلمة الزمان في الجملة: usually للمضارع البسيط، وright now/this month للمستمر، وyesterday للماضي.",
+      drills: [
+        { s: "We usually work in the lab, but today we ___ outside.", opts: ["work", "are working", "works"], a: 1,
+          whyEn: "'today' contrasts a temporary action with the usual routine → are working.",
+          why: "كلمة today تدل على وضع مؤقت مختلف عن المعتاد، فنستخدم المضارع المستمر." },
+        { s: "Listen! Someone ___ at the door right now.", opts: ["knocks", "is knocking", "knock"], a: 1,
+          whyEn: "'Listen!' and 'right now' show the action is happening at this moment.",
+          why: "Listen و right now تدلان على أن الحدث يقع الآن لحظة الكلام." }
+      ]
+    },
+    {
+      key: "word_order",
+      en: "Word Order & Sentence Separation",
+      ar: "ترتيب الكلمات وفصل الجمل بنقطة",
+      seedCount: 2,
+      fromDiag: true,
+      wrongEx: "Where you live? / One long connected sentence without periods",
+      rightEx: "Where do you live? / 4 separate sentences ending with (.)",
+      ruleEn: "1) In questions, put Do/Does or Am/Is/Are before the subject. 2) Put frequency words (usually, often) before the main verb. 3) End each sentence with a period (.).",
+      ruleAr: "١) في السؤال يسبق الفعل المساعد الفاعل. ٢) كلمات التكرار تأتي قبل الفعل الأساسي. ٣) انهِ كل جملة بنقطة وابدأ التالية بحرف كبير.",
+      drills: [
+        { s: "Choose the correct question word order:", opts: ["Where your friend works?", "Where does your friend work?", "Where does work your friend?"], a: 1,
+          whyEn: "Question word + does + subject + base verb: Where does your friend work?",
+          why: "ترتيب السؤال: أداة الاستفهام ثم does ثم الفاعل ثم الفعل بأصله." },
+        { s: "Choose the correct position for 'usually':", opts: ["I check usually the data.", "I usually check the data.", "Usually I am check the data."], a: 1,
+          whyEn: "Frequency adverbs like 'usually' come right before the main verb.",
+          why: "كلمات التكرار مثل usually توضع قبل الفعل الأساسي مباشرة." }
+      ]
+    },
+    {
+      key: "comparative",
+      en: "Comparatives & Superlatives (Preview · Unit 4)",
+      ar: "المقارنة والتفضيل (تمهيد للوحدة 4)",
+      seedCount: 2,
+      fromDiag: true,
+      wrongEx: "more hot · the more expensive",
+      rightEx: "hotter · the most expensive",
+      ruleEn: "Short adjectives take -er / the -est (hot → hotter → the hottest). Long adjectives take more / the most (expensive → more expensive → the most expensive).",
+      ruleAr: "الصفات القصيرة نضيف لها er للمقارنة و est للتفضيل، والصفات الطويلة نضع قبلها more للمقارنة و the most للتفضيل.",
+      drills: [
+        { s: "Antarctica is ___ than Jeddah in the summer.", opts: ["more cold", "colder", "the coldest"], a: 1,
+          whyEn: "'cold' is a short 1-syllable adjective + 'than' → colder.",
+          why: "الصفة cold قصيرة ومع وجود than نستخدم colder وليس more cold." },
+        { s: "What is ___ city in your country?", opts: ["the big", "the bigger", "the biggest"], a: 2,
+          whyEn: "Superlative of a short adjective: the + biggest.",
+          why: "للتفضيل مع صفة قصيرة نستخدم the biggest." }
+      ]
+    }
+  ],
+
+  /* ---------- المرحلة 4: بطاقة كامبلي الأسبوعية للوحدة 1 ---------- */
+  camblyUnits: {
+    0: {
+      unit: 0,
+      titleEn: "Unit 0 · Foundation Week (Be/Do, Agreement, Was/Were, 4 Sentences & Spelling)",
+      titleAr: "الأسبوع التأسيسي · أساسيات القواعد والإملاء والجمل الأربع",
+      grammarEn: "1) Be (am/is/are) vs. Do (do/does), 2) Singular & Plural Agreement (There is/are, This/These), 3) Past of Be (was/were), 4) 4 Clear Sentences & Spelling (-ing, -s, -ful).",
+      phrases: ["lawyer", "client", "office", "give legal advice", "case", "judge", "witness", "go to court", "hearing", "hire a lawyer", "legal right", "official document"],
+      questions: [
+        "Tell me about yourself and your weekly routine in Riyadh using 'am / is / are' and action verbs.",
+        "Where were you yesterday morning and afternoon, and how was the traffic in your city?",
+        "Why is it important to check every official document carefully before a client signs a contract?"
+      ]
+    },
+    1: {
+      unit: 1,
+      titleEn: "Unit 1 · Life & Work Around the World",
+      titleAr: "الوحدة 1 · الحياة والعمل حول العالم",
+      grammarEn: "Present Simple (habits & facts: I work / She works / She doesn't work) vs. Present Continuous (right now & temporary: I'm working / They're studying) + Stative Verbs (know, need, understand, prefer).",
+      phrases: ["scientist", "do research", "work in a team", "in the lab", "collect data", "measure the temperature", "safe", "strange", "good for your health", "culture", "miss my family", "sign a contract"],
+      questions: [
+        "What does your typical weekday look like from morning to evening, and what are you doing differently this month?",
+        "Would you ever work in an unusual place like a research station in Antarctica? Why or why not?",
+        "Before starting a new job or university program, why is it important to read and sign a contract carefully?"
+      ]
+    }
+  },
+
+  /* ---------- المرحلة 4: الركن القانوني الأسبوعي واختبار الوحدة 1 (20 سؤالًا جديدًا + مهمة تطبيقية) ---------- */
+  unitTests: {
+    1: {
+      unit: 1,
+      titleEn: "Unit 1 Review, Legal Corner & Mastery Test",
+      titleAr: "مراجعة الوحدة 1 والركن القانوني واختبار الإتقان",
+      masteryPct: 90,
+      passPct: 80,
+      legalCorner: {
+        titleEn: "Weekly Legal Corner (10 min) · Core Legal Terms in Context",
+        titleAr: "الركن القانوني الأسبوعي (10 دقائق) · المصطلحات القانونية الأساسية في جمل",
+        introEn: "Review these 6 foundational A2 legal words and collocations before starting the Unit 1 Mastery Test:",
+        introAr: "راجع هذه المصطلحات القانونية الستة الأساسية لمستوى A2 قبل بدء اختبار الوحدة:",
+        terms: [
+          { en: "law", ar: "قانون / نظام", ex: "Every citizen must respect the law.", exAr: "يجب على كل مواطن احترام القانون." },
+          { en: "lawyer", ar: "محامٍ / محامية", ex: "My brother is a lawyer in Riyadh.", exAr: "أخي محامٍ في الرياض." },
+          { en: "court", ar: "محكمة", ex: "The judge works in a court every day.", exAr: "يعمل القاضي في المحكمة كل يوم." },
+          { en: "judge", ar: "قاضٍ", ex: "The judge listens to both sides carefully.", exAr: "يستمع القاضي للطرفين بعناية." },
+          { en: "sign a contract", ar: "يوقّع عقدًا", ex: "Always read the terms before you sign a contract.", exAr: "اقرأ الشروط دائمًا قبل أن توقّع عقدًا." },
+          { en: "right", ar: "حق قانوني", ex: "Every student has the right to a safe education.", exAr: "لكل طالب الحق في تعليم آمن." }
+        ]
+      },
+      questions: [
+        { s: "My father is a judge. He ___ in a court in Dammam.", opts: ["work", "works", "is working"], a: 1, errCat: "agreement", lesson: "u1l1",
+          whyEn: "Permanent profession + singular subject (He) → Present Simple with -s (works).",
+          why: "مهنة دائمة وفاعل مفرد غائب (He) فنستخدم المضارع البسيط مع s." },
+        { s: "Please don't make noise. The students ___ a test right now.", opts: ["take", "takes", "are taking"], a: 2, errCat: "tense", lesson: "u1l1",
+          whyEn: "'right now' shows an action in progress at this moment → are taking.",
+          why: "عبارة right now تدل على حدث يجري الآن فنستخدم المضارع المستمر." },
+        { s: "___ your sister study law at university?", opts: ["Do", "Does", "Is"], a: 1, errCat: "be_verb", lesson: "u1l2",
+          whyEn: "Question in Present Simple with singular subject 'your sister' (she) → Does + base verb.",
+          why: "سؤال في المضارع البسيط مع فاعل مفرد (your sister) فنبدأ بـ Does." },
+        { s: "No, she ___. She studies medicine.", opts: ["don't", "isn't", "doesn't"], a: 2, errCat: "be_verb", lesson: "u1l2",
+          whyEn: "Short answer to 'Does she…?' is 'No, she doesn't.'",
+          why: "الإجابة القصيرة عن سؤال يبدأ بـ Does تكون بـ doesn't." },
+        { s: "Where ___ your cousins live?", opts: ["do", "does", "are"], a: 0, errCat: "word_order", lesson: "u1l2",
+          whyEn: "'your cousins' is plural + base verb 'live' → Where do your cousins live?",
+          why: "الفاعل جمع (your cousins) والفعل أصلي (live) فنستخدم الفعل المساعد do." },
+        { s: "I ___ late for my morning classes.", opts: ["never am", "am never", "don't never"], a: 1, errCat: "word_order", lesson: "u1l3",
+          whyEn: "Frequency adverbs come AFTER am/is/are ('am never'), and BEFORE other verbs.",
+          why: "كلمات التكرار تأتي بعد أفعال الكون am/is/are وقبل بقية الأفعال." },
+        { s: "Our manager ___ the data before the morning meeting.", opts: ["always checks", "checks always", "is always check"], a: 0, errCat: "word_order", lesson: "u1l3",
+          whyEn: "'always' comes right before the main verb 'checks'.",
+          why: "كلمة التكرار always تأتي قبل الفعل الأساسي checks مباشرة." },
+        { s: "I ___ a new laptop for my university research right now.", opts: ["am needing", "need", "needs"], a: 1, errCat: "tense", lesson: "u1l4",
+          whyEn: "'need' is a stative verb—use Present Simple ('I need') even when you mean right now.",
+          why: "الفعل need من أفعال الحالة فلا يأخذ ing حتى مع وجود right now." },
+        { s: "Which sentence has correct spelling?", opts: ["She is studing law this year.", "She is studying law this year.", "She is studeying law this year."], a: 1, errCat: "spelling", lesson: "u1l1",
+          whyEn: "Keep 'y' before adding -ing: study → studying.",
+          why: "نحتفظ بحرف y عند إضافة ing للفعل study." },
+        { s: "Which sentence has correct spelling?", opts: ["He is writting an email now.", "He is writeing an email now.", "He is writing an email now."], a: 2, errCat: "spelling", lesson: "u1l1",
+          whyEn: "Drop silent -e in 'write' without doubling 't': writing.",
+          why: "نحذف الـ e الصامتة من write دون مضاعفة حرف t." },
+        { s: "Every new employee must ___ a contract on the first day.", opts: ["sign", "measure", "miss"], a: 0, errCat: "tense", lesson: "u1l1",
+          whyEn: "Legal collocation: 'sign a contract'.",
+          why: "المتلازمة القانونية الصحيحة هي sign a contract (يوقّع عقدًا)." },
+        { s: "A ___ works in a court and decides cases according to the law.", opts: ["scientist", "judge", "stranger"], a: 1, errCat: "tense", lesson: "u1l6",
+          whyEn: "A judge presides over a court and applies the law.",
+          why: "القاضي (judge) هو من يعمل في المحكمة ويفصل في القضايا وفق القانون." },
+        { s: "We never walk on the ice alone because it isn't ___.", opts: ["strange", "safe", "healthy"], a: 1, errCat: "spelling", lesson: "u1l1",
+          whyEn: "'safe' means not dangerous.",
+          why: "safe تعني آمن (غير خطير)." },
+        { s: "The weather team uses special tools to ___ the sea temperature.", opts: ["measure", "miss", "sign"], a: 0, errCat: "tense", lesson: "u1l1",
+          whyEn: "'measure the temperature' means find how hot or cold it is.",
+          why: "measure the temperature تعني يقيس درجة الحرارة." },
+        { s: "___ there any lawyers in your family?", opts: ["Is", "Are", "Do"], a: 1, errCat: "agreement", lesson: "u1l2",
+          whyEn: "'lawyers' is plural, so we ask 'Are there…?'",
+          why: "كلمة lawyers جمع، لذلك نسأل بـ Are there." },
+        { s: "My cousin is ___ lawyer at a big company in Jeddah.", opts: ["a", "the", "— (no article)"], a: 0, errCat: "articles_prep", lesson: "u1l1",
+          whyEn: "Use 'a / an' before a singular job: a lawyer.",
+          why: "نضع أداة النكرة a قبل المهنة المفردة." },
+        { s: "Noor is very good ___ writing scientific reports.", opts: ["in", "at", "for"], a: 1, errCat: "articles_prep", lesson: "u1l1",
+          whyEn: "Collocation: 'good at' + skill/activity.",
+          why: "نستخدم حرف الجر at بعد الصفة good عند الحديث عن إجادة مهارة." },
+        { s: "Look at the sky! It ___ heavily right now.", opts: ["rains", "is raining", "is rainning"], a: 1, errCat: "spelling", lesson: "u1l1",
+          whyEn: "'Look!' + 'right now' → Present Continuous, spelled 'raining' (one 'n' after two vowels 'ai').",
+          why: "حدث يقع الآن فنستخدم المضارع المستمر، وتُكتب raining بنون واحدة لأن قبلها حرفي علة." },
+        { s: "How often ___ you check your work email?", opts: ["are", "do", "does"], a: 1, errCat: "be_verb", lesson: "u1l3",
+          whyEn: "'How often' asks about a routine with subject 'you' → How often do you check…?",
+          why: "السؤال بـ How often عن العادة مع الضمير you يحتاج الفعل المساعد do." },
+        { s: "I ___ Tea to coffee in the evening.", opts: ["am preferring", "prefer", "prefers"], a: 1, errCat: "tense", lesson: "u1l4",
+          whyEn: "'prefer' is a stative verb, so it stays in Present Simple ('I prefer').",
+          why: "الفعل prefer من أفعال الحالة والتفضيل فيبقى في المضارع البسيط." }
+      ],
+      appliedTask: {
+        promptEn: "Short Applied Task: Write 3 separate sentences (1 about your daily study/work routine, 1 about what you are doing this week, and 1 using a legal word such as 'contract', 'law', or 'lawyer').",
+        promptAr: "مهمة تطبيقية قصيرة: اكتب 3 جمل منفصلة (جملة عن روتينك اليومي، وجملة عما تفعله هذا الأسبوع بالمضارع المستمر، وجملة تستخدم كلمة قانونية مثل contract أو law أو lawyer)."
+      }
+    }
+  },
+
+  /* ---------- المرحلة 4: الاختبارات القبلية للوحدات 5 و8 و9 و12 (90% للإعفاء والتخطي — أكثرها تصريف وكتابة) ---------- */
+  preTests: {
+    5: {
+      unit: 5,
+      en: "Unit 5 Pre-Test · Countable & Uncountable (much / many / a few)",
+      ar: "الاختبار القبلي للوحدة 5 · المعدود وغير المعدود",
+      ruleNoteAr: "إذا حققت 90% (9 من 10) فأكثر، تتخطى الوحدة 5 وتعود قاعدتها في أسبوع التثبيت.",
+      items: [
+        { type: "typing", pre: "How", verb: "much / many", post: "information do we need for the report?", ans: ["much"],
+          whyEn: "'information' is uncountable in English → How much information.",
+          why: "كلمة information غير معدودة في الإنجليزية فنستخدم معها much." },
+        { type: "typing", pre: "How", verb: "much / many", post: "contracts did the lawyer review today?", ans: ["many"],
+          whyEn: "'contracts' is plural countable → How many contracts.",
+          why: "كلمة contracts جمع معدود فنستخدم معها many." },
+        { type: "typing", pre: "I only have", verb: "a few / a little", post: "questions about the lesson.", ans: ["a few"],
+          whyEn: "'questions' is plural countable → a few questions.",
+          why: "كلمة questions جمع معدود فنستخدم a few." },
+        { type: "typing", pre: "We have", verb: "a few / a little", post: "time before the meeting starts.", ans: ["a little"],
+          whyEn: "'time' (meaning duration) is uncountable → a little time.",
+          why: "كلمة time بمعنى الوقت غير معدودة فنستخدم a little." },
+        { type: "typing", pre: "There aren't", verb: "some / any", post: "mistakes in your paragraph.", ans: ["any"],
+          whyEn: "Use 'any' in negative sentences: There aren't any mistakes.",
+          why: "في الجملة المنفية نستخدم any." },
+        { type: "typing", pre: "She gave me", verb: "some / a", post: "good advice about the exam.", ans: ["some"],
+          whyEn: "'advice' is uncountable—never say 'an advice'; use 'some good advice'.",
+          why: "كلمة advice غير معدودة فلا تأخذ a/an، بل نستخدم some." },
+        { type: "typing", pre: "Are there", verb: "some / any", post: "restaurants near the library?", ans: ["any"],
+          whyEn: "Use 'any' in open questions: Are there any restaurants…?",
+          why: "في السؤال المفتوح نستخدم any." },
+        { type: "typing", pre: "We don't have", verb: "much / many", post: "research data yet.", ans: ["much"],
+          whyEn: "'data' / 'research' is uncountable here → don't have much.",
+          why: "مع غير المعدود في النفي نستخدم much." },
+        { type: "mcq", s: "Which sentence is grammatically correct?", opts: ["I need a research for my class.", "I need some research for my class.", "I need many researches for my class."], a: 1,
+          whyEn: "'research' is uncountable: some research.",
+          why: "كلمة research غير معدودة فلا تُجمع ولا تأخذ a." },
+        { type: "mcq", s: "Can I have ___ water, please?", opts: ["a few", "some", "many"], a: 1,
+          whyEn: "In polite requests with uncountable nouns, use 'some'.",
+          why: "في الطلب المؤدب مع غير المعدود نستخدم some." }
+      ]
+    },
+    8: {
+      unit: 8,
+      en: "Unit 8 Pre-Test · Modals (must / have to / should / can)",
+      ar: "الاختبار القبلي للوحدة 8 · أفعال الوجوب والنصيحة والاستطاعة",
+      ruleNoteAr: "إذا حققت 90% (9 من 10) فأكثر، تتخطى الوحدة 8 وتعود قاعدتها في أسبوع التثبيت.",
+      items: [
+        { type: "typing", pre: "Every driver", verb: "must + stop", post: "at a red traffic light.", ans: ["must stop"],
+          whyEn: "After modal verb 'must', always use the base verb without 'to' (must stop).",
+          why: "بعد must يأتي الفعل بأصله المجرد بدون to ولا ing." },
+        { type: "typing", pre: "You look tired. You", verb: "should + take", post: "a short rest.", ans: ["should take"],
+          whyEn: "Advice: should + base verb (should take).",
+          why: "للنصيحة نستخدم should متبوعة بالفعل المجرد." },
+        { type: "typing", pre: "Noor is a scientist, so she", verb: "have to", post: "check the lab data every day.", ans: ["has to"],
+          whyEn: "With 'she / he / it' in Present Simple, 'have to' becomes 'has to'.",
+          why: "مع المفرد الغائب she تتحول have to إلى has to." },
+        { type: "typing", pre: "Tomorrow is Saturday, so we", verb: "not / have to", post: "wake up early.", ans: ["don't have to", "do not have to"],
+          whyEn: "'don't have to' means it is not necessary.",
+          why: "لعدم الضرورة مع we نستخدم don't have to." },
+        { type: "typing", pre: "Visitors", verb: "must not / enter", post: "the lab without safety glasses.", ans: ["must not enter", "mustn't enter"],
+          whyEn: "Prohibition: must not (mustn't) + base verb (enter).",
+          why: "للمنع القانوني أو النظامي نستخدم must not + الفعل المجرد." },
+        { type: "typing", pre: "My brother", verb: "can + speak", post: "both Arabic and English fluently.", ans: ["can speak"],
+          whyEn: "After 'can', use the base verb without -s (can speak).",
+          why: "بعد can يأتي الفعل مجردًا بدون s حتى مع المفرد." },
+        { type: "typing", pre: "___ a lawyer", verb: "have to", post: "read every page of a contract? (Type helper + subject + verb: Does a lawyer ___)", ans: ["have to"],
+          whyEn: "After 'Does a lawyer…', use base form 'have to' (not 'has to').",
+          why: "بعد السؤال بـ Does يعود الفعل لأصله have to." },
+        { type: "typing", pre: "Students", verb: "should / not / wait", post: "until the last night before the exam.", ans: ["shouldn't wait", "should not wait"],
+          whyEn: "Negative advice: shouldn't + base verb (wait).",
+          why: "للنصيحة بعدم فعل شيء نستخدم shouldn't + الفعل المجرد." },
+        { type: "mcq", s: "You ___ smoke inside the hospital. It is against the law.", opts: ["don't have to", "mustn't", "should"], a: 1,
+          whyEn: "'mustn't' means it is forbidden by law/rules; 'don't have to' only means not necessary.",
+          why: "mustn't تفيد المنع والحظر، أما don't have to فتفيد عدم الضرورة فقط." },
+        { type: "mcq", s: "Which sentence is correct?", opts: ["He can speaks English.", "He cans speak English.", "He can speak English."], a: 2,
+          whyEn: "Modal verbs never take -s and are followed by a base verb.",
+          why: "الأفعال المساعدة مثل can لا تأخذ s ويليها فعل مجرد." }
+      ]
+    },
+    9: {
+      unit: 9,
+      en: "Unit 9 Pre-Test · Present Simple Passive (am / is / are + V3)",
+      ar: "الاختبار القبلي للوحدة 9 · المبني للمجهول في المضارع البسيط",
+      ruleNoteAr: "إذا حققت 90% (9 من 10) فأكثر، تتخطى الوحدة 9 وتعود قاعدتها في أسبوع التثبيت.",
+      items: [
+        { type: "typing", pre: "All university classes", verb: "teach — passive", post: "in English.", ans: ["are taught"],
+          whyEn: "Plural subject 'classes' + Present Simple Passive of teach (taught) → are taught.",
+          why: "الفاعل جمع (classes) والتصريف الثالث من teach هو taught، فنكتب are taught." },
+        { type: "typing", pre: "These smartphones", verb: "make — passive", post: "in South Korea.", ans: ["are made"],
+          whyEn: "'These smartphones' is plural → are made (NOT 'is made').",
+          why: "الفاعل جمع فنستخدم are مع التصريف الثالث made." },
+        { type: "typing", pre: "The sea temperature", verb: "measure — passive", post: "every morning.", ans: ["is measured"],
+          whyEn: "Singular subject 'temperature' → is + measured.",
+          why: "درجة الحرارة مفرد فنستخدم is مع التصريف الثالث measured." },
+        { type: "typing", pre: "Every official contract", verb: "sign — passive", post: "by both parties.", ans: ["is signed"],
+          whyEn: "Singular subject 'contract' → is signed.",
+          why: "العقد مفرد فنستخدم is signed." },
+        { type: "typing", pre: "Arabic", verb: "speak — passive", post: "in more than twenty countries.", ans: ["is spoken"],
+          whyEn: "'Arabic' is singular + past participle of speak (spoken) → is spoken.",
+          why: "اللغة مفرد والتصريف الثالث من speak هو spoken فنكتب is spoken." },
+        { type: "typing", pre: "Important reports", verb: "write — passive", post: "by the legal team.", ans: ["are written"],
+          whyEn: "'reports' is plural + past participle of write (written) → are written.",
+          why: "التقارير جمع والتصريف الثالث من write هو written فنكتب are written." },
+        { type: "typing", pre: "Coffee", verb: "grow — passive", post: "in Brazil and Colombia.", ans: ["is grown"],
+          whyEn: "Uncountable noun 'Coffee' takes singular 'is' + grown.",
+          why: "الاسم غير المعدود يعامل معاملة المفرد فنكتب is grown." },
+        { type: "typing", pre: "The lab doors", verb: "lock — passive", post: "at ten o'clock every night.", ans: ["are locked"],
+          whyEn: "Plural subject 'doors' → are locked.",
+          why: "الأبواب جمع فنكتب are locked." },
+        { type: "mcq", s: "How ___ this word spelled in English?", opts: ["do", "is", "are"], a: 1,
+          whyEn: "Singular passive question: How is this word spelled?",
+          why: "سؤال مبني للمجهول عن مفرد (this word) فنستخدم is." },
+        { type: "mcq", s: "Choose the correct passive sentence:", opts: ["The data is collect every day.", "The data are collected every day.", "The data collecting every day."], a: 1,
+          whyEn: "Passive requires be (is/are) + past participle (collected).",
+          why: "المبني للمجهول يتكون من فعل الكون + التصريف الثالث collected." }
+      ]
+    },
+    12: {
+      unit: 12,
+      en: "Unit 12 Pre-Test · Relative Clauses (who / which / that)",
+      ar: "الاختبار القبلي للوحدة 12 · جمل الوصل (who / which / that)",
+      ruleNoteAr: "إذا حققت 90% (9 من 10) فأكثر، تتخطى الوحدة 12 وتعود قاعدتها في أسبوع التثبيت.",
+      items: [
+        { type: "typing", pre: "A lawyer is a person", verb: "who / which", post: "helps people with legal problems.", ans: ["who", "that"],
+          whyEn: "Use 'who' (or 'that') for people.",
+          why: "مع العاقل (a person) نستخدم ضمير الوصل who أو that." },
+        { type: "typing", pre: "A thermometer is a tool", verb: "who / which", post: "measures temperature.", ans: ["which", "that"],
+          whyEn: "Use 'which' (or 'that') for things.",
+          why: "مع غير العاقل (a tool) نستخدم which أو that." },
+        { type: "typing", pre: "I read the contract", verb: "who / which", post: "the company sent yesterday.", ans: ["which", "that"],
+          whyEn: "'the contract' is a thing → which / that.",
+          why: "العقد غير عاقل فنستخدم which أو that." },
+        { type: "typing", pre: "The scientists", verb: "who / which", post: "work in Antarctica wear warm clothes.", ans: ["who", "that"],
+          whyEn: "'The scientists' are people → who / that.",
+          why: "العلماء عاقل فنستخدم who أو that." },
+        { type: "typing", pre: "She works for a company", verb: "who / which", post: "builds solar energy stations.", ans: ["which", "that"],
+          whyEn: "A company is an organization/thing in grammar → which / that.",
+          why: "الشركة تعامل معاملة غير العاقل في ضمائر الوصل فنستخدم which أو that." },
+        { type: "typing", pre: "Do you know the student", verb: "who / which", post: "won the first prize?", ans: ["who", "that"],
+          whyEn: "'the student' is a person → who / that.",
+          why: "الطالب عاقل فنستخدم who أو that." },
+        { type: "typing", pre: "This is the research paper", verb: "who / which", post: "explains the new law.", ans: ["which", "that"],
+          whyEn: "'the research paper' is a thing → which / that.",
+          why: "الورقة البحثية غير عاقل فنستخدم which أو that." },
+        { type: "typing", pre: "A judge is someone", verb: "who / which", post: "makes decisions in a court.", ans: ["who", "that"],
+          whyEn: "'someone' refers to a person → who / that.",
+          why: "كلمة someone تدل على شخص عاقل فنستخدم who أو that." },
+        { type: "mcq", s: "Which sentence is correct? (Avoid repeating the pronoun!)", opts: ["This is the book which I read it.", "This is the book which I read.", "This is the book who I read."], a: 1,
+          whyEn: "Never repeat the object pronoun ('it') in a relative clause!",
+          why: "في الإنجليزية لا نكرر الضمير العائد (it) بعد which." },
+        { type: "mcq", s: "The doctor ___ treated my grandfather was very kind.", opts: ["which", "who", "what"], a: 1,
+          whyEn: "'The doctor' is a person → who.",
+          why: "الطبيب عاقل فنستخدم who." }
+      ]
+    }
+  }
+
+};

@@ -1,0 +1,2569 @@
+(function(){
+'use strict';
+var doc = document;
+var curLessonId = 'u1l1';
+var D = DATA;
+function $(s, r){ return (r||doc).querySelector(s); }
+function $$(s, r){ return Array.prototype.slice.call((r||doc).querySelectorAll(s)); }
+function h(tag, attrs){
+  var el = doc.createElement(tag), k, v;
+  if (attrs) for (k in attrs){ if (!Object.prototype.hasOwnProperty.call(attrs, k)) continue; v = attrs[k];
+    if (v == null || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'html') el.innerHTML = v;
+    else if (k === 'on'){ for (var ev in v) el.addEventListener(ev, v[ev]); }
+    else if (v === true) el.setAttribute(k, '');
+    else el.setAttribute(k, v);
+  }
+  for (var i = 2; i < arguments.length; i++) addKid(el, arguments[i]);
+  return el;
+}
+function addKid(el, kid){ if (kid == null || kid === false) return; if (Array.isArray(kid)) { kid.forEach(function(x){ addKid(el, x); }); return; } el.append(kid.nodeType ? kid : String(kid)); }
+function put(el){ var kids = []; for (var i = 1; i < arguments.length; i++) kids.push(arguments[i]); var flat = []; (function walk(a){ a.forEach(function(x){ if (Array.isArray(x)) walk(x); else if (x != null && x !== false) flat.push(x.nodeType ? x : doc.createTextNode(String(x))); }); })(kids); el.replaceChildren.apply(el, flat); }
+function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+var LAT = /\d+(?:\.\d+)?\s?[–\-]\s?\d+(?:\.\d+)?|[A-Za-z][A-Za-z0-9'’.\-\/+ ]*[A-Za-z0-9'’!?%]|[A-Za-z]/g;
+function arHTML(s){ s = String(s == null ? '' : s); var out = '', last = 0, m; LAT.lastIndex = 0; while ((m = LAT.exec(s))) { out += esc(s.slice(last, m.index)) + '<bdi class="en">' + esc(m[0]) + '</bdi>'; last = m.index + m[0].length; } return out + esc(s.slice(last)); }
+function shuffle(a){ a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+var RM = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+/* bilingual UI builders (English first, Arabic small underneath) */
+function biNode(en, ar, cls){
+  return h('span', { class:'bi' + (cls ? ' ' + cls : '') },
+    h('span', { class:'bi-en', dir:'ltr' }, en),
+    ar ? h('small', { class:'bi-ar', html:arHTML(ar) }) : null);
+}
+function biBtn(en, ar){
+  if (!ar) return en;
+  return h('span', { class:'btn-bi' }, h('span', { class:'en', dir:'ltr' }, en), h('small', {}, ar));
+}
+function arReveal(arContent, isHtml){
+  if (!arContent) return null;
+  var box = h('div', { class:'ar-box', hidden:true });
+  if (isHtml) box.innerHTML = arContent; else box.innerHTML = '<p>' + arHTML(arContent) + '</p>';
+  var btn = h('button', { class:'ar-btn', type:'button', 'aria-expanded':'false' }, 'اعرض بالعربي');
+  btn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var show = box.hidden;
+    box.hidden = !show;
+    btn.classList.toggle('on', show);
+    btn.setAttribute('aria-expanded', show ? 'true' : 'false');
+    btn.textContent = show ? 'إخفاء العربي' : 'اعرض بالعربي';
+  });
+  return h('div', { class:'ar-wrap' }, btn, box);
+}
+
+/* ---------- icons ---------- */
+function svg(p, sw){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (sw || 2) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + p + '</svg>'; }
+var IC = {
+  check: svg('<path d="M5 12.5l4.5 4.5L19 7"/>', 2.6),
+  x: svg('<path d="M6 6l12 12M18 6L6 18"/>', 2.2),
+  fwd: svg('<path d="M19 12H5M11 6l-6 6 6 6"/>', 2.2),
+  back: svg('<path d="M5 12h14M13 6l6 6-6 6"/>', 2.2),
+  chev: svg('<path d="M15 6l-6 6 6 6"/>', 2.6),
+  lock: svg('<rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/>', 2.2),
+  home: svg('<path d="M4 11l8-7 8 7v8.5a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H5.5A1.5 1.5 0 0 1 4 19.5z"/>'),
+  book: svg('<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/>'),
+  cards: svg('<rect x="3" y="7" width="13" height="14" rx="2.5"/><path d="M8 3.5h10.5A2.5 2.5 0 0 1 21 6v11"/>'),
+  review: svg('<path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/>'),
+  gear: svg('<path d="M12 2.8l8 4.6v9.2l-8 4.6-8-4.6V7.4z"/><circle cx="12" cy="12" r="3.2"/>'),
+  mark: svg('<path d="M7 3.5h10a1 1 0 0 1 1 1V21l-6-4-6 4V4.5a1 1 0 0 1 1-1z"/>'),
+  chart: svg('<path d="M4 4v16h16"/><path d="M7.5 14.5l3.5-4 3 2.5 4.5-5.5"/>'),
+  speaker: svg('<path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>'),
+  play: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>',
+  dots: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="5.5" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="18.5" cy="12" r="1.8" fill="currentColor"/></svg>',
+  clock: svg('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'),
+  mail: svg('<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/>'),
+  quiz: svg('<path d="M10 6.5h10M10 12h10M10 17.5h10"/><path d="M3.5 6.5l1.5 1.5 2.5-2.5M3.5 12l1.5 1.5 2.5-2.5M3.5 17.5l1.5 1.5 2.5-2.5"/>'),
+  pen: svg('<path d="M4 20l1-4.5L16 4.5l3.5 3.5L8.5 19z"/><path d="M13.5 7.5l3 3"/>'),
+  spark: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 3l1.9 5.6L18.5 10.5l-5.6 1.9L11 18l-1.9-5.6L3.5 10.5l5.6-1.9z" fill="currentColor"/><path d="M18.5 15l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" fill="currentColor"/></svg>',
+  moon: svg('<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>', 1.8),
+  globe: svg('<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 3.6 5.4 3.6 8.5s-1.1 5.9-3.6 8.5c-2.5-2.6-3.6-5.4-3.6-8.5s1.1-5.9 3.6-8.5z"/>', 1.8),
+  trophy: svg('<path d="M8 4h8v5.5a4 4 0 0 1-8 0z"/><path d="M8 6H5.5v1.5A3.5 3.5 0 0 0 8.6 11M16 6h2.5v1.5a3.5 3.5 0 0 1-3.1 3.5M12 13.5V17M8.5 20.5h7M10 17h4"/>', 1.8),
+  copy: svg('<rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/>'),
+  star: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" fill="currentColor"/></svg>'
+};
+function ico(k){ return h('span', { class:'ico', html:IC[k] }); }
+function aa(){ return h('span', { class:'aa' }, 'Aa'); }
+var PENG = '<path d="M60 18 C 30 18, 18 50, 18 92 C 18 138, 34 164, 60 164 C 86 164, 102 138, 102 92 C 102 50, 90 18, 60 18 Z" fill="#2C4A6E"/><path d="M20 82 C 6 102, 8 126, 22 136 C 24 118, 26 100, 30 88 Z" fill="#1E3550"/><path d="M100 82 C 114 102, 112 126, 98 136 C 96 118, 94 100, 90 88 Z" fill="#1E3550"/><path d="M60 52 C 42 52, 36 78, 36 104 C 36 134, 46 154, 60 154 C 74 154, 84 134, 84 104 C 84 78, 78 52, 60 52 Z" fill="#F7F3EC"/><circle cx="49" cy="40" r="5" fill="#F7F3EC"/><circle cx="50" cy="41" r="2.4" fill="#1E2A33"/><circle cx="71" cy="40" r="5" fill="#F7F3EC"/><circle cx="70" cy="41" r="2.4" fill="#1E2A33"/><path d="M53 50 L67 50 L60 60 Z" fill="#F2B857"/><ellipse cx="46" cy="166" rx="12" ry="4.5" fill="#F2B857"/><ellipse cx="74" cy="166" rx="12" ry="4.5" fill="#F2B857"/>';
+function penguin(w, hh, cls){ return h('span', { class:cls || '', 'aria-hidden':'true', html:'<svg width="' + w + '" height="' + hh + '" viewBox="0 0 120 170" focusable="false">' + PENG + '</svg>' }); }
+var SPARK = '<path d="M0 -9 C 1 -1 1 -1 9 0 C 1 1 1 1 0 9 C -1 1 -1 1 -9 0 C -1 -1 -1 -1 0 -9 Z" fill="#F2B857"/>';
+var WELCOME_SVG = '<svg viewBox="0 0 390 480" preserveAspectRatio="xMidYMid slice" direction="ltr" aria-hidden="true" focusable="false">' +
+  '<g font-family="Quicksand, sans-serif" font-weight="700" fill="#F7F3EC">' +
+  '<text x="34" y="104" font-size="24" opacity="0.16" transform="rotate(-10 34 104)">Hello</text>' +
+  '<text x="262" y="84" font-size="20" opacity="0.14" transform="rotate(8 262 84)">travel</text>' +
+  '<text x="292" y="176" font-size="18" opacity="0.2" transform="rotate(-6 292 176)">learn</text>' +
+  '<text x="26" y="212" font-size="17" opacity="0.12" transform="rotate(6 26 212)">science</text>' +
+  '<text x="150" y="70" font-size="15" opacity="0.12">culture</text>' +
+  '<text x="300" y="250" font-size="15" opacity="0.12" transform="rotate(10 300 250)">team</text></g>' +
+  '<ellipse cx="195" cy="398" rx="130" ry="18" fill="#F2B857" opacity="0.18"/>' +
+  '<path d="M195 312 C 160 294, 118 292, 80 304 L 80 392 C 118 380, 160 382, 195 400 Z" fill="#FFFDF8"/>' +
+  '<path d="M195 312 C 230 294, 272 292, 310 304 L 310 392 C 272 380, 230 382, 195 400 Z" fill="#EFE9DF"/>' +
+  '<path d="M195 312 L 195 400" stroke="#E2D9CC" stroke-width="2"/>' +
+  '<path d="M98 320 C 124 312, 150 312, 178 322 M98 336 C 124 328, 150 328, 178 338 M98 352 C 124 344, 150 344, 178 354 M98 368 C 120 361, 140 361, 160 367" fill="none" stroke="#D5CEC2" stroke-width="2.2" stroke-linecap="round"/>' +
+  '<path d="M212 322 C 240 312, 266 312, 292 320 M212 338 C 240 328, 266 328, 292 336 M212 354 C 240 344, 266 344, 292 352" fill="none" stroke="#D5CEC2" stroke-width="2.2" stroke-linecap="round"/>' +
+  '<g font-family="Quicksand, sans-serif" font-weight="700" fill="#F7F3EC"><text x="176" y="282" font-size="38">A</text><text x="212" y="240" font-size="30" opacity="0.75">b</text><text x="168" y="200" font-size="24" opacity="0.5">c</text></g>' +
+  '<g transform="translate(246 206)">' + SPARK + '</g><g transform="translate(140 252) scale(0.7)">' + SPARK + '</g><g transform="translate(228 160) scale(0.5)" opacity="0.8">' + SPARK + '</g></svg>';
+var SUN_SVG = '<svg viewBox="0 0 320 96" role="img" aria-label="Midnight Sun over Antarctic ice · شمس منتصف الليل فوق جليد القارة القطبية" direction="ltr"><rect width="320" height="64" fill="#2C4A6E"/><circle cx="238" cy="34" r="22" fill="#F2B857" opacity="0.22"/><circle cx="238" cy="34" r="12" fill="#F2B857"/><path d="M0 64 L28 57 L52 61 L86 52 L118 60 L150 55 L176 61 L208 54 L240 60 L272 53 L300 59 L320 56 L320 64 Z" fill="#F7F3EC"/><rect y="64" width="320" height="32" fill="#1E3550"/><path d="M228 72h20M222 79h32M231 86h14" stroke="#F2B857" stroke-width="2" stroke-linecap="round" opacity="0.7"/><text x="14" y="24" font-family="Quicksand, sans-serif" font-weight="700" font-size="11" fill="#F7F3EC">00:00 · 77°S · −5°C</text><text x="14" y="40" font-family="Quicksand, sans-serif" font-weight="700" font-size="8.5" letter-spacing="2" fill="#F2B857">MIDNIGHT SUN</text></svg>';
+
+/* ---------- structure & multi-lesson loader (6-Stage Template) ---------- */
+var PARTS = [
+  { k:'recall', en:'Recall', fullEn:'Active Recall', ar:'الاسترجاع', fullAr:'مراجعة بالاسترجاع النشط', min:5, ic:'review' },
+  { k:'vocab', en:'Phrases', fullEn:'New Phrases', ar:'العبارات', fullAr:'عبارات جديدة', min:8, ic:'cards' },
+  { k:'grammar', en:'Grammar', fullEn:'Grammar', ar:'القواعد', fullAr:'القواعد', min:12, ic:'aa' },
+  { k:'reading', en:'Reading', fullEn:'Reading', ar:'القراءة', fullAr:'القراءة', min:17, ic:'mail' },
+  { k:'writing', en:'Writing', fullEn:'Writing', ar:'الكتابة', fullAr:'الكتابة', min:10, ic:'pen' },
+  { k:'quiz', en:'Quiz', fullEn:'Short Quiz & Analysis', ar:'الاختبار', fullAr:'اختبار قصير وتحليل الأخطاء', min:8, ic:'quiz' }
+];
+function partOf(k){ return PARTS.filter(function(p){ return p.k === k; })[0]; }
+function partIcon(p){ return p.ic === 'aa' ? aa() : ico(p.ic); }
+function mkIds(p, n){ var a = []; for (var i = 0; i < n; i++) a.push(p + '-' + i); return a; }
+function mcqOf(x){ return { prompt:x.s, opts:x.opts, a:x.a, whyEn:x.whyEn, why:x.why, errCat:x.errCat }; }
+
+var ERR_CATS = {
+  tense: {
+    en: "Present Simple vs. Continuous (Tense Choice)",
+    ar: "الخلط بين المضارع البسيط والمستمر",
+    whyEn: "Use Present Simple for habits/facts (every day, usually) and Present Continuous (am/is/are + -ing) for right now or temporary periods (now, this month).",
+    whyAr: "نستخدم المضارع البسيط للعادات والحقائق، والمضارع المستمر لما يحدث الآن أو في فترة مؤقتة."
+  },
+  be_verb: {
+    en: "Using 'am / is / are' with Verbs",
+    ar: "استخدام فعل الكون (am / is / are) مع الفعل",
+    whyEn: "Never put am/is/are before a base verb (✗ She is go), and never drop am/is/are before an -ing verb (✗ She working).",
+    whyAr: "لا نضع am/is/are قبل الفعل الأصلي في البسيط، ولا نحذفها قبل الفعل المنتهي بـ ing في المستمر."
+  },
+  agreement: {
+    en: "Subject–Verb Agreement (he / she / it)",
+    ar: "مطابقة الفعل مع المفرد الغائب (he / she / it)",
+    whyEn: "With he/she/it in Present Simple: add -s in positive sentences (works), and use doesn't / Does + base verb in negatives and questions.",
+    whyAr: "مع he/she/it نضيف s في الإثبات، ونستخدم doesn't / Does مع الفعل الأصلي بدون s في النفي والسؤال."
+  },
+  stative: {
+    en: "Stative Verbs (know / need / understand)",
+    ar: "أفعال الحالة والذهن والمشاعر",
+    whyEn: "Verbs of thinking, feeling, and needing (know, understand, need, want, like) stay in Present Simple even when we mean right now.",
+    whyAr: "أفعال التفكير والمشاعر والحاجة تبقى في المضارع البسيط ولا تأخذ ing حتى لو قصدنا اللحظة الحالية."
+  },
+  word_order: {
+    en: "Word Order & Question Formation",
+    ar: "ترتيب الكلمات وتكوين السؤال",
+    whyEn: "Put frequency words (usually, often) before the main verb, and start questions with Do/Does or Am/Is/Are before the subject.",
+    whyAr: "كلمات التكرار تأتي قبل الفعل الأساسي، وفي السؤال يسبق الفعل المساعد الفاعل."
+  },
+  spelling: {
+    en: "Spelling & Memory Recall",
+    ar: "الإملاء واسترجاع الكلمات",
+    whyEn: "Pay attention to silent -e (write → writing), consonant clusters (scientist, strange), and vowel pairs (research, team, measure).",
+    whyAr: "انتبه لحذف الـ e الصامتة قبل ing، وتتابع الحروف الساكنة والعلة في كتابة المفردات."
+  },
+  vocab: {
+    en: "Vocabulary Meaning & Collocations",
+    ar: "معاني المفردات والمتلازمات اللفظية",
+    whyEn: "Check how each word fits the context and its natural partners (do research, collect data, measure temperature, sign a contract).",
+    whyAr: "راجع معنى الكلمة في السياق والكلمات التي تتلازم معها طبيعيًا."
+  },
+  reading: {
+    en: "Reading Comprehension & Evidence",
+    ar: "فهم المقروء والدليل من النص",
+    whyEn: "Always verify details and numbers against the exact sentence in the text before choosing.",
+    whyAr: "تأكد من التفاصيل والأرقام بالرجوع إلى الجملة الدالة عليها في النص."
+  }
+};
+
+var IDS = {}, ITEMS = {}, GCARDS = [], VOCAB_LIST = '', ALL_VOCAB = [];
+
+function rebuildLessonIndex(){
+  var L = (typeof LESSONS !== 'undefined' && LESSONS[curLessonId]) ? LESSONS[curLessonId] : D;
+  Object.assign(D, L);
+  ALL_VOCAB = (D.vocab || []).slice();
+  if (D.legalPhrase) {
+    ALL_VOCAB.push(Object.assign({ isLegal:true }, D.legalPhrase));
+  }
+  var rPart = partOf('reading');
+  if (rPart) {
+    if (D.listening && !D.reading) { rPart.en = 'Listening'; rPart.fullEn = 'Listening'; rPart.ar = 'الاستماع'; rPart.fullAr = 'الاستماع'; rPart.ic = 'speaker'; }
+    else { rPart.en = 'Reading'; rPart.fullEn = 'Reading'; rPart.ar = 'القراءة'; rPart.fullAr = 'القراءة'; rPart.ic = 'mail'; }
+  }
+  IDS = {
+    rc: mkIds('rc', (D.recall || []).length),
+    vg: mkIds('vg', D.vocabGaps.length),
+    gA: mkIds('gA', D.gA.length),
+    gB: mkIds('gB', D.gB.length),
+    gC: mkIds('gC', D.gC.length),
+    gD: mkIds('gD', D.gD.length),
+    rq: mkIds('rq', D.reading && D.reading.questions ? D.reading.questions.length : 0),
+    lq: mkIds('lq', D.listening && D.listening.questions ? D.listening.questions.length : 0)
+  };
+  ITEMS = {};
+  (D.recall || []).forEach(function(x, i){ ITEMS['rc-' + i] = { type:'recall', secEn:'Active Recall', sec:'مراجعة بالاسترجاع النشط', groupEn:'Write the word from memory', group:'اكتب الكلمة من الذاكرة', errCat:x.errCat || 'spelling', x:x }; });
+  D.vocabGaps.forEach(function(x, i){ ITEMS['vg-' + i] = { type:'mcq', secEn:'New Phrases', sec:'عبارات جديدة', groupEn:'Choose the right word', group:'اختر الكلمة المناسبة', errCat:x.errCat || 'vocab', x:mcqOf(x) }; });
+  D.gA.forEach(function(x, i){ ITEMS['gA-' + i] = { type:'mcq', secEn:'Grammar', sec:'القواعد', groupEn:'Choose the correct form', group:'اختر الصيغة الصحيحة', errCat:x.errCat || 'tense', x:mcqOf(x) }; });
+  D.gB.forEach(function(x, i){ ITEMS['gB-' + i] = { type:'tf', secEn:'Grammar', sec:'القواعد', groupEn:'Correct or has a mistake?', group:'صحيحة أم فيها خطأ؟', errCat:x.errCat || 'be_verb', x:x }; });
+  D.gC.forEach(function(x, i){ ITEMS['gC-' + i] = { type:'typing', secEn:'Grammar', sec:'القواعد', groupEn:'Write the verb in the correct form', group:'اكتب الفعل بالصيغة الصحيحة', errCat:x.errCat || 'tense', x:x }; });
+  D.gD.forEach(function(x, i){ ITEMS['gD-' + i] = { type:'builder', secEn:'Grammar', sec:'القواعد', groupEn:'Put the words in order', group:'رتّب الكلمات', errCat:x.errCat || 'word_order', x:x }; });
+  if (D.reading && D.reading.questions) {
+    D.reading.questions.forEach(function(x, i){ ITEMS['rq-' + i] = x.tf ? { type:'rtf', secEn:'Reading', sec:'القراءة', groupEn:'Comprehension Questions', group:'أسئلة الفهم', errCat:x.errCat || 'reading', x:x } : { type:'mcq', secEn:'Reading', sec:'القراءة', groupEn:'Comprehension Questions', group:'أسئلة الفهم', errCat:x.errCat || 'reading', x:{ prompt:x.q, opts:x.opts, a:x.a, whyEn:x.whyEn, why:x.why, ev:x.ev, errCat:x.errCat || 'reading' } }; });
+  }
+  if (D.listening && D.listening.questions) {
+    D.listening.questions.forEach(function(x, i){ ITEMS['lq-' + i] = x.tf ? { type:'rtf', secEn:'Listening', sec:'الاستماع', groupEn:'Listening Questions (2nd Listen)', group:'أسئلة الاستماع (الاستماع الثاني)', errCat:x.errCat || 'reading', x:x } : { type:'mcq', secEn:'Listening', sec:'الاستماع', groupEn:'Listening Questions (2nd Listen)', group:'أسئلة الاستماع (الاستماع الثاني)', errCat:x.errCat || 'reading', x:{ prompt:x.q, opts:x.opts, a:x.a, whyEn:x.whyEn, why:x.why, ev:x.ev, errCat:x.errCat || 'reading' } }; });
+  }
+  D.quiz.forEach(function(x, i){ ITEMS['qz-' + i] = { type:'mcq', secEn:'Quiz', sec:'الاختبار', groupEn:'Lesson Quiz', group:'اختبار الدرس', errCat:x.errCat || (x.tag && x.tag.indexOf('Vocabulary') >= 0 ? 'vocab' : 'tense'), x:mcqOf(x) }; });
+  GCARDS = D.gCards || [];
+  VOCAB_LIST = ALL_VOCAB.map(function(v){ return v.en; }).join(', ');
+}
+rebuildLessonIndex();
+
+function itemText(it){ var x = it.x; return x.prompt || x.s || x.q || x.cueEn || (x.sentPre ? (x.sentPre + ' ___ ' + (x.sentPost || '')) : '') || ((x.pre || '') + ' ___ ' + (x.post || '')) || (Array.isArray(x.ans) ? x.ans[0] : x.ans) || ''; }
+
+/* ---------- state ---------- */
+var SR_DAYS = [1, 3, 7, 30];
+function seedErrorLab(){
+  var lab = {};
+  (D.errorLabCatalog || []).forEach(function(cat){
+    lab[cat.key] = { count: cat.seedCount || 1, solved: 0, box: 0, nextAt: 0, fromDiag: !!cat.fromDiag, lastSample: cat.wrongEx || '' };
+  });
+  return lab;
+}
+function DEFAULT(){ return { v:3, updatedAt:0, startedAt:0, cards:{}, match:false, read1Done:false, listen1Done:false, ans:{}, stamps:{}, quiz:{ best:null, attempts:0, last:null }, mistakes:{}, errorLab:seedErrorLab(), irrSr:{}, expressSessions:0, camblyLogs:[], unitTests:{}, preTests:{}, writing:{ text:'', fb:null }, writingDone:false, predict:null, revealed:false, hl:false, ui:{ view:'home', welcomed:false, part:null, step:{}, wordsTab:'vocab', irrGroup:'all', reviewTab:'lab' } }; }
+function normalize(o){ var r = Object.assign(DEFAULT(), o || {});
+  ['cards','ans','stamps','mistakes','errorLab','irrSr','unitTests','preTests'].forEach(function(k){ if (!r[k] || typeof r[k] !== 'object' || Array.isArray(r[k])) r[k] = {}; });
+  (D.errorLabCatalog || []).forEach(function(cat){
+    if (!r.errorLab[cat.key] || typeof r.errorLab[cat.key] !== 'object') {
+      r.errorLab[cat.key] = { count: cat.seedCount || 1, solved: 0, box: 0, nextAt: 0, fromDiag: !!cat.fromDiag, lastSample: cat.wrongEx || '' };
+    }
+  });
+  if (typeof r.expressSessions !== 'number' || r.expressSessions < 0) r.expressSessions = 0;
+  if (!Array.isArray(r.camblyLogs)) r.camblyLogs = [];
+  r.quiz = Object.assign({ best:null, attempts:0, last:null }, r.quiz || {});
+  r.writing = Object.assign({ text:'', fb:null }, r.writing || {});
+  var ui = Object.assign({ view:'home', welcomed:false, part:null, step:{}, wordsTab:'vocab', irrGroup:'all', reviewTab:'lab' }, r.ui || {});
+  if (!ui.step || typeof ui.step !== 'object') ui.step = {};
+  if (ui.wordsTab !== 'vocab' && ui.wordsTab !== 'irregular') ui.wordsTab = 'vocab';
+  if (!ui.irrGroup) ui.irrGroup = 'all';
+  if (ui.reviewTab !== 'lab' && ui.reviewTab !== 'notebook') ui.reviewTab = 'lab';
+  var map = { plan:'home', notebook:'review' };
+  if (map[ui.view]) ui.view = map[ui.view];
+  if (['home','lessons','words','review','lesson','player'].indexOf(ui.view) < 0) ui.view = 'home';
+  r.ui = ui; return r; }
+function bumpErrorLab(catKey, sampleText){
+  if (!catKey) return;
+  var mapped = catKey === 'stative' ? 'tense' : (catKey === 'vocab' || catKey === 'reading' ? 'tense' : catKey);
+  if (!S.errorLab[mapped]) S.errorLab[mapped] = { count:0, solved:0, box:0, nextAt:0, fromDiag:false, lastSample:'' };
+  S.errorLab[mapped].count = (S.errorLab[mapped].count || 0) + 1;
+  S.errorLab[mapped].box = 0;
+  S.errorLab[mapped].nextAt = Date.now();
+  if (sampleText) S.errorLab[mapped].lastSample = sampleText;
+}
+var LS = 'english-passport.' + curLessonId + '.v1';
+function readLocal(){ try { var s = localStorage.getItem(LS); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
+function saveLocal(){ try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {} }
+var S = normalize(readLocal());
+if (!S.startedAt) { S.startedAt = Date.now(); saveLocal(); }
+
+function selectLesson(id){
+  if (!id || typeof LESSONS === 'undefined' || !LESSONS[id]) return false;
+  if (curLessonId !== id) {
+    var welcomed = S.ui.welcomed, startedAt = S.startedAt;
+    curLessonId = id;
+    M = null; M_POOL = null;
+    LS = 'english-passport.' + curLessonId + '.v1';
+    rebuildLessonIndex();
+    S = normalize(readLocal());
+    if (welcomed) S.ui.welcomed = true;
+    if (!S.startedAt) S.startedAt = startedAt || Date.now();
+    saveLocal();
+    initDb();
+  }
+  return true;
+}
+
+var REMOTE = null, remoteOK = false, remoteBusy = false, remotePending = false, remoteRetried = false, remoteT = null;
+function touch(){ S.updatedAt = Date.now(); saveLocal(); if (remoteOK) { clearTimeout(remoteT); remoteT = setTimeout(flushRemote, 1200); } }
+function flushRemote(){
+  if (!remoteOK || !REMOTE) return;
+  if (remoteBusy) { remotePending = true; return; }
+  remoteBusy = true;
+  REMOTE.set(JSON.parse(JSON.stringify(S))).then(function(){ remoteRetried = false; }, function(e){
+    var c = e && e.code;
+    if (c === 'unavailable' && !remoteRetried) { remoteRetried = true; setTimeout(flushRemote, 1200 + Math.random() * 1500); }
+    else if (c !== 'unavailable' && c !== 'resource_exhausted') { remoteOK = false; }
+  }).then(function(){ remoteBusy = false; if (remotePending) { remotePending = false; flushRemote(); } });
+}
+function initDb(){
+  if (!(window.claude && typeof window.claude.use === 'function')) return;
+  Promise.all([window.claude.use('db'), window.claude.use('user')]).then(function(res){
+    var db = res[0], user = res[1];
+    if (!db) return;
+    return (user ? user.isOwner() : Promise.resolve(true)).then(function(owner){
+      if (!owner) return;
+      var ref = db.doc('progress/' + curLessonId);
+      return ref.get().then(function(snap){
+        REMOTE = ref; remoteOK = true;
+        if (snap.exists) {
+          var r = snap.data() || {}, ru = r.updatedAt || 0;
+          if (ru > (S.updatedAt || 0)) { var ui = S.ui; var st = S.startedAt; S = normalize(JSON.parse(JSON.stringify(r))); S.ui = ui; if (!S.startedAt) S.startedAt = st; saveLocal(); P = null; render(); }
+          else if ((S.updatedAt || 0) > ru) flushRemote();
+        } else if (S.updatedAt) flushRemote();
+      });
+    });
+  }).catch(function(){ remoteOK = false; });
+}
+
+/* ---------- Human Pronunciation (Wikimedia Commons + Oxford Learner's Dictionary, NO Robotic TTS) ---------- */
+function findVocabEntry(wordOrObj){
+  if (!wordOrObj) return null;
+  if (typeof wordOrObj === 'object') return wordOrObj;
+  var k = String(wordOrObj).toLowerCase().trim();
+  return ALL_VOCAB.filter(function(v){ return v.en.toLowerCase() === k; })[0] || null;
+}
+function oxUrl(wordOrObj){
+  var v = findVocabEntry(wordOrObj);
+  var slug = v && v.oxfordSlug ? v.oxfordSlug : String(v ? v.en : (wordOrObj || '')).toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').split(/\s+/)[0];
+  if (!slug) return 'https://www.oxfordlearnersdictionaries.com/';
+  return 'https://www.oxfordlearnersdictionaries.com/definition/english/' + encodeURIComponent(slug);
+}
+function oxBtn(wordOrObj, label){
+  var a = h('a', { class:'ox-link', href:oxUrl(wordOrObj), target:'_blank', rel:'noopener noreferrer', 'aria-label':(label || 'Oxford Dictionary · قاموس أوكسفورد') }, 'Oxford ↗');
+  a.addEventListener('click', function(e){ e.stopPropagation(); });
+  return a;
+}
+var AUDIO = {
+  cache: {},
+  player: null,
+  resolveFile: function(file){
+    if (AUDIO.cache[file]) return Promise.resolve(AUDIO.cache[file]);
+    var api = 'https://commons.wikimedia.org/w/api.php?action=query&titles=File:' + encodeURIComponent(file) + '&prop=imageinfo&iiprop=url|derivatives&format=json&origin=*';
+    var fallback = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(file);
+    if (typeof fetch !== 'function') { AUDIO.cache[file] = fallback; return Promise.resolve(fallback); }
+    return fetch(api).then(function(r){ return r.json(); }).then(function(d){
+      var pages = d && d.query && d.query.pages;
+      var k = pages && Object.keys(pages)[0];
+      var ii = k && pages[k] && pages[k].imageinfo && pages[k].imageinfo[0];
+      if (!ii) { AUDIO.cache[file] = fallback; return fallback; }
+      var mp3 = (ii.derivatives || []).filter(function(x){ return /mp3/i.test(x.type || '') || /\.mp3$/i.test(x.src || ''); })[0];
+      var url = (mp3 && mp3.src) || ii.url || fallback;
+      AUDIO.cache[file] = url;
+      return url;
+    }).catch(function(){ AUDIO.cache[file] = fallback; return fallback; });
+  },
+  filesFor: function(target){
+    var v = findVocabEntry(target);
+    if (v) {
+      if (Array.isArray(v.wikiFiles) && v.wikiFiles.length) return v.wikiFiles.slice();
+      if (v.wikiFile) return [v.wikiFile];
+    }
+    if (typeof target === 'string') {
+      var words = target.toLowerCase().trim().replace(/[^a-z\s-]/g, '').split(/\s+/).filter(Boolean);
+      if (words.length >= 1 && words.length <= 4) {
+        return words.map(function(w){ return 'En-us-' + w + '.ogg'; });
+      }
+    }
+    return [];
+  },
+  playSeq: function(files, idx, onFail){
+    if (idx >= files.length) return;
+    AUDIO.resolveFile(files[idx]).then(function(url){
+      try {
+        if (AUDIO.player) { AUDIO.player.pause(); }
+        var a = new Audio(url);
+        AUDIO.player = a;
+        a.onended = function(){ AUDIO.playSeq(files, idx + 1, onFail); };
+        a.onerror = function(){ if (onFail) onFail(); };
+        var p = a.play();
+        if (p && typeof p.catch === 'function') p.catch(function(){ if (onFail) onFail(); });
+      } catch (e) { if (onFail) onFail(); }
+    });
+  },
+  play: function(target){
+    var files = AUDIO.filesFor(target);
+    if (!files.length) {
+      toast('Open Oxford ↗ to hear pronunciation · افتح رابط Oxford ↗ لسماع النطق');
+      return;
+    }
+    AUDIO.playSeq(files, 0, function(){
+      toast('Audio requires internet or Oxford ↗ · تعذّر تشغيل ملف الصوت، جرّب رابط Oxford ↗');
+    });
+  }
+};
+function sayBtn(target, label, cls){
+  var b = h('button', { class:'ib say ' + (cls || 'sm light'), type:'button', 'aria-label':label || 'Human Pronunciation · نطق بشري' }, ico('speaker'));
+  b.addEventListener('click', function(e){ e.stopPropagation(); AUDIO.play(typeof target === 'function' ? target() : target); });
+  return b;
+}
+
+/* ---------- toast ---------- */
+var toastT;
+function toast(msg){ var t = $('#toast'); t.textContent = msg; t.hidden = false; t.classList.remove('in'); void t.offsetWidth; t.classList.add('in'); clearTimeout(toastT); toastT = setTimeout(function(){ t.hidden = true; }, 2600); }
+
+/* ---------- progress ---------- */
+function computeDone(){ function all(p){ return !IDS[p] || !IDS[p].length || IDS[p].every(function(id){ return !!S.ans[id]; }); }
+  var readOrListenDone = (D.listening && !D.reading) ? all('lq') : all('rq');
+  return {
+    recall: all('rc'),
+    vocab: !!S.match && all('vg'),
+    grammar: all('gA') && all('gB') && all('gC') && all('gD'),
+    reading: readOrListenDone,
+    writing: !!S.writingDone,
+    quiz: (S.quiz.best || 0) >= Math.ceil(D.quiz.length * 0.8)
+  };
+}
+function updateProgress(){ var d = computeDone(), changed = false;
+  PARTS.forEach(function(p){ if (d[p.k] && !S.stamps[p.k]) { S.stamps[p.k] = Date.now(); changed = true; } });
+  if (changed) touch(); updateNav(); }
+function lessonProgress(){ var done = PARTS.filter(function(p){ return S.stamps[p.k]; }); var left = PARTS.filter(function(p){ return !S.stamps[p.k]; });
+  return { done:done.length, total:PARTS.length, pct:Math.round(done.length / PARTS.length * 100), mins:left.reduce(function(a, p){ return a + p.min; }, 0), next:left[0] || null }; }
+function lessonProgressOf(id){
+  if (!id || id === curLessonId) return lessonProgress();
+  try {
+    var raw = localStorage.getItem('english-passport.' + id + '.v1');
+    var stObj = raw ? (JSON.parse(raw).stamps || {}) : {};
+    var done = PARTS.filter(function(p){ return !!stObj[p.k]; });
+    var left = PARTS.filter(function(p){ return !stObj[p.k]; });
+    return { done:done.length, total:PARTS.length, pct:Math.round(done.length / PARTS.length * 100), mins:left.reduce(function(a, p){ return a + p.min; }, 0), next:left[0] || null };
+  } catch (e) { return { done:0, total:PARTS.length, pct:0, mins:60, next:PARTS[0] }; }
+}
+function record(id, c, v){ if (S.ans[id]) return; S.ans[id] = { c:!!c, v:v }; if (!c) { S.mistakes[id] = { s:0, t:Date.now() }; if (ITEMS[id]) bumpErrorLab(ITEMS[id].errCat || 'tense', itemText(ITEMS[id])); } touch(); updateProgress(); }
+function mistakeIds(){ return Object.keys(S.mistakes).filter(function(id){ return ITEMS[id]; }).sort(function(a, b){ return (S.mistakes[a].t || 0) - (S.mistakes[b].t || 0); }); }
+function courseDay(){ return Math.max(0, Math.floor((Date.now() - (S.startedAt || Date.now())) / 864e5)); }
+
+/* ---------- routing ---------- */
+var TABS = [
+  { k:'home', en:'Home', ar:'الرئيسية', ic:'home' },
+  { k:'lessons', en:'Lessons', ar:'الدروس', ic:'book' },
+  { k:'words', en:'Words', ar:'الكلمات', ic:'cards' },
+  { k:'review', en:'Review', ar:'المراجعة', ic:'review' }
+];
+var P = null;
+function go(view){ S.ui.view = view; if (view !== 'player') { P = null; S.ui.part = null; } saveLocal(); render(); try { window.scrollTo(0, 0); } catch (e) {} }
+function render(){
+  hideDict(); var v = S.ui.view; if (!S.ui.welcomed) v = 'welcome';
+  var isTab = TABS.some(function(t){ return t.k === v; });
+  $('#nav').hidden = !isTab;
+  var view = v === 'welcome' ? vWelcome() : v === 'home' ? vHome() : v === 'lessons' ? vLessons() : v === 'words' ? vWords() : v === 'review' ? vReview() : v === 'lesson' ? vLesson() : vPlayer();
+  put($('#screen'), view); updateNav(); }
+function updateNav(){ var nav = $('#nav'), n = mistakeIds().length;
+  put(nav, TABS.map(function(t){ var on = S.ui.view === t.k;
+    return h('button', { class:'nav-it' + (on ? ' on' : ''), type:'button', 'aria-label':t.en + ' · ' + t.ar, 'aria-current':on ? 'page' : null, on:{ click:function(){ go(t.k); } } },
+      ico(t.ic), h('span', { class:'lbl' }, h('span', { class:'en', dir:'ltr' }, t.en), h('small', {}, t.ar)), (t.k === 'review' && n && !on) ? h('span', { class:'nav-dot', 'aria-hidden':'true' }) : null); })); }
+
+/* ---------- welcome ---------- */
+function vWelcome(){
+  return h('section', { class:'wel' },
+    h('div', { class:'wel-art', html:WELCOME_SVG }),
+    h('div', { class:'wel-txt gut' },
+      h('p', { class:'wel-lbl' }, biNode('English Course', 'كورس الإنجليزية')),
+      h('h1', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Your English Journey Starts Here'), h('small', {}, 'رحلتك في الإنجليزية تبدأ هنا')),
+      h('p', {}, biNode('Short daily lessons built for your level and goals in study and work.', 'دروس قصيرة كل يوم، مبنية على مستواك وهدفك في الدراسة والعمل.'))),
+    h('div', { class:'wel-cta gut' }, h('button', { class:'btn', type:'button', on:{ click:function(){ S.ui.welcomed = true; touch(); go('home'); } } }, biBtn("Let's Start", 'لنبدأ'))));
+}
+
+/* ---------- home ---------- */
+function header(){ var n = mistakeIds().length, d = courseDay(), wk = Math.min(32, Math.floor(d / 7) + 1), dy = d + 1;
+  return h('header', { class:'hd' },
+    h('div', { class:'who' }, h('span', { class:'avatar', 'aria-hidden':'true', html:'<svg width="42" height="42" viewBox="0 0 42 42" focusable="false"><circle cx="21" cy="16" r="8.5" fill="#2C4A6E"/><path d="M5 42c1.6-9.5 8-15 16-15s14.4 5.5 16 15z" fill="#2C4A6E"/></svg>' }),
+      h('div', { class:'who-t' },
+        h('small', {}, h('bdi', { class:'en', dir:'ltr' }, 'Welcome!'), ' · أهلًا!'),
+        h('b', {}, h('bdi', { class:'en', dir:'ltr' }, 'Week ' + wk + ' · Day ' + dy), ' · الأسبوع ' + wk + ' · اليوم ' + dy))),
+    h('div', { class:'hd-act' },
+      h('button', { class:'ib', type:'button', 'aria-label':'Mistake Notebook · دفتر الأخطاء' + (n ? '، ' + n + ' أسئلة' : ''), on:{ click:function(){ go('review'); } } }, ico('mark'), n ? h('span', { class:'badge', 'aria-hidden':'true' }, String(n)) : null),
+      h('button', { class:'ib', type:'button', 'aria-label':'Your Plan · خطتك', on:{ click:openPlan } }, ico('gear'))));
+}
+function journeyCard(){ var pr = lessonProgress(), d = courseDay(), week = Math.min(32, Math.floor(d / 7) + 1);
+  var lessonsDone = pr.done === pr.total ? 1 : pr.done / pr.total, coursePct = Math.min(100, lessonsDone / 192 * 100);
+  var fill = coursePct > 0 ? Math.max(3, coursePct) : 0;
+  var curve = '<svg viewBox="0 0 350 84" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M322 66 C 262 68, 236 36, 186 40 S 92 14, 30 12" fill="none" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"/>' +
+    (fill ? '<path d="M322 66 C 262 68, 236 36, 186 40 S 92 14, 30 12" pathLength="100" stroke-dasharray="' + fill + ' 100" fill="none" stroke="#F2B857" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/>' : '') + '</svg>';
+  return h('section', { class:'journey', 'aria-label':'Your Journey · رحلتك' },
+    h('div', { class:'j-top' },
+      h('div', {},
+        h('p', { class:'j-lbl' }, h('bdi', { class:'en', dir:'ltr' }, 'From A2 to C1'), ' · من A2 إلى C1'),
+        h('p', { class:'j-big' }, h('span', { class:'en', dir:'ltr' }, 'Week ' + week + ' '), h('small', {}, '· الأسبوع ' + week + ' من 32'))),
+      h('button', { class:'ib light', type:'button', 'aria-label':'Progress & Skills Dashboard · لوحة التقدم والمهارات', on:{ click:openDashboard } }, ico('chart'))),
+    h('div', { class:'j-curve', 'aria-hidden':'true' }, h('span', { html:curve }),
+      h('span', { class:'j-dot', style:'left:calc(92% - 12px);top:54px;width:24px;height:24px;opacity:.25' }),
+      h('span', { class:'j-dot', style:'left:calc(92% - 6px);top:60px;width:12px;height:12px' }),
+      h('span', { class:'j-dot', style:'left:calc(53.1% - 3.5px);top:36.5px;width:7px;height:7px;opacity:.8' }),
+      h('span', { class:'j-dot', style:'left:calc(8.6% - 6px);top:6px;width:12px;height:12px;background:transparent;box-shadow:inset 0 0 0 2px #fff' }),
+      h('span', { class:'j-tag', style:'left:calc(8.6% + 12px);top:16px' }, 'B1'),
+      h('span', { class:'j-tag', style:'left:calc(53.1% - 8px);top:48px;opacity:.8;font-size:11px' }, 'A2')),
+    h('div', { class:'j-block' },
+      h('div', { class:'j-row' },
+        h('div', { class:'j-pct' }, h('b', {}, pr.pct + '%'), h('span', {}, pr.done === pr.total ? "Today's lesson done · اكتمل درس اليوم" : "Of today's lesson · من درس اليوم")),
+        h('button', { class:'ib sm light', type:'button', 'aria-label':'Open Lesson · افتح درس اليوم', on:{ click:function(){ go('lesson'); } } }, ico('fwd'))),
+      h('div', { class:'ticket' },
+        h('span', { class:'tk' }, h('b', { dir:'ltr' }, pr.done + '/' + pr.total), 'stages · مراحل'),
+        h('span', { class:'tk end' }, pr.mins ? [h('b', {}, pr.mins + ' د'), 'left · متبقية'] : [h('b', {}, 'Done · مكتمل')]),
+        h('span', { class:'notch t', 'aria-hidden':'true' }), h('span', { class:'notch b', 'aria-hidden':'true' }))));
+}
+var LESSON_ICON = ['', 'moon', 'clock', 'globe', 'mail', 'trophy'];
+var LESSON_SHORT = ['المضارع البسيط والمستمر', 'الأسئلة والإجابات القصيرة', 'كلمات التكرار', 'أفعال الحالة', 'إيميل مهني قصير', 'مراجعة الوحدة واختبارها'];
+function lessonCard(l, i){
+  var shortAr = l.shortAr || LESSON_SHORT[i] || l.ar;
+  if (l.open) { var pr = lessonProgressOf(l.id);
+    var thumbNode = (!l.icon || l.icon === 'penguin') ? penguin(54, 76) : ico(l.icon || LESSON_ICON[i] || 'book');
+    var thumbStyle = (!l.icon || l.icon === 'penguin') ? '' : 'align-items:center;color:var(--dark)';
+    return h('button', { class:'lcard', type:'button', on:{ click:function(){ if (l.id) selectLesson(l.id); go('lesson'); } } },
+      h('span', { class:'l-thumb', style:thumbStyle, 'aria-hidden':'true' }, thumbNode),
+      h('span', { class:'l-body' },
+        h('span', { class:'l-title' }, l.en),
+        l.subEn ? h('span', { class:'l-sub-en' }, l.subEn) : null,
+        h('span', { class:'l-sub' }, h('span', { html:arHTML(shortAr) }), pr.done === pr.total ? h('span', { class:'chip-done' }, 'Done · مكتمل') : h('span', { class:'chip-now' }, 'Now · الآن'))),
+      h('span', { class:'l-go', 'aria-hidden':'true' }, ico('chev'))); }
+  return h('div', { class:'lcard locked' },
+    h('span', { class:'l-thumb', 'aria-hidden':'true' }, ico(l.icon || LESSON_ICON[i] || 'lock')),
+    h('span', { class:'l-body' },
+      h('span', { class:'l-title' }, l.en),
+      l.subEn ? h('span', { class:'l-sub-en' }, l.subEn) : null,
+      h('span', { class:'l-sub', html:arHTML(shortAr) + ' · Soon · قريبًا' })),
+    h('span', { class:'l-go', 'aria-hidden':'true' }, ico('lock')));
+}
+function quickToolsRow(){
+  var st = computeDashboardStats();
+  return h('div', { class:'quick-grid' },
+    h('button', { class:'qtile', type:'button', on:{ click:openDashboard } },
+      h('div', { class:'qtile-top' },
+        h('span', { class:'qtile-ic' }, ico('chart')),
+        h('span', { class:'qtile-badge' }, st.hoursStr + ' / 70h A2')),
+      biNode('Progress & 4 Skills', 'لوحة التقدم والمهارات')),
+    h('button', { class:'qtile exp', type:'button', on:{ click:function(){ openSession('express'); } } },
+      h('div', { class:'qtile-top' },
+        h('span', { class:'qtile-ic' }, ico('clock')),
+        h('span', { class:'qtile-badge' }, '15 min · ' + (S.expressSessions || 0) + ' done')),
+      biNode('Busy-Day Express Mode', 'الوضع المختصر (١٥ دقيقة)')));
+}
+function foundationWeekBox(){
+  if (!D.unit0Lessons || !D.unit0Lessons.length) return null;
+  return h('div', { class:'u0-box', style:'border-radius:20px;border:1.5px solid var(--line-dark);background:var(--surface);overflow:hidden' },
+    h('div', { class:'uo-head' },
+      h('span', { class:'u-n' }, '0'),
+      h('span', { class:'u-t' },
+        h('span', { class:'uo-en' }, 'Foundation Week · Unit 0'),
+        h('b', { class:'u-ar' }, 'الأسبوع التأسيسي قبل الوحدة 1'),
+        h('span', { html:'<bdi class="en">be &amp; do · Agreement · was/were · Capitals &amp; Spelling</bdi> · أساسيات القواعد والإملاء' }))),
+    h('ol', { class:'uo-list' }, D.unit0Lessons.map(function(l){
+      var k = 'F' + l.n;
+      var pr = lessonProgressOf(l.id);
+      if (l.open) return h('li', {}, h('button', { class:'uo-row u0-row', type:'button', on:{ click:function(){ if (l.id) selectLesson(l.id); go('lesson'); } } },
+        h('span', { class:'uo-k' }, k),
+        h('span', { class:'uo-t' }, h('b', {}, l.en), h('span', { html:(l.subEn ? '<bdi class="en">' + esc(l.subEn) + '</bdi> · ' : '') + arHTML(l.ar) })),
+        h('span', { class:pr.done === pr.total ? 'chip-done' : 'chip-now' }, pr.done === pr.total ? 'Done · مكتمل' : 'Now · الآن')));
+      return h('li', {}, h('div', { class:'uo-row u0-row' },
+        h('span', { class:'uo-k' }, k),
+        h('span', { class:'uo-t' }, h('b', {}, l.en), h('span', { html:(l.subEn ? '<bdi class="en">' + esc(l.subEn) + '</bdi> · ' : '') + arHTML(l.ar) })),
+        h('span', { class:'u-lock', html:IC.lock })));
+    })));
+}
+function vHome(){
+  return h('section', { class:'scr gut' }, header(),
+    h('h1', { class:'h1 bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Your Journey'), h('small', {}, 'رحلتك')),
+    journeyCard(),
+    quickToolsRow(),
+    stage4ToolsRow(),
+    foundationWeekBox(),
+    h('div', { class:'sec-h' },
+      h('h2', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Unit 1 Lessons'), h('small', {}, 'دروس الوحدة 1')),
+      h('button', { class:'link', type:'button', on:{ click:function(){ go('lessons'); } } }, 'See all · عرض الكل')),
+    h('div', { class:'lcards' }, D.unit1Lessons.slice(0, 3).map(lessonCard)));
+}
+function stage4ToolsRow(){
+  var ut = (S.unitTests && S.unitTests[1]) || {};
+  var utBadge = ut.best != null ? (Math.round(ut.best / 20 * 100) + '% · ' + (ut.status === 'mastered' ? 'Mastered' : ut.status === 'passed' ? 'Passed' : 'Retry')) : '20 Qs · 90% / 80%';
+  var cLogs = (S.camblyLogs || []).length;
+  var cBadge = cLogs ? (cLogs + ' session(s)') : '1st: Speaking Check';
+  return h('div', { class:'quick-grid' },
+    h('button', { class:'qtile', type:'button', on:{ click:openCambly } },
+      h('div', { class:'qtile-top' },
+        h('span', { class:'qtile-ic' }, ico('speaker')),
+        h('span', { class:'qtile-badge' }, cBadge)),
+      biNode('Cambly Card & Session Log', 'بطاقة كامبلي وسجل الجلسة')),
+    h('button', { class:'qtile', type:'button', on:{ click:function(){ openSession('unitTest:1'); } } },
+      h('div', { class:'qtile-top' },
+        h('span', { class:'qtile-ic' }, ico('trophy')),
+        h('span', { class:'qtile-badge' }, utBadge)),
+      biNode('Unit 1 Test & Legal Corner', 'اختبار الوحدة ١ والركن القانوني')));
+}
+
+/* ---------- lessons tab (with Unit Test 90%/80% & Pre-Tests for Units 5, 8, 9, 12) ---------- */
+function vLessons(){
+  var ut1 = (S.unitTests && S.unitTests[1]) || {};
+  return h('section', { class:'scr gut' },
+    h('div', { class:'pg-h' },
+      h('h1', { class:'h1 bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Course Lessons'), h('small', {}, 'الدروس')),
+      h('p', { class:'muted' }, biNode('From Early A2 to C1 & IELTS for Study and Work', 'من بداية A2 إلى C1 للدراسة والعمل'))),
+    h('div', { class:'stages' }, D.stages.map(function(s){ var on = s.status === 'current';
+      return h('div', { class:'stage' + (on ? ' on' : '') }, h('b', {}, s.code), h('span', {}, on ? 'Now · 12 Units · الآن' : (s.code === 'B1' ? 'Next · 20 Units · بعدها' : 'Academic & IELTS · أكاديمي'))); })),
+    h('div', { class:'sec-h' },
+      h('h2', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Stage A2 Units'), h('small', { html:'الأسبوع التأسيسي + وحدات المرحلة ' + arHTML('A2') })),
+      h('span', { class:'muted sm' }, '1 Unit / Week · وحدة كل أسبوع')),
+    foundationWeekBox(),
+    h('div', { class:'units' }, D.units.map(function(u){
+      if (u.open) return h('div', { class:'unit-open' },
+        h('div', { class:'uo-head' }, h('span', { class:'u-n' }, String(u.n)),
+          h('span', { class:'u-t' }, h('span', { class:'uo-en' }, u.en), h('b', { class:'u-ar' }, u.ar), h('span', { html:(u.gEn ? '<bdi class="en">' + esc(u.gEn) + '</bdi> · ' : '') + arHTML(u.g) }))),
+        h('ol', { class:'uo-list' }, D.unit1Lessons.map(function(l){
+          var k = l.test ? 'TEST' : ('L' + l.n);
+          var pr = lessonProgressOf(l.id);
+          if (l.open) return h('li', {}, h('button', { class:'uo-row', type:'button', on:{ click:function(){ if (l.id) selectLesson(l.id); go('lesson'); } } }, h('span', { class:'uo-k' }, k), h('span', { class:'uo-t' }, h('b', {}, l.en), h('span', { html:(l.subEn ? '<bdi class="en">' + esc(l.subEn) + '</bdi> · ' : '') + arHTML(l.ar) })), h('span', { class:'chip-now' }, pr.done === pr.total ? 'Done · مكتمل' : 'Now · الآن')));
+          if (l.test) {
+            var utChip = ut1.status === 'mastered' ? 'Mastered 90%+ · متقن' : ut1.status === 'passed' ? 'Passed 80%+ · عابر' : '90% Mastery / 80% Pass';
+            return h('li', {},
+              h('button', { class:'uo-row', type:'button', on:{ click:function(){ openSession('unitTest:1'); } } },
+                h('span', { class:'uo-k' }, k),
+                h('span', { class:'uo-t' }, h('b', {}, l.en), h('span', { html:(l.subEn ? '<bdi class="en">' + esc(l.subEn) + '</bdi> · ' : '') + arHTML(l.ar) + ' · الركن القانوني + ٢٠ سؤالًا' })),
+                h('span', { class:ut1.status ? 'chip-done' : 'chip-now' }, utChip)),
+              ut1.miniQuizDue ? h('button', { class:'btn sm out', type:'button', style:'margin:4px 10px 6px;width:calc(100% - 20px)', on:{ click:function(){ openSession('unitMini:1'); } } },
+                ico('review'), biBtn('Next-Week Mini Follow-Up Quiz (80–89% Errors)', 'الاختبار المصغر لأخطاء الوحدة (لرفع الإتقان إلى ٩٠٪)')) : null);
+          }
+          return h('li', {}, h('div', { class:'uo-row' }, h('span', { class:'uo-k' }, k), h('span', { class:'uo-t' }, h('b', {}, l.en), h('span', { html:(l.subEn ? '<bdi class="en">' + esc(l.subEn) + '</bdi> · ' : '') + arHTML(l.ar) })), h('span', { class:'u-lock', html:IC.lock })));
+        })));
+      var hasPre = !!(D.preTests && D.preTests[u.n]);
+      var preSt = (S.preTests && S.preTests[u.n]) || {};
+      if (!hasPre) {
+        return h('div', { class:'unit' }, h('span', { class:'u-n' }, String(u.n)),
+          h('span', { class:'u-t' }, h('b', {}, u.en), h('span', { class:'u-ar' }, u.ar), h('span', { html:(u.gEn ? '<bdi class="en">' + esc(u.gEn) + '</bdi> · ' : '') + arHTML(u.g) })),
+          h('span', { class:'u-lock', html:IC.lock, 'aria-label':'Soon · قريبًا' }));
+      }
+      return h('div', { class:'u-card-wrap unit' },
+        h('div', { class:'u-card-top', style:'width:100%' },
+          h('span', { class:'u-n' }, String(u.n)),
+          h('span', { class:'u-t' }, h('b', {}, u.en), h('span', { class:'u-ar' }, u.ar), h('span', { html:(u.gEn ? '<bdi class="en">' + esc(u.gEn) + '</bdi> · ' : '') + arHTML(u.g) })),
+          h('span', { class:'u-lock', html: preSt.exempt ? IC.check : IC.lock, 'aria-label':'Pre-Test available · متاح للاختبار القبلي' })),
+        h('div', { class:'u-card-foot', style:'width:100%' },
+          preSt.exempt
+            ? h('span', { class:'exempt-chip' }, 'Exempted (' + (preSt.best * 10) + '%) · معفى منها (٩٠٪+ · تعود في أسبوع التثبيت)')
+            : h('span', { class:'pre-chip' }, preSt.best != null ? ('Pre-Test Best: ' + (preSt.best * 10) + '% (Need 90% to skip)') : 'Pre-Test Available · تبدأ باختبار قبلي (٩٠٪ للإعفاء)'),
+          h('button', { class:'btn sm' + (preSt.exempt ? ' out' : ''), type:'button', on:{ click:function(){ openSession('pretest:' + u.n); } } },
+            biBtn(preSt.exempt ? 'Retake Pre-Test' : 'Pre-Test (90% Skip)', preSt.exempt ? 'إعادة الاختبار القبلي' : 'اختبار قبلي (٩٠٪ للإعفاء)'), ico('fwd'))));
+    })));
+}
+
+/* ---------- words tab (Lesson Phrases + 60 Irregular Verbs in Spaced Repetition) ---------- */
+var POS_AR = { noun:'اسم', verb:'فعل', adjective:'صفة', 'legal phrase':'عبارة قانونية' };
+function irrStatus(base){
+  var st = S.irrSr && S.irrSr[base];
+  if (!st || !st.box) return { st:'new', lbl:'New · جديد', due:true, days:0 };
+  var due = !st.nextAt || Date.now() >= st.nextAt;
+  var d = SR_DAYS[Math.min(SR_DAYS.length - 1, st.box - 1)];
+  return { st: st.box >= 3 ? 'k' : 'r', lbl: due ? ('Due · مستحق (+' + d + 'd)') : ('+' + d + 'd · بعد ' + d + ' يوم'), due:due, days:d, box:st.box };
+}
+function vWords(){
+  var tab = S.ui.wordsTab || 'vocab';
+  var switcher = h('div', { class:'seg', role:'tablist', 'aria-label':'Words View · عرض الكلمات' },
+    h('button', { class:'seg-b' + (tab === 'vocab' ? ' on' : ''), type:'button', role:'tab', 'aria-selected':tab === 'vocab' ? 'true' : 'false', on:{ click:function(){ S.ui.wordsTab = 'vocab'; saveLocal(); render(); } } },
+      h('span', { class:'en' }, 'Lesson Phrases (' + ALL_VOCAB.length + ')'),
+      h('small', {}, 'عبارات الدرس والعبارة القانونية')),
+    h('button', { class:'seg-b' + (tab === 'irregular' ? ' on' : ''), type:'button', role:'tab', 'aria-selected':tab === 'irregular' ? 'true' : 'false', on:{ click:function(){ S.ui.wordsTab = 'irregular'; saveLocal(); render(); } } },
+      h('span', { class:'en' }, 'Irregular Verbs (' + (D.irregularVerbs || []).length + ')'),
+      h('small', {}, 'الأفعال الشاذة · التكرار المتباعد')));
+
+  if (tab === 'irregular') {
+    var verbs = D.irregularVerbs || [];
+    var mastered = 0, learning = 0, dueCnt = 0;
+    verbs.forEach(function(v){
+      var s = irrStatus(v.base);
+      if (s.st === 'k') mastered++;
+      else if (s.st === 'r') learning++;
+      if (s.due) dueCnt++;
+    });
+    var curG = S.ui.irrGroup || 'all';
+    var filtered = curG === 'all' ? verbs : verbs.filter(function(v){ return v.g === curG; });
+    return h('section', { class:'scr gut' },
+      h('div', { class:'pg-h' },
+        h('h1', { class:'h1 bi-h' }, h('span', { class:'en', dir:'ltr' }, '60 Common Irregular Verbs'), h('small', {}, 'قائمة الـ 60 فعلًا شاذًا في التكرار المتباعد')),
+        h('p', { class:'muted' }, biNode('Grouped by sound pattern (+1d → +3d → +7d → +30d spaced schedule).', 'مقسّمة بالأنماط الصوتية لتثبيت التصريف الثاني والثالث بالتكرار المتباعد.'))),
+      switcher,
+      h('div', { class:'wsum' },
+        h('div', { class:'wstat' }, h('b', {}, String(mastered)), h('span', {}, 'Mastered · متقنة')),
+        h('div', { class:'wstat' }, h('b', {}, String(learning)), h('span', {}, 'In Spaced Rep · بالتثبيت')),
+        h('div', { class:'wstat' }, h('b', {}, String(dueCnt)), h('span', {}, 'Due Now · مستحقة'))),
+      h('button', { class:'btn', type:'button', on:{ click:function(){ openSession('irregular'); } } },
+        ico('pen'), biBtn('Practice Irregular Verbs (Type from Memory)', 'تدرّب على الأفعال الشاذة كتابةً من الذاكرة')),
+      h('div', { class:'pills' }, (D.irregularGroups || []).map(function(g){
+        return h('button', { class:'pill-b' + (curG === g.k ? ' on' : ''), type:'button', on:{ click:function(){ S.ui.irrGroup = g.k; saveLocal(); render(); } } }, g.en + ' · ' + g.ar);
+      })),
+      h('div', { class:'wlist' }, filtered.map(function(v){
+        var st = irrStatus(v.base);
+        return h('details', { class:'wrow' },
+          h('summary', {},
+            h('span', { class:'w-st' + (st.st !== 'new' ? ' ' + st.st : ''), 'aria-hidden':'true' }),
+            h('span', { class:'w-en' },
+              h('b', {}, v.base + ' → ' + v.past + ' → ' + v.pp),
+              h('span', {}, v.ar + ' · ' + st.lbl)),
+            oxBtn(v.base),
+            sayBtn(v.base, 'Human Pronunciation · نطق بشري ' + v.base)),
+          h('div', { class:'w-more' },
+            h('div', { class:'irr-forms' },
+              h('div', { class:'irr-f' }, h('small', {}, 'Base · المضارع'), h('b', {}, v.base)),
+              h('div', { class:'irr-f' }, h('small', {}, 'Past · الماضي'), h('b', {}, v.past)),
+              h('div', { class:'irr-f' }, h('small', {}, 'Participle · الثالث'), h('b', {}, v.pp))),
+            h('p', { class:'muted sm' }, 'Spaced Repetition interval · مرحلة التكرار المتباعد: ' + st.lbl)));
+      })));
+  }
+
+  var k = 0, r = 0;
+  ALL_VOCAB.forEach(function(v){ if (S.cards[v.en] === 'k') k++; else if (S.cards[v.en] === 'r') r++; });
+  var n = ALL_VOCAB.length - k - r;
+  return h('section', { class:'scr gut' },
+    h('div', { class:'pg-h' },
+      h('h1', { class:'h1 bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Vocabulary & Legal Phrases'), h('small', {}, 'الكلمات والعبارات القانونية')),
+      h('p', { class:'muted' }, D.vocab.length + ' lesson words + 1 legal phrase · ' + D.vocab.length + ' كلمة + عبارة قانونية')),
+    switcher,
+    h('div', { class:'wsum' },
+      h('div', { class:'wstat' }, h('b', {}, String(k)), h('span', {}, 'Known · أعرفها')),
+      h('div', { class:'wstat' }, h('b', {}, String(r)), h('span', {}, 'Review · للمراجعة')),
+      h('div', { class:'wstat' }, h('b', {}, String(n)), h('span', {}, 'New · جديدة'))),
+    h('button', { class:'btn', type:'button', on:{ click:function(){ openSession('cards'); } } }, ico('cards'),
+      r ? biBtn('Review Hard Words (' + r + ')', 'راجع الكلمات الصعبة (' + r + ')') : biBtn('Review Flashcards', 'راجع البطاقات')),
+    h('div', { class:'wlist' }, ALL_VOCAB.map(function(v){ var st = S.cards[v.en];
+      return h('details', { class:'wrow' },
+        h('summary', {}, h('span', { class:'w-st' + (st ? ' ' + st : ''), 'aria-hidden':'true' }),
+          h('span', { class:'w-en' },
+            h('b', {}, v.en),
+            h('span', {}, (v.isLegal ? 'Legal Phrase · عبارة قانونية: ' : (v.pos + ' · ')) + v.ar + (!v.isLegal && POS_AR[v.pos] ? ' (' + POS_AR[v.pos] + ')' : ''))),
+          oxBtn(v),
+          sayBtn(v, 'Human Pronunciation · نطق بشري ' + v.en)),
+        h('div', { class:'w-more' },
+          v.isLegal ? h('span', { class:'legal-badge' }, 'Legal Track · المسار القانوني') : null,
+          h('p', { class:'w-ex' }, v.ex),
+          h('p', {}, v.exAr),
+          v.tipEn ? h('p', { class:'w-tip-en' }, v.tipEn) : null,
+          arReveal(v.tip, false)));
+    })),
+    h('button', { class:'link', type:'button', style:'align-self:center;color:var(--dark);font-weight:700', on:{ click:openCredits } }, 'Wikimedia Commons Audio Credits · أصحاب التسجيلات الصوتية'));
+}
+
+/* ---------- review tab: Error Lab (مختبر الأخطاء) + Spaced Retention + Mistake Notebook ---------- */
+function sortedErrorLabCats(){
+  var cats = (D.errorLabCatalog || []).slice();
+  return cats.sort(function(a, b){
+    var sa = S.errorLab[a.key] || { count:0, solved:0 };
+    var sb = S.errorLab[b.key] || { count:0, solved:0 };
+    return ((sb.count || 0) - (sb.solved || 0)) - ((sa.count || 0) - (sa.solved || 0));
+  });
+}
+function vReview(){
+  var list = mistakeIds();
+  var cats = sortedErrorLabCats();
+  var activePatterns = cats.filter(function(c){ var st = S.errorLab[c.key]; return st && (st.count || 0) > (st.solved || 0); }).length;
+
+  var headLab = h('div', { class:'pg-h' },
+    h('h1', { class:'h1 bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Error Lab & Spaced Review'), h('small', {}, 'مختبر الأخطاء والتكرار المتباعد')),
+    h('p', { class:'muted' }, biNode('Seeded with your diagnostic patterns and sorted by frequency. Top patterns feed your weekly Cambly card.', 'مزروع بأنماط الاختبار التشخيصي ومرتّب حسب التكرار، ومنه تُؤخذ أخطاء الأسبوع لبطاقة كامبلي.')));
+
+  var labHero = h('div', { class:'rv-hero', id:'elabHero' },
+    h('div', {},
+      h('span', { class:'rv-n' }, String(activePatterns || cats.length)),
+      h('span', { class:'rv-l' }, 'Priority Error Patterns · أنماط أخطاء في المختبر')),
+    h('button', { class:'btn light sm', type:'button', on:{ click:function(){ openSession('errlab'); } } }, biBtn('Practice Lab', 'تدرّب في المختبر'), ico('fwd')));
+
+  var catCards = h('div', { class:'elab-list' }, cats.map(function(cat){
+    var st = S.errorLab[cat.key] || { count:cat.seedCount || 1, solved:0, box:0, fromDiag:true };
+    var net = Math.max(0, (st.count || 0) - (st.solved || 0));
+    var srDay = st.box > 0 ? SR_DAYS[Math.min(SR_DAYS.length - 1, st.box - 1)] : 1;
+    return h('div', { class:'elab-card' },
+      h('div', { class:'elab-top' },
+        biNode(cat.en, cat.ar),
+        h('div', { class:'elab-badges' },
+          st.fromDiag ? h('span', { class:'p-chip sr' }, 'Diagnostic · تشخيصي') : null,
+          net > 0
+            ? h('span', { class:'p-chip' }, 'Repeated ' + st.count + 'x · تكرر ' + st.count)
+            : h('span', { class:'p-chip ok' }, 'Practiced · متقن (+' + srDay + 'd)'))),
+      h('div', { class:'elab-ex' },
+        h('span', { class:'no' }, st.lastSample || cat.wrongEx),
+        h('span', { class:'yes' }, cat.rightEx)),
+      h('p', { class:'elab-rule' }, cat.ruleEn),
+      h('div', { class:'elab-foot' },
+        arReveal(cat.ruleAr, false),
+        h('button', { class:'btn sm', type:'button', on:{ click:function(){ openSession('errlab:' + cat.key); } } },
+          biBtn('New Drill', 'تمرين جديد'), ico('fwd'))));
+  }));
+
+  var nbSecHead = h('div', { class:'sec-h' },
+    h('h2', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Lesson Mistake Notebook'), h('small', {}, 'دفتر أسئلة الدروس (يخرج بعد إجابتين متتاليتين)')));
+
+  var nbBlock = !list.length
+    ? h('div', { class:'empty' }, penguin(70, 99),
+        h('h2', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Notebook is Empty'), h('small', {}, 'الدفتر فارغ')),
+        h('p', {}, biNode('Any question you miss in a lesson will show up here for practice.', 'كل سؤال تخطئ فيه في الدرس يظهر هنا للمراجعة.')),
+        h('button', { class:'btn sm', type:'button', on:{ click:function(){ go('lesson'); } } }, biBtn('Go to Lesson', 'إلى الدرس')))
+    : [
+        h('div', { class:'rv-hero', id:'nbHero' },
+          h('div', {}, h('span', { class:'rv-n' }, String(list.length)), h('span', { class:'rv-l' }, 'In Mistake Notebook · في دفتر الأخطاء')),
+          h('button', { class:'btn light sm', type:'button', on:{ click:function(){ openSession('review'); } } }, biBtn('Start Review', 'ابدأ المراجعة'), ico('fwd'))),
+        h('div', { class:'rv-list' }, list.map(function(id){ var it = ITEMS[id], m = S.mistakes[id];
+          return h('div', { class:'rv-row' },
+            h('div', { class:'rv-q' }, h('span', {}, (it.secEn || it.sec) + ' · ' + it.sec + ' — ' + it.group), h('p', {}, itemText(it))),
+            h('span', { class:'streak', 'aria-label':'Streak: ' + (m.s || 0) + ' of 2 · صحيحة متتالية: ' + (m.s || 0) + ' من 2' }, h('i', { class:(m.s || 0) >= 1 ? 'on' : '' }), h('i', {}))); }))
+      ];
+
+  return h('section', { class:'scr gut' }, headLab, quickToolsRow(),
+    labHero, catCards,
+    nbSecHead, nbBlock);
+}
+
+/* ---------- lesson detail ---------- */
+function vLesson(){ var pr = lessonProgress(), cur = pr.next;
+  var arcs = '<svg class="hero-arcs" viewBox="0 0 350 268" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M-10 64 C 90 34, 210 30, 360 52" fill="none" stroke="#2C4A6E" stroke-width="2.5" vector-effect="non-scaling-stroke"/><circle cx="60" cy="340" r="205" fill="none" stroke="#2C4A6E" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>';
+  var fillPct = Math.max(0, Math.min(PARTS.length - 1, pr.done)) * 16.8;
+  return h('section', { class:'ld' },
+    h('div', { class:'gut' },
+      h('div', { class:'ld-top' },
+        h('button', { class:'ib light', type:'button', 'aria-label':'Back · رجوع', on:{ click:function(){ go('home'); } } }, ico('back')),
+        h('button', { class:'ib light', type:'button', 'aria-label':'About Lesson · عن الدرس', on:{ click:openAbout } }, ico('dots'))),
+      h('div', { class:'hero' }, h('span', { html:arcs }),
+        h('div', { class:'hero-stats' },
+          h('span', {}, h('b', {}, String(ALL_VOCAB.length)), ' phrases · عبارة'),
+          h('span', {}, h('b', {}, String(PARTS.length)), ' stages · مراحل'),
+          h('span', {}, h('b', {}, '60'), ' min · دقيقة')),
+        penguin(128, 181, 'hero-peng'),
+        h('h1', { class:'hero-title' }, D.en || 'Hello from Antarctica'),
+        h('button', { class:'ib say', type:'button', 'aria-label':'Listen to human pronunciation · استمع للنطق البشري', on:{ click:function(){ AUDIO.play(D.vocab[0]); } } }, h('span', { class:'ico', html:IC.play }))),
+      h('div', { class:'ld-desc' },
+        h('h2', { class:'bi-h' }, h('span', { class:'en', dir:'ltr', style:'color:#fff' }, D.subEn || 'Present Simple vs. Present Continuous'), h('small', { style:'color:var(--honey)' }, D.ar || 'المضارع البسيط والمضارع المستمر')),
+        D.descEn ? h('p', { class:'ld-en' }, D.descEn) : null,
+        h('p', {}, D.descAr || 'نتعلم الفرق بين ما يحدث عادةً وما يحدث الآن، من إيميل عالِمة سعودية في القارة القطبية الجنوبية.'))),
+    h('div', { class:'ld-sheet gut' },
+      h('div', { class:'sec-h' },
+        h('h2', { class:'bi-h', style:'font-size:16.5px' }, h('span', { class:'en', dir:'ltr' }, '6 Lesson Stages'), h('small', {}, 'مراحل الدرس الست')),
+        h('span', { class:'muted sm' }, h('bdi', { class:'en', dir:'ltr' }, pr.done + ' of ' + pr.total), ' · ' + pr.done + ' من ' + pr.total)),
+      h('div', { class:'parts' }, h('span', { class:'parts-line', 'aria-hidden':'true' }), h('span', { class:'parts-fill', 'aria-hidden':'true', style:'width:' + fillPct + '%' }),
+        h('ol', {}, PARTS.map(function(p){ var done = !!S.stamps[p.k], isCur = cur && cur.k === p.k;
+          return h('li', {}, h('button', { class:'pstep' + (done ? ' done' : '') + (isCur ? ' cur' : ''), type:'button', 'aria-label':p.fullEn + ' · ' + p.fullAr + (done ? '، مكتمل' : isCur ? '، المرحلة الحالية' : ''), on:{ click:function(){ openPart(p.k); } } },
+            h('span', { class:'pstep-c' }, done ? ico('check') : partIcon(p)),
+            h('span', { class:'pstep-en' }, p.en),
+            h('span', { class:'pstep-ar' }, p.ar))); }))),
+      h('div', { class:'infos' },
+        h('div', { class:'info' }, h('span', { class:'ib' }, ico('clock')), h('span', { class:'info-t' }, h('b', {}, pr.mins ? pr.mins + ' min · ' + pr.mins + ' دقيقة' : 'Done · مكتمل'), h('small', {}, pr.mins ? 'Remaining · متبقية' : 'All 6 stages · كل المراحل'))),
+        h('div', { class:'info' }, h('span', { class:'ib' }, ico('cards')), h('span', { class:'info-t' }, h('b', {}, D.vocab.length + ' + 1 legal'), h('small', {}, 'Words & legal phrase · مفردات وعبارة قانونية')))),
+      h('button', { class:'btn', type:'button', on:{ click:function(){ openPart(cur ? cur.k : 'recall'); } } },
+        cur ? (pr.done ? biBtn('Continue: ' + cur.fullEn, 'متابعة: ' + cur.fullAr) : biBtn('Start Lesson', 'ابدأ الدرس')) : biBtn('Review from Start', 'راجع الدرس من البداية'),
+        ico('fwd'))));
+}
+
+/* ---------- reading markup ---------- */
+function parseMarkup(s){ return s
+  .replace(/<<([sct]):(.+?)>>/g, function(_, k, t){ return '<span class="p' + k + '">' + t + '</span>'; })
+  .replace(/\{([^}|]+)(?:\|([^}]+))?\}/g, function(_, t, k){ return '<span class="w core" role="button" tabindex="0" data-k="' + esc((k || t).toLowerCase()) + '">' + t + '</span>'; })
+  .replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, function(_, t, ar){ return '<span class="w gl" role="button" tabindex="0" data-en="' + esc(t) + '" data-ar="' + esc(ar) + '">' + t + '</span>'; }); }
+function stripMarkup(s){ return s
+  .replace(/<<[sct]:(.+?)>>/g, '$1')
+  .replace(/\{([^}|]+)(?:\|[^}]+)?\}/g, '$1')
+  .replace(/\[\[([^\]|]+)\|[^\]]+\]\]/g, '$1'); }
+function emailBody(plain){
+  return h('div', { class:'mail-body' + (plain ? ' mail-plain' : ''), dir:'ltr', html:D.reading.paras.map(function(p){ return '<p>' + (plain ? stripMarkup(p) : parseMarkup(p)) + '</p>'; }).join('') });
+}
+var dictT;
+function showWord(el){ var en, ar, tag = '', v = null;
+  if (el.classList.contains('core')) { v = ALL_VOCAB.filter(function(x){ return x.en === el.getAttribute('data-k'); })[0]; en = v ? v.en : el.textContent; ar = v ? v.ar : ''; tag = v ? ('Lesson word · من كلمات الدرس · ' + (POS_AR[v.pos] || v.pos)) : ''; }
+  else { en = el.getAttribute('data-en') || el.textContent; ar = el.getAttribute('data-ar') || ''; }
+  $('#dEn').textContent = en; $('#dAr').textContent = ar; $('#dTag').textContent = tag; $('#dTag').hidden = !tag;
+  var dOx = $('#dOx'); if (dOx) dOx.href = oxUrl(v || en);
+  $('#dSay').onclick = function(){ AUDIO.play(v || en); };
+  $$('.w.on').forEach(function(x){ x.classList.remove('on'); }); el.classList.add('on');
+  $('#dict').hidden = false; clearTimeout(dictT); dictT = setTimeout(hideDict, 7000); }
+function hideDict(){ var d = $('#dict'); if (d) d.hidden = true; $$('.w.on').forEach(function(x){ x.classList.remove('on'); }); }
+
+/* ---------- player (6 Stages) ---------- */
+function stepsFor(k){
+  function items(ids){ return (ids || []).map(function(id){ return { t:'item', id:id }; }); }
+  if (k === 'recall') return [{ t:'intro', k:k }].concat(items(IDS.rc), [{ t:'done', k:k }]);
+  if (k === 'vocab') return [{ t:'intro', k:k }].concat(ALL_VOCAB.map(function(_, i){ return { t:'flash', i:i }; }), [{ t:'match' }], items(IDS.vg), [{ t:'done', k:k }]);
+  if (k === 'grammar') return [{ t:'intro', k:k }].concat(GCARDS.map(function(_, i){ return { t:'explain', i:i }; }), items(IDS.gA), items(IDS.gB), items(IDS.gC), items(IDS.gD), [{ t:'done', k:k }]);
+  if (k === 'reading') {
+    if (D.listening && !D.reading) {
+      return [{ t:'intro', k:k }, { t:'listen1' }].concat(items(IDS.lq), [{ t:'listen3' }, { t:'done', k:k }]);
+    }
+    return [{ t:'intro', k:k }, { t:'predict' }, { t:'read1' }, { t:'reveal' }, { t:'email' }].concat(items(IDS.rq), [{ t:'done', k:k }]);
+  }
+  if (k === 'writing') return [{ t:'intro', k:k }, { t:'writing' }, { t:'done', k:k }];
+  if (k === 'quiz') { var a = [{ t:'quizIntro' }]; for (var i = 0; i < D.quiz.length; i++) a.push({ t:'quizQ', n:i }); a.push({ t:'quizResult' }); return a; }
+  if (k === 'review') return mistakeIds().map(function(id){ return { t:'item', id:id, review:true }; }).concat([{ t:'sessionDone', k:'review' }]);
+  if (k === 'cards') { var r = ALL_VOCAB.map(function(v, i){ return S.cards[v.en] === 'r' ? i : -1; }).filter(function(i){ return i >= 0; });
+    var idx = r.length ? r : ALL_VOCAB.map(function(_, i){ return i; });
+    return idx.map(function(i){ return { t:'flash', i:i, session:true }; }).concat([{ t:'sessionDone', k:'cards' }]); }
+  if (k === 'express') {
+    var expSteps = [{ t:'expressIntro' }];
+    (IDS.rc || []).slice(0, 3).forEach(function(id){ expSteps.push({ t:'item', id:id, review:true }); });
+    [0, 1, ALL_VOCAB.length - 1].forEach(function(i){ if (ALL_VOCAB[i]) expSteps.push({ t:'flash', i:i, session:true }); });
+    var topCats = sortedErrorLabCats().slice(0, 2);
+    topCats.forEach(function(c){ expSteps.push({ t:'errDrill', catKey:c.key, dIdx:0 }); });
+    expSteps.push({ t:'sessionDone', k:'express' });
+    return expSteps;
+  }
+  if (k === 'irregular') {
+    var verbs = (D.irregularVerbs || []).slice();
+    var dueV = verbs.filter(function(v){ return irrStatus(v.base).due; });
+    var pickV = (dueV.length ? dueV : verbs).slice(0, 6);
+    return pickV.map(function(v, idx){ return { t:'irrDrill', base:v.base, pos:idx + 1, total:pickV.length }; }).concat([{ t:'sessionDone', k:'irregular' }]);
+  }
+  if (k === 'errlab' || (typeof k === 'string' && k.indexOf('errlab:') === 0)) {
+    var targetKey = k.indexOf('errlab:') === 0 ? k.slice(7) : null;
+    var poolCats = targetKey ? (D.errorLabCatalog || []).filter(function(c){ return c.key === targetKey; }) : sortedErrorLabCats().slice(0, 4);
+    var drills = [];
+    poolCats.forEach(function(c){
+      (c.drills || []).forEach(function(_, di){ drills.push({ t:'errDrill', catKey:c.key, dIdx:di }); });
+    });
+    return drills.concat([{ t:'sessionDone', k:'errlab' }]);
+  }
+  if (typeof k === 'string' && k.indexOf('unitTest:') === 0) {
+    var uId = Number(k.slice(9)) || 1;
+    var utObj = (D.unitTests && D.unitTests[uId]) || D.unitTests[1];
+    UT_STATE = { unit:uId, ans:{}, applied:(S.unitTests[uId] && S.unitTests[uId].appliedText) || '' };
+    var uSteps = [{ t:'unitLegal', unit:uId }];
+    utObj.questions.forEach(function(_, qi){ uSteps.push({ t:'unitTestQ', unit:uId, qIdx:qi }); });
+    uSteps.push({ t:'unitApplied', unit:uId });
+    uSteps.push({ t:'unitTestResult', unit:uId });
+    return uSteps;
+  }
+  if (typeof k === 'string' && k.indexOf('unitMini:') === 0) {
+    var mUnit = Number(k.slice(9)) || 1;
+    var utData = (D.unitTests && D.unitTests[mUnit]) || D.unitTests[1];
+    var savedUt = (S.unitTests && S.unitTests[mUnit]) || {};
+    var idxs = (savedUt.missedIdxs && savedUt.missedIdxs.length) ? savedUt.missedIdxs : [0, 2, 5, 7];
+    MINI_STATE = { unit:mUnit, idxs:idxs, ans:{} };
+    return idxs.map(function(qi, pos){ return { t:'unitMiniQ', unit:mUnit, qIdx:qi, pos:pos + 1, total:idxs.length }; }).concat([{ t:'unitMiniResult', unit:mUnit }]);
+  }
+  if (typeof k === 'string' && k.indexOf('pretest:') === 0) {
+    var pUnit = Number(k.slice(8)) || 5;
+    var ptObj = D.preTests && D.preTests[pUnit];
+    if (!ptObj) return [];
+    PT_STATE = { unit:pUnit, ans:{} };
+    var pSteps = [{ t:'preTestIntro', unit:pUnit }];
+    ptObj.items.forEach(function(_, pi){ pSteps.push({ t:'preTestQ', unit:pUnit, qIdx:pi }); });
+    pSteps.push({ t:'preTestResult', unit:pUnit });
+    return pSteps;
+  }
+  return [];
+}
+function openPart(k){ clearReadTimer(); M = null; M_POOL = null; var steps = stepsFor(k), i = 0, saved = S.ui.step[k];
+  if (typeof saved === 'number' && saved > 0 && saved < steps.length) i = saved;
+  if (S.stamps[k] && steps[i] && steps[i].t === 'done') i = 0;
+  if (k === 'quiz') { Q = null; i = 0; }
+  P = { part:k, steps:steps, i:i }; S.ui.part = k; S.ui.view = 'player'; saveLocal(); render(); try { window.scrollTo(0, 0); } catch (e) {} }
+function openSession(k){ clearReadTimer(); var steps = stepsFor(k); if (steps.length < 2) { toast(k === 'review' ? 'Notebook is empty · الدفتر فارغ' : 'No cards · لا توجد بطاقات'); return; }
+  P = { part:k, steps:steps, i:0, session:true }; S.ui.part = k; S.ui.view = 'player'; saveLocal(); render(); try { window.scrollTo(0, 0); } catch (e) {} }
+function closePlayer(){ clearReadTimer(); var sess = P && P.session, k = String((P && P.part) || ''); P = null; S.ui.part = null;
+  if (!sess) { go('lesson'); return; }
+  if (k === 'express') { go('home'); return; }
+  if (k === 'review' || k === 'errlab' || k.indexOf('errlab:') === 0) { go('review'); return; }
+  if (k.indexOf('unitTest:') === 0 || k.indexOf('unitMini:') === 0 || k.indexOf('pretest:') === 0) { go('lessons'); return; }
+  go('words');
+}
+function goStep(i){ clearReadTimer(); if (!P) return; P.i = Math.max(0, Math.min(P.steps.length - 1, i)); if (!P.session) { S.ui.step[P.part] = P.i; saveLocal(); } render(); try { window.scrollTo(0, 0); } catch (e) {} }
+function nextStep(){ if (!P) return; if (P.i >= P.steps.length - 1) { closePlayer(); return; } goStep(P.i + 1); }
+function prevStep(){ if (P && P.i > 0) goStep(P.i - 1); }
+
+var EN_LABELS = {
+  'التالي': 'Next',
+  'تحقق': 'Check',
+  'ابدأ': 'Start',
+  'راجع المرحلة': 'Review Stage',
+  'راجع الجزء': 'Review Stage',
+  'إلى التمارين': 'To Exercises',
+  'القراءة الأولى': 'First Reading (Main Idea)',
+  'أنهيت القراءة الأولى': 'Finished First Reading',
+  'القراءة الثانية': 'Second Reading (Details)',
+  'قرأت الإيميل': 'To Comprehension Questions',
+  'إلى الأسئلة': 'To Questions',
+  'ابدأ الاختبار': 'Start Quiz',
+  'أعد الاختبار': 'Retake Quiz',
+  'النتيجة وتحليل الأخطاء': 'Score & Error Analysis',
+  'النتيجة': 'See Score',
+  'السؤال التالي': 'Next Question',
+  'التالي: الكتابة': 'Next: Writing',
+  'التالي: الاختبار': 'Next: Short Quiz',
+  'إنهاء المهمة': 'Finish Writing Stage',
+  'رجوع للدرس': 'Back to Lesson',
+  'رجوع للمراجعة': 'Back to Review',
+  'رجوع للكلمات': 'Back to Words'
+};
+function formatCtaLabel(label){
+  if (typeof label !== 'string') return label;
+  if (EN_LABELS[label]) return biBtn(EN_LABELS[label], label);
+  if (label.indexOf('التالي: ') === 0) {
+    var arPart = label.slice('التالي: '.length);
+    var p = PARTS.filter(function(x){ return x.ar === arPart || x.fullAr === arPart; })[0];
+    return biBtn('Next: ' + (p ? p.fullEn : arPart), label);
+  }
+  return label;
+}
+
+function vPlayer(){
+  if (!P) { var k = S.ui.part; if (!k || ['recall','vocab','grammar','reading','writing','quiz'].indexOf(k) < 0) { S.ui.view = 'lesson'; return vLesson(); }
+    var steps = stepsFor(k), i = S.ui.step[k] || 0; if (k === 'quiz') i = 0; P = { part:k, steps:steps, i:Math.min(i, steps.length - 1) }; }
+  var st = P.steps[P.i], N = P.steps.length;
+  var cta = h('button', { class:'btn', type:'button' }, formatCtaLabel('التالي'), ico('fwd'));
+  var ctl = {
+    cta:cta,
+    set:function(label, enabled, fn){ put(cta, formatCtaLabel(label), ico('fwd')); cta.disabled = !enabled; cta.onclick = fn || nextStep; cta.hidden = false; },
+    enable:function(label){ ctl.set(label || 'التالي', true, nextStep); },
+    hide:function(){ cta.hidden = true; }
+  };
+  ctl.set('التالي', true, nextStep);
+  var foot = h('div', { class:'pl-foot gut' });
+  var backBtn = h('button', { class:'ib back', type:'button', 'aria-label':'Previous step · الخطوة السابقة', on:{ click:prevStep } }, ico('back'));
+  var body = renderStep(st, ctl, foot);
+  if (P.i > 0 && st.t !== 'done' && st.t !== 'sessionDone' && st.t !== 'quizResult' && !(P.part === 'quiz' && st.t === 'quizQ')) foot.prepend(backBtn);
+  foot.append(cta);
+  return h('section', { class:'pl' },
+    h('div', { class:'pl-top gut' },
+      h('button', { class:'ib', type:'button', 'aria-label':'Close · إغلاق', on:{ click:closePlayer } }, ico('x')),
+      h('div', { class:'pbar', 'aria-hidden':'true' }, h('span', { style:'width:' + Math.round((P.i + 1) / N * 100) + '%' })),
+      h('span', { class:'pcount' }, (P.i + 1) + '/' + N)),
+    h('div', { class:'pl-body gut' }, body), foot);
+}
+function renderStep(st, ctl, foot){
+  switch (st.t) {
+    case 'intro': return stIntro(st.k, ctl);
+    case 'flash': return stFlash(st, ctl, foot);
+    case 'match': return stMatch(ctl);
+    case 'item': return stItem(st, ctl);
+    case 'explain': return stExplain(st.i, ctl);
+    case 'predict': return stPredict(ctl);
+    case 'read1': return stRead1(ctl);
+    case 'email': return stEmail(ctl);
+    case 'reveal': return stReveal(ctl);
+    case 'listen1': return stListen1(ctl);
+    case 'listen3': return stListen3(ctl);
+    case 'quizIntro': return stQuizIntro(ctl);
+    case 'quizQ': return stQuizQ(st.n, ctl);
+    case 'quizResult': return stQuizResult(ctl);
+    case 'writing': return stWriting(ctl);
+    case 'expressIntro': return stExpressIntro(ctl);
+    case 'irrDrill': return stIrrDrill(st, ctl);
+    case 'errDrill': return stErrDrill(st, ctl);
+    case 'unitLegal': return stUnitLegal(st, ctl);
+    case 'unitTestQ': return stUnitTestQ(st, ctl);
+    case 'unitApplied': return stUnitApplied(st, ctl);
+    case 'unitTestResult': return stUnitTestResult(st, ctl);
+    case 'unitMiniQ': return stUnitMiniQ(st, ctl);
+    case 'unitMiniResult': return stUnitMiniResult(st, ctl);
+    case 'preTestIntro': return stPreTestIntro(st, ctl);
+    case 'preTestQ': return stPreTestQ(st, ctl);
+    case 'preTestResult': return stPreTestResult(st, ctl);
+    case 'done': return stDone(st.k, ctl);
+    case 'sessionDone': return stSessionDone(st.k, ctl);
+  }
+  return h('p', {}, '');
+}
+function label(enText, arText, extra){
+  if (arguments.length === 2 && (arText == null || typeof arText === 'object')) {
+    extra = arText; arText = null;
+  }
+  return h('p', { class:'st-lbl' },
+    arText ? biNode(enText, arText) : h('span', { html:arHTML(enText) }),
+    extra || null);
+}
+
+function stIntro(k, ctl){ var p = partOf(k), info = (D.intro && D.intro[k]) || {}, n = PARTS.indexOf(p) + 1;
+  ctl.enable(S.stamps[k] ? 'راجع المرحلة' : 'ابدأ');
+  return h('div', { class:'intro' },
+    h('span', { class:'intro-ic' }, partIcon(p)),
+    label('Stage ' + n + ' of ' + PARTS.length + ' · ~' + p.min + ' min', 'المرحلة ' + n + ' من ' + PARTS.length + ' · نحو ' + p.min + ' دقائق'),
+    h('h1', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, p.fullEn), h('small', {}, p.fullAr)),
+    info.dEn ? h('p', { class:'en-p' }, info.dEn) : null,
+    h('p', {}, info.d || ''),
+    h('ul', {}, (info.items || []).map(function(x){
+      return h('li', {}, ico(x[0]), x[2] ? biNode(x[1], x[2]) : h('span', { html:arHTML(x[1]) }));
+    })));
+}
+
+/* ---------- Stage 1: Active Recall (Keyboard Recall + Spelling) ---------- */
+function editDistance(a, b){
+  a = String(a || ''); b = String(b || '');
+  var m = a.length, n = b.length, dp = [], i, j;
+  for (i = 0; i <= m; i++) { dp[i] = [i]; }
+  for (j = 0; j <= n; j++) { dp[0][j] = j; }
+  for (i = 1; i <= m; i++) {
+    for (j = 1; j <= n; j++) {
+      dp[i][j] = a[i - 1] === b[j - 1] ? dp[i - 1][j - 1] : 1 + Math.min(dp[i - 1][j - 1], dp[i][j - 1], dp[i - 1][j]);
+    }
+  }
+  return dp[m][n];
+}
+function RecallTyping(x, o, ctl){
+  o = o || {};
+  var targetWord = x.ans[0];
+  var inp = h('input', { class:'gap-in', type:'text', dir:'ltr', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', enterkeyhint:'done', placeholder:'Type here…', 'aria-label':'Type from memory · اكتب الكلمة من ذاكرتك' });
+  var pre = x.sentPre != null ? x.sentPre + ' ' : (x.cueEn || '___').split('___')[0];
+  var post = x.sentPost != null ? (/^[.!?,]/.test(x.sentPost) ? x.sentPost : ' ' + x.sentPost) : ((x.cueEn || '___').split('___')[1] || '');
+  var sent = h('p', { class:'q-en sm', dir:'ltr' }, pre, inp, post);
+  var cueEn = x.promptEn ? h('p', { class:'en', dir:'ltr', style:'font-size:14.5px;color:var(--on-dark-2);margin-bottom:4px;text-align:left' }, x.promptEn + (x.hint ? ' · [' + x.hint + ']' : '')) : null;
+  var cueAr = h('p', { class:'q-ar', style:'margin-bottom:8px;color:var(--honey)' }, 'المعنى المطلوب: ' + (x.promptAr || x.cueAr || ''));
+  var card = qCard(h('div', {}, cueEn, cueAr, sent), { tag: (x.isLegal || x.id === 'rc-4') ? 'Legal Phrase · عبارة قانونية' : 'Active Recall · استرجاع وإملاء' });
+  var fb = h('div', { hidden:true }), done = false;
+  function check(){
+    if (done) return;
+    var v = inp.value.trim();
+    if (!v) { inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); inp.focus(); return; }
+    var nv = norm(v);
+    var exact = x.ans.some(function(a){ return norm(a) === nv; });
+    var closeSpell = !exact && x.ans.some(function(a){ var d = editDistance(norm(a), nv); return d > 0 && d <= 2; });
+    show(v, exact, closeSpell);
+    if (o.onAnswer) o.onAnswer(exact, v);
+  }
+  function show(v, exact, closeSpell){
+    done = true; inp.value = v; inp.disabled = true; inp.classList.add(exact ? 'ok' : 'bad');
+    fb.hidden = false;
+    var whyEn = closeSpell ? ('Close! You recalled the word, but check the spelling: "' + targetWord + '". ' + (x.spellNoteEn || '')) : (x.spellNoteEn || 'Spelling pattern checked.');
+    var whyAr = closeSpell ? ('تذكّرت الكلمة بشكل قريب، لكن انتبه للإملاء الصحيح: ' + targetWord + '. ' + (x.spellNote || '')) : (x.spellNote || '');
+    var cardNode = fbCard(exact, whyAr, null, exact ? null : ['Correct spelling · الإملاء الصحيح', targetWord], whyEn);
+    var tools = h('div', { class:'audio-row' },
+      sayBtn(targetWord, 'Human Pronunciation · نطق بشري'),
+      oxBtn(targetWord),
+      h('span', { class:'repeat-pill' }, 'Listen & repeat · استمع وردّد'));
+    cardNode.querySelector('.fb-t').append(tools);
+    put(fb, cardNode);
+  }
+  inp.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); check(); } });
+  if (o.saved && typeof o.saved.v === 'string') {
+    var nv0 = norm(o.saved.v);
+    var ex0 = x.ans.some(function(a){ return norm(a) === nv0; });
+    var cl0 = !ex0 && x.ans.some(function(a){ var d = editDistance(norm(a), nv0); return d > 0 && d <= 2; });
+    show(o.saved.v, !!o.saved.c, cl0);
+  } else {
+    ctl.set('تحقق', true, check);
+  }
+  return [card, fb];
+}
+
+/* ---------- Stage 2: Flashcards (New Phrases + Legal Phrase + Oxford + Human Audio) ---------- */
+function stFlash(st, ctl, foot){ var v = ALL_VOCAB[st.i], mark = S.cards[v.en];
+  var card = h('div', { class:'fc', role:'button', tabindex:'0', 'aria-label':'Flashcard ' + v.en + ' · بطاقة ' + v.en + '، اضغط لقلبها' });
+  var arcs = '<svg class="fc-arc" viewBox="0 0 320 360" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M-10 334 C 90 300, 220 300, 330 322" fill="none" stroke="#E2D9CC" stroke-width="2" vector-effect="non-scaling-stroke"/><path d="M-10 352 C 110 326, 210 328, 330 344" fill="none" stroke="#EFE9DF" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>';
+  var front = h('div', { class:'fc-face fc-front' }, h('span', { html:arcs }),
+    sayBtn(v, 'Human Pronunciation · نطق بشري'),
+    v.isLegal ? h('span', { class:'legal-badge', style:'position:relative' }, 'Legal Phrase · عبارة قانونية') : h('span', { class:'fc-pos' }, v.pos),
+    h('span', { class:'fc-word', style:v.en.length > 12 ? 'font-size:34px' : '' }, v.en),
+    h('span', { class:'fc-say' }, 'Sounds like · تُنطق تقريبًا: ', h('b', {}, v.say)),
+    h('div', { class:'audio-row', style:'position:relative;justify-content:center' },
+      oxBtn(v),
+      h('span', { class:'repeat-pill' }, 'Listen & repeat · استمع وردّد')),
+    h('span', { class:'fc-hint' }, 'Tap card to flip · اضغط على البطاقة لقلبها'));
+  var back = h('div', { class:'fc-face fc-back' },
+    v.isLegal ? h('span', { class:'legal-badge', style:'align-self:flex-start' }, 'Legal Track · المسار القانوني') : null,
+    h('span', { class:'fc-ar' }, v.ar),
+    h('div', { class:'fc-exrow' }, h('p', { class:'fc-ex' }, v.ex), sayBtn(v, 'Human Pronunciation · نطق الكلمة')),
+    h('p', { class:'fc-exar' }, v.exAr),
+    h('div', { class:'audio-row' }, oxBtn(v), h('span', { class:'repeat-pill' }, 'Repeat aloud · ردّد بصوت مسموع')),
+    h('div', { class:'fc-tip' },
+      v.tipEn ? h('p', { class:'fc-tip-en' }, v.tipEn) : null,
+      v.tipEn ? arReveal(v.tip, false) : h('p', { html:arHTML(v.tip) })));
+  card.append(front, back);
+  function flip(){ card.classList.toggle('flip'); }
+  card.addEventListener('click', function(e){ if (e.target.closest('.say, .ar-btn, .ox-link')) return; flip(); });
+  card.addEventListener('keydown', function(e){ if (e.target !== card) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); } });
+  function markIt(k){ S.cards[v.en] = k; touch(); nextStep(); }
+  ctl.hide();
+  foot.append(
+    h('button', { class:'btn out', type:'button', on:{ click:function(){ markIt('r'); } } }, biBtn('Review later', 'أراجعها لاحقًا')),
+    h('button', { class:'btn', type:'button', on:{ click:function(){ markIt('k'); } } }, biBtn('I know it', 'أعرفها'))
+  );
+  var total = st.session ? P.steps.length - 1 : ALL_VOCAB.length, pos = st.session ? P.i + 1 : st.i + 1;
+  return [label('Phrase ' + pos + ' of ' + total, 'بطاقة ' + pos + ' من ' + total, mark ? h('span', { class:'tag' }, mark === 'k' ? 'Known · تعرفها' : 'To review · للمراجعة') : null), card];
+}
+
+/* matching (randomized pool across rounds + true derangement so pattern is never fixed) */
+var M = null, M_POOL = null, LAST_MATCH_SIG = '';
+function derangeWords(arr){
+  var n = arr.length;
+  if (n <= 1) return arr.slice();
+  var best = null;
+  for (var tries = 0; tries < 50; tries++) {
+    var cand = shuffle(arr);
+    var fixed = 0;
+    for (var i = 0; i < n; i++) { if (cand[i] === arr[i]) fixed++; }
+    var sig = arr.map(function(k){ return cand.indexOf(k); }).join(',');
+    var isUniformShift = n >= 4 && arr.every(function(k, idx){ return cand[(idx + 1) % n] === k || cand[(idx + n - 1) % n] === k; });
+    if (fixed === 0 && !isUniformShift && sig !== LAST_MATCH_SIG) {
+      LAST_MATCH_SIG = sig;
+      return cand;
+    }
+    if (fixed === 0 && !best) best = cand;
+  }
+  if (best) return best;
+  var step = 1 + Math.floor(Math.random() * (n - 1));
+  return arr.map(function(_, idx){ return arr[(idx + step) % n]; });
+}
+function mkRound(r, misses){
+  var rawPool = (D.vocab.length >= 12 ? shuffle(ALL_VOCAB).slice(0, 12) : ALL_VOCAB.slice());
+  if (r === 0 || !M_POOL || M_POOL.lessonId !== curLessonId) {
+    M_POOL = shuffle(ALL_VOCAB.slice());
+    if (M_POOL.length > 12) M_POOL = M_POOL.slice(0, 12);
+    M_POOL.lessonId = curLessonId;
+  }
+  var perRound = Math.ceil(M_POOL.length / 2);
+  var w = M_POOL.slice(r * perRound, (r + 1) * perRound).map(function(v){ return v.en; });
+  var arOrder = shuffle(w);
+  var enOrder = derangeWords(arOrder);
+  return { round:r, target:w.length, totalWords:M_POOL.length, sel:null, matched:{}, n:0, misses:misses || 0, ar:arOrder, en:enOrder, locked:false };
+}
+function stMatch(ctl){ var box = h('div', { class:'mt-box' });
+  var totalW = ALL_VOCAB.length > 12 ? 12 : ALL_VOCAB.length;
+  function done(misses){ ctl.enable(); put(box,
+    label('Matching Game', 'لعبة التوصيل'),
+    h('div', { class:'fb' }, h('span', { class:'fb-ic' }, ico('check')),
+      h('div', { class:'fb-t' },
+        h('b', {}, 'Game Complete · اكتملت اللعبة'),
+        h('p', {}, misses == null ? ('You matched all ' + totalW + ' words with their meanings. · وصّلت العبارات الـ ' + totalW + ' بمعانيها.') : (misses === 0 ? 'Zero mistakes. Great job! · بدون أي خطأ. ممتاز!' : 'Wrong attempts: ' + misses + ' · عدد المحاولات الخاطئة: ' + misses)))),
+    h('button', { class:'btn out sm', type:'button', style:'align-self:flex-start', on:{ click:function(){ M_POOL = null; M = mkRound(0, 0); draw(); } } }, biBtn('New Random Round', 'جولة عشوائية جديدة'))); }
+  function draw(){ ctl.set('التالي', !!S.match, nextStep);
+    var byEn = {}; ALL_VOCAB.forEach(function(v){ byEn[v.en] = v; });
+    function item(side, key, txt){ var b = h('button', { class:'m-it ' + side + (M.matched[key] ? ' matched' : ''), type:'button', disabled:!!M.matched[key], dir:side === 'en' ? 'ltr' : 'rtl' }, txt); b.addEventListener('click', function(){ pick(side, key, b); }); return b; }
+    function pick(side, key, el){ if (M.matched[key] || M.locked) return;
+      if (!M.sel || M.sel.side === side) { if (M.sel) M.sel.el.classList.remove('sel'); M.sel = { side:side, key:key, el:el }; el.classList.add('sel'); return; }
+      var a = M.sel; M.sel = null; a.el.classList.remove('sel');
+      if (a.key === key) { M.matched[key] = true; M.n++; [a.el, el].forEach(function(x){ x.classList.add('matched'); x.disabled = true; });
+        if (M.n === (M.target || 6)) { if (M.round === 0) { var ms = M.misses; setTimeout(function(){ M = mkRound(1, ms); draw(); }, 550); } else { var mm = M.misses; setTimeout(function(){ M = null; S.match = true; touch(); updateProgress(); done(mm); }, 450); } } }
+      else { M.locked = true; M.misses++; [a.el, el].forEach(function(x){ x.classList.add('miss'); }); setTimeout(function(){ [a.el, el].forEach(function(x){ x.classList.remove('miss'); }); M.locked = false; }, 550); } }
+    put(box,
+      label('Matching Game', 'لعبة التوصيل', h('b', {}, 'Round ' + (M.round + 1) + ' of 2 · الجولة ' + (M.round + 1) + ' من 2')),
+      h('div', { style:'display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap' },
+        h('p', { class:'muted' }, biNode('Tap an English word, then tap its Arabic meaning.', 'اضغط على الكلمة، ثم على معناها.')),
+        h('button', { class:'ar-btn', type:'button', on:{ click:function(){ M_POOL = null; M = mkRound(0, 0); draw(); } } }, ico('review'), 'خلط عشوائي · Shuffle')),
+      h('div', { class:'match' }, h('div', { class:'m-col' }, M.ar.map(function(k){ return item('ar', k, byEn[k].ar); })), h('div', { class:'m-col' }, M.en.map(function(k){ return item('en', k, k); })))); }
+  if (S.match && !M) done(null); else { if (!M) M = mkRound(0, 0); draw(); }
+  return box;
+}
+
+/* item components */
+function fbCard(ok, why, ev, fix, whyEn){
+  var extra = fix ? h('p', { class:'fb-fix' }, fix[0] + ': ', h('bdi', { dir:'ltr', lang:'en' }, fix[1])) : null;
+  return h('div', { class:'fb' + (ok ? '' : ' bad'), role:'status' }, h('span', { class:'fb-ic' }, ico(ok ? 'check' : 'x')),
+    h('div', { class:'fb-t' },
+      h('b', {}, ok ? 'Correct! · إجابة صحيحة' : 'Not quite · ليست هذه'),
+      extra,
+      whyEn ? h('p', { class:'fb-en' }, whyEn) : null,
+      why ? (whyEn ? arReveal(why, false) : h('p', { html:arHTML(why) })) : null,
+      ev ? h('div', { class:'fb-ev' }, h('span', {}, 'From the text · من النص'), h('q', { dir:'ltr', lang:'en' }, ev)) : null));
+}
+function blankText(s, word){ return s.replace('___', word || '...'); }
+function qCard(content, opts){ opts = opts || {};
+  var c = h('div', { class:'qcard' + (opts.tag ? ' top' : '') }, opts.tag ? h('span', { class:'q-tag' }, opts.tag) : null, content);
+  return c; }
+function MCQ(x, o){ o = o || {}; var isBlank = x.prompt.indexOf('___') >= 0, longOpts = x.opts.some(function(t){ return t.length > 22; });
+  var picked = null;
+  var prompt = h('p', { class:'q-en' + (isBlank ? '' : ' sm'), dir:'ltr' });
+  if (isBlank) { var parts = x.prompt.split('___'); prompt.append(parts[0]); var bl = h('span', { class:'blank' }, ' '); prompt.append(bl, parts[1] || ''); } else prompt.textContent = x.prompt;
+  var card = qCard(prompt, { tag:o.tag });
+  var fb = h('div', { hidden:true });
+  var btns = x.opts.map(function(t, i){ var b = h('button', { class:'opt' + (longOpts ? ' long' : ''), type:'button', dir:'ltr' }, h('span', {}, t), h('span', { class:'o-dot', html:'' }));
+    b.addEventListener('click', function(){ if (picked != null) return; show(i); if (o.onAnswer) o.onAnswer(i === x.a, i); }); return b; });
+  function show(i){ picked = i; var ok = i === x.a;
+    btns.forEach(function(b, j){ b.disabled = true; var dot = b.querySelector('.o-dot');
+      if (j === x.a) { b.classList.add('ok'); put(dot, ico('check')); } else if (j === i) { b.classList.add('bad'); put(dot, ico('x')); } else b.classList.add('dim'); });
+    if (isBlank) { var blk = prompt.querySelector('.blank'); blk.textContent = x.opts[i]; blk.classList.add(ok ? 'ok' : 'bad'); }
+    fb.hidden = false; put(fb, fbCard(ok, x.why, x.ev, ok ? null : ['Correct answer · الإجابة الصحيحة', x.opts[x.a]], x.whyEn)); }
+  if (o.saved && typeof o.saved.v === 'number') show(o.saved.v);
+  return [card, h('div', { class:'opts' }, btns), fb];
+}
+function TF(x, o){ o = o || {}; var reading = !!o.reading, truth = reading ? !!x.a : !!x.ok, vals = [true, false];
+  var labels = reading ? ['True · صح', 'False · خطأ'] : ['Correct · صحيحة', 'Has a mistake · فيها خطأ'];
+  var sent = h('p', { class:'q-en sm', dir:'ltr' }, reading ? x.q : x.s), fb = h('div', { hidden:true }), answered = false;
+  var card = qCard(sent, { tag:o.tag || (reading ? 'True or False? · صح أم خطأ؟' : null) });
+  var btns = vals.map(function(v, i){ var b = h('button', { class:'opt center', type:'button' }, h('span', {}, labels[i]), h('span', { class:'o-dot' }));
+    b.addEventListener('click', function(){ if (answered) return; show(v); if (o.onAnswer) o.onAnswer(v === truth, v); }); return b; });
+  function show(v){ answered = true; var ok = v === truth;
+    btns.forEach(function(b, i){ b.disabled = true; b.classList.add(vals[i] === truth ? 'ok' : (vals[i] === v ? 'bad' : 'dim')); });
+    if (!reading && !x.ok) sent.classList.add('struck');
+    fb.hidden = false; put(fb, fbCard(ok, x.why, reading ? x.ev : null, (!reading && !x.ok) ? ['Correction · التصحيح', x.fix] : null, x.whyEn)); }
+  if (o.saved && typeof o.saved.v === 'boolean') show(o.saved.v);
+  return [card, h('div', { class:'opts two' }, btns), fb];
+}
+function norm(s){ return String(s).toLowerCase().replace(/[’‘`´]/g, "'").replace(/[^a-z'\s]/g, ' ').replace(/\s+/g, ' ').trim(); }
+function typedOK(x, v){ var n = norm(v), pre = norm(x.pre), post = norm(x.post);
+  if (pre && n.indexOf(pre + ' ') === 0) n = n.slice(pre.length + 1);
+  if (post && n.length > post.length + 1 && n.slice(-(post.length + 1)) === ' ' + post) n = n.slice(0, -(post.length + 1));
+  return x.ans.some(function(a){ return norm(a) === n; }); }
+function Typing(x, o, ctl){ o = o || {};
+  var inp = h('input', { class:'gap-in', type:'text', dir:'ltr', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', enterkeyhint:'done', 'aria-label':'Verb form · صيغة الفعل ' + x.verb });
+  var noSpace = /^[.!?,]/.test(x.post);
+  var sent = h('p', { class:'q-en', dir:'ltr' }, x.pre + ' ', inp, ' ', h('span', { class:'verb' }, '(' + x.verb + ')'), noSpace ? '' : ' ', x.post);
+  var fb = h('div', { hidden:true }), done = false;
+  function check(){ if (done) return; var v = inp.value.trim();
+    if (!v) { inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); inp.focus(); return; }
+    var ok = typedOK(x, v); show(v, ok); if (o.onAnswer) o.onAnswer(ok, v); }
+  function show(v, ok){ done = true; inp.value = v; inp.disabled = true; inp.classList.add(ok ? 'ok' : 'bad'); fb.hidden = false; put(fb, fbCard(ok, x.why, null, ok ? null : ['Correct answer · الإجابة الصحيحة', x.ans[0]], x.whyEn)); }
+  inp.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); check(); } });
+  if (o.saved && typeof o.saved.v === 'string') show(o.saved.v, !!o.saved.c);
+  else ctl.set('تحقق', true, check);
+  return [qCard(sent), fb];
+}
+function Builder(x, o, ctl){ o = o || {}; var placed = [], locked = false;
+  var line = h('div', { class:'b-line', dir:'ltr' }), pool = h('div', { class:'b-pool', dir:'ltr' }), fb = h('div', { hidden:true });
+  var clear = h('button', { class:'link', type:'button', style:'align-self:flex-start' }, 'Reset words · مسح والبدء من جديد');
+  function draw(){
+    put(line, placed.length ? placed.map(function(ci, pos){ var b = h('button', { class:'chip', type:'button', disabled:locked }, x.chips[ci]); b.addEventListener('click', function(){ if (locked) return; placed.splice(pos, 1); draw(); }); return b; }) : h('span', { class:'b-ph' }, 'Tap words below in the right order · اضغط الكلمات بالترتيب الصحيح'));
+    put(pool, x.chips.map(function(c, ci){ if (placed.indexOf(ci) >= 0) return null; var b = h('button', { class:'chip', type:'button', disabled:locked }, c); b.addEventListener('click', function(){ if (locked) return; placed.push(ci); draw(); }); return b; }));
+    if (!locked && ctl) ctl.set('تحقق', placed.length === x.chips.length, check);
+  }
+  function finish(ok){ locked = true; draw(); line.classList.add(ok ? 'ok' : 'bad'); pool.hidden = true; clear.hidden = true; fb.hidden = false; put(fb, fbCard(ok, x.why, null, ok ? null : ['Correct order · الترتيب الصحيح', x.ans], x.whyEn)); }
+  function check(){ if (locked || placed.length !== x.chips.length) return; var s = placed.map(function(i){ return x.chips[i]; }).join(' '), ok = s === x.ans; finish(ok); if (o.onAnswer) o.onAnswer(ok, placed.slice()); }
+  clear.addEventListener('click', function(){ if (locked) return; placed = []; draw(); });
+  if (o.saved && Array.isArray(o.saved.v)) { placed = o.saved.v.slice(); finish(!!o.saved.c); } else draw();
+  return [qCard(line), pool, clear, fb];
+}
+function stItem(st, ctl){ var it = ITEMS[st.id]; if (!it) { ctl.enable(); return h('p', {}, ''); }
+  var review = !!st.review, saved = review ? null : S.ans[st.id];
+  var o = { saved:saved, onAnswer:function(c, v){
+    if (review) { var m = S.mistakes[st.id]; if (m) { m.s = c ? (m.s || 0) + 1 : 0; if (m.s >= 2) { delete S.mistakes[st.id]; toast('Question cleared! · سؤال خرج من الدفتر'); } touch(); updateNav(); } }
+    else record(st.id, c, v);
+    ctl.enable(); } };
+  var nodes;
+  if (it.type === 'recall') nodes = RecallTyping(it.x, o, ctl);
+  else if (it.type === 'mcq') nodes = MCQ(it.x, Object.assign(o, { tag:(it.secEn ? it.secEn + ' · ' : '') + it.sec }));
+  else if (it.type === 'tf') nodes = TF(it.x, o);
+  else if (it.type === 'rtf') nodes = TF(it.x, Object.assign(o, { reading:true }));
+  else if (it.type === 'typing') nodes = Typing(it.x, o, ctl);
+  else nodes = Builder(it.x, o, ctl);
+  if ((it.type === 'mcq' || it.type === 'tf' || it.type === 'rtf') && !saved) ctl.set('التالي', false, nextStep);
+  var extra = review ? h('span', { class:'tag' }, 'Review · مراجعة') : (it.secEn === 'Listening' && D.listening && D.listening.url ? h('a', { class:'ox-link', href:D.listening.url, target:'_blank', rel:'noopener noreferrer' }, 'Audio Clip ↗') : null);
+  return [label(it.groupEn || it.group, it.group, extra)].concat(nodes);
+}
+
+/* grammar explain: simplified English first, Arabic hidden under "اعرض بالعربي" (except Common Arab Mistakes which stays bilingual) */
+function stExplain(i, ctl){ var c = GCARDS[i];
+  ctl.enable(i === GCARDS.length - 1 ? 'إلى التمارين' : 'التالي');
+  var box = h('div', { class:'xp', html:c.enHtml || c.html });
+  if (!c.bilingual && c.arHtml) {
+    var rev = arReveal(c.arHtml, true);
+    var h2 = box.querySelector('h2');
+    if (h2 && h2.nextSibling) box.insertBefore(rev, h2.nextSibling);
+    else box.append(rev);
+  }
+  return [
+    label('Grammar Explanation · ' + (i + 1) + ' of ' + GCARDS.length, 'شرح القاعدة · ' + (i + 1) + ' من ' + GCARDS.length),
+    box,
+    SAMPLE ? h('button', { class:'link', type:'button', style:'align-self:flex-start;color:var(--dark);font-weight:700', on:{ click:function(){ openAsk(); } } }, 'Need help? Ask the Teacher · عندك سؤال؟ اسأل المعلم') : null
+  ];
+}
+
+/* ---------- Stage 4: Reading (First Reading Timed + Second Reading Interactive + Fluency) & Listening ---------- */
+var readTimerId = null;
+function clearReadTimer(){ if (readTimerId) { clearInterval(readTimerId); readTimerId = null; } }
+function fmtSec(s){ var m = Math.floor(s / 60), r = s % 60; return (m < 10 ? '0' : '') + m + ':' + (r < 10 ? '0' : '') + r; }
+
+function stPredict(ctl){ var p = D.reading.predict, sel = S.predict;
+  if (sel == null) ctl.set('القراءة الأولى', false, nextStep); else ctl.enable('القراءة الأولى');
+  var btns = p.opts.map(function(t, i){
+    var enOpt = p.optsEn && p.optsEn[i];
+    var b = h('button', { class:'opt ar' + (sel === i ? ' picked' : ''), type:'button' },
+      enOpt ? biNode(enOpt, t) : h('span', {}, t),
+      h('span', { class:'o-dot' }));
+    b.addEventListener('click', function(){ S.predict = i; S.revealed = false; touch(); btns.forEach(function(x, j){ x.classList.toggle('picked', j === i); }); ctl.enable('القراءة الأولى'); }); return b; });
+  return [
+    label('Step 1 · Predict Before Reading', 'الخطوة 1 · توقّع قبل القراءة'),
+    qCard(h('div', {}, p.qEn ? h('p', { class:'q-en sm', dir:'ltr', style:'margin-bottom:6px' }, p.qEn) : null, h('p', { class:'q-ar' }, p.q)), { tag:'Predict · توقّع' }),
+    h('div', { class:'opts' }, btns),
+    h('p', { class:'hint' }, 'Guess before reading. Next is a quick first reading for the main idea. · توقّع بدون ما تقرأ، وبعدها قراءة أولى سريعة للفكرة العامة.')
+  ];
+}
+
+function stRead1(ctl){
+  var r = D.reading;
+  ctl.set('أنهيت القراءة الأولى', true, function(){ S.read1Done = true; touch(); nextStep(); });
+  var sec = 0;
+  var tSpan = h('span', { class:'rtimer-t' }, '00:00 / 02:00');
+  clearReadTimer();
+  readTimerId = setInterval(function(){ sec++; tSpan.textContent = fmtSec(sec) + ' / 02:00'; }, 1000);
+  var mail = h('article', { class:'mail', 'aria-label':'First Reading · القراءة الأولى' },
+    h('div', { class:'mail-art', html:SUN_SVG }),
+    h('div', { class:'mail-meta' }, h('div', {}, h('span', { class:'k' }, 'FROM'), r.fromMeta || (r.from + ' · Research Station, Antarctica')), h('div', {}, h('span', { class:'k' }, 'TO'), r.to), h('div', {}, h('span', { class:'k' }, 'SUBJECT'), h('span', { class:'subj' }, r.title))),
+    emailBody(true));
+  return [
+    label('Step 2 · First Reading (Main Idea)', 'الخطوة 2 · القراءة الأولى للفكرة العامة', h('span', { class:'tag' }, 'No dictionary · بدون معاني')),
+    h('div', { class:'rtimer' },
+      biNode('Comfortable advisory timer (~2 min) — read for the general idea without stopping at words.', 'مؤقت إرشادي مريح (نحو دقيقتين) — اقرأ للفكرة العامة دون التوقف عند الكلمات.'),
+      tSpan),
+    mail
+  ];
+}
+
+function stReveal(ctl){ var p = D.reading.predict, ins = D.reading.insight || {}; ctl.enable('القراءة الثانية');
+  if (!S.revealed) { S.revealed = true; touch(); }
+  var ok = S.predict === p.a;
+  return [
+    label('Check Your Prediction', 'تحقق من توقّعك'),
+    S.predict == null ? h('p', { class:'muted' }, 'No prediction recorded this time. · ما سجّلت توقّعًا هذه المرة.') :
+      fbCard(ok, p.reveal, null, null, p.revealEn),
+    h('div', { class:'insight' },
+      h('h3', { class:'bi-h', style:'font-size:16px' }, h('span', { class:'en', dir:'ltr' }, ins.titleEn || 'Tenses in the Email'), h('small', {}, ins.titleAr || 'نظرة على الأزمنة في الإيميل')),
+      h('p', { class:'en', dir:'ltr', style:'font-size:14px;color:var(--ink-2);text-align:left' }, ins.l1En || 'Noor uses Present Simple for her daily routine:'),
+      h('p', { class:'xen' }, ins.ex1 || 'I wake up at 6:30 · I check the data'),
+      h('p', { class:'en', dir:'ltr', style:'font-size:14px;color:var(--ink-2);text-align:left' }, ins.l2En || 'And Present Continuous for this month and right now:'),
+      h('p', { class:'xen' }, ins.ex2 || "I'm studying penguins · I'm sitting in the kitchen"),
+      arReveal(ins.arHtml || '<p>نور تستخدم <b style="color:var(--dark)">المضارع البسيط</b> لروتينها اليومي، و<b style="color:var(--accent-ink)">المضارع المستمر</b> لما تفعله هذا الشهر وفي هذه اللحظة.</p>', true))
+  ];
+}
+
+function stEmail(ctl){ var r = D.reading;
+  ctl.enable('قرأت الإيميل');
+  var mail = h('article', { class:'mail' + (S.hl ? ' hl-on' : ''), 'aria-label':'Noor Email · إيميل نور' },
+    h('div', { class:'mail-art', html:SUN_SVG }),
+    h('div', { class:'mail-meta' }, h('div', {}, h('span', { class:'k' }, 'FROM'), r.fromMeta || (r.from + ' · Research Station, Antarctica')), h('div', {}, h('span', { class:'k' }, 'TO'), r.to), h('div', {}, h('span', { class:'k' }, 'SUBJECT'), h('span', { class:'subj' }, r.title))),
+    emailBody(false));
+  var legend = h('div', { class:'legend', hidden:!S.hl },
+    h('span', { class:'lg s' }, 'Present Simple · المضارع البسيط'),
+    h('span', { class:'lg c' }, 'Present Continuous · المستمر'),
+    h('span', { class:'lg t' }, 'Signal word · كلمة إشارة'));
+  var tg = h('input', { type:'checkbox', id:'hlToggle' }); tg.checked = !!S.hl;
+  tg.addEventListener('change', function(){ S.hl = tg.checked; saveLocal(); mail.classList.toggle('hl-on', S.hl); legend.hidden = !S.hl; });
+  var flSec = 0, flOn = false;
+  var flBtn = h('button', { class:'ar-btn', type:'button' }, 'Fluency Timer · مؤقت قراءة الطلاقة (00:00)');
+  flBtn.addEventListener('click', function(){
+    if (flOn) { clearReadTimer(); flOn = false; flBtn.textContent = 'Fluency Timer · مؤقت قراءة الطلاقة (' + fmtSec(flSec) + ')'; }
+    else { flSec = 0; flOn = true; clearReadTimer(); readTimerId = setInterval(function(){ flSec++; flBtn.textContent = 'Stop Fluency Timer · إيقاف (' + fmtSec(flSec) + ')'; }, 1000); }
+  });
+  return [
+    label('Step 3 · Second Reading (With Word Meanings)', 'الخطوة 3 · القراءة الثانية مع معاني الكلمات باللمس', h('span', { class:'tag' }, '~210 words · نحو 210 كلمات')),
+    r.introEn ? h('p', { class:'en', dir:'ltr', style:'font-size:14.5px;font-weight:600;color:var(--ink-2);text-align:left' }, r.introEn) : null,
+    h('p', { class:'muted', html:arHTML(r.intro) }),
+    h('div', { class:'mail-tools' },
+      h('label', { class:'toggle', for:'hlToggle' }, tg, h('span', {}, 'Highlight tenses · إظهار الأزمنة')),
+      flBtn,
+      h('span', { class:'hint' }, 'Tap underlined words for meaning, Oxford ↗ & human audio · اضغط أي كلمة مسطّرة لمعناها ورابط أوكسفورد والنطق')),
+    legend, mail
+  ];
+}
+
+/* 3-stage Listening support for Listening days */
+function stListen1(ctl){
+  var L = D.listening || {};
+  var sec = 0, target = L.targetSeconds || 90;
+  var tSpan = h('span', { class:'rtimer-t' }, '00:00 / ' + fmtSec(target));
+  clearReadTimer();
+  readTimerId = setInterval(function(){ sec++; tSpan.textContent = fmtSec(sec) + ' / ' + fmtSec(target); }, 1000);
+  var p = L.predict, gistBox = null;
+  if (p) {
+    var sel = S.predict;
+    if (sel == null) ctl.set('إلى الأسئلة', false, function(){ S.listen1Done = true; touch(); nextStep(); });
+    else ctl.set('إلى الأسئلة', true, function(){ S.listen1Done = true; touch(); nextStep(); });
+    var fb = h('div', { hidden: sel == null });
+    if (sel != null) put(fb, fbCard(sel === p.a, p.reveal, null, null, p.revealEn));
+    var btns = p.opts.map(function(t, i){
+      var enOpt = p.optsEn && p.optsEn[i];
+      var b = h('button', { class:'opt ar' + (sel === i ? ' picked' : ''), type:'button' },
+        enOpt ? biNode(enOpt, t) : h('span', {}, t),
+        h('span', { class:'o-dot' }));
+      b.addEventListener('click', function(){
+        S.predict = i; S.revealed = true; touch();
+        btns.forEach(function(x, j){ x.classList.toggle('picked', j === i); });
+        fb.hidden = false;
+        put(fb, fbCard(i === p.a, p.reveal, null, null, p.revealEn));
+        ctl.set('إلى الأسئلة', true, function(){ S.listen1Done = true; touch(); nextStep(); });
+      });
+      return b;
+    });
+    gistBox = h('div', { style:'display:flex;flex-direction:column;gap:10px' },
+      qCard(h('div', {}, p.qEn ? h('p', { class:'q-en sm', dir:'ltr', style:'margin-bottom:6px' }, p.qEn) : null, h('p', { class:'q-ar' }, p.q)), { tag:'Stage 1 · Main Idea Check · سؤال الفكرة العامة' }),
+      h('div', { class:'opts' }, btns),
+      fb);
+  } else {
+    ctl.set('إلى الأسئلة', true, function(){ S.listen1Done = true; touch(); nextStep(); });
+  }
+  return [
+    label('Listening · Stage 1 of 3 (Main Idea — No Transcript)', 'الاستماع ١ من ٣ · الفكرة العامة بدون النص المكتوب', h('span', { class:'tag' }, L.sourceTag || 'Human Audio · تسجيل بشري')),
+    h('div', { class:'rtimer' },
+      biNode('Step 1: Listen once in the source page for the main idea without looking at the transcript, then answer the main-idea question below.', 'الخطوة ١: استمع مرة واحدة للفكرة العامة بدون قراءة النص المكتوب، ثم أجب عن سؤال الفكرة العامة بالأسفل.'),
+      tSpan),
+    h('div', { class:'xbox' },
+      h('span', { class:'xtag s', dir:'ltr' }, L.title || 'Audio Clip'),
+      h('p', { class:'en-p', dir:'ltr' }, L.introEn || 'Listen first for the general idea without reading the transcript.'),
+      h('p', { html:arHTML(L.intro || 'استمع أولًا للفكرة العامة في صفحة المصدر بدون قراءة النص المكتوب.') }),
+      h('div', { class:'wbtns', style:'margin-top:4px' },
+        L.url ? h('a', { class:'btn sm', href:L.url, target:'_blank', rel:'noopener noreferrer' }, biBtn('Open Audio Clip in Source Page ↗', 'افتح المقطع في صفحة المصدر ↗')) : null,
+        h('button', { class:'btn out sm', type:'button', on:{ click:function(){ AUDIO.play(ALL_VOCAB[0]); } } }, ico('speaker'), biBtn('Key Phrase Audio', 'سماع نطق الكلمات المفتاحية')))),
+    gistBox
+  ];
+}
+function stListen3(ctl){
+  var L = D.listening || {};
+  ctl.enable('التالي');
+  var paras = L.paras || (L.transcript ? [L.transcript] : []);
+  var bodyHtml = paras.map(function(p){ return '<p>' + parseMarkup(p) + '</p>'; }).join('');
+  var mail = h('article', { class:'mail' + (S.hl ? ' hl-on' : ''), 'aria-label':'Audio Transcript · النص المكتوب للمقطع' },
+    h('div', { class:'mail-meta' },
+      h('div', {}, h('span', { class:'k' }, 'SOURCE'), L.sourceMeta || 'Verified Human Audio Clip'),
+      h('div', {}, h('span', { class:'k' }, 'SPEAKERS'), L.speakers || 'Dialogue'),
+      h('div', {}, h('span', { class:'k' }, 'TITLE'), h('span', { class:'subj' }, L.title || 'Transcript'))),
+    h('div', { class:'mail-body', dir:'ltr', html:bodyHtml }));
+  var legend = h('div', { class:'legend', hidden:!S.hl },
+    h('span', { class:'lg s' }, L.lg1 || 'Target Form 1 · الصيغة ١'),
+    h('span', { class:'lg c' }, L.lg2 || 'Target Form 2 · الصيغة ٢'),
+    h('span', { class:'lg t' }, 'Key Signal · علامة مفتاحية'));
+  var tg = h('input', { type:'checkbox', id:'hlToggleL' }); tg.checked = !!S.hl;
+  tg.addEventListener('change', function(){ S.hl = tg.checked; saveLocal(); mail.classList.toggle('hl-on', S.hl); legend.hidden = !S.hl; });
+  var shSec = 0, shOn = false;
+  var shBtn = h('button', { class:'ar-btn', type:'button' }, 'Shadowing Timer · مؤقت الترديد مع المتحدث (00:00)');
+  shBtn.addEventListener('click', function(){
+    if (shOn) { clearReadTimer(); shOn = false; shBtn.textContent = 'Shadowing Timer · مؤقت الترديد (' + fmtSec(shSec) + ')'; }
+    else { shSec = 0; shOn = true; clearReadTimer(); readTimerId = setInterval(function(){ shSec++; shBtn.textContent = 'Stop Shadowing · إيقاف (' + fmtSec(shSec) + ')'; }, 1000); }
+  });
+  var ins = L.insight;
+  return [
+    label('Listening · Stage 3 of 3 (Transcript & Shadowing)', 'الاستماع ٣ من ٣ · النص المكتوب والترديد مع المتحدث'),
+    h('div', { class:'xbox' },
+      h('p', { class:'en-p', dir:'ltr' }, 'Now read the full transcript to verify anything you missed, tap underlined words for Oxford ↗ & human audio, and replay the source clip to shadow the speaker aloud.'),
+      h('p', {}, 'الآن اقرأ النص الكامل لمراجعة ما فاتك، واضغط الكلمات المسطّرة لمعناها ونطقها، ثم أعد تشغيل المقطع وردّد مع المتحدث بصوت مسموع.'),
+      L.url ? h('a', { class:'btn sm out', href:L.url, target:'_blank', rel:'noopener noreferrer', style:'align-self:flex-start' }, biBtn('Replay Clip for Shadowing ↗', 'أعد تشغيل المقطع للترديد مع المتحدث ↗')) : null),
+    ins ? h('div', { class:'insight' },
+      h('h3', { class:'bi-h', style:'font-size:16px' }, h('span', { class:'en', dir:'ltr' }, ins.titleEn), h('small', {}, ins.titleAr)),
+      h('p', { class:'en', dir:'ltr', style:'font-size:14px;color:var(--ink-2);text-align:left' }, ins.l1En),
+      h('p', { class:'xen' }, ins.ex1),
+      h('p', { class:'en', dir:'ltr', style:'font-size:14px;color:var(--ink-2);text-align:left' }, ins.l2En),
+      h('p', { class:'xen' }, ins.ex2),
+      arReveal(ins.arHtml, true)) : null,
+    h('div', { class:'mail-tools' },
+      h('label', { class:'toggle', for:'hlToggleL' }, tg, h('span', {}, 'Highlight grammar · إظهار القاعدة')),
+      shBtn,
+      h('span', { class:'hint' }, 'Tap underlined words for meaning, Oxford ↗ & human audio · اضغط أي كلمة مسطّرة لمعناها ونطقها')),
+    legend,
+    mail
+  ];
+}
+
+/* ---------- Stage 6: Short Quiz & Lesson Error Analysis ---------- */
+var Q = null;
+function startQuiz(){ var order = shuffle(D.quiz.map(function(_, i){ return i; }));
+  Q = { score:0, res:[], items:order.map(function(k){ var x = D.quiz[k], perm = shuffle(x.opts.map(function(_, j){ return j; }));
+    return { src:k, prompt:x.s, opts:perm.map(function(j){ return x.opts[j]; }), a:perm.indexOf(x.a), whyEn:x.whyEn, why:x.why, tag:x.tag, errCat:x.errCat || 'tense' }; }) };
+  goStep(1); }
+function stQuizIntro(ctl){ var best = S.quiz.best;
+  ctl.set(best == null ? 'ابدأ الاختبار' : 'أعد الاختبار', true, startQuiz);
+  return h('div', { class:'qi' },
+    h('h1', { class:'bi-h' }, h('span', { class:'en', dir:'ltr', style:'color:#fff' }, 'Stage 6 · Short Quiz & Error Analysis'), h('small', { style:'color:var(--honey)' }, 'المرحلة 6 · اختبار قصير وتحليل الأخطاء')),
+    h('p', { class:'en', dir:'ltr', style:'text-align:left;color:#fff;font-weight:600' }, '10 questions on vocabulary and grammar. Score 80% or higher to pass, followed by an analysis of your lesson mistakes and their causes.'),
+    h('p', {}, '10 أسئلة من المفردات والقواعد. النجاح من 80%، يليه تحليل لأخطاء الدرس وأسبابها.'),
+    h('div', { class:'qi-stats' },
+      h('div', { class:'qs' }, h('b', {}, String(D.quiz.length)), h('span', {}, 'Questions · أسئلة')),
+      h('div', { class:'qs' }, h('b', { dir:'ltr' }, '80%'), h('span', {}, 'To Pass · للنجاح')),
+      h('div', { class:'qs' }, h('b', { dir:'ltr' }, best == null ? '—' : best + '/' + D.quiz.length), h('span', {}, 'Best · أفضل نتيجة'))));
+}
+function stQuizQ(n, ctl){ if (!Q) { setTimeout(function(){ goStep(0); }, 0); return h('p', {}, ''); }
+  var it = Q.items[n], last = n === Q.items.length - 1;
+  ctl.set(last ? 'النتيجة وتحليل الأخطاء' : 'السؤال التالي', Q.res[n] != null, last ? finishQuiz : nextStep);
+  var nodes = MCQ(it, { tag:it.tag, saved:Q.res[n] != null ? { v:Q.res[n].v } : null, onAnswer:function(c, v){ Q.res[n] = { c:c, v:v }; if (c) Q.score++; else { S.mistakes['qz-' + it.src] = { s:0, t:Date.now() }; touch(); updateNav(); } ctl.set(last ? 'النتيجة وتحليل الأخطاء' : 'السؤال التالي', true, last ? finishQuiz : nextStep); } });
+  return [label('Question ' + (n + 1) + ' of ' + Q.items.length, 'السؤال ' + (n + 1) + ' من ' + Q.items.length)].concat(nodes);
+}
+function finishQuiz(){ if (!Q) return; S.quiz.attempts = (S.quiz.attempts || 0) + 1; S.quiz.last = Q.score; S.quiz.best = Math.max(S.quiz.best || 0, Q.score); touch(); updateProgress(); nextStep(); }
+function ring(v, max){ var r = 42, C = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / max));
+  return h('div', { class:'ring-w', html:'<svg class="ring" viewBox="0 0 100 100" role="img" aria-label="' + v + ' من ' + max + '"><circle class="bg" cx="50" cy="50" r="' + r + '"/><circle class="fg' + (f < 0.8 ? ' low' : '') + '" cx="50" cy="50" r="' + r + '" stroke-dasharray="' + (C * f).toFixed(1) + ' ' + C.toFixed(1) + '"/><text x="50" y="52" text-anchor="middle" dominant-baseline="middle" font-size="24">' + v + '<tspan font-size="12" dx="1">/' + max + '</tspan></text></svg>' }); }
+
+function renderErrorAnalysis(quizWrongs){
+  var grouped = {};
+  function addErr(cat, title, right, whyEn, whyAr){
+    cat = ERR_CATS[cat] ? cat : 'tense';
+    if (!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push({ title:title, right:right, whyEn:whyEn, whyAr:whyAr });
+  }
+  (quizWrongs || []).forEach(function(it){
+    var pp = it.prompt.split('___');
+    var full = pp.length > 1 ? pp[0] + '[' + it.opts[it.a] + ']' + pp[1] : it.prompt + ' → ' + it.opts[it.a];
+    addErr(it.errCat || 'tense', full, it.opts[it.a], it.whyEn, it.why);
+  });
+  Object.keys(S.ans).forEach(function(id){
+    var a = S.ans[id];
+    if (!a || a.c) return;
+    var it = ITEMS[id];
+    if (!it) return;
+    var x = it.x, right = '';
+    if (it.type === 'mcq') right = x.opts[x.a];
+    else if (it.type === 'tf') right = x.ok ? 'Correct' : x.fix;
+    else if (it.type === 'rtf') right = x.a ? 'True' : 'False';
+    else if (it.type === 'typing' || it.type === 'recall') right = x.ans[0];
+    else if (it.type === 'builder') right = x.ans;
+    addErr(it.errCat || 'tense', itemText(it), right, x.whyEn || x.spellNoteEn, x.why || x.spellNote);
+  });
+  var cats = Object.keys(grouped);
+  if (!cats.length) {
+    return h('div', { class:'err-analysis' },
+      h('h3', { class:'bi-h', style:'font-size:16px' }, h('span', { class:'en', dir:'ltr' }, 'Lesson Error Analysis'), h('small', {}, 'تحليل أخطاء الدرس وأسبابها')),
+      h('div', { class:'fb' }, h('span', { class:'fb-ic' }, ico('check')),
+        h('div', { class:'fb-t' },
+          h('b', {}, 'Zero Mistakes Across the Lesson! · لا توجد أخطاء مسجّلة في الدرس!'),
+          h('p', { class:'fb-en' }, 'You distinguished Present Simple habits from Present Continuous actions and spelled the recall words accurately.'),
+          arReveal('فرّقت بدقة بين المضارع البسيط والمستمر وأتقنت إملاء كلمات الاسترجاع.', false))));
+  }
+  return h('div', { class:'err-analysis' },
+    h('h3', { class:'bi-h', style:'font-size:16px' }, h('span', { class:'en', dir:'ltr' }, 'Lesson Error Analysis (' + cats.length + ' ' + (cats.length === 1 ? 'Category' : 'Categories') + ')'), h('small', {}, 'تحليل أخطاء الدرس وأسبابها')),
+    cats.map(function(cKey){
+      var info = ERR_CATS[cKey] || ERR_CATS.tense, list = grouped[cKey];
+      return h('div', { class:'err-cat' },
+        h('div', { class:'err-cat-h' },
+          biNode(info.en, info.ar),
+          h('span', { class:'tag' }, h('bdi', { class:'en', dir:'ltr' }, list.length + (list.length === 1 ? ' item' : ' items')), ' · ' + (list.length === 1 ? 'سؤال' : 'أسئلة'))),
+        h('div', { class:'err-cat-why' },
+          h('p', { class:'en', dir:'ltr', style:'font-weight:600;color:var(--ink);text-align:left' }, 'Why it happens: ' + info.whyEn),
+          arReveal(info.whyAr, false)),
+        list.slice(0, 5).map(function(e){
+          return h('div', { class:'wl' },
+            h('p', { class:'xen' }, e.title, e.right ? [' → ', h('b', {}, e.right)] : null),
+            e.whyEn ? h('p', { class:'en', dir:'ltr', style:'text-align:left;font-weight:600;color:var(--ink)' }, e.whyEn) : null,
+            e.whyAr ? arReveal(e.whyAr, false) : null);
+        }));
+    }));
+}
+
+function stQuizResult(ctl){ if (!Q) { var b = S.quiz.last; if (b == null) { setTimeout(function(){ goStep(0); }, 0); return h('p', {}, ''); } }
+  var sc = Q ? Q.score : S.quiz.last, n = D.quiz.length, pass = sc >= Math.ceil(n * 0.8);
+  var wrong = Q ? Q.items.filter(function(_, j){ return !(Q.res[j] && Q.res[j].c); }) : [];
+  if (pass) ctl.set('رجوع للدرس', true, closePlayer); else ctl.set('أعد الاختبار', true, function(){ Q = null; goStep(0); });
+  return h('div', { class:'result' }, ring(sc, n),
+    h('div', { class:'res-msg' }, sc === n ? biNode('Perfect Score!', 'علامة كاملة!') : (pass ? biNode('Great job, you passed!', 'ممتاز، نجحت في الاختبار.') : biNode('Almost! You need 80% to pass.', 'قريب! تحتاج 80% للنجاح.'))),
+    h('div', { class:'res-sub' }, pass ? biNode('Stage 6 complete! Review the error analysis below. Any missed questions were added to your mistake notebook.', 'اكتملت المرحلة السادسة! راجع تحليل الأخطاء بالأسفل.') : biNode('Review the error analysis below and try the quiz again.', 'راجع تحليل الأخطاء بالأسفل ثم أعد الاختبار.')),
+    renderErrorAnalysis(wrong),
+    pass ? h('button', { class:'btn out sm', type:'button', on:{ click:function(){ Q = null; goStep(0); } } }, biBtn('Retake Quiz', 'أعد الاختبار')) : null);
+}
+
+/* ---------- Stage 5: Writing (4 Separate Sentences + Spelling Separated from Grammar) ---------- */
+var VRE = { scientist:/\bscientists?\b/i, research:/\bresearch(es|ed|er|ers|ing)?\b/i, team:/\bteams?\b/i, lab:/\blabs?\b|\blaborator(y|ies)\b/i, data:/\bdata\b/i, measure:/\bmeasur(e|es|ed|ing|ement|ements)\b/i, temperature:/\btemperatures?\b/i, safe:/\bsafe(ly|r|st)?\b/i, strange:/\bstrange(ly|r|st)?\b/i, health:/\bhealth(y|ier)?\b/i, culture:/\bcultur(e|es|al)\b/i, miss:/\bmiss(es|ed|ing)?\b/i, 'sign a contract':/\bsign(s|ed|ing)?\s+(a|the|my|our)?\s*contracts?\b/i, lawyer:/\blawyers?\b/i, client:/\bclients?\b/i, office:/\boffices?\b/i, court:/\bcourts?\b/i, busy:/\bbus(y|ier|iest)\b/i, helpful:/\bhelpful\b/i, prepare:/\bprepar(e|es|ed|ing)\b/i, 'give legal advice':/\bgiv(e|es|ing)\s+(?:legal\s+)?advice\b|\blegal\s+advice\b/i, case:/\bcases?\b/i, judge:/\bjudges?\b/i, witness:/\bwitness(es)?\b/i, folder:/\bfolders?\b/i, seat:/\bseats?\b/i, mistake:/\bmistakes?\b/i, ready:/\bready\b/i, 'go to court':/\bgo(es|ing)?\s+to\s+court\b|\bin\s+court\b/i, yesterday:/\byesterday\b/i, hearing:/\bhearings?\b/i, absent:/\babsent\b/i, late:/\blate(r|st)?\b/i, traffic:/\btraffic\b/i, calm:/\bcalm(ly)?\b/i, clear:/\bclear(ly)?\b/i, 'hire a lawyer':/\bhir(e|es|ed|ing)\s+(a|the|our)?\s*lawyers?\b/i, sentence:/\bsentences?\b/i, capital:/\bcapitals?\b/i, period:/\bperiods?\b/i, draft:/\bdrafts?\b/i, polite:/\bpolite(ly)?\b/i, short:/\bshort(er|est)?\b/i, explain:/\bexplain(s|ed|ing)?\b/i, 'legal right':/\blegal\s+rights?\b/i, careful:/\bcareful(ly)?\b/i, useful:/\buseful\b/i, beautiful:/\bbeautiful(ly)?\b/i, study:/\bstud(y|ies|ied|ying)\b/i, write:/\bwrit(e|es|ing)|wrote|written\b/i, rain:/\brain(s|ed|ing|y)?\b/i, check:/\bcheck(s|ed|ing)?\b/i, 'official document':/\bofficial\s+documents?\b/i };
+function matchVocabInText(v, text){
+  if (VRE[v.en]) return VRE[v.en].test(text);
+  var hw = (v.headword || v.en || '').trim();
+  if (!hw) return false;
+  var re = new RegExp('\\b' + hw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(s|es|ed|ing)?\\b', 'i');
+  return re.test(text);
+}
+var SIG_RE = /\b(usually|always|often|sometimes|never|every\s+(?:day|morning|afternoon|evening|night|week|weekend|month|year|friday|saturday|sunday|monday|tuesday|wednesday|thursday)|on\s+(?:fridays|saturdays|sundays|mondays|tuesdays|wednesdays|thursdays|weekends))\b/gi;
+var CONT_RE = /\b(?:am|is|are|i'm|you're|we're|they're|he's|she's|it's)\s+(?:not\s+|also\s+|still\s+|really\s+)?([a-z]+ing)\b/gi;
+var ING_NOT = ['interesting','boring','amazing','exciting','morning','evening','everything','nothing','something','anything','thing','king','spring','ring','sing','bring','during','ceiling','building','wedding','string','swing','wing','sibling','darling'];
+var WRITING_TYPOS = {
+  studing: { right:'studying', why:'Keep y before adding -ing (study → studying). · تبقى الـ y عند إضافة ing.' },
+  writting: { right:'writing', why:'Drop silent -e without doubling t (write → writing). · نحذف e الصامتة دون مضاعفة t.' },
+  rainning: { right:'raining', why:'Do not double n after two vowels ai (rain → raining). · لا نضاعف n لأن قبلها حرفي علة.' },
+  butefull: { right:'beautiful', why:'Suffix -ful ends with one l (beautiful). · المقطع ful ينتهي بلام واحدة.' },
+  beautifull: { right:'beautiful', why:'Suffix -ful ends with one l (beautiful). · المقطع ful ينتهي بلام واحدة.' },
+  scintist: { right:'scientist', why:'Remember scie- in scientist. · انتبه لترتيب حروف scientist.' },
+  temprature: { right:'temperature', why:'Remember the middle -era- in temperature. · لا تنسَ era في وسط temperature.' }
+};
+
+function analyze(t){ var text = String(t || '').replace(/[’‘]/g, "'");
+  var words = (text.match(/[A-Za-z']+/g) || []).length;
+  var sentences = text.split(/[.!?]+/).filter(function(s){ return (s.match(/[A-Za-z']+/g) || []).length >= 3; }).length;
+  var runOn = words >= 28 && sentences < 4;
+  var cont = 0, m; CONT_RE.lastIndex = 0; while ((m = CONT_RE.exec(text))) { if (ING_NOT.indexOf(m[1].toLowerCase()) < 0) cont++; }
+  var sig = (text.match(SIG_RE) || []).length;
+  var used = ALL_VOCAB.filter(function(v){ return matchVocabInText(v, text); }).map(function(v){ return v.en; });
+  return { words:words, sentences:sentences, runOn:runOn, cont:cont, sig:sig, used:used }; }
+
+var CHECKS = [
+  { k:'sentences', tEn:'At least 4 separate sentences (end each with a period .)', t:'4 جمل منفصلة على الأقل (بنقطة في نهاية كل جملة)', ok:function(a){ return a.sentences >= 4; } },
+  { k:'cont', tEn:'2 sentences in Present Continuous', t:'جملتان بالمضارع المستمر', ex:'am / is / are + ing', ok:function(a){ return a.cont >= 2; } },
+  { k:'sig', tEn:'At least 2 routine signal words', t:'كلمتا روتين على الأقل', ex:'usually · every day · often', ok:function(a){ return a.sig >= 2; } },
+  { k:'vocab', tEn:'3 words/phrases from the lesson', t:'3 كلمات أو عبارات من الدرس', ok:function(a){ return a.used.length >= 3; } }
+];
+
+function localWritingCheck(text){
+  var a = analyze(text);
+  var gMist = [], sMist = [];
+  if (/\b(?:I\s+am|He\s+is|She\s+is|We\s+are|They\s+are)\s+(?:work|study|go|live|sleep|wake|check|measure|miss)\b/i.test(text)) {
+    var m1 = text.match(/\b(?:I\s+am|He\s+is|She\s+is|We\s+are|They\s+are)\s+(?:work|study|go|live|sleep|wake|check|measure|miss)\b/i)[0];
+    gMist.push({ wrong:m1, right:m1.replace(/\b(He|She)\s+is\s+(\w+)/i, '$1 $2s').replace(/\b(am|is|are)\s+/i, ''), why:'Do not put am/is/are before a base verb in Present Simple. · لا نضع am/is/are قبل الفعل الأصلي في المضارع البسيط.' });
+  }
+  if (/\b(?:I|He|She|We|They)\s+(?:working|studying|going|living|sleeping|sitting|writing|reading|learning)\b/i.test(text)) {
+    var m2 = text.match(/\b(?:I|He|She|We|They)\s+(?:working|studying|going|living|sleeping|sitting|writing|reading|learning)\b/i)[0];
+    gMist.push({ wrong:m2, right:m2.replace(/^(\w+)\s+/, '$1 am/is/are '), why:'Present Continuous needs am / is / are before verb-ing. · المضارع المستمر يحتاج am / is / are قبل الفعل ing.' });
+  }
+  if (/\b(?:am|is|are|'m|'s|'re)\s+(?:knowing|needing|wanting|understanding|loving)\b/i.test(text)) {
+    var m3 = text.match(/\b(?:am|is|are|'m|'s|'re)\s+(?:knowing|needing|wanting|understanding|loving)\b/i)[0];
+    gMist.push({ wrong:m3, right:'know / need / want / understand', why:'Stative verbs do not take -ing. · أفعال الحالة لا تأخذ ing.' });
+  }
+  if (/\bi\b/.test(text)) {
+    sMist.push({ wrong:'i', right:'I', why:'Always write the pronoun "I" with a capital letter. · ضمير المتكلم I يُكتب دائمًا بحرف كبير.' });
+  }
+  Object.keys(WRITING_TYPOS).forEach(function(k){
+    var re = new RegExp('\\b' + k + '\\b', 'i');
+    if (re.test(text)) sMist.push({ wrong:k, right:WRITING_TYPOS[k].right, why:WRITING_TYPOS[k].why });
+  });
+  if (a.runOn) {
+    sMist.push({ wrong:'One long connected sentence', right:'4 separate sentences with periods (.)', why:'Split long sentences with a period (.) and start the next sentence with a capital letter. · قسّم الجملة الطويلة بنقطة وابدأ الجملة التالية بحرف كبير.' });
+  }
+  var activeCks = (D.writing && Array.isArray(D.writing.checks)) ? D.writing.checks : CHECKS;
+  var met = activeCks.filter(function(c){ return c.ok(a, text); }).length;
+  var score = Math.max(4, Math.min(10, 6 + met - gMist.length - Math.min(2, sMist.length)));
+  return {
+    score: score,
+    praise: met === 4 ? 'Great job meeting all 4 task criteria! · أحسنت، حققت جميع معايير المهمة الأربعة!' : 'Good effort practicing the lesson tenses and vocabulary! · محاولة طيبة في استخدام أزمنة الدرس وكلماته.',
+    grammarMistakes: gMist,
+    spellingMistakes: sMist,
+    mistakes: gMist.concat(sMist),
+    corrected: '',
+    next: met < 4 ? 'Try to complete all 4 checklist items above for a higher score. · حاول استيفاء جميع عناصر القائمة الأربعة لرفع الدرجة.' : 'Keep separating each sentence clearly with a period and capital letter. · استمر في فصل الجمل بنقطة وحرف كبير.'
+  };
+}
+
+function stWriting(ctl){
+  var ta = h('textarea', { class:'wt', id:'wText', rows:'8', placeholder:'I usually …\nThis month, I\'m …', 'aria-label':'Your paragraph in English · فقرتك بالإنجليزي' }); ta.value = S.writing.text || '';
+  var checks = h('ul', { class:'checks', 'aria-live':'polite' }), count = h('p', { class:'wcount' }), runOnWarn = h('div', { class:'tip', hidden:true }), fbBox = h('div', { hidden:true, 'aria-live':'polite' });
+  function paint(){ var a = analyze(ta.value);
+    var activeCks = (D.writing && Array.isArray(D.writing.checks)) ? D.writing.checks : CHECKS;
+    put(checks, activeCks.map(function(c){ var on = c.ok(a, ta.value); return h('li', { class:on ? 'on' : '' }, h('span', { class:'cb' }, on ? ico('check') : null), h('div', { class:'ck-t' }, h('span', { class:'ck-en' }, c.tEn), h('span', { html:arHTML(c.t) }), c.ex ? h('span', { class:'ck-ex', dir:'ltr', lang:'en' }, c.ex) : null, (c.k === 'vocab' && a.used.length) ? h('span', { class:'used' }, a.used.map(function(u){ return h('span', {}, u); })) : null)); }));
+    count.textContent = 'Words · الكلمات: ' + a.words + ' · Separate Sentences · الجمل المنفصلة: ' + a.sentences + ' / 4';
+    runOnWarn.hidden = !a.runOn;
+    if (a.runOn) put(runOnWarn, biNode('Tip: Split your writing into at least 4 separate sentences ending with a period (.) rather than one long connected sentence.', 'تنبيه: قسّم كتابتك إلى 4 جمل منفصلة تنتهي كل منها بنقطة (.) بدل جملة واحدة طويلة موصولة.'));
+    return a; }
+  var t1, t2;
+  ta.addEventListener('input', function(){ clearTimeout(t1); t1 = setTimeout(paint, 120); clearTimeout(t2); t2 = setTimeout(function(){ S.writing.text = ta.value; touch(); }, 900); });
+  var fix = h('button', { class:'btn', type:'button' }, ico('spark'), biBtn('Instant Check (Grammar vs. Spelling)', 'تصحيح فوري (يفصل القواعد عن الإملاء)'));
+  var copy = h('button', { class:'btn out', type:'button' }, ico('copy'), biBtn('Copy for Chat', 'نسخ للمحادثة'));
+  fix.addEventListener('click', function(){ correctWriting(ta, fix, fbBox); });
+  copy.addEventListener('click', function(){ var text = ta.value.trim(); if (!text) { toast('Paragraph is empty. · الفقرة فارغة.'); return; }
+    var payload = 'صحّح لي فقرة الدرس الأول من جواز الإنجليزية (مع فصل أخطاء الإملاء عن القواعد):\n\n' + text, fallback = function(){ ta.focus(); ta.select(); toast('Text selected — copy from your device menu. · النص محدد، وتقدر تنسخه من قائمة الجهاز.'); };
+    try { navigator.clipboard.writeText(payload).then(function(){ toast('Copied! Paste it in chat. · نُسخت الفقرة، والصقها لي في المحادثة.'); }, fallback); } catch (e) { fallback(); } });
+  ctl.set(S.writingDone ? 'التالي' : 'إنهاء المهمة', true, function(){ var a = analyze(ta.value); if (a.sentences < 4) { toast('Write at least 4 separate sentences ending with a period (.). · نحتاج 4 جمل منفصلة على الأقل تنتهي بنقطة.'); return; } S.writing.text = ta.value; S.writingDone = true; touch(); updateProgress(); nextStep(); });
+  if (S.writing.fb) { fbBox.hidden = false; paintFeedback(fbBox, S.writing.fb); }
+  paint();
+  return [
+    label('Stage 5 of 6 · Writing', 'المرحلة 5 من 6 · الكتابة'),
+    h('div', { class:'task' },
+      D.writing.taskEn ? h('p', { class:'task-en' }, D.writing.taskEn) : null,
+      h('h2', { class:'task-ar' }, D.writing.task),
+      checks),
+    ta, count, runOnWarn,
+    h('div', { class:'wbtns' }, fix, copy),
+    SAMPLE ? h('p', { class:'fine' }, 'Instant check separates Grammar & Usage from Spelling mistakes. · التصحيح الفوري يفصل أخطاء القواعد عن الإملاء.') : null,
+    fbBox,
+    h('details', { class:'model' },
+      h('summary', {}, 'Model Answer · نموذج إجابة'),
+      h('p', { class:'model-t hl-on', dir:'ltr', html:parseMarkup(D.writing.modelMarked || D.writing.model) }),
+      h('p', { class:'fine' }, 'Light blue = Present Simple, Terracotta = Present Continuous, Dashed = Signal words. · الأزرق الفاتح للمضارع البسيط، والطوبي للمستمر، والإطار المنقّط لكلمات الإشارة.'))
+  ];
+}
+function paintFeedback(box, fb){
+  var gMist = Array.isArray(fb.grammarMistakes) ? fb.grammarMistakes : (Array.isArray(fb.mistakes) ? fb.mistakes.filter(function(m){ return m.kind !== 'spelling'; }) : []);
+  var sMist = Array.isArray(fb.spellingMistakes) ? fb.spellingMistakes : (Array.isArray(fb.mistakes) ? fb.mistakes.filter(function(m){ return m.kind === 'spelling'; }) : []);
+  function renderList(arr){
+    return h('ol', {}, arr.map(function(m){
+      var whyParts = String(m.why || '').split(' · ');
+      var whyNode = !m.why ? null : (whyParts.length > 1 ? biNode(whyParts[0], whyParts.slice(1).join(' · ')) : h('p', { class:'why', html:arHTML(m.why) }));
+      return h('li', {}, h('p', { class:'fx' }, h('s', {}, m.wrong), h('span', { 'aria-hidden':'true' }, '←'), h('b', {}, m.right)), whyNode);
+    }));
+  }
+  put(box, h('div', { class:'fbk' },
+    h('div', { class:'fbk-top' }, ring(fb.score, 10), h('div', {}, h('p', { class:'st-lbl' }, 'Teacher Feedback · تصحيح المعلم'), (String(fb.praise || '').indexOf(' · ') >= 0 ? biNode(fb.praise.split(' · ')[0], fb.praise.split(' · ')[1]) : h('p', { style:'font-weight:600', html:arHTML(fb.praise) })))),
+    h('div', { class:'fbk-sec' },
+      h('h3', {}, '1. Grammar & Usage · القواعد والاستخدام (' + gMist.length + ')'),
+      gMist.length ? renderList(gMist) : h('p', { style:'font-weight:600;color:var(--ok-ink);font-size:13.5px' }, 'No grammar mistakes found! · لا توجد أخطاء في القواعد والتركيب.')),
+    h('div', { class:'fbk-sec spell' },
+      h('h3', {}, '2. Spelling & Punctuation · الإملاء وعلامات الترقيم (' + sMist.length + ')'),
+      sMist.length ? renderList(sMist) : h('p', { style:'font-weight:600;color:var(--ok-ink);font-size:13.5px' }, 'Clean spelling and punctuation! · الإملاء وعلامات الترقيم سليمة.')),
+    fb.corrected ? h('div', { class:'fbk-corr' }, h('h3', {}, 'Corrected Paragraph · الفقرة بعد التصحيح'), h('p', { dir:'ltr' }, fb.corrected)) : null,
+    fb.next ? h('p', { class:'fbk-next', html:'<b>Next Step · الخطوة التالية: </b>' + arHTML(fb.next) }) : null));
+}
+
+/* done screens */
+var PART_SCORE = {
+  recall:function(){ return scoreOf(IDS.rc); },
+  vocab:function(){ return scoreOf(IDS.vg); },
+  grammar:function(){ return scoreOf([].concat(IDS.gA, IDS.gB, IDS.gC, IDS.gD)); },
+  reading:function(){ return scoreOf((D.listening && !D.reading) ? IDS.lq : IDS.rq); },
+  writing:function(){ return S.writing.fb ? 'Paragraph score: ' + S.writing.fb.score + '/10 · تقييم الفقرة: ' + S.writing.fb.score + ' من 10' : 'Paragraph saved · الفقرة محفوظة'; },
+  quiz:function(){ return S.quiz.best != null ? S.quiz.best + ' of ' + D.quiz.length + ' · ' + S.quiz.best + ' من ' + D.quiz.length : ''; }
+};
+function scoreOf(ids){ var c = (ids || []).filter(function(id){ return S.ans[id] && S.ans[id].c; }).length, a = (ids || []).filter(function(id){ return S.ans[id]; }).length; return c + ' correct of ' + a + ' · ' + c + ' صحيحة من ' + a; }
+function stDone(k, ctl){ updateProgress(); var p = partOf(k), idx = PARTS.indexOf(p), nxt = PARTS[idx + 1], pr = lessonProgress(), all = pr.done === pr.total, isDone = !!S.stamps[k];
+  if (all) ctl.set('رجوع للدرس', true, closePlayer);
+  else if (nxt) ctl.set('التالي: ' + nxt.ar, true, function(){ openPart(nxt.k); });
+  else ctl.set('رجوع للدرس', true, closePlayer);
+  var redo = (k !== 'quiz' && k !== 'writing') ? h('button', { class:'link', type:'button', on:{ click:function(){ resetPart(k); } } }, 'Redo exercises in this stage · إعادة أسئلة هذه المرحلة') : null;
+  return h('div', { class:'fin' }, h('span', { class:'done-ic pop' }, all ? ico('star') : ico('check')),
+    h('h1', { class:'bi-h' },
+      h('span', { class:'en', dir:'ltr' }, all ? 'Lesson 1 Complete!' : (isDone ? p.fullEn + ' Complete!' : 'End of ' + p.fullEn)),
+      h('small', {}, all ? 'اكتمل الدرس الأول بمراحله الست!' : (isDone ? 'اكتملت مرحلة ' + p.fullAr : 'وصلت لنهاية ' + p.fullAr))),
+    h('p', {}, all ? 'All 6 stages finished! · ست مراحل كاملة. اطلب الدرس التالي في المحادثة.' : (isDone ? PART_SCORE[k]() : 'Some questions in this stage are still unanswered. · بقيت أسئلة ما جاوبت عليها في هذه المرحلة. ارجع لها من الخطوة السابقة.')),
+    all ? penguin(84, 119) : null, redo);
+}
+function resetPart(k){ var ids = k === 'recall' ? IDS.rc : k === 'vocab' ? IDS.vg : k === 'grammar' ? [].concat(IDS.gA, IDS.gB, IDS.gC, IDS.gD) : k === 'reading' ? ((D.listening && !D.reading) ? IDS.lq : IDS.rq) : [];
+  ids.forEach(function(id){ delete S.ans[id]; }); if (k === 'vocab') { M = null; } touch(); P.i = 0; S.ui.step[k] = 0; saveLocal(); toast('Stage reset · رجعت أسئلة المرحلة من البداية'); render(); }
+function stExpressIntro(ctl){
+  ctl.enable('ابدأ');
+  return h('div', { class:'intro' },
+    h('span', { class:'intro-ic' }, ico('clock')),
+    label('Busy-Day Express Mode · 15 Minutes', 'الوضع المختصر للأيام المزحومة · ١٥ دقيقة'),
+    h('h1', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, '15-Minute Express Review'), h('small', {}, 'مراجعة سريعة تحفظ سلسلتك في الأيام المزحومة')),
+    h('p', { class:'en-p', dir:'ltr' }, 'Short on time today? Complete 3 active recall words from memory, 3 key flashcards (including the legal phrase), and 2 targeted Error Lab drills.'),
+    h('p', {}, 'يومك مزحوم؟ أنجز ٣ كلمات بالاسترجاع النشط كتابةً، و٣ بطاقات (مع العبارة القانونية)، وسؤالين من مختبر الأخطاء. تُسجَّل جلسة مراجعة (+١٥ دقيقة في ساعات الدراسة) لا درسًا مكتملًا.'),
+    h('ul', {}, [
+      ['pen', '3 Active Recall words typed from memory', '٣ كلمات استرجاع نشط كتابةً من الذاكرة'],
+      ['cards', '3 Flashcards + Legal Phrase with human audio', '٣ بطاقات مع العبارة القانونية والنطق البشري'],
+      ['spark', '2 Priority Error Lab drills', 'تمرينان من أعلى أنماط مختبر الأخطاء تكرارًا']
+    ].map(function(x){ return h('li', {}, ico(x[0]), biNode(x[1], x[2])); })));
+}
+function stIrrDrill(st, ctl){
+  var v = (D.irregularVerbs || []).filter(function(x){ return x.base === st.base; })[0] || D.irregularVerbs[0];
+  var inPast = h('input', { class:'gap-in', type:'text', dir:'ltr', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', placeholder:'Past Simple…', 'aria-label':'Past Simple of ' + v.base });
+  var inPp = h('input', { class:'gap-in', type:'text', dir:'ltr', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', placeholder:'Past Participle…', 'aria-label':'Past Participle of ' + v.base });
+  var fb = h('div', { hidden:true }), done = false;
+  var card = qCard(h('div', {},
+    h('p', { class:'en', dir:'ltr', style:'font-size:13.5px;color:var(--on-dark-2);text-align:left' }, 'Type the Past Simple (V2) and Past Participle (V3) from memory:'),
+    h('p', { class:'q-en', dir:'ltr', style:'margin-top:4px' }, v.base, h('span', { class:'verb' }, ' (' + v.ar + ')')),
+    h('div', { class:'irr-inputs' },
+      h('div', { class:'irr-field' }, h('label', {}, 'Past Simple (V2)'), inPast),
+      h('div', { class:'irr-field' }, h('label', {}, 'Past Participle (V3)'), inPp))
+  ), { tag:'Irregular Verbs · الأفعال الشاذة' });
+
+  function matchForm(typed, target){
+    var nt = norm(typed);
+    return String(target).split('/').some(function(part){ return norm(part) === nt; }) || norm(target) === nt;
+  }
+  function check(){
+    if (done) return;
+    var p1 = inPast.value.trim(), p2 = inPp.value.trim();
+    if (!p1 || !p2) {
+      var emptyEl = !p1 ? inPast : inPp;
+      emptyEl.classList.remove('shake'); void emptyEl.offsetWidth; emptyEl.classList.add('shake'); emptyEl.focus();
+      return;
+    }
+    done = true;
+    var ok1 = matchForm(p1, v.past), ok2 = matchForm(p2, v.pp), ok = ok1 && ok2;
+    inPast.disabled = true; inPp.disabled = true;
+    inPast.classList.add(ok1 ? 'ok' : 'bad');
+    inPp.classList.add(ok2 ? 'ok' : 'bad');
+    var cur = (S.irrSr && S.irrSr[v.base]) || { box:0, nextAt:0 };
+    var nextBox = ok ? Math.min(4, (cur.box || 0) + 1) : 1;
+    var days = SR_DAYS[Math.min(SR_DAYS.length - 1, nextBox - 1)];
+    S.irrSr[v.base] = { box:nextBox, lastAt:Date.now(), nextAt:Date.now() + days * 864e5 };
+    if (!ok) bumpErrorLab('spelling', v.base + ' → ' + v.past + ' → ' + v.pp);
+    touch();
+    fb.hidden = false;
+    var whyEn = 'Three forms: ' + v.base + ' → ' + v.past + ' → ' + v.pp + ' (Next review in +' + days + 'd).';
+    var whyAr = 'الصيغ الثلاث للفعل (' + v.ar + '): ' + v.base + ' → ' + v.past + ' → ' + v.pp + ' · المراجعة القادمة بعد ' + days + ' يوم.';
+    var cNode = fbCard(ok, whyAr, null, ok ? null : ['Correct forms · التصريف الصحيح', v.base + ' → ' + v.past + ' → ' + v.pp], whyEn);
+    cNode.querySelector('.fb-t').append(h('div', { class:'audio-row' }, sayBtn(v.base, 'Human Pronunciation · نطق بشري'), oxBtn(v.base)));
+    put(fb, cNode);
+    ctl.enable('التالي');
+  }
+  inPast.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); inPp.focus(); } });
+  inPp.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); check(); } });
+  ctl.set('تحقق', true, check);
+  return [label('Irregular Verb ' + st.pos + ' of ' + st.total, 'الفعل الشاذ ' + st.pos + ' من ' + st.total), card, fb];
+}
+function stErrDrill(st, ctl){
+  var cat = (D.errorLabCatalog || []).filter(function(c){ return c.key === st.catKey; })[0] || D.errorLabCatalog[0];
+  var d = (cat.drills && cat.drills[st.dIdx]) || cat.drills[0];
+  ctl.set('التالي', false, nextStep);
+  var nodes = MCQ({ prompt:d.s, opts:d.opts, a:d.a, whyEn:d.whyEn, why:d.why }, {
+    tag:'Error Lab · ' + cat.en,
+    onAnswer:function(ok){
+      var entry = S.errorLab[cat.key] || { count:cat.seedCount || 1, solved:0, box:0 };
+      if (ok) {
+        entry.solved = (entry.solved || 0) + 1;
+        entry.box = Math.min(4, (entry.box || 0) + 1);
+        var days = SR_DAYS[Math.min(SR_DAYS.length - 1, entry.box - 1)];
+        entry.nextAt = Date.now() + days * 864e5;
+      } else {
+        entry.count = (entry.count || 0) + 1;
+        entry.box = 1;
+        entry.nextAt = Date.now() + 864e5;
+      }
+      S.errorLab[cat.key] = entry;
+      touch();
+      ctl.enable('التالي');
+    }
+  });
+  return [
+    label('Error Lab Drill · ' + cat.en, 'تمرين مختبر الأخطاء · ' + cat.ar),
+    h('div', { class:'elab-ex' }, h('span', { class:'no' }, cat.wrongEx), h('span', { class:'yes' }, cat.rightEx))
+  ].concat(nodes);
+}
+function stSessionDone(k, ctl){
+  if (k === 'express' && P && !P._loggedExpress) {
+    P._loggedExpress = true;
+    S.expressSessions = (S.expressSessions || 0) + 1;
+    touch();
+  }
+  var isRev = (k === 'review' || k === 'errlab' || String(k).indexOf('errlab:') === 0);
+  var ctaLbl = k === 'express' ? 'رجوع للدرس' : (isRev ? 'رجوع للمراجعة' : 'رجوع للكلمات');
+  ctl.set(ctaLbl, true, closePlayer);
+  var left = mistakeIds().length;
+  var titleEn = k === 'express' ? '15-Min Express Review Logged!' : k === 'irregular' ? 'Irregular Verbs Practice Complete!' : isRev ? 'Error Lab & Review Complete!' : 'Flashcards Complete';
+  var titleAr = k === 'express' ? 'سُجّلت جلسة الوضع المختصر (+١٥ دقيقة)!' : k === 'irregular' ? 'أنهيت تدريب الأفعال الشاذة!' : isRev ? 'أنهيت جلسة مختبر الأخطاء والمراجعة!' : 'أنهيت البطاقات';
+  var desc = k === 'express'
+    ? 'Added +15 minutes to your study hours as a review session (not a completed lesson). Total express sessions: ' + (S.expressSessions || 1) + '. · أُضيفت ١٥ دقيقة لساعات دراستك كجلسة مراجعة (لا تُحسب درسًا مكتملًا).'
+    : k === 'irregular'
+    ? 'Your Spaced Repetition intervals (+1d, +3d, +7d, +30d) have been updated. · تحدّثت مواعيد التكرار المتباعد للأفعال التي تدرّبت عليها.'
+    : isRev
+    ? (left ? left + ' item(s) left in lesson notebook. Error Lab priorities updated! · تحدّثت أولويات مختبر الأخطاء وتبقى ' + left + ' في دفتر الدرس.' : 'Your notebook is now empty! Error Lab priorities and spaced retention dates are updated. · الدفتر صار فاضي. ممتاز! وتحدّثت أولويات مختبر الأخطاء.')
+    : 'Words marked "Review later" will appear first next time. · الكلمات التي اخترت «أراجعها لاحقًا» تظهر لك أولًا في المرة القادمة.';
+  return h('div', { class:'fin' }, h('span', { class:'done-ic pop' }, ico('check')),
+    h('h1', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, titleEn), h('small', {}, titleAr)),
+    h('p', {}, desc));
+}
+
+/* ---------- sheets ---------- */
+var sheetClose = null;
+function openSheet(titleEn, titleAr, nodes, onClose){ var box = $('#sheetBox');
+  put(box, h('span', { class:'grab', 'aria-hidden':'true' }),
+    h('div', { class:'sheet-h' },
+      h('h2', { id:'sheetTitle', class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, titleEn), h('small', {}, titleAr)),
+      h('button', { class:'ib sm close', type:'button', 'aria-label':'Close · إغلاق', on:{ click:closeSheet } }, ico('x'))),
+    nodes);
+  $('#sheet').hidden = false; doc.body.style.overflow = 'hidden'; sheetClose = onClose || null; }
+function closeSheet(){ $('#sheet').hidden = true; doc.body.style.overflow = ''; if (sheetClose) { var f = sheetClose; sheetClose = null; f(); } }
+
+function openCredits(){
+  openSheet('Wikimedia Commons Audio Credits', 'أصحاب التسجيلات الصوتية البشرية', [
+    h('p', { class:'muted sm' }, biNode('Human pronunciation recordings are streamed from Wikimedia Commons under Creative Commons / Public Domain licenses, alongside direct links to Oxford Learner\'s Dictionaries.', 'التسجيلات الصوتية البشرية تُشغَّل مباشرة من ويكيميديا كومنز وفق تراخيص المشاع الإبداعي أو الملكية العامة، إلى جانب روابط قاموس أوكسفورد للمتعلمين.')),
+    h('ul', { class:'cred-list' }, ALL_VOCAB.map(function(v){
+      var files = v.wikiFiles ? v.wikiFiles : (v.wikiFile ? [v.wikiFile] : []);
+      return h('li', { class:'cred-it' },
+        h('div', { style:'display:flex;justify-content:space-between;align-items:center;gap:8px' },
+          h('b', { class:'en', dir:'ltr' }, v.en),
+          oxBtn(v)),
+        files.map(function(f){
+          return h('a', { href:'https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(f), target:'_blank', rel:'noopener noreferrer' }, 'File:' + f + ' ↗');
+        }),
+        h('span', { class:'muted sm' }, v.wikiCredit || 'Wikimedia Commons · CC BY-SA / Public Domain'));
+    }))
+  ]);
+}
+
+function computeDashboardStats(){
+  var stageMins = PARTS.reduce(function(acc, p){ return acc + (S.stamps[p.k] ? p.min : 0); }, 0);
+  var expMins = (S.expressSessions || 0) * 15;
+  var camblyMins = (S.camblyLogs || []).reduce(function(acc, l){ return acc + (Number(l.mins) || 0); }, 0);
+  var irrPracticed = Object.keys(S.irrSr || {}).length;
+  var totalMins = stageMins + expMins + camblyMins + (irrPracticed * 2);
+  var hours = totalMins / 60;
+  var hoursStr = hours.toFixed(1);
+  var a2TargetHrs = 70;
+  var hoursPct = Math.min(100, Math.round((hours / a2TargetHrs) * 100));
+
+  function accOf(ids, fallbackPct){
+    var ans = (ids || []).filter(function(id){ return S.ans[id]; });
+    if (!ans.length) return fallbackPct;
+    var ok = ans.filter(function(id){ return S.ans[id].c; }).length;
+    return Math.round((ok / ids.length) * 100);
+  }
+  var readPct = S.stamps.reading ? 100 : accOf(IDS.rq, S.read1Done ? 45 : 75);
+  var listenPct = S.stamps.reading && D.listening ? 100 : accOf(IDS.lq, 70);
+  var writePct = S.writingDone ? (S.writing.fb && S.writing.fb.score ? S.writing.fb.score * 10 : 85) : (S.writing.text ? 45 : 40);
+  var speakSessions = (S.camblyLogs || []).length;
+  var speakPhrases = (S.camblyLogs || []).reduce(function(a, l){ return a + (Number(l.phrases) || 0); }, 0);
+  var speakPct = speakSessions ? Math.min(100, speakSessions * 25 + speakPhrases * 5) : 0;
+  var gramPct = accOf([].concat(IDS.gA || [], IDS.gB || [], IDS.gC || [], IDS.gD || []), 55);
+  var vocKnown = ALL_VOCAB.filter(function(v){ return S.cards[v.en] === 'k'; }).length;
+  var vocPct = Math.max(accOf([].concat(IDS.rc || [], IDS.vg || []), 50), Math.round(((vocKnown + irrPracticed) / Math.max(1, ALL_VOCAB.length)) * 100));
+
+  return {
+    totalMins: totalMins,
+    stageMins: stageMins,
+    expMins: expMins,
+    camblyMins: camblyMins,
+    hoursStr: hoursStr,
+    a2TargetHrs: a2TargetHrs,
+    hoursPct: hoursPct,
+    readPct: readPct,
+    listenPct: listenPct,
+    writePct: writePct,
+    speakPct: speakPct,
+    speakSessions: speakSessions,
+    speakPhrases: speakPhrases,
+    gramPct: gramPct,
+    vocPct: Math.min(100, vocPct),
+    irrPracticed: irrPracticed
+  };
+}
+function openDashboard(){
+  var st = computeDashboardStats();
+  var skills = [
+    { en:'Reading · القراءة', pct:st.readPct, cls:'ok', subEn:'Diagnostic A2 steady (7/7) + Lesson reading & evidence', subAr:'ثابت في A2 تشخيصيًا (٧/٧) + قراءة الدروس بالدليل' },
+    { en:'Listening · الاستماع', pct:st.listenPct, cls:'ok', subEn:'Diagnostic A2 steady (6/6) + British Council / ELLLO human audio', subAr:'ثابت في A2 تشخيصيًا (٦/٦) + مقاطع الاستماع البشرية' },
+    { en:'Writing · الكتابة', pct:st.writePct, cls:'acc', subEn:'Early A2 · Daily 4-sentence task separating spelling from grammar', subAr:'بداية A2 · مهمة يومية من ٤ جمل منفصلة تفصل الإملاء عن القواعد' },
+    { en:'Speaking (Cambly) · التحدث', pct:st.speakPct, cls:'acc',
+      subEn: st.speakSessions ? (st.speakSessions + ' Cambly session(s) · ' + st.speakPhrases + ' card phrases used') : 'Measured in 1st Cambly session (30 min weekly)',
+      subAr: st.speakSessions ? (st.speakSessions + ' جلسات كامبلي · استُخدمت ' + st.speakPhrases + ' عبارات') : 'يُقاس في أول جلسة كامبلي (ثم جلسة أسبوعية ٣٠ دقيقة)' },
+    { en:'Grammar · القواعد', pct:st.gramPct, cls:'', subEn:'Core Inventory order + Error Lab active patterns', subAr:'بترتيب Core Inventory مع تمارين مختبر الأخطاء' },
+    { en:'Vocabulary, Spelling & Irregulars · المفردات والإملاء', pct:st.vocPct, cls:'', subEn:ALL_VOCAB.length + ' lesson phrases + ' + st.irrPracticed + '/60 irregular verbs practiced', subAr:ALL_VOCAB.length + ' عبارة درس + ' + st.irrPracticed + ' من ٦٠ فعلًا شاذًا' }
+  ];
+  openSheet('Progress & Skills Dashboard', 'لوحة التقدم بالساعات والمهارات', [
+    h('div', { class:'dash-hero' },
+      h('div', { class:'dash-hrs' },
+        biNode('Stage A2 Guided Study Hours', 'ساعات الدراسة المنجزة في مرحلة A2'),
+        h('b', {}, st.hoursStr + ' / ' + st.a2TargetHrs + ' hrs')),
+      h('div', { class:'dash-bar' }, h('span', { style:'width:' + Math.max(4, st.hoursPct) + '%' })),
+      h('p', { class:'sm', style:'color:var(--on-dark-2)' }, 'Cambridge cumulative target: 180–200 hrs for A2 (~70 hrs from Early A2). · مقدّر كامبريدج لمرحلة A2 نحو ٧٠ ساعة من مستواك الحالي.'),
+      h('div', { class:'dash-meta' },
+        h('div', { class:'dash-m' }, h('b', {}, st.stageMins + 'm'), h('span', {}, 'Lessons · الدروس')),
+        h('div', { class:'dash-m' }, h('b', {}, (S.expressSessions || 0) + ' (' + st.expMins + 'm)'), h('span', {}, 'Express · المختصر')),
+        h('div', { class:'dash-m' }, h('b', {}, st.camblyMins + 'm'), h('span', {}, 'Cambly · المحادثة')))),
+    h('h3', { class:'bi-h', style:'font-size:15.5px' }, h('span', { class:'en', dir:'ltr' }, '4 Skills & Foundation Indicators'), h('small', {}, 'مؤشرات المهارات الأربع والأساس اللغوي')),
+    h('div', { class:'skill-list' }, skills.map(function(sk){
+      return h('div', { class:'skill-card' },
+        h('div', { class:'skill-top' },
+          h('b', { style:'font-size:14px' }, sk.en),
+          h('span', { class:'skill-pct' }, sk.pct ? sk.pct + '%' : 'Pending · بالانتظار')),
+        h('div', { class:'skill-track' }, h('span', { class:sk.cls, style:'width:' + Math.max(sk.pct ? 6 : 0, sk.pct) + '%' })),
+        biNode(sk.subEn, sk.subAr));
+    })),
+    h('div', { class:'wbtns' },
+      h('button', { class:'btn sm', type:'button', on:{ click:function(){ closeSheet(); openCambly(); } } }, ico('speaker'), biBtn('Cambly Card & Log', 'بطاقة كامبلي وسجل الجلسة')),
+      h('button', { class:'btn out sm', type:'button', on:{ click:function(){ closeSheet(); openSession('express'); } } }, ico('clock'), biBtn('15-Min Express Mode', 'الوضع المختصر ١٥ د')))
+  ]);
+}
+
+
+/* ---------- Stage 4: Unit Test (90% Mastery / 80% Pass), Legal Corner & Pre-Tests (90% Skip) ---------- */
+var UT_STATE = null, MINI_STATE = null, PT_STATE = null;
+
+function stUnitLegal(st, ctl){
+  var ut = (D.unitTests && D.unitTests[st.unit]) || D.unitTests[1];
+  var lc = ut.legalCorner;
+  ctl.enable('ابدأ الاختبار');
+  return [
+    label('Friday Review · Weekly Legal Corner (10 min)', 'مراجعة الجمعة · الركن القانوني الأسبوعي (١٠ دقائق)'),
+    h('div', { class:'qi' },
+      h('h1', { class:'bi-h' }, h('span', { class:'en', dir:'ltr', style:'color:#fff' }, ut.titleEn), h('small', { style:'color:var(--honey)' }, ut.titleAr)),
+      h('p', { class:'en', dir:'ltr', style:'color:#fff;font-weight:600;text-align:left' }, '20 new questions + a short applied writing task. Mastery target: 90% (18/20). Passing threshold: 80% (16/20).'),
+      h('p', {}, '٢٠ سؤالًا جديدًا لم تظهر في الدروس + مهمة تطبيقية قصيرة. هدف الإتقان ٩٠٪ (١٨/٢٠)، وحد العبور ٨٠٪ (١٦/٢٠): من ٨٠ إلى ٨٩٪ تعبر الوحدة وتعود أخطاؤك لمختبر الأخطاء مع اختبار مصغر الأسبوع التالي، وأقل من ٨٠٪ تراجع الدروس الضعيفة أولًا.'),
+      h('div', { class:'qi-stats' },
+        h('div', { class:'qs' }, h('b', {}, '20'), h('span', {}, 'New Qs · سؤالًا جديدًا')),
+        h('div', { class:'qs' }, h('b', { dir:'ltr' }, '90%'), h('span', {}, 'Mastery · إتقان')),
+        h('div', { class:'qs' }, h('b', { dir:'ltr' }, '80%'), h('span', {}, 'Pass · حد العبور')))),
+    h('div', { class:'sec-h' }, h('h2', { class:'bi-h', style:'font-size:17px' }, h('span', { class:'en', dir:'ltr' }, lc.titleEn), h('small', {}, lc.titleAr))),
+    h('p', { class:'muted sm' }, biNode(lc.introEn, lc.introAr)),
+    h('div', { class:'wlist' }, lc.terms.map(function(t){
+      return h('div', { class:'elab-card' },
+        h('div', { style:'display:flex;justify-content:space-between;align-items:center;gap:8px' },
+          biNode(t.en, t.ar),
+          h('div', { class:'audio-row', style:'margin:0' }, oxBtn(t.en), sayBtn(t.en, 'Pronunciation · نطق ' + t.en))),
+        h('p', { class:'w-ex' }, t.ex),
+        h('p', { class:'sm muted' }, t.exAr));
+    }))
+  ];
+}
+
+function stUnitTestQ(st, ctl){
+  var ut = (D.unitTests && D.unitTests[st.unit]) || D.unitTests[1];
+  var q = ut.questions[st.qIdx];
+  var saved = UT_STATE && UT_STATE.ans[st.qIdx];
+  ctl.set('التالي', saved != null, nextStep);
+  var nodes = MCQ({ prompt:q.s, opts:q.opts, a:q.a, whyEn:q.whyEn, why:q.why }, {
+    tag:'Unit ' + st.unit + ' Test · Q' + (st.qIdx + 1) + '/20',
+    saved: saved != null ? { v:saved.v } : null,
+    onAnswer:function(ok, v){
+      if (!UT_STATE) UT_STATE = { unit:st.unit, ans:{}, applied:'' };
+      UT_STATE.ans[st.qIdx] = { c:ok, v:v };
+      if (!ok) bumpErrorLab(q.errCat || 'tense', q.s);
+      touch();
+      ctl.enable('التالي');
+    }
+  });
+  return [label('Unit Test · Question ' + (st.qIdx + 1) + ' of ' + ut.questions.length, 'اختبار الوحدة · السؤال ' + (st.qIdx + 1) + ' من ' + ut.questions.length)].concat(nodes);
+}
+
+function stUnitApplied(st, ctl){
+  var ut = (D.unitTests && D.unitTests[st.unit]) || D.unitTests[1];
+  var ta = h('textarea', { class:'wt', rows:'5', placeholder:'1. I usually ...\n2. This week, I am ...\n3. Before starting a job, we sign a contract.', 'aria-label':'Short Applied Task · المهمة التطبيقية القصيرة' });
+  ta.value = (UT_STATE && UT_STATE.applied) || '';
+  var cnt = h('p', { class:'wcount' });
+  function up(){
+    var a = analyze(ta.value);
+    cnt.textContent = 'Separate sentences · الجمل المنفصلة: ' + a.sentences + ' / 3 · Words · الكلمات: ' + a.words;
+    return a;
+  }
+  ta.addEventListener('input', up);
+  up();
+  ctl.set('النتيجة وتحليل الأخطاء', true, function(){
+    var a = up();
+    if (a.sentences < 3) {
+      toast('Please write at least 3 separate sentences ending with a period (.). · اكتب ٣ جمل منفصلة على الأقل تنتهي بنقطة.');
+      return;
+    }
+    if (!UT_STATE) UT_STATE = { unit:st.unit, ans:{}, applied:'' };
+    UT_STATE.applied = ta.value;
+    nextStep();
+  });
+  return [
+    label('Unit Test · Short Applied Task', 'اختبار الوحدة · المهمة التطبيقية القصيرة'),
+    h('div', { class:'task' },
+      h('p', { class:'task-en' }, ut.appliedTask.promptEn),
+      h('h2', { class:'task-ar' }, ut.appliedTask.promptAr)),
+    ta, cnt
+  ];
+}
+
+function stUnitTestResult(st, ctl){
+  var ut = (D.unitTests && D.unitTests[st.unit]) || D.unitTests[1];
+  var N = ut.questions.length;
+  var sc = 0, missedIdxs = [], weakLessons = {};
+  ut.questions.forEach(function(q, idx){
+    var a = UT_STATE && UT_STATE.ans[idx];
+    if (a && a.c) sc++;
+    else {
+      missedIdxs.push(idx);
+      if (q.lesson) weakLessons[q.lesson] = true;
+    }
+  });
+  var pct = Math.round((sc / N) * 100);
+  var status = pct >= 90 ? 'mastered' : pct >= 80 ? 'passed' : 'review_needed';
+  var prev = (S.unitTests && S.unitTests[st.unit]) || {};
+  S.unitTests[st.unit] = {
+    best: Math.max(prev.best || 0, sc),
+    last: sc,
+    attempts: (prev.attempts || 0) + 1,
+    status: (prev.status === 'mastered' || status === 'mastered') ? 'mastered' : status,
+    appliedText: (UT_STATE && UT_STATE.applied) || prev.appliedText || '',
+    miniQuizDue: status === 'passed',
+    missedIdxs: missedIdxs
+  };
+  touch();
+  ctl.set('رجوع للدروس', true, closePlayer);
+
+  var msgEn = status === 'mastered'
+    ? 'Full Mastery Achieved (' + pct + '% · ≥90%)!'
+    : status === 'passed'
+    ? 'Unit Passed (' + pct + '% · 80–89% Threshold)!'
+    : 'Score Below 80% (' + pct + '%) — Review Weak Lessons First';
+  var msgAr = status === 'mastered'
+    ? 'حققت درجة الإتقان الكامل للوحدة (' + pct + '٪ — ٩٠٪ فأكثر)!'
+    : status === 'passed'
+    ? 'عبرت الوحدة (' + pct + '٪ — بين ٨٠٪ و٨٩٪)!'
+    : 'أقل من حد العبور ٨٠٪ (' + pct + '٪) — راجع الدروس الضعيفة أولًا';
+  var subEn = status === 'mastered'
+    ? 'You mastered Unit 1 and its applied task. Ready for the next unit!'
+    : status === 'passed'
+    ? 'You can move forward! Your missed questions were sent to the Error Lab and scheduled for a Mini Follow-Up Quiz next week.'
+    : 'Review the lessons listed below where mistakes occurred, then retake the Unit Test.';
+  var subAr = status === 'mastered'
+    ? 'أتقنت الوحدة ١ ومهمتها التطبيقية بنجاح.'
+    : status === 'passed'
+    ? 'يمكنك المتابعة للوحدة التالية! أُضيفت أخطاؤك إلى مختبر الأخطاء وجُدول لك اختبار مصغر في الأسبوع التالي.'
+    : 'راجع الدروس المحددة أدناه أولًا ثم أعد اختبار الوحدة.';
+
+  var weakKeys = Object.keys(weakLessons);
+  return h('div', { class:'result' },
+    ring(sc, N),
+    h('div', { class:'res-msg' }, biNode(msgEn, msgAr)),
+    h('div', { class:'res-sub' }, biNode(subEn, subAr)),
+    status === 'passed' ? h('button', { class:'btn sm', type:'button', on:{ click:function(){ openSession('unitMini:' + st.unit); } } },
+      ico('review'), biBtn('Open Mini Follow-Up Quiz (' + missedIdxs.length + ' Qs)', 'افتح الاختبار المصغر للأخطاء (' + missedIdxs.length + ' أسئلة)')) : null,
+    weakKeys.length ? h('div', { class:'elab-card', style:'width:100%;text-align:right' },
+      biNode('Recommended Lessons to Review:', 'الدروس التي يُنصح بمراجعتها من أخطائك:'),
+      h('p', { class:'en', dir:'ltr', style:'font-weight:700;color:var(--accent-ink);text-align:left' }, weakKeys.join(' · ').toUpperCase())) : null,
+    h('button', { class:'btn out sm', type:'button', on:{ click:function(){ openSession('unitTest:' + st.unit); } } }, biBtn('Retake Unit Test', 'إعادة اختبار الوحدة')));
+}
+
+function stUnitMiniQ(st, ctl){
+  var ut = (D.unitTests && D.unitTests[st.unit]) || D.unitTests[1];
+  var q = ut.questions[st.qIdx] || ut.questions[0];
+  ctl.set('التالي', false, nextStep);
+  var nodes = MCQ({ prompt:q.s, opts:q.opts, a:q.a, whyEn:q.whyEn, why:q.why }, {
+    tag:'Mini Follow-Up Quiz · ' + st.pos + '/' + st.total,
+    onAnswer:function(ok, v){
+      if (!MINI_STATE) MINI_STATE = { unit:st.unit, idxs:[st.qIdx], ans:{} };
+      MINI_STATE.ans[st.qIdx] = { c:ok, v:v };
+      ctl.enable('التالي');
+    }
+  });
+  return [label('Mini Follow-Up Quiz · ' + st.pos + ' of ' + st.total, 'الاختبار المصغر لأخطاء الوحدة · ' + st.pos + ' من ' + st.total)].concat(nodes);
+}
+
+function stUnitMiniResult(st, ctl){
+  var idxs = (MINI_STATE && MINI_STATE.idxs) || [];
+  var okCnt = idxs.filter(function(i){ return MINI_STATE && MINI_STATE.ans[i] && MINI_STATE.ans[i].c; }).length;
+  var allCleared = okCnt === idxs.length;
+  if (allCleared && S.unitTests && S.unitTests[st.unit]) {
+    S.unitTests[st.unit].miniQuizDue = false;
+    S.unitTests[st.unit].status = 'mastered';
+    touch();
+  }
+  ctl.set('رجوع للدروس', true, closePlayer);
+  return h('div', { class:'fin' },
+    h('span', { class:'done-ic pop' }, ico('check')),
+    h('h1', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, allCleared ? 'Mini Follow-Up Quiz Mastered!' : 'Mini Follow-Up Quiz Complete'), h('small', {}, allCleared ? 'أتقنت الاختبار المصغر وارتفعت الوحدة إلى درجة الإتقان!' : 'أنهيت الاختبار المصغر')),
+    h('p', {}, 'Score: ' + okCnt + ' / ' + idxs.length + '. · النتيجة: ' + okCnt + ' من ' + idxs.length + '.'));
+}
+
+/* ---------- Pre-Tests for Units 5, 8, 9, 12 (90% Exemption) ---------- */
+function stPreTestIntro(st, ctl){
+  var pt = D.preTests && D.preTests[st.unit];
+  ctl.enable('ابدأ الاختبار');
+  return h('div', { class:'qi' },
+    h('h1', { class:'bi-h' }, h('span', { class:'en', dir:'ltr', style:'color:#fff' }, pt.en), h('small', { style:'color:var(--honey)' }, pt.ar)),
+    h('p', { class:'en', dir:'ltr', style:'color:#fff;font-weight:600;text-align:left' }, '10 questions (8 conjugation & typing production + 2 context questions). Score 90% (9/10) or higher to be exempted from this unit; its grammar will return in the Consolidation Week.'),
+    h('p', {}, pt.ruleNoteAr + ' (٨ أسئلة تصريف وكتابة + سؤالا اختيار). ونسبة ٩٠٪ للإعفاء وحده، أما حد العبور العادي للوحدة فيبقى ٨٠٪.'),
+    h('div', { class:'qi-stats' },
+      h('div', { class:'qs' }, h('b', {}, '10'), h('span', {}, 'Questions · أسئلة')),
+      h('div', { class:'qs' }, h('b', {}, '8/10'), h('span', {}, 'Typing · كتابة وتصريف')),
+      h('div', { class:'qs' }, h('b', { dir:'ltr' }, '90%'), h('span', {}, 'To Skip · للإعفاء'))));
+}
+
+function stPreTestQ(st, ctl){
+  var pt = D.preTests && D.preTests[st.unit];
+  var item = pt.items[st.qIdx];
+  var saved = PT_STATE && PT_STATE.ans[st.qIdx];
+  var o = {
+    saved: saved,
+    tag: 'Unit ' + st.unit + ' Pre-Test · Q' + (st.qIdx + 1) + '/10',
+    onAnswer: function(ok, v){
+      if (!PT_STATE) PT_STATE = { unit:st.unit, ans:{} };
+      PT_STATE.ans[st.qIdx] = { c:ok, v:v };
+      ctl.enable('التالي');
+    }
+  };
+  var nodes;
+  if (item.type === 'typing') {
+    nodes = Typing(item, o, ctl);
+  } else {
+    if (!saved) ctl.set('التالي', false, nextStep);
+    nodes = MCQ({ prompt:item.s, opts:item.opts, a:item.a, whyEn:item.whyEn, why:item.why }, o);
+  }
+  return [label('Pre-Test Question ' + (st.qIdx + 1) + ' of ' + pt.items.length, 'سؤال الاختبار القبلي ' + (st.qIdx + 1) + ' من ' + pt.items.length)].concat(nodes);
+}
+
+function stPreTestResult(st, ctl){
+  var pt = D.preTests && D.preTests[st.unit];
+  var N = pt.items.length, sc = 0;
+  pt.items.forEach(function(_, idx){
+    if (PT_STATE && PT_STATE.ans[idx] && PT_STATE.ans[idx].c) sc++;
+  });
+  var pct = Math.round((sc / N) * 100);
+  var exempt = pct >= 90;
+  var prev = (S.preTests && S.preTests[st.unit]) || {};
+  S.preTests[st.unit] = {
+    best: Math.max(prev.best || 0, sc),
+    last: sc,
+    exempt: !!(prev.exempt || exempt),
+    at: Date.now()
+  };
+  touch();
+  ctl.set('رجوع للدروس', true, closePlayer);
+  return h('div', { class:'result' },
+    ring(sc, N),
+    h('div', { class:'res-msg' }, exempt
+      ? biNode('Unit ' + st.unit + ' Exempted (' + pct + '% · ≥90%)!', 'أُعفيت من الوحدة ' + st.unit + ' (' + pct + '٪ — ٩٠٪ فأكثر)!')
+      : biNode('Score: ' + pct + '% (Below 90% Exemption Threshold)', 'النتيجة: ' + pct + '٪ (أقل من حد الإعفاء ٩٠٪)')),
+    h('div', { class:'res-sub' }, exempt
+      ? biNode('You can skip Unit ' + st.unit + '! Its grammar rule will automatically return in the Consolidation Week.', 'يمكنك تخطي الوحدة ' + st.unit + '، وستعود قاعدتها للمراجعة في أسبوع التثبيت.')
+      : biNode('90% is required for pre-test exemption only. You will study Unit ' + st.unit + ' normally when you reach it (with the standard 80% passing threshold).', 'نسبة ٩٠٪ مخصصة للإعفاء القبلي فقط. ستدرس الوحدة ' + st.unit + ' بشكل طبيعي عند الوصول إليها (بحد العبور المعتاد ٨٠٪).')));
+}
+
+/* ---------- Stage 4: Weekly Cambly Card & Session Logger ---------- */
+function buildCamblyCardText(unitNum){
+  var cu = (D.camblyUnits && D.camblyUnits[unitNum]) || D.camblyUnits[1];
+  var topErrs = sortedErrorLabCats().slice(0, 3);
+  var isFirst = !(S.camblyLogs && S.camblyLogs.length);
+  var lines = [
+    "=== ENGLISH PASSPORT · WEEKLY CAMBLY CARD ===",
+    "Learner Level: Early A2 (Saudi Law Student · Goal: Academic & Work English)",
+    "Current Unit: " + cu.titleEn,
+    isFirst
+      ? "Session 1 Special Goal (Speaking Baseline): This is my 1st Cambly session! Please assess my speaking comfort in A2 and help me practice the phrases below."
+      : "Session Goal (30 min): Practice this week's target phrases, grammar, and discussion questions.",
+    "",
+    "1) TARGET PHRASES & LEGAL TRACK (Please encourage me to use these):",
+    "   " + cu.phrases.join(" · "),
+    "",
+    "2) GRAMMAR FOCUS:",
+    "   " + cu.grammarEn,
+    "",
+    "3) DISCUSSION QUESTIONS (Let's discuss these 3 questions):",
+    "   Q1: " + cu.questions[0],
+    "   Q2: " + cu.questions[1],
+    "   Q3: " + cu.questions[2],
+    "",
+    "4) MY TOP REPEATED MISTAKE PATTERNS THIS WEEK (From my Error Lab):",
+    topErrs.map(function(c, i){ return "   " + (i + 1) + ". " + c.en + ": [✗ " + c.wrongEx + " → ✓ " + c.rightEx + "]"; }).join("\n"),
+    "",
+    "5) NOTE TO TUTOR:",
+    "   Please focus on the phrases above, gently correct my pronunciation and grammar (especially my top 3 mistake patterns), and write key corrections in the chat box. Thank you!"
+  ];
+  return lines.join("\n");
+}
+
+function openCambly(){
+  var cardText = buildCamblyCardText(1);
+  var inMins = h('input', { class:'c-in', type:'number', min:'5', max:'120', value:'30', 'aria-label':'Session Duration in Minutes · مدة الجلسة بالدقائق' });
+  var inPhrases = h('input', { class:'c-in', type:'number', min:'0', max:'15', value:'6', 'aria-label':'Card Phrases Used · عدد عبارات البطاقة المستعملة' });
+  var logsBox = h('div', { class:'c-logs' });
+
+  function drawLogs(){
+    var logs = (S.camblyLogs || []).slice().reverse();
+    if (!logs.length) {
+      put(logsBox, h('p', { class:'muted sm' }, 'No Cambly sessions logged yet. Your 1st session is your Speaking Baseline! · لم تُسجَّل أي جلسة بعد (أول جلسة هي قياس التحدث).'));
+      return;
+    }
+    put(logsBox, logs.map(function(l, idx){
+      var dStr = new Date(l.at || Date.now()).toLocaleDateString('en-GB');
+      return h('div', { class:'c-log' },
+        h('span', {}, h('b', { class:'en', dir:'ltr' }, (l.isBaseline ? 'Session 1 (Baseline)' : 'Weekly Session') + ' · ' + dStr)),
+        h('span', { class:'qtile-badge' }, l.mins + ' min · ' + l.phrases + ' phrases'));
+    }));
+  }
+  drawLogs();
+
+  var copyBtn = h('button', { class:'btn sm', type:'button', on:{ click:function(){
+    try {
+      navigator.clipboard.writeText(cardText).then(function(){ toast('Cambly Card copied! Paste it in Cambly chat. · نُسخت بطاقة كامبلي! الصقها لمعلمك في المحادثة.'); }, function(){ toast('Select text above to copy · حدد النص أعلاه لنسخه'); });
+    } catch (e) { toast('Select text above to copy · حدد النص أعلاه لنسخه'); }
+  } } }, ico('copy'), biBtn('Copy Card for Cambly Tutor', 'نسخ البطاقة لمعلم كامبلي'));
+
+  var logBtn = h('button', { class:'btn light sm', type:'button', on:{ click:function(){
+    var mins = Math.max(5, Math.min(180, Number(inMins.value) || 30));
+    var phr = Math.max(0, Math.min(20, Number(inPhrases.value) || 0));
+    var isFirst = !(S.camblyLogs && S.camblyLogs.length);
+    S.camblyLogs.push({ at:Date.now(), mins:mins, phrases:phr, unit:1, isBaseline:isFirst });
+    touch();
+    drawLogs();
+    render();
+    toast('Cambly session logged (+' + mins + ' min & ' + phr + ' phrases)! · سُجّلت جلسة كامبلي في الساعات ومؤشر التحدث!');
+  } } }, ico('check'), biBtn('Log Cambly Session', 'تسجيل الجلسة في تقدمك'));
+
+  openSheet('Weekly Cambly Card & Session Log', 'بطاقة كامبلي الأسبوعية وسجل الجلسات', [
+    h('p', { class:'muted sm' }, biNode('Ready in English to paste into your Cambly tutor chat. Automatically includes your top repeated mistakes from the Error Lab.', 'جاهزة بالإنجليزية للصقها في محادثة معلم كامبلي، وتضم تلقائيًا أكثر أخطائك تكرارًا من مختبر الأخطاء.')),
+    h('div', { class:'cambly-card' },
+      biNode('Unit 1 · Weekly Cambly Card (English)', 'بطاقة الأسبوع للوحدة ١ (تُلصق للمعلم)'),
+      h('pre', { class:'cambly-pre' }, cardText),
+      copyBtn),
+    h('div', { class:'cambly-form' },
+      biNode('Log Completed Cambly Session', 'سجّل جلستك بعد انتهائها (تُضاف للساعات ومؤشر التحدث)'),
+      h('div', { class:'c-grid' },
+        h('div', { class:'c-field' }, h('label', {}, 'Duration (min) · المدة بالدقائق'), inMins),
+        h('div', { class:'c-field' }, h('label', {}, 'Phrases Used · العبارات المستعملة'), inPhrases)),
+      logBtn),
+    h('h3', { class:'bi-h', style:'font-size:15px' }, h('span', { class:'en', dir:'ltr' }, 'Logged Cambly Sessions'), h('small', {}, 'سجل جلسات كامبلي السابقة')),
+    logsBox
+  ]);
+}
+
+/* ---------- Stage 5: Device JSON Backup Export & Restore ---------- */
+function buildBackupPayload(){
+  var data = {};
+  try {
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('english-passport.') === 0) {
+        data[k] = JSON.parse(localStorage.getItem(k));
+      }
+    }
+  } catch (e) {}
+  if (!data[LS]) data[LS] = S;
+  return JSON.stringify({
+    app: 'English Passport · جواز الإنجليزية',
+    version: 5,
+    exportedAt: new Date().toISOString(),
+    keys: data
+  }, null, 2);
+}
+
+function downloadBackupFile(){
+  var json = buildBackupPayload();
+  try {
+    var blob = new Blob([json], { type:'application/json;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = h('a', { href:url, download:'english-passport-backup.json' });
+    doc.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ try { doc.body.removeChild(a); URL.revokeObjectURL(url); } catch (e) {} }, 250);
+    toast('Backup file downloaded (.json)! · تم تنزيل ملف النسخة الاحتياطية للجوال!');
+  } catch (e) {
+    toast('Use Copy Backup Text below · استخدم زر نسخ النص الاحتياطي بالأسفل');
+  }
+}
+
+function restoreBackupPayload(rawJson){
+  try {
+    var parsed = JSON.parse(String(rawJson || '').trim());
+    var keys = (parsed && parsed.keys && typeof parsed.keys === 'object') ? parsed.keys : (parsed && parsed.v ? { [LS]: parsed } : null);
+    if (!keys) throw new Error('Invalid format');
+    Object.keys(keys).forEach(function(k){
+      if (k.indexOf('english-passport.') === 0) {
+        localStorage.setItem(k, JSON.stringify(keys[k]));
+      }
+    });
+    S = normalize(readLocal());
+    saveLocal();
+    updateProgress();
+    closeSheet();
+    render();
+    toast('Backup restored successfully! · استُعيدت النسخة الاحتياطية بنجاح!');
+    return true;
+  } catch (e) {
+    toast('Invalid backup file or JSON text. · ملف أو نص النسخة الاحتياطية غير صالح.');
+    return false;
+  }
+}
+
+function backupWidgetNode(){
+  var ta = h('textarea', { class:'bkp-area', placeholder:'Paste backup JSON here to restore, or tap Copy/Download above…', 'aria-label':'Backup JSON · بيانات النسخة الاحتياطية' });
+  var fileIn = h('input', { type:'file', accept:'.json,application/json', hidden:true });
+  fileIn.addEventListener('change', function(){
+    var f = fileIn.files && fileIn.files[0];
+    if (!f) return;
+    var reader = new FileReader();
+    reader.onload = function(){ restoreBackupPayload(reader.result); };
+    reader.readAsText(f);
+  });
+  return h('div', { class:'bkp-box' },
+    biNode('Device Backup & Restore (Stage 5)', 'النسخة الاحتياطية في الجوال (تنزيل واستعادة)'),
+    h('p', { class:'muted sm' }, 'Save a backup copy of your progress, Error Lab, Irregular Verbs schedule, and Cambly logs to your iPhone Files, or restore anytime. · احفظ نسخة احتياطية من تقدمك ومختبر الأخطاء وسجل كامبلي في ملفات الآيفون أو استعدها في أي وقت.'),
+    h('div', { class:'wbtns' },
+      h('button', { class:'btn sm', type:'button', on:{ click:downloadBackupFile } }, ico('mark'), biBtn('Download Backup (.json)', 'تنزيل نسخة احتياطية للجوال')),
+      h('button', { class:'btn out sm', type:'button', on:{ click:function(){
+        var j = buildBackupPayload();
+        ta.value = j;
+        try { navigator.clipboard.writeText(j); toast('Backup JSON copied! · نُسخ كود النسخة الاحتياطية!'); } catch (e) { toast('Backup shown in box below · ظهر الكود في المربع بالأسفل'); }
+      } } }, ico('copy'), biBtn('Copy Backup Code', 'نسخ كود النسخة'))),
+    ta,
+    h('div', { class:'wbtns' },
+      h('button', { class:'btn out sm', type:'button', on:{ click:function(){ fileIn.click(); } } }, biBtn('Restore from .json File', 'استعادة من ملف .json')),
+      h('button', { class:'btn out sm', type:'button', on:{ click:function(){ if (!ta.value.trim()) { toast('Paste backup JSON in the box first · الصق كود النسخة الاحتياطية في المربع أولًا'); return; } restoreBackupPayload(ta.value); } } }, biBtn('Restore Pasted Code', 'استعادة النص الملصوق'))),
+    fileIn);
+}
+
+/* Plan sheet: interests removed per Stage 1 item 6 */
+function openPlan(){
+  var L = D.learner || {};
+  openSheet('Your Study Plan & Backup', 'خطتك والنسخة الاحتياطية', [
+    h('div', { class:'rows' }, [
+      [['Current Level', 'المستوى الحالي'], [L.levelEn || 'Early A2', L.level || 'بداية A2']],
+      [['Goal', 'الهدف'], [L.goalEn || 'Study & Work · IELTS 6.5–7', L.goal || 'الدراسة والعمل']],
+      [['Daily Time', 'الوقت اليومي'], [L.dailyEn || '45–60 min / day', L.daily || '45–60 دقيقة']]
+    ].map(function(r){ return h('div', { class:'rowi' }, biNode(r[0][0], r[0][1]), biNode(r[1][0], r[1][1])); })),
+    backupWidgetNode(),
+    h('h3', { class:'bi-h', style:'font-size:15.5px' }, h('span', { class:'en', dir:'ltr' }, 'Weekly Rhythm'), h('small', {}, 'إيقاع الأسبوع')),
+    h('div', { class:'week' }, D.week.map(function(w){ return h('div', { class:'day' + (w.k === 'test' ? ' t' : w.k === 'rest' ? ' r' : '') }, h('b', {}, (w.dEn ? w.dEn + ' · ' : '') + w.d), h('span', {}, (w.tEn ? w.tEn + ' · ' : '') + w.t)); })),
+    h('h3', { class:'bi-h', style:'font-size:15.5px' }, h('span', { class:'en', dir:'ltr' }, 'Daily Lesson Structure (60 min · 6 Stages)'), h('small', {}, 'هيكل الدرس اليومي (60 دقيقة · 6 مراحل)')),
+    h('ul', { class:'anat' }, D.anatomy.map(function(a){ return h('li', {}, h('span', { class:'an-m', 'aria-label':a.m + ' دقائق' }, String(a.m)), h('span', { class:'an-t', html:'<b>' + esc((a.nEn ? a.nEn + ' · ' : '') + a.n) + ':</b> ' + arHTML(a.soon ? a.d + ' (في الكورس الكامل)' : a.d) })); })),
+    h('h3', { class:'bi-h', style:'font-size:15.5px' }, h('span', { class:'en', dir:'ltr' }, 'How Progress Works'), h('small', {}, 'كيف يُحسب تقدمك')),
+    h('ul', { class:'rules' }, [
+      'Every stage you complete is stamped on the lesson page. · كل مرحلة تكملها من المراحل الست يُختم عليها في صفحة الدرس.',
+      'Lesson quizzes require 80% to pass, followed by an error analysis by category. · اختبار الدرس يحتاج 80% للنجاح، ويليه تحليل لأخطاء الدرس وأسبابها.',
+      'Every missed question enters the mistake notebook and clears after 2 correct answers in a row. · كل سؤال خاطئ يدخل دفتر الأخطاء، ويطلع بعد إجابتين صحيحتين متتاليتين.',
+      'Writing requires at least 4 separate sentences and separates spelling from grammar feedback. · الكتابة تشترط 4 جمل منفصلة على الأقل، وتصحيحها يفصل الإملاء عن القواعد.'
+    ].map(function(t){ return h('li', {}, t); })),
+    h('p', { class:'sync' }, remoteOK ? 'Progress is saved to your account across devices. · التقدم محفوظ في حسابك، ويظهر لك على أي جهاز.' : 'Progress is saved on this device. · التقدم محفوظ على هذا الجهاز.')
+  ]);
+}
+function openAbout(){
+  var goals = D.goals || [];
+  openSheet('About This Lesson', 'عن الدرس', [
+    h('ol', { class:'goals' }, goals.map(function(g){
+      return typeof g === 'string' ? h('li', {}, g) : h('li', {}, biNode(g.en, g.ar));
+    })),
+    h('button', { class:'btn out sm', type:'button', on:{ click:function(){ closeSheet(); openCredits(); } } }, biBtn('Wikimedia Commons Audio Credits', 'أصحاب التسجيلات الصوتية البشرية')),
+    SAMPLE ? h('button', { class:'btn', type:'button', on:{ click:function(){ closeSheet(); openAsk(); } } }, ico('spark'), biBtn('Ask the Teacher', 'اسأل المعلم')) : null
+  ]);
+}
+
+/* ---------- Claude in the page ---------- */
+var SAMPLE = null;
+var AI_OFF = ['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'];
+function initAI(){ if (!(window.claude && typeof window.claude.use === 'function')) return;
+  window.claude.use('sample').then(function(s){ var had = !!SAMPLE; SAMPLE = typeof s === 'function' ? s : null; if (!!SAMPLE !== had && (S.ui.view === 'player' || S.ui.view === 'lesson')) render(); }, function(){ SAMPLE = null; }); }
+function aiErr(code){
+  if (code === 'rate_limited') return 'Usage limit reached temporarily. Try again shortly. · وصلنا لحد الاستخدام مؤقتًا. المحاولة بعد قليل تنفع.';
+  if (code === 'session_expired') return 'Session expired. Please sign in again. · انتهت الجلسة. تسجيل الدخول من جديد يحل المشكلة.';
+  if (code === 'refused') return 'Could not answer this request. Try rephrasing. · تعذّرت الإجابة عن هذا الطلب. صياغة ثانية قد تنفع.';
+  if (code === 'prompt_too_large') return 'Text is too long. A shorter paragraph works best. · النص طويل جدًا. فقرة أقصر تكفي.';
+  return 'Teacher is unavailable right now. Try again in a moment. · تعذّر الوصول للمعلم الحين. حاول بعد لحظات.'; }
+function thinking(t){ return h('div', { class:'thinking' }, h('span', { class:'dots', 'aria-hidden':'true' }, h('i'), h('i'), h('i')), h('span', {}, t)); }
+function WPROMPT(text){ return 'أنت معلم لغة إنجليزية خبير، تصحح فقرة كتبها متعلم عربي مستواه بداية A2.\n' +
+  'الدرس: ' + (D.en || 'Hello from Antarctica') + ' — ' + (D.ar || 'المضارع البسيط والمضارع المستمر') + '.\n' +
+  'كلمات الدرس والعبارة القانونية: ' + VOCAB_LIST + '.\n' +
+  'المهمة المطلوبة من المتعلم: ' + D.writing.task + '\n\n' +
+  'صحّح الفقرة بدقة ولطف، وافصل أخطاء الإملاء وعلامات الترقيم عن أخطاء القواعد والاستخدام:\n' +
+  '- ركّز في grammarMistakes على الأزمنة، وتركيب الجملة، وتصريف الفعل مع he/she/it، واستخدام الكلمات.\n' +
+  '- ركّز في spellingMistakes على الإملاء، والحرف الكبير للضمير I وبداية الجملة، وفصل الجمل بنقطة.\n' +
+  '- كل شرح بالعربية الفصحى المبسطة في جملة قصيرة، بصيغة محايدة لا تخاطب مذكرًا ولا مؤنثًا.\n\n' +
+  'أعد JSON فقط بهذا الشكل:\n' +
+  '{"score": 7, "praise": "جملة تشجيع قصيرة عن نقطة قوة حقيقية في الفقرة", "grammarMistakes": [{"wrong": "النص الخاطئ", "right": "النص الصحيح", "why": "سبب قصير"}], "spellingMistakes": [{"wrong": "الكلمة الخاطئة إملائيًا", "right": "الإملاء الصحيح", "why": "القاعدة الإملائية"}], "corrected": "الفقرة كاملة بعد التصحيح", "next": "نصيحة واحدة قصيرة للتحسن"}\n\n' +
+  'الفقرة:\n---\n' + text + '\n---'; }
+function correctWriting(ta, btn, box){
+  var text = ta.value.trim(), a = analyze(text);
+  if (a.words < 12) { toast('Paragraph is too short to check. · الفقرة قصيرة جدًا للتصحيح.'); return; }
+  if (!SAMPLE) {
+    var localFb = localWritingCheck(text);
+    S.writing.fb = localFb; S.writing.text = ta.value; touch();
+    box.hidden = false; paintFeedback(box, localFb);
+    return;
+  }
+  btn.disabled = true; box.hidden = false; put(box, thinking('Teacher is reading your paragraph… · المعلم يقرأ فقرتك…'));
+  try { box.scrollIntoView({ block:'nearest', behavior:RM ? 'auto' : 'smooth' }); } catch (e) {}
+  SAMPLE.json(WPROMPT(text), { modelTier:'default' }).then(function(r){
+    if (!r || typeof r !== 'object' || Array.isArray(r)) throw { code:'invalid_json' };
+    var mapM = function(arr){ return Array.isArray(arr) ? arr.slice(0, 6).map(function(m){ m = m || {}; return { wrong:String(m.wrong || ''), right:String(m.right || ''), why:String(m.why || '') }; }) : []; };
+    var gM = mapM(r.grammarMistakes), sM = mapM(r.spellingMistakes);
+    if (!gM.length && !sM.length && Array.isArray(r.mistakes)) gM = mapM(r.mistakes);
+    var fb = { score:Math.max(0, Math.min(10, Math.round(Number(r.score) || 0))), praise:String(r.praise || ''),
+      grammarMistakes:gM, spellingMistakes:sM, mistakes:gM.concat(sM),
+      corrected:String(r.corrected || ''), next:String(r.next || ''), at:Date.now() };
+    S.writing.fb = fb; S.writing.text = ta.value; touch(); paintFeedback(box, fb);
+  }).catch(function(e){ var code = e && e.code;
+    if (code === 'cancelled') { box.hidden = true; return; }
+    var localFb = localWritingCheck(text);
+    S.writing.fb = localFb; S.writing.text = ta.value; touch();
+    paintFeedback(box, localFb);
+  }).then(function(){ btn.disabled = false; }); }
+
+var askTurns = [], askCtl = null, askBusy = false;
+var ASK_CHIPS = ['متى نستخدم am / is / are مع الفعل؟', 'ليش نقول He works وليس He work؟', 'ما الفرق بين usually و always؟', 'أعطني 3 جمل جديدة بالمضارع المستمر'];
+function stepName(){ if (S.ui.view === 'player' && P) { var p = partOf(P.part); return p ? p.fullAr : 'المراجعة'; } return 'صفحة الدرس'; }
+function RULES(){ return 'أنت معلم لغة إنجليزية صبور وخبير داخل كورس اسمه «جواز الإنجليزية».\n' +
+  'المتعلم عربي، مستواه بداية A2، وهدفه الدراسة والعمل.\n' +
+  'الدرس الحالي: الوحدة ' + (D.unit || 1) + '، الدرس ' + (D.n || 1) + ' «' + (D.en || 'Hello from Antarctica') + '»، وقاعدته ' + (D.ar || 'المضارع البسيط مقابل المضارع المستمر') + '. كلماته: ' + VOCAB_LIST + '.\n' +
+  'نص القراءة: ' + (D.reading && D.reading.intro ? D.reading.intro : '') + '\n' +
+  'القسم الذي يدرسه المتعلم الآن: ' + stepName() + '.\n\n' +
+  'قواعد إجابتك:\n- أجب بالعربية الواضحة البسيطة، مع أمثلة إنجليزية قصيرة بمستوى A2.\n- لا تتجاوز 120 كلمة إلا إذا طُلب التفصيل.\n- استخدم أسطرًا قصيرة أو نقاطًا، وبدون جداول.\n- خاطب المتعلم بصيغة محايدة (مثل: نستخدم، نلاحظ) لا بصيغة مذكر ولا مؤنث.\n- إن كان السؤال خارج تعلّم الإنجليزية فأعد توجيهه للدرس بلطف في جملة واحدة.'; }
+function inlineMD(raw){ return raw.split(/(`[^`]+`|\*\*[^*]+\*\*)/g).map(function(p){
+  if (/^`[^`]+`$/.test(p)) return '<code>' + esc(p.slice(1, -1)) + '</code>';
+  if (/^\*\*[^*]+\*\*$/.test(p)) return '<strong>' + arHTML(p.slice(2, -2)) + '</strong>';
+  return arHTML(p); }).join(''); }
+function mdLite(text){ var html = '', list = null;
+  function close(){ if (list) { html += '</' + list + '>'; list = null; } }
+  String(text).replace(/\r/g, '').split('\n').forEach(function(ln){ var t = ln.trim(), m;
+  if (!t) { close(); return; }
+  if ((m = t.match(/^[-*•]\s+(.*)$/))) { if (list !== 'ul') { close(); html += '<ul>'; list = 'ul'; } html += '<li dir="auto">' + inlineMD(m[1]) + '</li>'; return; }
+  if ((m = t.match(/^\d+[.)]\s+(.*)$/))) { if (list !== 'ol') { close(); html += '<ol>'; list = 'ol'; } html += '<li dir="auto">' + inlineMD(m[1]) + '</li>'; return; }
+  if ((m = t.match(/^#{1,6}\s+(.*)$/))) { close(); html += '<p dir="auto"><strong>' + inlineMD(m[1]) + '</strong></p>'; return; }
+  close(); html += '<p dir="auto">' + inlineMD(t) + '</p>'; });
+  close(); return html; }
+function openAsk(){ if (!SAMPLE) return;
+  var log = h('div', { class:'ask-log', 'aria-live':'polite' }), chips = h('div', { class:'ask-chips' }), input = h('textarea', { id:'askInput', rows:'2', placeholder:'Ask your question here… · سؤالك هنا…', 'aria-label':'Question · السؤال' });
+  var send = h('button', { class:'btn', type:'submit' }, biBtn('Send', 'إرسال')), stop = h('button', { class:'btn out', type:'button', hidden:true }, biBtn('Stop', 'إيقاف'));
+  var form = h('form', { class:'ask-form' }, input, h('div', { class:'row' }, send, stop));
+  askTurns.forEach(function(t){ log.append(t.role === 'user' ? h('div', { class:'bub me', dir:'auto' }, t.content) : h('div', { class:'bub ai', html:mdLite(t.content) })); });
+  if (!askTurns.length) put(chips, ASK_CHIPS.map(function(c){ return h('button', { class:'ask-chip', type:'button', on:{ click:function(){ ask(c); } } }, c); }));
+  function ask(q){ if (!SAMPLE || askBusy || !q.trim()) return;
+    askBusy = true; input.value = ''; send.disabled = true; stop.hidden = false; put(chips);
+    log.append(h('div', { class:'bub me', dir:'auto' }, q)); var bub = h('div', { class:'bub ai' }, thinking('Teacher is thinking… · المعلم يفكر…')); log.append(bub);
+    try { bub.scrollIntoView({ block:'nearest' }); } catch (e) {}
+    askTurns.push({ role:'user', content:q });
+    var inputTurns = [{ role:'user', content:RULES() }].concat(askTurns.slice(-7));
+    askCtl = new AbortController();
+    SAMPLE(inputTurns, { cache:false, signal:askCtl.signal, onText:function(u){ bub.innerHTML = mdLite(u.text); } }).then(function(res){ bub.innerHTML = mdLite(res.text); askTurns.push({ role:'assistant', content:res.text }); })
+    .catch(function(e){ var code = e && e.code; askTurns.pop();
+      if (e && e.text) bub.innerHTML = mdLite(e.text); else put(bub);
+      if (code === 'cancelled') { if (!(e && e.text)) bub.remove(); return; }
+      if (AI_OFF.indexOf(code) >= 0) { SAMPLE = null; closeSheet(); toast('Teacher is unavailable right now. · المعلم غير متاح هنا الحين.'); return; }
+      bub.append(h('p', { class:'err' }, aiErr(code))); })
+    .then(function(){ askBusy = false; askCtl = null; send.disabled = false; stop.hidden = true; }); }
+  form.addEventListener('submit', function(e){ e.preventDefault(); ask(input.value); });
+  input.addEventListener('keydown', function(e){ if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); ask(input.value); } });
+  stop.addEventListener('click', function(){ if (askCtl) askCtl.abort(); });
+  openSheet('Ask the Teacher', 'اسأل المعلم', [
+    h('p', { class:'muted sm' }, biNode('Ask about the grammar rule, any word, or any sentence in this lesson.', 'سؤال عن القاعدة أو أي كلمة أو جملة في الدرس. الإجابة بالعربي مع أمثلة قصيرة.')),
+    log, chips, form,
+    h('p', { class:'fine' }, 'Each question uses your Claude allowance. · كل سؤال يُحسب من استخدامك في Claude.')
+  ], function(){ if (askCtl) askCtl.abort(); });
+  setTimeout(function(){ try { input.focus({ preventScroll:true }); } catch (e) {} }, 60);
+}
+
+/* ---------- wiring ---------- */
+function bindGlobal(){
+  doc.addEventListener('click', function(e){ var t = e.target; if (!t || !t.closest) return; var w = t.closest('.w'); if (w && !w.closest('.mail-plain')) showWord(w); });
+  doc.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') { if (!$('#sheet').hidden) closeSheet(); hideDict(); return; }
+    if ((e.key === 'Enter' || e.key === ' ') && e.target && e.target.classList && e.target.classList.contains('w') && !e.target.closest('.mail-plain')) { e.preventDefault(); showWord(e.target); } });
+  $('#sheetBg').addEventListener('click', closeSheet);
+  $('#dClose').innerHTML = '<span class="ico">' + IC.x + '</span>'; $('#dClose').addEventListener('click', hideDict);
+  $('#dSay').innerHTML = '<span class="ico">' + IC.speaker + '</span>';
+}
+function boot(){
+  doc.documentElement.setAttribute('lang', 'ar'); doc.documentElement.setAttribute('dir', 'rtl');
+  var hv = (location.hash || '').slice(1); if (['home','lessons','words','review','lesson'].indexOf(hv) >= 0 && S.ui.welcomed) S.ui.view = hv;
+  bindGlobal(); updateProgress(); render(); initAI(); initDb();
+}
+boot();
+})();
