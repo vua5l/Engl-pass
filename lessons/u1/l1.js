@@ -608,5 +608,4 @@ LESSONS.u1l1 = {
   ]
 };
 
-Object.assign(DATA, LESSONS.u1l1);
 })();

@@ -1,8 +1,13 @@
 (function(){
 'use strict';
 var doc = document;
-var curLessonId = 'u1l1';
-var D = DATA;
+var curLessonId = 'u0l1';
+/* BASE: بيانات الكورس العامة من content.js وحدها. ويُدمج كل درس معها في نسخة جديدة،
+   فلا يتسرب حقل من درس إلى آخر. كان درسا الاستماع في الأسبوع التأسيسي يعرضان «قراءة»
+   درس آخر بسبب هذا التسرب. */
+var BASE = DATA;
+var D = BASE;
+function lessonData(id){ return Object.assign({}, BASE, (typeof LESSONS !== 'undefined' && LESSONS[id]) || {}); }
 function $(s, r){ return (r||doc).querySelector(s); }
 function $$(s, r){ return Array.prototype.slice.call((r||doc).querySelectorAll(s)); }
 function h(tag, attrs){
@@ -171,142 +176,169 @@ var ERR_CATS = {
 };
 
 var IDS = {}, ITEMS = {}, GCARDS = [], VOCAB_LIST = '', ALL_VOCAB = [];
+var INDEX_CACHE = {};
 
-function rebuildLessonIndex(){
-  var L = (typeof LESSONS !== 'undefined' && LESSONS[curLessonId]) ? LESSONS[curLessonId] : D;
-  Object.assign(D, L);
-  ALL_VOCAB = (D.vocab || []).slice();
-  if (D.legalPhrase) {
-    ALL_VOCAB.push(Object.assign({ isLegal:true }, D.legalPhrase));
+/* يبني فهرس أسئلة درس معيّن: لدرس اليوم، أو لدرس سابق حين تعود أسئلته في دفتر الأخطاء. */
+function buildIndex(L){
+  var vocab = (L.vocab || []).slice();
+  if (L.legalPhrase) vocab.push(Object.assign({ isLegal:true }, L.legalPhrase));
+  var ids = {
+    rc: mkIds('rc', (L.recall || []).length),
+    vg: mkIds('vg', (L.vocabGaps || []).length),
+    gA: mkIds('gA', (L.gA || []).length),
+    gB: mkIds('gB', (L.gB || []).length),
+    gC: mkIds('gC', (L.gC || []).length),
+    gD: mkIds('gD', (L.gD || []).length),
+    rq: mkIds('rq', L.reading && L.reading.questions ? L.reading.questions.length : 0),
+    lq: mkIds('lq', L.listening && L.listening.questions ? L.listening.questions.length : 0)
+  };
+  var items = {};
+  (L.recall || []).forEach(function(x, i){ items['rc-' + i] = { type:'recall', secEn:'Active Recall', sec:'مراجعة بالاسترجاع النشط', groupEn:'Write the word from memory', group:'اكتب الكلمة من الذاكرة', errCat:x.errCat || 'spelling', x:x }; });
+  (L.vocabGaps || []).forEach(function(x, i){ items['vg-' + i] = { type:'mcq', secEn:'New Phrases', sec:'عبارات جديدة', groupEn:'Choose the right word', group:'اختر الكلمة المناسبة', errCat:x.errCat || 'vocab', x:mcqOf(x) }; });
+  (L.gA || []).forEach(function(x, i){ items['gA-' + i] = { type:'mcq', secEn:'Grammar', sec:'القواعد', groupEn:'Choose the correct form', group:'اختر الصيغة الصحيحة', errCat:x.errCat || 'tense', x:mcqOf(x) }; });
+  (L.gB || []).forEach(function(x, i){ items['gB-' + i] = { type:'tf', secEn:'Grammar', sec:'القواعد', groupEn:'Correct or has a mistake?', group:'صحيحة أم فيها خطأ؟', errCat:x.errCat || 'be_verb', x:x }; });
+  (L.gC || []).forEach(function(x, i){ items['gC-' + i] = { type:'typing', secEn:'Grammar', sec:'القواعد', groupEn:'Write the verb in the correct form', group:'اكتب الفعل بالصيغة الصحيحة', errCat:x.errCat || 'tense', x:x }; });
+  (L.gD || []).forEach(function(x, i){ items['gD-' + i] = { type:'builder', secEn:'Grammar', sec:'القواعد', groupEn:'Put the words in order', group:'رتّب الكلمات', errCat:x.errCat || 'word_order', x:x }; });
+  if (L.reading && L.reading.questions) {
+    L.reading.questions.forEach(function(x, i){ items['rq-' + i] = x.tf ? { type:'rtf', secEn:'Reading', sec:'القراءة', groupEn:'Comprehension Questions', group:'أسئلة الفهم', errCat:x.errCat || 'reading', x:x } : { type:'mcq', secEn:'Reading', sec:'القراءة', groupEn:'Comprehension Questions', group:'أسئلة الفهم', errCat:x.errCat || 'reading', x:{ prompt:x.q, opts:x.opts, a:x.a, whyEn:x.whyEn, why:x.why, ev:x.ev, errCat:x.errCat || 'reading' } }; });
   }
+  if (L.listening && L.listening.questions) {
+    L.listening.questions.forEach(function(x, i){ items['lq-' + i] = x.tf ? { type:'rtf', secEn:'Listening', sec:'الاستماع', groupEn:'Listening Questions (2nd Listen)', group:'أسئلة الاستماع (الاستماع الثاني)', errCat:x.errCat || 'reading', x:x } : { type:'mcq', secEn:'Listening', sec:'الاستماع', groupEn:'Listening Questions (2nd Listen)', group:'أسئلة الاستماع (الاستماع الثاني)', errCat:x.errCat || 'reading', x:{ prompt:x.q, opts:x.opts, a:x.a, whyEn:x.whyEn, why:x.why, ev:x.ev, errCat:x.errCat || 'reading' } }; });
+  }
+  (L.quiz || []).forEach(function(x, i){ items['qz-' + i] = { type:'mcq', secEn:'Quiz', sec:'الاختبار', groupEn:'Lesson Quiz', group:'اختبار الدرس', errCat:x.errCat || (x.tag && x.tag.indexOf('Vocabulary') >= 0 ? 'vocab' : 'tense'), x:mcqOf(x) }; });
+  return { IDS:ids, ITEMS:items, GCARDS:L.gCards || [], ALL_VOCAB:vocab, VOCAB_LIST:vocab.map(function(v){ return v.en; }).join(', ') };
+}
+function indexFor(lid){
+  if (lid === curLessonId) return { IDS:IDS, ITEMS:ITEMS, ALL_VOCAB:ALL_VOCAB, GCARDS:GCARDS };
+  if (!INDEX_CACHE[lid]) INDEX_CACHE[lid] = buildIndex(lessonData(lid));
+  return INDEX_CACHE[lid];
+}
+function rebuildLessonIndex(){
+  D = lessonData(curLessonId);
+  var ix = buildIndex(D);
+  IDS = ix.IDS; ITEMS = ix.ITEMS; GCARDS = ix.GCARDS; ALL_VOCAB = ix.ALL_VOCAB; VOCAB_LIST = ix.VOCAB_LIST;
   var rPart = partOf('reading');
   if (rPart) {
     if (D.listening && !D.reading) { rPart.en = 'Listening'; rPart.fullEn = 'Listening'; rPart.ar = 'الاستماع'; rPart.fullAr = 'الاستماع'; rPart.ic = 'speaker'; }
     else { rPart.en = 'Reading'; rPart.fullEn = 'Reading'; rPart.ar = 'القراءة'; rPart.fullAr = 'القراءة'; rPart.ic = 'mail'; }
   }
-  IDS = {
-    rc: mkIds('rc', (D.recall || []).length),
-    vg: mkIds('vg', D.vocabGaps.length),
-    gA: mkIds('gA', D.gA.length),
-    gB: mkIds('gB', D.gB.length),
-    gC: mkIds('gC', D.gC.length),
-    gD: mkIds('gD', D.gD.length),
-    rq: mkIds('rq', D.reading && D.reading.questions ? D.reading.questions.length : 0),
-    lq: mkIds('lq', D.listening && D.listening.questions ? D.listening.questions.length : 0)
-  };
-  ITEMS = {};
-  (D.recall || []).forEach(function(x, i){ ITEMS['rc-' + i] = { type:'recall', secEn:'Active Recall', sec:'مراجعة بالاسترجاع النشط', groupEn:'Write the word from memory', group:'اكتب الكلمة من الذاكرة', errCat:x.errCat || 'spelling', x:x }; });
-  D.vocabGaps.forEach(function(x, i){ ITEMS['vg-' + i] = { type:'mcq', secEn:'New Phrases', sec:'عبارات جديدة', groupEn:'Choose the right word', group:'اختر الكلمة المناسبة', errCat:x.errCat || 'vocab', x:mcqOf(x) }; });
-  D.gA.forEach(function(x, i){ ITEMS['gA-' + i] = { type:'mcq', secEn:'Grammar', sec:'القواعد', groupEn:'Choose the correct form', group:'اختر الصيغة الصحيحة', errCat:x.errCat || 'tense', x:mcqOf(x) }; });
-  D.gB.forEach(function(x, i){ ITEMS['gB-' + i] = { type:'tf', secEn:'Grammar', sec:'القواعد', groupEn:'Correct or has a mistake?', group:'صحيحة أم فيها خطأ؟', errCat:x.errCat || 'be_verb', x:x }; });
-  D.gC.forEach(function(x, i){ ITEMS['gC-' + i] = { type:'typing', secEn:'Grammar', sec:'القواعد', groupEn:'Write the verb in the correct form', group:'اكتب الفعل بالصيغة الصحيحة', errCat:x.errCat || 'tense', x:x }; });
-  D.gD.forEach(function(x, i){ ITEMS['gD-' + i] = { type:'builder', secEn:'Grammar', sec:'القواعد', groupEn:'Put the words in order', group:'رتّب الكلمات', errCat:x.errCat || 'word_order', x:x }; });
-  if (D.reading && D.reading.questions) {
-    D.reading.questions.forEach(function(x, i){ ITEMS['rq-' + i] = x.tf ? { type:'rtf', secEn:'Reading', sec:'القراءة', groupEn:'Comprehension Questions', group:'أسئلة الفهم', errCat:x.errCat || 'reading', x:x } : { type:'mcq', secEn:'Reading', sec:'القراءة', groupEn:'Comprehension Questions', group:'أسئلة الفهم', errCat:x.errCat || 'reading', x:{ prompt:x.q, opts:x.opts, a:x.a, whyEn:x.whyEn, why:x.why, ev:x.ev, errCat:x.errCat || 'reading' } }; });
-  }
-  if (D.listening && D.listening.questions) {
-    D.listening.questions.forEach(function(x, i){ ITEMS['lq-' + i] = x.tf ? { type:'rtf', secEn:'Listening', sec:'الاستماع', groupEn:'Listening Questions (2nd Listen)', group:'أسئلة الاستماع (الاستماع الثاني)', errCat:x.errCat || 'reading', x:x } : { type:'mcq', secEn:'Listening', sec:'الاستماع', groupEn:'Listening Questions (2nd Listen)', group:'أسئلة الاستماع (الاستماع الثاني)', errCat:x.errCat || 'reading', x:{ prompt:x.q, opts:x.opts, a:x.a, whyEn:x.whyEn, why:x.why, ev:x.ev, errCat:x.errCat || 'reading' } }; });
-  }
-  D.quiz.forEach(function(x, i){ ITEMS['qz-' + i] = { type:'mcq', secEn:'Quiz', sec:'الاختبار', groupEn:'Lesson Quiz', group:'اختبار الدرس', errCat:x.errCat || (x.tag && x.tag.indexOf('Vocabulary') >= 0 ? 'vocab' : 'tense'), x:mcqOf(x) }; });
-  GCARDS = D.gCards || [];
-  VOCAB_LIST = ALL_VOCAB.map(function(v){ return v.en; }).join(', ');
 }
-rebuildLessonIndex();
 
 function itemText(it){ var x = it.x; return x.prompt || x.s || x.q || x.cueEn || (x.sentPre ? (x.sentPre + ' ___ ' + (x.sentPost || '')) : '') || ((x.pre || '') + ' ___ ' + (x.post || '')) || (Array.isArray(x.ans) ? x.ans[0] : x.ans) || ''; }
 
-/* ---------- state ---------- */
+/* ---------- state ----------
+   حالتان محفوظتان في الجهاز:
+   - G (ep4.course): حالة الكورس كله: دفتر الأخطاء ومختبرها، ومراجعة الأفعال الشاذة،
+     والوضع المختصر، ودقائق التدريب، وسجل كامبلي، واختبارات الوحدات والاختبارات القبلية،
+     ودرس اليوم، وحالة الواجهة.
+   - S (ep4.lesson.<id>): حالة درس واحد: إجاباته ومراحله وكتابته وبطاقاته وموضعه.
+   كانت الحالتان شيئًا واحدًا لكل درس، فتبدأ الأخطاء والمراجعة من الصفر في كل درس جديد. */
 var SR_DAYS = [1, 3, 7, 30];
+var KEY_G = 'ep4.course', KEY_SYNC = 'ep4.sync', KEY_SYNC_META = 'ep4.syncmeta';
+function KEY_L(id){ return 'ep4.lesson.' + id; }
+function isObj(x){ return !!x && typeof x === 'object' && !Array.isArray(x); }
+function readJSON(k){ try { var s = localStorage.getItem(k); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
+function writeJSON(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 function seedErrorLab(){
   var lab = {};
-  (D.errorLabCatalog || []).forEach(function(cat){
+  (BASE.errorLabCatalog || []).forEach(function(cat){
     lab[cat.key] = { count: cat.seedCount || 1, solved: 0, box: 0, nextAt: 0, fromDiag: !!cat.fromDiag, lastSample: cat.wrongEx || '' };
   });
   return lab;
 }
-function DEFAULT(){ return { v:3, updatedAt:0, startedAt:0, cards:{}, match:false, read1Done:false, listen1Done:false, ans:{}, stamps:{}, quiz:{ best:null, attempts:0, last:null }, mistakes:{}, errorLab:seedErrorLab(), irrSr:{}, expressSessions:0, camblyLogs:[], unitTests:{}, preTests:{}, writing:{ text:'', fb:null }, writingDone:false, predict:null, revealed:false, hl:false, ui:{ view:'home', welcomed:false, part:null, step:{}, wordsTab:'vocab', irrGroup:'all', reviewTab:'lab' } }; }
-function normalize(o){ var r = Object.assign(DEFAULT(), o || {});
-  ['cards','ans','stamps','mistakes','errorLab','irrSr','unitTests','preTests'].forEach(function(k){ if (!r[k] || typeof r[k] !== 'object' || Array.isArray(r[k])) r[k] = {}; });
-  (D.errorLabCatalog || []).forEach(function(cat){
-    if (!r.errorLab[cat.key] || typeof r.errorLab[cat.key] !== 'object') {
-      r.errorLab[cat.key] = { count: cat.seedCount || 1, solved: 0, box: 0, nextAt: 0, fromDiag: !!cat.fromDiag, lastSample: cat.wrongEx || '' };
-    }
+function GDEFAULT(){ return { v:4, updatedAt:0, startedAt:0, cur:null, ui:{ view:'home', welcomed:false, part:null, wordsTab:'vocab', irrGroup:'all', reviewTab:'lab' }, mistakes:{}, errorLab:seedErrorLab(), irrSr:{}, expressSessions:0, practiceMins:0, camblyLogs:[], unitTests:{}, preTests:{} }; }
+function LDEFAULT(){ return { v:4, updatedAt:0, cards:{}, match:false, read1Done:false, listen1Done:false, ans:{}, stamps:{}, quiz:{ best:null, attempts:0, last:null }, writing:{ text:'', fb:null }, writingDone:false, predict:null, revealed:false, hl:false, step:{} }; }
+function normalizeG(o){ var r = Object.assign(GDEFAULT(), isObj(o) ? o : {});
+  ['mistakes','errorLab','irrSr','unitTests','preTests'].forEach(function(k){ if (!isObj(r[k])) r[k] = {}; });
+  (BASE.errorLabCatalog || []).forEach(function(cat){
+    if (!isObj(r.errorLab[cat.key])) r.errorLab[cat.key] = { count: cat.seedCount || 1, solved: 0, box: 0, nextAt: 0, fromDiag: !!cat.fromDiag, lastSample: cat.wrongEx || '' };
   });
   if (typeof r.expressSessions !== 'number' || r.expressSessions < 0) r.expressSessions = 0;
+  if (typeof r.practiceMins !== 'number' || r.practiceMins < 0) r.practiceMins = 0;
   if (!Array.isArray(r.camblyLogs)) r.camblyLogs = [];
-  r.quiz = Object.assign({ best:null, attempts:0, last:null }, r.quiz || {});
-  r.writing = Object.assign({ text:'', fb:null }, r.writing || {});
-  var ui = Object.assign({ view:'home', welcomed:false, part:null, step:{}, wordsTab:'vocab', irrGroup:'all', reviewTab:'lab' }, r.ui || {});
-  if (!ui.step || typeof ui.step !== 'object') ui.step = {};
+  var ui = Object.assign({ view:'home', welcomed:false, part:null, wordsTab:'vocab', irrGroup:'all', reviewTab:'lab' }, isObj(r.ui) ? r.ui : {});
   if (ui.wordsTab !== 'vocab' && ui.wordsTab !== 'irregular') ui.wordsTab = 'vocab';
   if (!ui.irrGroup) ui.irrGroup = 'all';
   if (ui.reviewTab !== 'lab' && ui.reviewTab !== 'notebook') ui.reviewTab = 'lab';
-  var map = { plan:'home', notebook:'review' };
-  if (map[ui.view]) ui.view = map[ui.view];
   if (['home','lessons','words','review','lesson','player'].indexOf(ui.view) < 0) ui.view = 'home';
   r.ui = ui; return r; }
+function normalizeL(o){ var r = Object.assign(LDEFAULT(), isObj(o) ? o : {});
+  ['cards','ans','stamps','step'].forEach(function(k){ if (!isObj(r[k])) r[k] = {}; });
+  r.quiz = Object.assign({ best:null, attempts:0, last:null }, isObj(r.quiz) ? r.quiz : {});
+  r.writing = Object.assign({ text:'', fb:null }, isObj(r.writing) ? r.writing : {});
+  return r; }
 function bumpErrorLab(catKey, sampleText){
-  if (!catKey) return;
-  var mapped = catKey === 'stative' ? 'tense' : (catKey === 'vocab' || catKey === 'reading' ? 'tense' : catKey);
-  if (!S.errorLab[mapped]) S.errorLab[mapped] = { count:0, solved:0, box:0, nextAt:0, fromDiag:false, lastSample:'' };
-  S.errorLab[mapped].count = (S.errorLab[mapped].count || 0) + 1;
-  S.errorLab[mapped].box = 0;
-  S.errorLab[mapped].nextAt = Date.now();
-  if (sampleText) S.errorLab[mapped].lastSample = sampleText;
+  /* أخطاء المفردات وفهم المقروء ليست نمطًا نحويًا، فلا تُحسب في المختبر (كانت تُحسب خطأً في الأزمنة). */
+  if (!catKey || catKey === 'vocab' || catKey === 'reading') return;
+  var mapped = catKey === 'stative' ? 'tense' : catKey;
+  if (!G.errorLab[mapped]) G.errorLab[mapped] = { count:0, solved:0, box:0, nextAt:0, fromDiag:false, lastSample:'' };
+  G.errorLab[mapped].count = (G.errorLab[mapped].count || 0) + 1;
+  G.errorLab[mapped].box = 0;
+  G.errorLab[mapped].nextAt = Date.now();
+  if (sampleText) G.errorLab[mapped].lastSample = sampleText;
 }
-var LS = 'english-passport.' + curLessonId + '.v1';
-function readLocal(){ try { var s = localStorage.getItem(LS); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
-function saveLocal(){ try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {} }
-var S = normalize(readLocal());
-if (!S.startedAt) { S.startedAt = Date.now(); saveLocal(); }
+var SYNC = createSync();
+function saveLocal(){ writeJSON(KEY_G, G); writeJSON(KEY_L(curLessonId), S); }
+function touch(){ var t = Date.now(); G.updatedAt = t; S.updatedAt = t; saveLocal(); SYNC.dirty(); }
+
+/* بداية من الصفر: أول تشغيل لهذه النسخة يمسح التقدم التجريبي القديم ومفتاح المزامنة القديم. */
+(function resetLegacyOnce(){
+  try {
+    if (localStorage.getItem(KEY_G)) return;
+    var old = [];
+    for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && (k.indexOf('english-passport.') === 0 || k.indexOf('gh_sync_') === 0)) old.push(k); }
+    old.forEach(function(k){ localStorage.removeItem(k); });
+  } catch (e) {}
+})();
+
+/* ترتيب الدروس: الأسبوع التأسيسي ثم الوحدة 1، وما يُفتح بعدهما. */
+function courseOrder(){ return [].concat(BASE.unit0Lessons || [], BASE.unit1Lessons || []).filter(function(l){ return l.id && l.open && typeof LESSONS !== 'undefined' && LESSONS[l.id]; }).map(function(l){ return l.id; }); }
+function stampsOf(id){ var o = (id === curLessonId && S) ? S : readJSON(KEY_L(id)); return (o && isObj(o.stamps)) ? o.stamps : {}; }
+function isLessonDone(id){ var st = stampsOf(id); return PARTS.every(function(p){ return !!st[p.k]; }); }
+function lastStampAt(id){ var st = stampsOf(id), m = 0; Object.keys(st).forEach(function(k){ if (st[k] > m) m = st[k]; }); return m; }
+function nextIncomplete(after){ var order = courseOrder(), i0 = after ? order.indexOf(after) + 1 : 0;
+  for (var i = i0; i < order.length; i++) if (!isLessonDone(order[i])) return order[i];
+  return null; }
+function startOfToday(){ var d = new Date(); d.setHours(0, 0, 0, 0); return d.getTime(); }
+/* درس اليوم: آخر درس اخترته، فإن اكتمل في يوم سابق انتقل إلى الدرس الذي يليه. */
+function pickTodayLesson(){
+  var order = courseOrder(), cur = G.cur && order.indexOf(G.cur) >= 0 ? G.cur : null;
+  if (!cur) return nextIncomplete(null) || order[0];
+  if (isLessonDone(cur) && lastStampAt(cur) < startOfToday()) return nextIncomplete(cur) || cur;
+  return cur;
+}
+function lessonTag(lid){ var m = /^u(\d+)l(\d+)$/.exec(lid || ''); if (!m) return String(lid || ''); return m[1] === '0' ? 'F' + m[2] : 'U' + m[1] + '·L' + m[2]; }
+
+var G = normalizeG(readJSON(KEY_G));
+var S = null;
+curLessonId = pickTodayLesson() || curLessonId;
+G.cur = curLessonId;
+rebuildLessonIndex();
+S = normalizeL(readJSON(KEY_L(curLessonId)));
 
 function selectLesson(id){
   if (!id || typeof LESSONS === 'undefined' || !LESSONS[id]) return false;
   if (curLessonId !== id) {
-    var welcomed = S.ui.welcomed, startedAt = S.startedAt;
+    saveLocal();
     curLessonId = id;
     M = null; M_POOL = null;
-    LS = 'english-passport.' + curLessonId + '.v1';
     rebuildLessonIndex();
-    S = normalize(readLocal());
-    if (welcomed) S.ui.welcomed = true;
-    if (!S.startedAt) S.startedAt = startedAt || Date.now();
-    saveLocal();
-    initDb();
+    S = normalizeL(readJSON(KEY_L(curLessonId)));
   }
+  G.cur = id;
+  saveLocal();
   return true;
 }
-
-var REMOTE = null, remoteOK = false, remoteBusy = false, remotePending = false, remoteRetried = false, remoteT = null;
-function touch(){ S.updatedAt = Date.now(); saveLocal(); if (remoteOK) { clearTimeout(remoteT); remoteT = setTimeout(flushRemote, 1200); } }
-function flushRemote(){
-  if (!remoteOK || !REMOTE) return;
-  if (remoteBusy) { remotePending = true; return; }
-  remoteBusy = true;
-  REMOTE.set(JSON.parse(JSON.stringify(S))).then(function(){ remoteRetried = false; }, function(e){
-    var c = e && e.code;
-    if (c === 'unavailable' && !remoteRetried) { remoteRetried = true; setTimeout(flushRemote, 1200 + Math.random() * 1500); }
-    else if (c !== 'unavailable' && c !== 'resource_exhausted') { remoteOK = false; }
-  }).then(function(){ remoteBusy = false; if (remotePending) { remotePending = false; flushRemote(); } });
-}
-function initDb(){
-  if (!(window.claude && typeof window.claude.use === 'function')) return;
-  Promise.all([window.claude.use('db'), window.claude.use('user')]).then(function(res){
-    var db = res[0], user = res[1];
-    if (!db) return;
-    return (user ? user.isOwner() : Promise.resolve(true)).then(function(owner){
-      if (!owner) return;
-      var ref = db.doc('progress/' + curLessonId);
-      return ref.get().then(function(snap){
-        REMOTE = ref; remoteOK = true;
-        if (snap.exists) {
-          var r = snap.data() || {}, ru = r.updatedAt || 0;
-          if (ru > (S.updatedAt || 0)) { var ui = S.ui; var st = S.startedAt; S = normalize(JSON.parse(JSON.stringify(r))); S.ui = ui; if (!S.startedAt) S.startedAt = st; saveLocal(); P = null; render(); }
-          else if ((S.updatedAt || 0) > ru) flushRemote();
-        } else if (S.updatedAt) flushRemote();
-      });
-    });
-  }).catch(function(){ remoteOK = false; });
+/* يعيد قراءة الحالة من الجهاز بعد استعادة نسخة احتياطية أو سحب تقدم من السحابة. */
+function reloadState(keepUi){
+  var ui = G && G.ui;
+  G = normalizeG(readJSON(KEY_G));
+  if (keepUi && ui) G.ui = ui;
+  var order = courseOrder(), id = G.cur && order.indexOf(G.cur) >= 0 ? G.cur : pickTodayLesson();
+  curLessonId = id || curLessonId; G.cur = curLessonId; INDEX_CACHE = {};
+  M = null; M_POOL = null; P = null;
+  rebuildLessonIndex();
+  S = normalizeL(readJSON(KEY_L(curLessonId)));
 }
 
 /* ---------- Human Pronunciation (Wikimedia Commons + Oxford Learner's Dictionary, NO Robotic TTS) ---------- */
@@ -409,22 +441,25 @@ function computeDone(){ function all(p){ return !IDS[p] || !IDS[p].length || IDS
 }
 function updateProgress(){ var d = computeDone(), changed = false;
   PARTS.forEach(function(p){ if (d[p.k] && !S.stamps[p.k]) { S.stamps[p.k] = Date.now(); changed = true; } });
-  if (changed) touch(); updateNav(); }
+  if (changed) { touch(); SYNC.soon(); } updateNav(); }
 function lessonProgress(){ var done = PARTS.filter(function(p){ return S.stamps[p.k]; }); var left = PARTS.filter(function(p){ return !S.stamps[p.k]; });
   return { done:done.length, total:PARTS.length, pct:Math.round(done.length / PARTS.length * 100), mins:left.reduce(function(a, p){ return a + p.min; }, 0), next:left[0] || null }; }
 function lessonProgressOf(id){
   if (!id || id === curLessonId) return lessonProgress();
-  try {
-    var raw = localStorage.getItem('english-passport.' + id + '.v1');
-    var stObj = raw ? (JSON.parse(raw).stamps || {}) : {};
-    var done = PARTS.filter(function(p){ return !!stObj[p.k]; });
-    var left = PARTS.filter(function(p){ return !stObj[p.k]; });
-    return { done:done.length, total:PARTS.length, pct:Math.round(done.length / PARTS.length * 100), mins:left.reduce(function(a, p){ return a + p.min; }, 0), next:left[0] || null };
-  } catch (e) { return { done:0, total:PARTS.length, pct:0, mins:60, next:PARTS[0] }; }
+  var stObj = stampsOf(id);
+  var done = PARTS.filter(function(p){ return !!stObj[p.k]; });
+  var left = PARTS.filter(function(p){ return !stObj[p.k]; });
+  return { done:done.length, total:PARTS.length, pct:Math.round(done.length / PARTS.length * 100), mins:left.reduce(function(a, p){ return a + p.min; }, 0), next:left[0] || null };
 }
-function record(id, c, v){ if (S.ans[id]) return; S.ans[id] = { c:!!c, v:v }; if (!c) { S.mistakes[id] = { s:0, t:Date.now() }; if (ITEMS[id]) bumpErrorLab(ITEMS[id].errCat || 'tense', itemText(ITEMS[id])); } touch(); updateProgress(); }
-function mistakeIds(){ return Object.keys(S.mistakes).filter(function(id){ return ITEMS[id]; }).sort(function(a, b){ return (S.mistakes[a].t || 0) - (S.mistakes[b].t || 0); }); }
-function courseDay(){ return Math.max(0, Math.floor((Date.now() - (S.startedAt || Date.now())) / 864e5)); }
+/* دفتر الأخطاء للكورس كله: المفتاح «الدرس|السؤال»، ويعود السؤال بعد يوم، ثم 3 أيام، ثم أسبوع، ثم شهر، ويخرج بعدها. */
+function mkey(lid, id){ return lid + '|' + id; }
+function itemFor(key){ var i = String(key).indexOf('|'); if (i < 0) return null; var lid = key.slice(0, i), id = key.slice(i + 1); if (typeof LESSONS === 'undefined' || !LESSONS[lid]) return null; return indexFor(lid).ITEMS[id] || null; }
+function record(id, c, v){ if (S.ans[id]) return; S.ans[id] = { c:!!c, v:v };
+  if (!c) { var t = Date.now(); G.mistakes[mkey(curLessonId, id)] = { lid:curLessonId, id:id, box:0, t:t, due:t + SR_DAYS[0] * 864e5 }; if (ITEMS[id]) bumpErrorLab(ITEMS[id].errCat || 'tense', itemText(ITEMS[id])); }
+  touch(); updateProgress(); }
+function allMistakeKeys(){ return Object.keys(G.mistakes).filter(function(k){ return !!itemFor(k); }).sort(function(a, b){ return (G.mistakes[a].due || 0) - (G.mistakes[b].due || 0); }); }
+function mistakeIds(){ var now = Date.now(); return allMistakeKeys().filter(function(k){ return (G.mistakes[k].due || 0) <= now; }); }
+function courseDay(){ return Math.max(0, Math.floor((Date.now() - (G.startedAt || Date.now())) / 864e5)); }
 
 /* ---------- routing ---------- */
 var TABS = [
@@ -434,15 +469,15 @@ var TABS = [
   { k:'review', en:'Review', ar:'المراجعة', ic:'review' }
 ];
 var P = null;
-function go(view){ S.ui.view = view; if (view !== 'player') { P = null; S.ui.part = null; } saveLocal(); render(); try { window.scrollTo(0, 0); } catch (e) {} }
+function go(view){ G.ui.view = view; if (view !== 'player') { P = null; G.ui.part = null; } saveLocal(); render(); try { window.scrollTo(0, 0); } catch (e) {} }
 function render(){
-  hideDict(); var v = S.ui.view; if (!S.ui.welcomed) v = 'welcome';
+  hideDict(); var v = G.ui.view; if (!G.ui.welcomed) v = 'welcome';
   var isTab = TABS.some(function(t){ return t.k === v; });
   $('#nav').hidden = !isTab;
   var view = v === 'welcome' ? vWelcome() : v === 'home' ? vHome() : v === 'lessons' ? vLessons() : v === 'words' ? vWords() : v === 'review' ? vReview() : v === 'lesson' ? vLesson() : vPlayer();
   put($('#screen'), view); updateNav(); }
 function updateNav(){ var nav = $('#nav'), n = mistakeIds().length;
-  put(nav, TABS.map(function(t){ var on = S.ui.view === t.k;
+  put(nav, TABS.map(function(t){ var on = G.ui.view === t.k;
     return h('button', { class:'nav-it' + (on ? ' on' : ''), type:'button', 'aria-label':t.en + ' · ' + t.ar, 'aria-current':on ? 'page' : null, on:{ click:function(){ go(t.k); } } },
       ico(t.ic), h('span', { class:'lbl' }, h('span', { class:'en', dir:'ltr' }, t.en), h('small', {}, t.ar)), (t.k === 'review' && n && !on) ? h('span', { class:'nav-dot', 'aria-hidden':'true' }) : null); })); }
 
@@ -454,7 +489,7 @@ function vWelcome(){
       h('p', { class:'wel-lbl' }, biNode('English Course', 'كورس الإنجليزية')),
       h('h1', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Your English Journey Starts Here'), h('small', {}, 'رحلتك في الإنجليزية تبدأ هنا')),
       h('p', {}, biNode('Short daily lessons built for your level and goals in study and work.', 'دروس قصيرة كل يوم، مبنية على مستواك وهدفك في الدراسة والعمل.'))),
-    h('div', { class:'wel-cta gut' }, h('button', { class:'btn', type:'button', on:{ click:function(){ S.ui.welcomed = true; touch(); go('home'); } } }, biBtn("Let's Start", 'لنبدأ'))));
+    h('div', { class:'wel-cta gut' }, h('button', { class:'btn', type:'button', on:{ click:function(){ G.ui.welcomed = true; if (!G.startedAt) G.startedAt = Date.now(); touch(); go('home'); } } }, biBtn("Let's Start", 'لنبدأ'))));
 }
 
 /* ---------- home ---------- */
@@ -465,11 +500,11 @@ function header(){ var n = mistakeIds().length, d = courseDay(), wk = Math.min(3
         h('small', {}, h('bdi', { class:'en', dir:'ltr' }, 'Welcome!'), ' · أهلًا!'),
         h('b', {}, h('bdi', { class:'en', dir:'ltr' }, 'Week ' + wk + ' · Day ' + dy), ' · الأسبوع ' + wk + ' · اليوم ' + dy))),
     h('div', { class:'hd-act' },
-      h('button', { class:'ib', type:'button', 'aria-label':'Mistake Notebook · دفتر الأخطاء' + (n ? '، ' + n + ' أسئلة' : ''), on:{ click:function(){ go('review'); } } }, ico('mark'), n ? h('span', { class:'badge', 'aria-hidden':'true' }, String(n)) : null),
-      h('button', { class:'ib', type:'button', 'aria-label':'Your Plan · خطتك', on:{ click:openPlan } }, ico('gear'))));
+      h('button', { class:'ib', type:'button', 'aria-label':'Mistake Notebook · دفتر الأخطاء' + (n ? '، ' + n + ' أسئلة مستحقة اليوم' : ''), on:{ click:function(){ go('review'); } } }, ico('mark'), n ? h('span', { class:'badge', 'aria-hidden':'true' }, String(n)) : null),
+      h('button', { class:'ib', id:'gearBtn', type:'button', 'aria-label':'Settings & Plan · الإعدادات والخطة', on:{ click:openPlan } }, ico('gear'), SYNC.hasProblem() ? h('span', { class:'sync-dot', 'aria-hidden':'true' }) : null)));
 }
 function journeyCard(){ var pr = lessonProgress(), d = courseDay(), week = Math.min(32, Math.floor(d / 7) + 1);
-  var lessonsDone = pr.done === pr.total ? 1 : pr.done / pr.total, coursePct = Math.min(100, lessonsDone / 192 * 100);
+  var lessonsDone = courseOrder().filter(isLessonDone).length, coursePct = Math.min(100, lessonsDone / 192 * 100);
   var fill = coursePct > 0 ? Math.max(3, coursePct) : 0;
   var curve = '<svg viewBox="0 0 350 84" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M322 66 C 262 68, 236 36, 186 40 S 92 14, 30 12" fill="none" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"/>' +
     (fill ? '<path d="M322 66 C 262 68, 236 36, 186 40 S 92 14, 30 12" pathLength="100" stroke-dasharray="' + fill + ' 100" fill="none" stroke="#F2B857" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/>' : '') + '</svg>';
@@ -523,12 +558,12 @@ function quickToolsRow(){
     h('button', { class:'qtile', type:'button', on:{ click:openDashboard } },
       h('div', { class:'qtile-top' },
         h('span', { class:'qtile-ic' }, ico('chart')),
-        h('span', { class:'qtile-badge' }, st.hoursStr + ' / 70h A2')),
+        h('span', { class:'qtile-badge' }, st.hoursStr + ' / ' + st.a2TargetHrs + 'h A2')),
       biNode('Progress & 4 Skills', 'لوحة التقدم والمهارات')),
     h('button', { class:'qtile exp', type:'button', on:{ click:function(){ openSession('express'); } } },
       h('div', { class:'qtile-top' },
         h('span', { class:'qtile-ic' }, ico('clock')),
-        h('span', { class:'qtile-badge' }, '15 min · ' + (S.expressSessions || 0) + ' done')),
+        h('span', { class:'qtile-badge' }, '15 min · ' + (G.expressSessions || 0) + ' done')),
       biNode('Busy-Day Express Mode', 'الوضع المختصر (١٥ دقيقة)')));
 }
 function foundationWeekBox(){
@@ -566,9 +601,9 @@ function vHome(){
     h('div', { class:'lcards' }, D.unit1Lessons.slice(0, 3).map(lessonCard)));
 }
 function stage4ToolsRow(){
-  var ut = (S.unitTests && S.unitTests[1]) || {};
+  var ut = (G.unitTests && G.unitTests[1]) || {};
   var utBadge = ut.best != null ? (Math.round(ut.best / 20 * 100) + '% · ' + (ut.status === 'mastered' ? 'Mastered' : ut.status === 'passed' ? 'Passed' : 'Retry')) : '20 Qs · 90% / 80%';
-  var cLogs = (S.camblyLogs || []).length;
+  var cLogs = (G.camblyLogs || []).length;
   var cBadge = cLogs ? (cLogs + ' session(s)') : '1st: Speaking Check';
   return h('div', { class:'quick-grid' },
     h('button', { class:'qtile', type:'button', on:{ click:openCambly } },
@@ -585,7 +620,7 @@ function stage4ToolsRow(){
 
 /* ---------- lessons tab (with Unit Test 90%/80% & Pre-Tests for Units 5, 8, 9, 12) ---------- */
 function vLessons(){
-  var ut1 = (S.unitTests && S.unitTests[1]) || {};
+  var ut1 = (G.unitTests && G.unitTests[1]) || {};
   return h('section', { class:'scr gut' },
     h('div', { class:'pg-h' },
       h('h1', { class:'h1 bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Course Lessons'), h('small', {}, 'الدروس')),
@@ -617,7 +652,7 @@ function vLessons(){
           return h('li', {}, h('div', { class:'uo-row' }, h('span', { class:'uo-k' }, k), h('span', { class:'uo-t' }, h('b', {}, l.en), h('span', { html:(l.subEn ? '<bdi class="en">' + esc(l.subEn) + '</bdi> · ' : '') + arHTML(l.ar) })), h('span', { class:'u-lock', html:IC.lock })));
         })));
       var hasPre = !!(D.preTests && D.preTests[u.n]);
-      var preSt = (S.preTests && S.preTests[u.n]) || {};
+      var preSt = (G.preTests && G.preTests[u.n]) || {};
       if (!hasPre) {
         return h('div', { class:'unit' }, h('span', { class:'u-n' }, String(u.n)),
           h('span', { class:'u-t' }, h('b', {}, u.en), h('span', { class:'u-ar' }, u.ar), h('span', { html:(u.gEn ? '<bdi class="en">' + esc(u.gEn) + '</bdi> · ' : '') + arHTML(u.g) })),
@@ -640,19 +675,19 @@ function vLessons(){
 /* ---------- words tab (Lesson Phrases + 60 Irregular Verbs in Spaced Repetition) ---------- */
 var POS_AR = { noun:'اسم', verb:'فعل', adjective:'صفة', 'legal phrase':'عبارة قانونية' };
 function irrStatus(base){
-  var st = S.irrSr && S.irrSr[base];
+  var st = G.irrSr && G.irrSr[base];
   if (!st || !st.box) return { st:'new', lbl:'New · جديد', due:true, days:0 };
   var due = !st.nextAt || Date.now() >= st.nextAt;
   var d = SR_DAYS[Math.min(SR_DAYS.length - 1, st.box - 1)];
   return { st: st.box >= 3 ? 'k' : 'r', lbl: due ? ('Due · مستحق (+' + d + 'd)') : ('+' + d + 'd · بعد ' + d + ' يوم'), due:due, days:d, box:st.box };
 }
 function vWords(){
-  var tab = S.ui.wordsTab || 'vocab';
+  var tab = G.ui.wordsTab || 'vocab';
   var switcher = h('div', { class:'seg', role:'tablist', 'aria-label':'Words View · عرض الكلمات' },
-    h('button', { class:'seg-b' + (tab === 'vocab' ? ' on' : ''), type:'button', role:'tab', 'aria-selected':tab === 'vocab' ? 'true' : 'false', on:{ click:function(){ S.ui.wordsTab = 'vocab'; saveLocal(); render(); } } },
+    h('button', { class:'seg-b' + (tab === 'vocab' ? ' on' : ''), type:'button', role:'tab', 'aria-selected':tab === 'vocab' ? 'true' : 'false', on:{ click:function(){ G.ui.wordsTab = 'vocab'; saveLocal(); render(); } } },
       h('span', { class:'en' }, 'Lesson Phrases (' + ALL_VOCAB.length + ')'),
       h('small', {}, 'عبارات الدرس والعبارة القانونية')),
-    h('button', { class:'seg-b' + (tab === 'irregular' ? ' on' : ''), type:'button', role:'tab', 'aria-selected':tab === 'irregular' ? 'true' : 'false', on:{ click:function(){ S.ui.wordsTab = 'irregular'; saveLocal(); render(); } } },
+    h('button', { class:'seg-b' + (tab === 'irregular' ? ' on' : ''), type:'button', role:'tab', 'aria-selected':tab === 'irregular' ? 'true' : 'false', on:{ click:function(){ G.ui.wordsTab = 'irregular'; saveLocal(); render(); } } },
       h('span', { class:'en' }, 'Irregular Verbs (' + (D.irregularVerbs || []).length + ')'),
       h('small', {}, 'الأفعال الشاذة · التكرار المتباعد')));
 
@@ -665,7 +700,7 @@ function vWords(){
       else if (s.st === 'r') learning++;
       if (s.due) dueCnt++;
     });
-    var curG = S.ui.irrGroup || 'all';
+    var curG = G.ui.irrGroup || 'all';
     var filtered = curG === 'all' ? verbs : verbs.filter(function(v){ return v.g === curG; });
     return h('section', { class:'scr gut' },
       h('div', { class:'pg-h' },
@@ -679,7 +714,7 @@ function vWords(){
       h('button', { class:'btn', type:'button', on:{ click:function(){ openSession('irregular'); } } },
         ico('pen'), biBtn('Practice Irregular Verbs (Type from Memory)', 'تدرّب على الأفعال الشاذة كتابةً من الذاكرة')),
       h('div', { class:'pills' }, (D.irregularGroups || []).map(function(g){
-        return h('button', { class:'pill-b' + (curG === g.k ? ' on' : ''), type:'button', on:{ click:function(){ S.ui.irrGroup = g.k; saveLocal(); render(); } } }, g.en + ' · ' + g.ar);
+        return h('button', { class:'pill-b' + (curG === g.k ? ' on' : ''), type:'button', on:{ click:function(){ G.ui.irrGroup = g.k; saveLocal(); render(); } } }, g.en + ' · ' + g.ar);
       })),
       h('div', { class:'wlist' }, filtered.map(function(v){
         var st = irrStatus(v.base);
@@ -736,15 +771,15 @@ function vWords(){
 function sortedErrorLabCats(){
   var cats = (D.errorLabCatalog || []).slice();
   return cats.sort(function(a, b){
-    var sa = S.errorLab[a.key] || { count:0, solved:0 };
-    var sb = S.errorLab[b.key] || { count:0, solved:0 };
+    var sa = G.errorLab[a.key] || { count:0, solved:0 };
+    var sb = G.errorLab[b.key] || { count:0, solved:0 };
     return ((sb.count || 0) - (sb.solved || 0)) - ((sa.count || 0) - (sa.solved || 0));
   });
 }
 function vReview(){
   var list = mistakeIds();
   var cats = sortedErrorLabCats();
-  var activePatterns = cats.filter(function(c){ var st = S.errorLab[c.key]; return st && (st.count || 0) > (st.solved || 0); }).length;
+  var activePatterns = cats.filter(function(c){ var st = G.errorLab[c.key]; return st && (st.count || 0) > (st.solved || 0); }).length;
 
   var headLab = h('div', { class:'pg-h' },
     h('h1', { class:'h1 bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Error Lab & Spaced Review'), h('small', {}, 'مختبر الأخطاء والتكرار المتباعد')),
@@ -757,7 +792,7 @@ function vReview(){
     h('button', { class:'btn light sm', type:'button', on:{ click:function(){ openSession('errlab'); } } }, biBtn('Practice Lab', 'تدرّب في المختبر'), ico('fwd')));
 
   var catCards = h('div', { class:'elab-list' }, cats.map(function(cat){
-    var st = S.errorLab[cat.key] || { count:cat.seedCount || 1, solved:0, box:0, fromDiag:true };
+    var st = G.errorLab[cat.key] || { count:cat.seedCount || 1, solved:0, box:0, fromDiag:true };
     var net = Math.max(0, (st.count || 0) - (st.solved || 0));
     var srDay = st.box > 0 ? SR_DAYS[Math.min(SR_DAYS.length - 1, st.box - 1)] : 1;
     return h('div', { class:'elab-card' },
@@ -778,22 +813,30 @@ function vReview(){
           biBtn('New Drill', 'تمرين جديد'), ico('fwd'))));
   }));
 
+  var all = allMistakeKeys();
   var nbSecHead = h('div', { class:'sec-h' },
-    h('h2', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Lesson Mistake Notebook'), h('small', {}, 'دفتر أسئلة الدروس (يخرج بعد إجابتين متتاليتين)')));
+    h('h2', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Mistake Notebook · All Lessons'), h('small', {}, 'دفتر الأخطاء لكل الدروس: يعود السؤال بعد يوم، ثم ٣ أيام، ثم أسبوع، ثم شهر')));
 
-  var nbBlock = !list.length
+  function dueChip(m){
+    var left = (m.due || 0) - Date.now();
+    if (left <= 0) return h('span', { class:'rv-due now' }, 'Due · مستحق');
+    var d = Math.max(1, Math.ceil(left / 864e5));
+    return h('span', { class:'rv-due' }, '+' + d + 'd · بعد ' + d + ' يوم');
+  }
+  var nbBlock = !all.length
     ? h('div', { class:'empty' }, penguin(70, 99),
         h('h2', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Notebook is Empty'), h('small', {}, 'الدفتر فارغ')),
-        h('p', {}, biNode('Any question you miss in a lesson will show up here for practice.', 'كل سؤال تخطئ فيه في الدرس يظهر هنا للمراجعة.')),
+        h('p', {}, biNode('Any question you miss in any lesson will come back here on a spaced schedule.', 'كل سؤال تخطئ فيه في أي درس يعود إليك هنا على مواعيد متباعدة.')),
         h('button', { class:'btn sm', type:'button', on:{ click:function(){ go('lesson'); } } }, biBtn('Go to Lesson', 'إلى الدرس')))
     : [
         h('div', { class:'rv-hero', id:'nbHero' },
-          h('div', {}, h('span', { class:'rv-n' }, String(list.length)), h('span', { class:'rv-l' }, 'In Mistake Notebook · في دفتر الأخطاء')),
-          h('button', { class:'btn light sm', type:'button', on:{ click:function(){ openSession('review'); } } }, biBtn('Start Review', 'ابدأ المراجعة'), ico('fwd'))),
-        h('div', { class:'rv-list' }, list.map(function(id){ var it = ITEMS[id], m = S.mistakes[id];
+          h('div', {}, h('span', { class:'rv-n' }, String(list.length)), h('span', { class:'rv-l' }, list.length ? 'Due today · مستحقة اليوم' : 'Nothing due today · لا شيء مستحق اليوم')),
+          list.length ? h('button', { class:'btn light sm', type:'button', on:{ click:function(){ openSession('review'); } } }, biBtn('Start Review', 'ابدأ المراجعة'), ico('fwd')) : null),
+        h('div', { class:'rv-list' }, all.map(function(key){ var it = itemFor(key), m = G.mistakes[key];
           return h('div', { class:'rv-row' },
-            h('div', { class:'rv-q' }, h('span', {}, (it.secEn || it.sec) + ' · ' + it.sec + ' — ' + it.group), h('p', {}, itemText(it))),
-            h('span', { class:'streak', 'aria-label':'Streak: ' + (m.s || 0) + ' of 2 · صحيحة متتالية: ' + (m.s || 0) + ' من 2' }, h('i', { class:(m.s || 0) >= 1 ? 'on' : '' }), h('i', {}))); }))
+            h('div', { class:'rv-q' }, h('span', {}, lessonTag(m.lid) + ' · ' + (it.secEn || it.sec) + ' · ' + it.sec), h('p', {}, itemText(it))),
+            dueChip(m),
+            h('span', { class:'streak', 'aria-label':'Review step ' + (m.box || 0) + ' of 4 · مرحلة المراجعة ' + (m.box || 0) + ' من ٤' }, [0, 1, 2, 3].map(function(i){ return h('i', { class:(m.box || 0) > i ? 'on' : '' }); }))); }))
       ];
 
   return h('section', { class:'scr gut' }, headLab, quickToolsRow(),
@@ -877,7 +920,7 @@ function stepsFor(k){
   }
   if (k === 'writing') return [{ t:'intro', k:k }, { t:'writing' }, { t:'done', k:k }];
   if (k === 'quiz') { var a = [{ t:'quizIntro' }]; for (var i = 0; i < D.quiz.length; i++) a.push({ t:'quizQ', n:i }); a.push({ t:'quizResult' }); return a; }
-  if (k === 'review') return mistakeIds().map(function(id){ return { t:'item', id:id, review:true }; }).concat([{ t:'sessionDone', k:'review' }]);
+  if (k === 'review') return mistakeIds().map(function(key){ return { t:'item', key:key, review:true }; }).concat([{ t:'sessionDone', k:'review' }]);
   if (k === 'cards') { var r = ALL_VOCAB.map(function(v, i){ return S.cards[v.en] === 'r' ? i : -1; }).filter(function(i){ return i >= 0; });
     var idx = r.length ? r : ALL_VOCAB.map(function(_, i){ return i; });
     return idx.map(function(i){ return { t:'flash', i:i, session:true }; }).concat([{ t:'sessionDone', k:'cards' }]); }
@@ -908,7 +951,7 @@ function stepsFor(k){
   if (typeof k === 'string' && k.indexOf('unitTest:') === 0) {
     var uId = Number(k.slice(9)) || 1;
     var utObj = (D.unitTests && D.unitTests[uId]) || D.unitTests[1];
-    UT_STATE = { unit:uId, ans:{}, applied:(S.unitTests[uId] && S.unitTests[uId].appliedText) || '' };
+    UT_STATE = { unit:uId, ans:{}, applied:(G.unitTests[uId] && G.unitTests[uId].appliedText) || '' };
     var uSteps = [{ t:'unitLegal', unit:uId }];
     utObj.questions.forEach(function(_, qi){ uSteps.push({ t:'unitTestQ', unit:uId, qIdx:qi }); });
     uSteps.push({ t:'unitApplied', unit:uId });
@@ -918,7 +961,7 @@ function stepsFor(k){
   if (typeof k === 'string' && k.indexOf('unitMini:') === 0) {
     var mUnit = Number(k.slice(9)) || 1;
     var utData = (D.unitTests && D.unitTests[mUnit]) || D.unitTests[1];
-    var savedUt = (S.unitTests && S.unitTests[mUnit]) || {};
+    var savedUt = (G.unitTests && G.unitTests[mUnit]) || {};
     var idxs = (savedUt.missedIdxs && savedUt.missedIdxs.length) ? savedUt.missedIdxs : [0, 2, 5, 7];
     MINI_STATE = { unit:mUnit, idxs:idxs, ans:{} };
     return idxs.map(function(qi, pos){ return { t:'unitMiniQ', unit:mUnit, qIdx:qi, pos:pos + 1, total:idxs.length }; }).concat([{ t:'unitMiniResult', unit:mUnit }]);
@@ -935,21 +978,21 @@ function stepsFor(k){
   }
   return [];
 }
-function openPart(k){ clearReadTimer(); M = null; M_POOL = null; var steps = stepsFor(k), i = 0, saved = S.ui.step[k];
+function openPart(k){ clearReadTimer(); M = null; M_POOL = null; var steps = stepsFor(k), i = 0, saved = S.step[k];
   if (typeof saved === 'number' && saved > 0 && saved < steps.length) i = saved;
   if (S.stamps[k] && steps[i] && steps[i].t === 'done') i = 0;
   if (k === 'quiz') { Q = null; i = 0; }
-  P = { part:k, steps:steps, i:i }; S.ui.part = k; S.ui.view = 'player'; saveLocal(); render(); try { window.scrollTo(0, 0); } catch (e) {} }
+  P = { part:k, steps:steps, i:i }; G.ui.part = k; G.ui.view = 'player'; saveLocal(); render(); try { window.scrollTo(0, 0); } catch (e) {} }
 function openSession(k){ clearReadTimer(); var steps = stepsFor(k); if (steps.length < 2) { toast(k === 'review' ? 'Notebook is empty · الدفتر فارغ' : 'No cards · لا توجد بطاقات'); return; }
-  P = { part:k, steps:steps, i:0, session:true }; S.ui.part = k; S.ui.view = 'player'; saveLocal(); render(); try { window.scrollTo(0, 0); } catch (e) {} }
-function closePlayer(){ clearReadTimer(); var sess = P && P.session, k = String((P && P.part) || ''); P = null; S.ui.part = null;
+  P = { part:k, steps:steps, i:0, session:true }; G.ui.part = k; G.ui.view = 'player'; saveLocal(); render(); try { window.scrollTo(0, 0); } catch (e) {} }
+function closePlayer(){ clearReadTimer(); var sess = P && P.session, k = String((P && P.part) || ''); P = null; G.ui.part = null;
   if (!sess) { go('lesson'); return; }
   if (k === 'express') { go('home'); return; }
   if (k === 'review' || k === 'errlab' || k.indexOf('errlab:') === 0) { go('review'); return; }
   if (k.indexOf('unitTest:') === 0 || k.indexOf('unitMini:') === 0 || k.indexOf('pretest:') === 0) { go('lessons'); return; }
   go('words');
 }
-function goStep(i){ clearReadTimer(); if (!P) return; P.i = Math.max(0, Math.min(P.steps.length - 1, i)); if (!P.session) { S.ui.step[P.part] = P.i; saveLocal(); } render(); try { window.scrollTo(0, 0); } catch (e) {} }
+function goStep(i){ clearReadTimer(); if (!P) return; P.i = Math.max(0, Math.min(P.steps.length - 1, i)); if (!P.session) { S.step[P.part] = P.i; saveLocal(); } render(); try { window.scrollTo(0, 0); } catch (e) {} }
 function nextStep(){ if (!P) return; if (P.i >= P.steps.length - 1) { closePlayer(); return; } goStep(P.i + 1); }
 function prevStep(){ if (P && P.i > 0) goStep(P.i - 1); }
 
@@ -989,8 +1032,8 @@ function formatCtaLabel(label){
 }
 
 function vPlayer(){
-  if (!P) { var k = S.ui.part; if (!k || ['recall','vocab','grammar','reading','writing','quiz'].indexOf(k) < 0) { S.ui.view = 'lesson'; return vLesson(); }
-    var steps = stepsFor(k), i = S.ui.step[k] || 0; if (k === 'quiz') i = 0; P = { part:k, steps:steps, i:Math.min(i, steps.length - 1) }; }
+  if (!P) { var k = G.ui.part; if (!k || ['recall','vocab','grammar','reading','writing','quiz'].indexOf(k) < 0) { G.ui.view = 'lesson'; return vLesson(); }
+    var steps = stepsFor(k), i = S.step[k] || 0; if (k === 'quiz') i = 0; P = { part:k, steps:steps, i:Math.min(i, steps.length - 1) }; }
   var st = P.steps[P.i], N = P.steps.length;
   var cta = h('button', { class:'btn', type:'button' }, formatCtaLabel('التالي'), ico('fwd'));
   var ctl = {
@@ -1303,10 +1346,17 @@ function Builder(x, o, ctl){ o = o || {}; var placed = [], locked = false;
   if (o.saved && Array.isArray(o.saved.v)) { placed = o.saved.v.slice(); finish(!!o.saved.c); } else draw();
   return [qCard(line), pool, clear, fb];
 }
-function stItem(st, ctl){ var it = ITEMS[st.id]; if (!it) { ctl.enable(); return h('p', {}, ''); }
+function stItem(st, ctl){ var it = st.review ? itemFor(st.key) : ITEMS[st.id]; if (!it) { ctl.enable(); return h('p', {}, ''); }
   var review = !!st.review, saved = review ? null : S.ans[st.id];
   var o = { saved:saved, onAnswer:function(c, v){
-    if (review) { var m = S.mistakes[st.id]; if (m) { m.s = c ? (m.s || 0) + 1 : 0; if (m.s >= 2) { delete S.mistakes[st.id]; toast('Question cleared! · سؤال خرج من الدفتر'); } touch(); updateNav(); } }
+    if (review) {
+      var m = G.mistakes[st.key];
+      if (m) {
+        if (c) { m.box = (m.box || 0) + 1; if (m.box >= SR_DAYS.length) { delete G.mistakes[st.key]; toast('Question cleared! · سؤال خرج من الدفتر'); } else m.due = Date.now() + SR_DAYS[m.box] * 864e5; }
+        else { m.box = 0; m.due = Date.now() + SR_DAYS[0] * 864e5; }
+        touch(); updateNav();
+      }
+    }
     else record(st.id, c, v);
     ctl.enable(); } };
   var nodes;
@@ -1317,7 +1367,7 @@ function stItem(st, ctl){ var it = ITEMS[st.id]; if (!it) { ctl.enable(); return
   else if (it.type === 'typing') nodes = Typing(it.x, o, ctl);
   else nodes = Builder(it.x, o, ctl);
   if ((it.type === 'mcq' || it.type === 'tf' || it.type === 'rtf') && !saved) ctl.set('التالي', false, nextStep);
-  var extra = review ? h('span', { class:'tag' }, 'Review · مراجعة') : (it.secEn === 'Listening' && D.listening && D.listening.url ? h('a', { class:'ox-link', href:D.listening.url, target:'_blank', rel:'noopener noreferrer' }, 'Audio Clip ↗') : null);
+  var extra = review ? h('span', { class:'tag' }, 'Review · مراجعة · ' + lessonTag(String(st.key).split('|')[0])) : (it.secEn === 'Listening' && D.listening && D.listening.url ? h('a', { class:'ox-link', href:D.listening.url, target:'_blank', rel:'noopener noreferrer' }, 'Audio Clip ↗') : null);
   return [label(it.groupEn || it.group, it.group, extra)].concat(nodes);
 }
 
@@ -1462,7 +1512,7 @@ function stListen1(ctl){
     ctl.set('إلى الأسئلة', true, function(){ S.listen1Done = true; touch(); nextStep(); });
   }
   return [
-    label('Listening · Stage 1 of 3 (Main Idea — No Transcript)', 'الاستماع ١ من ٣ · الفكرة العامة بدون النص المكتوب', h('span', { class:'tag' }, L.sourceTag || 'Human Audio · تسجيل بشري')),
+    label('Listening · Stage 1 of 3 (Main Idea — No Transcript)', 'الاستماع ١ من ٣ · الفكرة العامة بدون النص المكتوب', h('span', { class:'tag' }, L.sourceTag || 'Audio Clip · مقطع صوتي')),
     h('div', { class:'rtimer' },
       biNode('Step 1: Listen once in the source page for the main idea without looking at the transcript, then answer the main-idea question below.', 'الخطوة ١: استمع مرة واحدة للفكرة العامة بدون قراءة النص المكتوب، ثم أجب عن سؤال الفكرة العامة بالأسفل.'),
       tSpan),
@@ -1483,7 +1533,7 @@ function stListen3(ctl){
   var bodyHtml = paras.map(function(p){ return '<p>' + parseMarkup(p) + '</p>'; }).join('');
   var mail = h('article', { class:'mail' + (S.hl ? ' hl-on' : ''), 'aria-label':'Audio Transcript · النص المكتوب للمقطع' },
     h('div', { class:'mail-meta' },
-      h('div', {}, h('span', { class:'k' }, 'SOURCE'), L.sourceMeta || 'Verified Human Audio Clip'),
+      h('div', {}, h('span', { class:'k' }, 'SOURCE'), L.sourceMeta || 'Audio Clip · مقطع الاستماع'),
       h('div', {}, h('span', { class:'k' }, 'SPEAKERS'), L.speakers || 'Dialogue'),
       h('div', {}, h('span', { class:'k' }, 'TITLE'), h('span', { class:'subj' }, L.title || 'Transcript'))),
     h('div', { class:'mail-body', dir:'ltr', html:bodyHtml }));
@@ -1542,7 +1592,7 @@ function stQuizIntro(ctl){ var best = S.quiz.best;
 function stQuizQ(n, ctl){ if (!Q) { setTimeout(function(){ goStep(0); }, 0); return h('p', {}, ''); }
   var it = Q.items[n], last = n === Q.items.length - 1;
   ctl.set(last ? 'النتيجة وتحليل الأخطاء' : 'السؤال التالي', Q.res[n] != null, last ? finishQuiz : nextStep);
-  var nodes = MCQ(it, { tag:it.tag, saved:Q.res[n] != null ? { v:Q.res[n].v } : null, onAnswer:function(c, v){ Q.res[n] = { c:c, v:v }; if (c) Q.score++; else { S.mistakes['qz-' + it.src] = { s:0, t:Date.now() }; touch(); updateNav(); } ctl.set(last ? 'النتيجة وتحليل الأخطاء' : 'السؤال التالي', true, last ? finishQuiz : nextStep); } });
+  var nodes = MCQ(it, { tag:it.tag, saved:Q.res[n] != null ? { v:Q.res[n].v } : null, onAnswer:function(c, v){ Q.res[n] = { c:c, v:v }; if (c) Q.score++; else { var qt = Date.now(); G.mistakes[mkey(curLessonId, 'qz-' + it.src)] = { lid:curLessonId, id:'qz-' + it.src, box:0, t:qt, due:qt + SR_DAYS[0] * 864e5 }; touch(); updateNav(); } ctl.set(last ? 'النتيجة وتحليل الأخطاء' : 'السؤال التالي', true, last ? finishQuiz : nextStep); } });
   return [label('Question ' + (n + 1) + ' of ' + Q.items.length, 'السؤال ' + (n + 1) + ' من ' + Q.items.length)].concat(nodes);
 }
 function finishQuiz(){ if (!Q) return; S.quiz.attempts = (S.quiz.attempts || 0) + 1; S.quiz.last = Q.score; S.quiz.best = Math.max(S.quiz.best || 0, Q.score); touch(); updateProgress(); nextStep(); }
@@ -1768,13 +1818,13 @@ function stDone(k, ctl){ updateProgress(); var p = partOf(k), idx = PARTS.indexO
   var redo = (k !== 'quiz' && k !== 'writing') ? h('button', { class:'link', type:'button', on:{ click:function(){ resetPart(k); } } }, 'Redo exercises in this stage · إعادة أسئلة هذه المرحلة') : null;
   return h('div', { class:'fin' }, h('span', { class:'done-ic pop' }, all ? ico('star') : ico('check')),
     h('h1', { class:'bi-h' },
-      h('span', { class:'en', dir:'ltr' }, all ? 'Lesson 1 Complete!' : (isDone ? p.fullEn + ' Complete!' : 'End of ' + p.fullEn)),
-      h('small', {}, all ? 'اكتمل الدرس الأول بمراحله الست!' : (isDone ? 'اكتملت مرحلة ' + p.fullAr : 'وصلت لنهاية ' + p.fullAr))),
-    h('p', {}, all ? 'All 6 stages finished! · ست مراحل كاملة. اطلب الدرس التالي في المحادثة.' : (isDone ? PART_SCORE[k]() : 'Some questions in this stage are still unanswered. · بقيت أسئلة ما جاوبت عليها في هذه المرحلة. ارجع لها من الخطوة السابقة.')),
+      h('span', { class:'en', dir:'ltr' }, all ? 'Lesson Complete!' : (isDone ? p.fullEn + ' Complete!' : 'End of ' + p.fullEn)),
+      h('small', {}, all ? 'اكتمل الدرس بمراحله الست!' : (isDone ? 'اكتملت مرحلة ' + p.fullAr : 'وصلت لنهاية ' + p.fullAr))),
+    h('p', {}, all ? 'All 6 stages finished! · ست مراحل كاملة. يظهر لك الدرس التالي في الرئيسية غدًا، أو اختره الآن من قائمة الدروس.' : (isDone ? PART_SCORE[k]() : 'Some questions in this stage are still unanswered. · بقيت أسئلة ما جاوبت عليها في هذه المرحلة. ارجع لها من الخطوة السابقة.')),
     all ? penguin(84, 119) : null, redo);
 }
 function resetPart(k){ var ids = k === 'recall' ? IDS.rc : k === 'vocab' ? IDS.vg : k === 'grammar' ? [].concat(IDS.gA, IDS.gB, IDS.gC, IDS.gD) : k === 'reading' ? ((D.listening && !D.reading) ? IDS.lq : IDS.rq) : [];
-  ids.forEach(function(id){ delete S.ans[id]; }); if (k === 'vocab') { M = null; } touch(); P.i = 0; S.ui.step[k] = 0; saveLocal(); toast('Stage reset · رجعت أسئلة المرحلة من البداية'); render(); }
+  ids.forEach(function(id){ delete S.ans[id]; }); if (k === 'vocab') { M = null; } touch(); P.i = 0; S.step[k] = 0; saveLocal(); toast('Stage reset · رجعت أسئلة المرحلة من البداية'); render(); }
 function stExpressIntro(ctl){
   ctl.enable('ابدأ');
   return h('div', { class:'intro' },
@@ -1819,10 +1869,10 @@ function stIrrDrill(st, ctl){
     inPast.disabled = true; inPp.disabled = true;
     inPast.classList.add(ok1 ? 'ok' : 'bad');
     inPp.classList.add(ok2 ? 'ok' : 'bad');
-    var cur = (S.irrSr && S.irrSr[v.base]) || { box:0, nextAt:0 };
+    var cur = (G.irrSr && G.irrSr[v.base]) || { box:0, nextAt:0 };
     var nextBox = ok ? Math.min(4, (cur.box || 0) + 1) : 1;
     var days = SR_DAYS[Math.min(SR_DAYS.length - 1, nextBox - 1)];
-    S.irrSr[v.base] = { box:nextBox, lastAt:Date.now(), nextAt:Date.now() + days * 864e5 };
+    G.irrSr[v.base] = { box:nextBox, lastAt:Date.now(), nextAt:Date.now() + days * 864e5 };
     if (!ok) bumpErrorLab('spelling', v.base + ' → ' + v.past + ' → ' + v.pp);
     touch();
     fb.hidden = false;
@@ -1845,7 +1895,7 @@ function stErrDrill(st, ctl){
   var nodes = MCQ({ prompt:d.s, opts:d.opts, a:d.a, whyEn:d.whyEn, why:d.why }, {
     tag:'Error Lab · ' + cat.en,
     onAnswer:function(ok){
-      var entry = S.errorLab[cat.key] || { count:cat.seedCount || 1, solved:0, box:0 };
+      var entry = G.errorLab[cat.key] || { count:cat.seedCount || 1, solved:0, box:0 };
       if (ok) {
         entry.solved = (entry.solved || 0) + 1;
         entry.box = Math.min(4, (entry.box || 0) + 1);
@@ -1856,7 +1906,7 @@ function stErrDrill(st, ctl){
         entry.box = 1;
         entry.nextAt = Date.now() + 864e5;
       }
-      S.errorLab[cat.key] = entry;
+      G.errorLab[cat.key] = entry;
       touch();
       ctl.enable('التالي');
     }
@@ -1867,10 +1917,12 @@ function stErrDrill(st, ctl){
   ].concat(nodes);
 }
 function stSessionDone(k, ctl){
-  if (k === 'express' && P && !P._loggedExpress) {
-    P._loggedExpress = true;
-    S.expressSessions = (S.expressSessions || 0) + 1;
-    touch();
+  if (P && !P._logged) {
+    P._logged = true;
+    var n = Math.max(0, P.steps.length - 1);
+    if (k === 'express') G.expressSessions = (G.expressSessions || 0) + 1;
+    else G.practiceMins = (G.practiceMins || 0) + (k === 'cards' ? Math.round(n / 4) : n);
+    touch(); SYNC.soon();
   }
   var isRev = (k === 'review' || k === 'errlab' || String(k).indexOf('errlab:') === 0);
   var ctaLbl = k === 'express' ? 'رجوع للدرس' : (isRev ? 'رجوع للمراجعة' : 'رجوع للكلمات');
@@ -1879,11 +1931,11 @@ function stSessionDone(k, ctl){
   var titleEn = k === 'express' ? '15-Min Express Review Logged!' : k === 'irregular' ? 'Irregular Verbs Practice Complete!' : isRev ? 'Error Lab & Review Complete!' : 'Flashcards Complete';
   var titleAr = k === 'express' ? 'سُجّلت جلسة الوضع المختصر (+١٥ دقيقة)!' : k === 'irregular' ? 'أنهيت تدريب الأفعال الشاذة!' : isRev ? 'أنهيت جلسة مختبر الأخطاء والمراجعة!' : 'أنهيت البطاقات';
   var desc = k === 'express'
-    ? 'Added +15 minutes to your study hours as a review session (not a completed lesson). Total express sessions: ' + (S.expressSessions || 1) + '. · أُضيفت ١٥ دقيقة لساعات دراستك كجلسة مراجعة (لا تُحسب درسًا مكتملًا).'
+    ? 'Added +15 minutes to your study hours as a review session (not a completed lesson). Total express sessions: ' + (G.expressSessions || 1) + '. · أُضيفت ١٥ دقيقة لساعات دراستك كجلسة مراجعة (لا تُحسب درسًا مكتملًا).'
     : k === 'irregular'
     ? 'Your Spaced Repetition intervals (+1d, +3d, +7d, +30d) have been updated. · تحدّثت مواعيد التكرار المتباعد للأفعال التي تدرّبت عليها.'
     : isRev
-    ? (left ? left + ' item(s) left in lesson notebook. Error Lab priorities updated! · تحدّثت أولويات مختبر الأخطاء وتبقى ' + left + ' في دفتر الدرس.' : 'Your notebook is now empty! Error Lab priorities and spaced retention dates are updated. · الدفتر صار فاضي. ممتاز! وتحدّثت أولويات مختبر الأخطاء.')
+    ? (left ? left + ' item(s) still due today. Error Lab priorities updated. · بقي ' + left + ' مستحقة اليوم، وتحدّثت أولويات مختبر الأخطاء.' : 'Nothing else is due today. Correct answers come back later on the spaced schedule. · لا شيء مستحق اليوم، والأسئلة التي أصبت فيها تعود في مواعيدها المتباعدة.')
     : 'Words marked "Review later" will appear first next time. · الكلمات التي اخترت «أراجعها لاحقًا» تظهر لك أولًا في المرة القادمة.';
   return h('div', { class:'fin' }, h('span', { class:'done-ic pop' }, ico('check')),
     h('h1', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, titleEn), h('small', {}, titleAr)),
@@ -1918,90 +1970,77 @@ function openCredits(){
   ]);
 }
 
+function allLessonStates(){ var out = {}; courseOrder().forEach(function(id){ out[id] = id === curLessonId ? S : normalizeL(readJSON(KEY_L(id))); }); return out; }
+/* أرقام اللوحة من إجاباتك الفعلية في كل الدروس، ولا رقم مفترض: المهارة بلا بيانات تظهر «لا بيانات بعد». */
 function computeDashboardStats(){
-  var stageMins = PARTS.reduce(function(acc, p){ return acc + (S.stamps[p.k] ? p.min : 0); }, 0);
-  var expMins = (S.expressSessions || 0) * 15;
-  var camblyMins = (S.camblyLogs || []).reduce(function(acc, l){ return acc + (Number(l.mins) || 0); }, 0);
-  var irrPracticed = Object.keys(S.irrSr || {}).length;
-  var totalMins = stageMins + expMins + camblyMins + (irrPracticed * 2);
-  var hours = totalMins / 60;
-  var hoursStr = hours.toFixed(1);
-  var a2TargetHrs = 70;
-  var hoursPct = Math.min(100, Math.round((hours / a2TargetHrs) * 100));
-
-  function accOf(ids, fallbackPct){
-    var ans = (ids || []).filter(function(id){ return S.ans[id]; });
-    if (!ans.length) return fallbackPct;
-    var ok = ans.filter(function(id){ return S.ans[id].c; }).length;
-    return Math.round((ok / ids.length) * 100);
-  }
-  var readPct = S.stamps.reading ? 100 : accOf(IDS.rq, S.read1Done ? 45 : 75);
-  var listenPct = S.stamps.reading && D.listening ? 100 : accOf(IDS.lq, 70);
-  var writePct = S.writingDone ? (S.writing.fb && S.writing.fb.score ? S.writing.fb.score * 10 : 85) : (S.writing.text ? 45 : 40);
-  var speakSessions = (S.camblyLogs || []).length;
-  var speakPhrases = (S.camblyLogs || []).reduce(function(a, l){ return a + (Number(l.phrases) || 0); }, 0);
-  var speakPct = speakSessions ? Math.min(100, speakSessions * 25 + speakPhrases * 5) : 0;
-  var gramPct = accOf([].concat(IDS.gA || [], IDS.gB || [], IDS.gC || [], IDS.gD || []), 55);
-  var vocKnown = ALL_VOCAB.filter(function(v){ return S.cards[v.en] === 'k'; }).length;
-  var vocPct = Math.max(accOf([].concat(IDS.rc || [], IDS.vg || []), 50), Math.round(((vocKnown + irrPracticed) / Math.max(1, ALL_VOCAB.length)) * 100));
-
+  var states = allLessonStates(), stageMins = 0, lessonsDone = 0, writingDone = 0;
+  var tally = { rq:[0, 0], lq:[0, 0], g:[0, 0], v:[0, 0] };
+  Object.keys(states).forEach(function(id){ var st = states[id];
+    PARTS.forEach(function(p){ if (st.stamps[p.k]) stageMins += p.min; });
+    if (PARTS.every(function(p){ return !!st.stamps[p.k]; })) lessonsDone++;
+    if (st.writingDone) writingDone++;
+    Object.keys(st.ans).forEach(function(qid){ var a = st.ans[qid], pre = qid.split('-')[0];
+      var b = pre === 'rq' ? 'rq' : pre === 'lq' ? 'lq' : (pre === 'gA' || pre === 'gB' || pre === 'gC' || pre === 'gD') ? 'g' : (pre === 'rc' || pre === 'vg') ? 'v' : null;
+      if (b) { tally[b][1]++; if (a && a.c) tally[b][0]++; } });
+  });
+  function pct(t){ return t[1] ? Math.round(t[0] / t[1] * 100) : null; }
+  var expMins = (G.expressSessions || 0) * 15;
+  var camblyMins = (G.camblyLogs || []).reduce(function(acc, l){ return acc + (Number(l.mins) || 0); }, 0);
+  var practiceMins = G.practiceMins || 0;
+  var totalMins = stageMins + expMins + camblyMins + practiceMins;
+  var hours = totalMins / 60, a2TargetHrs = 90;
+  var irr = G.irrSr || {};
   return {
-    totalMins: totalMins,
-    stageMins: stageMins,
-    expMins: expMins,
-    camblyMins: camblyMins,
-    hoursStr: hoursStr,
-    a2TargetHrs: a2TargetHrs,
-    hoursPct: hoursPct,
-    readPct: readPct,
-    listenPct: listenPct,
-    writePct: writePct,
-    speakPct: speakPct,
-    speakSessions: speakSessions,
-    speakPhrases: speakPhrases,
-    gramPct: gramPct,
-    vocPct: Math.min(100, vocPct),
-    irrPracticed: irrPracticed
+    totalMins:totalMins, stageMins:stageMins, expMins:expMins, camblyMins:camblyMins, practiceMins:practiceMins,
+    hoursStr:hours.toFixed(1), a2TargetHrs:a2TargetHrs, hoursPct:Math.min(100, Math.round(hours / a2TargetHrs * 100)),
+    readPct:pct(tally.rq), readN:tally.rq[1], listenPct:pct(tally.lq), listenN:tally.lq[1],
+    gramPct:pct(tally.g), gramN:tally.g[1], vocPct:pct(tally.v), vocN:tally.v[1],
+    writingDone:writingDone, lessonsDone:lessonsDone,
+    speakSessions:(G.camblyLogs || []).length,
+    speakPhrases:(G.camblyLogs || []).reduce(function(a, l){ return a + (Number(l.phrases) || 0); }, 0),
+    irrPracticed:Object.keys(irr).length,
+    irrMastered:Object.keys(irr).filter(function(b){ return (irr[b].box || 0) >= 3; }).length
   };
 }
 function openDashboard(){
   var st = computeDashboardStats();
+  function nAns(n){ return n + ' answer(s) across lessons · من ' + n + ' إجابة في الدروس'; }
   var skills = [
-    { en:'Reading · القراءة', pct:st.readPct, cls:'ok', subEn:'Diagnostic A2 steady (7/7) + Lesson reading & evidence', subAr:'ثابت في A2 تشخيصيًا (٧/٧) + قراءة الدروس بالدليل' },
-    { en:'Listening · الاستماع', pct:st.listenPct, cls:'ok', subEn:'Diagnostic A2 steady (6/6) + British Council / ELLLO human audio', subAr:'ثابت في A2 تشخيصيًا (٦/٦) + مقاطع الاستماع البشرية' },
-    { en:'Writing · الكتابة', pct:st.writePct, cls:'acc', subEn:'Early A2 · Daily 4-sentence task separating spelling from grammar', subAr:'بداية A2 · مهمة يومية من ٤ جمل منفصلة تفصل الإملاء عن القواعد' },
-    { en:'Speaking (Cambly) · التحدث', pct:st.speakPct, cls:'acc',
-      subEn: st.speakSessions ? (st.speakSessions + ' Cambly session(s) · ' + st.speakPhrases + ' card phrases used') : 'Measured in 1st Cambly session (30 min weekly)',
-      subAr: st.speakSessions ? (st.speakSessions + ' جلسات كامبلي · استُخدمت ' + st.speakPhrases + ' عبارات') : 'يُقاس في أول جلسة كامبلي (ثم جلسة أسبوعية ٣٠ دقيقة)' },
-    { en:'Grammar · القواعد', pct:st.gramPct, cls:'', subEn:'Core Inventory order + Error Lab active patterns', subAr:'بترتيب Core Inventory مع تمارين مختبر الأخطاء' },
-    { en:'Vocabulary, Spelling & Irregulars · المفردات والإملاء', pct:st.vocPct, cls:'', subEn:ALL_VOCAB.length + ' lesson phrases + ' + st.irrPracticed + '/60 irregular verbs practiced', subAr:ALL_VOCAB.length + ' عبارة درس + ' + st.irrPracticed + ' من ٦٠ فعلًا شاذًا' }
+    { en:'Reading · القراءة', pct:st.readPct, cls:'ok', subEn:st.readN ? nAns(st.readN) : 'Comprehension questions in reading lessons', subAr:st.readN ? '' : 'أسئلة الفهم في دروس القراءة' },
+    { en:'Listening · الاستماع', pct:st.listenPct, cls:'ok', subEn:st.listenN ? nAns(st.listenN) : 'Questions in listening lessons', subAr:st.listenN ? '' : 'أسئلة دروس الاستماع' },
+    { en:'Writing · الكتابة', pct:null, cls:'acc', subEn:st.writingDone + ' writing task(s) done. A score appears once real correction is available.', subAr:'أنجزت ' + st.writingDone + ' من مهام الكتابة، وتظهر الدرجة حين يتوفر تصحيح حقيقي.' },
+    { en:'Speaking (Cambly) · التحدث', pct:null, cls:'acc',
+      subEn: st.speakSessions ? (st.speakSessions + ' Cambly session(s) · ' + st.speakPhrases + ' card phrases used') : 'Measured by your Cambly tutor in the first session',
+      subAr: st.speakSessions ? (st.speakSessions + ' جلسات كامبلي · استُخدمت ' + st.speakPhrases + ' عبارة') : 'يقيسه معلم كامبلي في أول جلسة' },
+    { en:'Grammar · القواعد', pct:st.gramPct, cls:'', subEn:st.gramN ? nAns(st.gramN) : 'Grammar exercises in every lesson', subAr:st.gramN ? '' : 'تمارين القواعد في كل درس' },
+    { en:'Vocabulary & Spelling · المفردات والإملاء', pct:st.vocPct, cls:'', subEn:(st.vocN ? nAns(st.vocN) + ' · ' : '') + st.irrMastered + '/60 irregular verbs steady', subAr:'ثبت ' + st.irrMastered + ' من ٦٠ فعلًا شاذًا' }
   ];
   openSheet('Progress & Skills Dashboard', 'لوحة التقدم بالساعات والمهارات', [
     h('div', { class:'dash-hero' },
       h('div', { class:'dash-hrs' },
-        biNode('Stage A2 Guided Study Hours', 'ساعات الدراسة المنجزة في مرحلة A2'),
+        biNode('Stage A2 Study Hours', 'ساعات الدراسة في مرحلة A2'),
         h('b', {}, st.hoursStr + ' / ' + st.a2TargetHrs + ' hrs')),
-      h('div', { class:'dash-bar' }, h('span', { style:'width:' + Math.max(4, st.hoursPct) + '%' })),
-      h('p', { class:'sm', style:'color:var(--on-dark-2)' }, 'Cambridge cumulative target: 180–200 hrs for A2 (~70 hrs from Early A2). · مقدّر كامبريدج لمرحلة A2 نحو ٧٠ ساعة من مستواك الحالي.'),
+      h('div', { class:'dash-bar' }, h('span', { style:'width:' + Math.max(st.totalMins ? 4 : 0, st.hoursPct) + '%' })),
+      h('p', { class:'sm', style:'color:var(--on-dark-2);display:flex;flex-direction:column;gap:2px' }, h('span', { dir:'ltr', style:'unicode-bidi:isolate' }, 'Stage A2 target ≈ 90 hrs: 4–5 months at 5 hrs/week, per the plan.'), h('span', {}, 'هدف مرحلة A2 نحو ٩٠ ساعة: ٤–٥ أشهر بخمس ساعات أسبوعيًا كما في الخطة.')),
       h('div', { class:'dash-meta' },
         h('div', { class:'dash-m' }, h('b', {}, st.stageMins + 'm'), h('span', {}, 'Lessons · الدروس')),
-        h('div', { class:'dash-m' }, h('b', {}, (S.expressSessions || 0) + ' (' + st.expMins + 'm)'), h('span', {}, 'Express · المختصر')),
+        h('div', { class:'dash-m' }, h('b', {}, (G.expressSessions || 0) + ' (' + st.expMins + 'm)'), h('span', {}, 'Express · المختصر')),
+        h('div', { class:'dash-m' }, h('b', {}, st.practiceMins + 'm'), h('span', {}, 'Practice · التدريب')),
         h('div', { class:'dash-m' }, h('b', {}, st.camblyMins + 'm'), h('span', {}, 'Cambly · المحادثة')))),
     h('h3', { class:'bi-h', style:'font-size:15.5px' }, h('span', { class:'en', dir:'ltr' }, '4 Skills & Foundation Indicators'), h('small', {}, 'مؤشرات المهارات الأربع والأساس اللغوي')),
     h('div', { class:'skill-list' }, skills.map(function(sk){
       return h('div', { class:'skill-card' },
         h('div', { class:'skill-top' },
           h('b', { style:'font-size:14px' }, sk.en),
-          h('span', { class:'skill-pct' }, sk.pct ? sk.pct + '%' : 'Pending · بالانتظار')),
-        h('div', { class:'skill-track' }, h('span', { class:sk.cls, style:'width:' + Math.max(sk.pct ? 6 : 0, sk.pct) + '%' })),
-        biNode(sk.subEn, sk.subAr));
+          h('span', { class:'skill-pct' }, sk.pct == null ? 'No data yet · لا بيانات بعد' : sk.pct + '%')),
+        h('div', { class:'skill-track' }, h('span', { class:sk.cls, style:'width:' + (sk.pct == null ? 0 : Math.max(sk.pct ? 6 : 0, sk.pct)) + '%' })),
+        sk.subAr ? biNode(sk.subEn, sk.subAr) : h('span', { class:'muted sm', dir:'ltr' }, sk.subEn));
     })),
     h('div', { class:'wbtns' },
       h('button', { class:'btn sm', type:'button', on:{ click:function(){ closeSheet(); openCambly(); } } }, ico('speaker'), biBtn('Cambly Card & Log', 'بطاقة كامبلي وسجل الجلسة')),
       h('button', { class:'btn out sm', type:'button', on:{ click:function(){ closeSheet(); openSession('express'); } } }, ico('clock'), biBtn('15-Min Express Mode', 'الوضع المختصر ١٥ د')))
   ]);
 }
-
 
 /* ---------- Stage 4: Unit Test (90% Mastery / 80% Pass), Legal Corner & Pre-Tests (90% Skip) ---------- */
 var UT_STATE = null, MINI_STATE = null, PT_STATE = null;
@@ -2097,8 +2136,8 @@ function stUnitTestResult(st, ctl){
   });
   var pct = Math.round((sc / N) * 100);
   var status = pct >= 90 ? 'mastered' : pct >= 80 ? 'passed' : 'review_needed';
-  var prev = (S.unitTests && S.unitTests[st.unit]) || {};
-  S.unitTests[st.unit] = {
+  var prev = (G.unitTests && G.unitTests[st.unit]) || {};
+  G.unitTests[st.unit] = {
     best: Math.max(prev.best || 0, sc),
     last: sc,
     attempts: (prev.attempts || 0) + 1,
@@ -2107,7 +2146,7 @@ function stUnitTestResult(st, ctl){
     miniQuizDue: status === 'passed',
     missedIdxs: missedIdxs
   };
-  touch();
+  touch(); SYNC.soon();
   ctl.set('رجوع للدروس', true, closePlayer);
 
   var msgEn = status === 'mastered'
@@ -2163,10 +2202,10 @@ function stUnitMiniResult(st, ctl){
   var idxs = (MINI_STATE && MINI_STATE.idxs) || [];
   var okCnt = idxs.filter(function(i){ return MINI_STATE && MINI_STATE.ans[i] && MINI_STATE.ans[i].c; }).length;
   var allCleared = okCnt === idxs.length;
-  if (allCleared && S.unitTests && S.unitTests[st.unit]) {
-    S.unitTests[st.unit].miniQuizDue = false;
-    S.unitTests[st.unit].status = 'mastered';
-    touch();
+  if (allCleared && G.unitTests && G.unitTests[st.unit]) {
+    G.unitTests[st.unit].miniQuizDue = false;
+    G.unitTests[st.unit].status = 'mastered';
+    touch(); SYNC.soon();
   }
   ctl.set('رجوع للدروس', true, closePlayer);
   return h('div', { class:'fin' },
@@ -2220,14 +2259,14 @@ function stPreTestResult(st, ctl){
   });
   var pct = Math.round((sc / N) * 100);
   var exempt = pct >= 90;
-  var prev = (S.preTests && S.preTests[st.unit]) || {};
-  S.preTests[st.unit] = {
+  var prev = (G.preTests && G.preTests[st.unit]) || {};
+  G.preTests[st.unit] = {
     best: Math.max(prev.best || 0, sc),
     last: sc,
     exempt: !!(prev.exempt || exempt),
     at: Date.now()
   };
-  touch();
+  touch(); SYNC.soon();
   ctl.set('رجوع للدروس', true, closePlayer);
   return h('div', { class:'result' },
     ring(sc, N),
@@ -2243,7 +2282,7 @@ function stPreTestResult(st, ctl){
 function buildCamblyCardText(unitNum){
   var cu = (D.camblyUnits && D.camblyUnits[unitNum]) || D.camblyUnits[1];
   var topErrs = sortedErrorLabCats().slice(0, 3);
-  var isFirst = !(S.camblyLogs && S.camblyLogs.length);
+  var isFirst = !(G.camblyLogs && G.camblyLogs.length);
   var lines = [
     "=== ENGLISH PASSPORT · WEEKLY CAMBLY CARD ===",
     "Learner Level: Early A2 (Saudi Law Student · Goal: Academic & Work English)",
@@ -2279,7 +2318,7 @@ function openCambly(){
   var logsBox = h('div', { class:'c-logs' });
 
   function drawLogs(){
-    var logs = (S.camblyLogs || []).slice().reverse();
+    var logs = (G.camblyLogs || []).slice().reverse();
     if (!logs.length) {
       put(logsBox, h('p', { class:'muted sm' }, 'No Cambly sessions logged yet. Your 1st session is your Speaking Baseline! · لم تُسجَّل أي جلسة بعد (أول جلسة هي قياس التحدث).'));
       return;
@@ -2302,9 +2341,9 @@ function openCambly(){
   var logBtn = h('button', { class:'btn light sm', type:'button', on:{ click:function(){
     var mins = Math.max(5, Math.min(180, Number(inMins.value) || 30));
     var phr = Math.max(0, Math.min(20, Number(inPhrases.value) || 0));
-    var isFirst = !(S.camblyLogs && S.camblyLogs.length);
-    S.camblyLogs.push({ at:Date.now(), mins:mins, phrases:phr, unit:1, isBaseline:isFirst });
-    touch();
+    var isFirst = !(G.camblyLogs && G.camblyLogs.length);
+    G.camblyLogs.push({ at:Date.now(), mins:mins, phrases:phr, unit:1, isBaseline:isFirst });
+    touch(); SYNC.soon();
     drawLogs();
     render();
     toast('Cambly session logged (+' + mins + ' min & ' + phr + ' phrases)! · سُجّلت جلسة كامبلي في الساعات ومؤشر التحدث!');
@@ -2328,23 +2367,12 @@ function openCambly(){
 }
 
 /* ---------- Stage 5: Device JSON Backup Export & Restore ---------- */
+function progressKeys(){ var out = []; try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && (k === KEY_G || k.indexOf('ep4.lesson.') === 0)) out.push(k); } } catch (e) {} return out; }
 function buildBackupPayload(){
+  saveLocal();
   var data = {};
-  try {
-    for (var i = 0; i < localStorage.length; i++) {
-      var k = localStorage.key(i);
-      if (k && k.indexOf('english-passport.') === 0) {
-        data[k] = JSON.parse(localStorage.getItem(k));
-      }
-    }
-  } catch (e) {}
-  if (!data[LS]) data[LS] = S;
-  return JSON.stringify({
-    app: 'English Passport · جواز الإنجليزية',
-    version: 5,
-    exportedAt: new Date().toISOString(),
-    keys: data
-  }, null, 2);
+  progressKeys().forEach(function(k){ var v = readJSON(k); if (v) data[k] = v; });
+  return JSON.stringify({ app: 'English Passport · جواز الإنجليزية', version: 6, exportedAt: new Date().toISOString(), keys: data }, null, 2);
 }
 
 function downloadBackupFile(){
@@ -2365,16 +2393,11 @@ function downloadBackupFile(){
 function restoreBackupPayload(rawJson){
   try {
     var parsed = JSON.parse(String(rawJson || '').trim());
-    var keys = (parsed && parsed.keys && typeof parsed.keys === 'object') ? parsed.keys : (parsed && parsed.v ? { [LS]: parsed } : null);
-    if (!keys) throw new Error('Invalid format');
-    Object.keys(keys).forEach(function(k){
-      if (k.indexOf('english-passport.') === 0) {
-        localStorage.setItem(k, JSON.stringify(keys[k]));
-      }
-    });
-    S = normalize(readLocal());
-    saveLocal();
-    updateProgress();
+    var keys = parsed && isObj(parsed.keys) ? parsed.keys : null;
+    if (!keys || !keys[KEY_G]) throw new Error('Invalid format');
+    Object.keys(keys).forEach(function(k){ if (k === KEY_G || k.indexOf('ep4.lesson.') === 0) writeJSON(k, keys[k]); });
+    reloadState(true);
+    touch(); updateProgress(); SYNC.soon();
     closeSheet();
     render();
     toast('Backup restored successfully! · استُعيدت النسخة الاحتياطية بنجاح!');
@@ -2415,7 +2438,8 @@ function backupWidgetNode(){
 /* Plan sheet: interests removed per Stage 1 item 6 */
 function openPlan(){
   var L = D.learner || {};
-  openSheet('Your Study Plan & Backup', 'خطتك والنسخة الاحتياطية', [
+  openSheet('Settings & Plan', 'الإعدادات والخطة', [
+    SYNC.panel(),
     h('div', { class:'rows' }, [
       [['Current Level', 'المستوى الحالي'], [L.levelEn || 'Early A2', L.level || 'بداية A2']],
       [['Goal', 'الهدف'], [L.goalEn || 'Study & Work · IELTS 6.5–7', L.goal || 'الدراسة والعمل']],
@@ -2430,10 +2454,9 @@ function openPlan(){
     h('ul', { class:'rules' }, [
       'Every stage you complete is stamped on the lesson page. · كل مرحلة تكملها من المراحل الست يُختم عليها في صفحة الدرس.',
       'Lesson quizzes require 80% to pass, followed by an error analysis by category. · اختبار الدرس يحتاج 80% للنجاح، ويليه تحليل لأخطاء الدرس وأسبابها.',
-      'Every missed question enters the mistake notebook and clears after 2 correct answers in a row. · كل سؤال خاطئ يدخل دفتر الأخطاء، ويطلع بعد إجابتين صحيحتين متتاليتين.',
+      'Every missed question enters the mistake notebook and comes back after 1 day, 3 days, a week and a month. · كل سؤال خاطئ يدخل دفتر الأخطاء، ويعود بعد يوم، ثم ٣ أيام، ثم أسبوع، ثم شهر.',
       'Writing requires at least 4 separate sentences and separates spelling from grammar feedback. · الكتابة تشترط 4 جمل منفصلة على الأقل، وتصحيحها يفصل الإملاء عن القواعد.'
-    ].map(function(t){ return h('li', {}, t); })),
-    h('p', { class:'sync' }, remoteOK ? 'Progress is saved to your account across devices. · التقدم محفوظ في حسابك، ويظهر لك على أي جهاز.' : 'Progress is saved on this device. · التقدم محفوظ على هذا الجهاز.')
+    ].map(function(t){ return h('li', {}, t); }))
   ]);
 }
 function openAbout(){
@@ -2451,7 +2474,7 @@ function openAbout(){
 var SAMPLE = null;
 var AI_OFF = ['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'];
 function initAI(){ if (!(window.claude && typeof window.claude.use === 'function')) return;
-  window.claude.use('sample').then(function(s){ var had = !!SAMPLE; SAMPLE = typeof s === 'function' ? s : null; if (!!SAMPLE !== had && (S.ui.view === 'player' || S.ui.view === 'lesson')) render(); }, function(){ SAMPLE = null; }); }
+  window.claude.use('sample').then(function(s){ var had = !!SAMPLE; SAMPLE = typeof s === 'function' ? s : null; if (!!SAMPLE !== had && (G.ui.view === 'player' || G.ui.view === 'lesson')) render(); }, function(){ SAMPLE = null; }); }
 function aiErr(code){
   if (code === 'rate_limited') return 'Usage limit reached temporarily. Try again shortly. · وصلنا لحد الاستخدام مؤقتًا. المحاولة بعد قليل تنفع.';
   if (code === 'session_expired') return 'Session expired. Please sign in again. · انتهت الجلسة. تسجيل الدخول من جديد يحل المشكلة.';
@@ -2499,7 +2522,7 @@ function correctWriting(ta, btn, box){
 
 var askTurns = [], askCtl = null, askBusy = false;
 var ASK_CHIPS = ['متى نستخدم am / is / are مع الفعل؟', 'ليش نقول He works وليس He work؟', 'ما الفرق بين usually و always؟', 'أعطني 3 جمل جديدة بالمضارع المستمر'];
-function stepName(){ if (S.ui.view === 'player' && P) { var p = partOf(P.part); return p ? p.fullAr : 'المراجعة'; } return 'صفحة الدرس'; }
+function stepName(){ if (G.ui.view === 'player' && P) { var p = partOf(P.part); return p ? p.fullAr : 'المراجعة'; } return 'صفحة الدرس'; }
 function RULES(){ return 'أنت معلم لغة إنجليزية صبور وخبير داخل كورس اسمه «جواز الإنجليزية».\n' +
   'المتعلم عربي، مستواه بداية A2، وهدفه الدراسة والعمل.\n' +
   'الدرس الحالي: الوحدة ' + (D.unit || 1) + '، الدرس ' + (D.n || 1) + ' «' + (D.en || 'Hello from Antarctica') + '»، وقاعدته ' + (D.ar || 'المضارع البسيط مقابل المضارع المستمر') + '. كلماته: ' + VOCAB_LIST + '.\n' +
@@ -2550,6 +2573,239 @@ function openAsk(){ if (!SAMPLE) return;
   setTimeout(function(){ try { input.focus({ preventScroll:true }); } catch (e) {} }, 60);
 }
 
+/* ---------- المزامنة السحابية عبر GitHub ----------
+   - يُحفظ التقدم في الجهاز أولًا، ثم يُرفع بصمت إلى فرع "progress" في مستودع الموقع نفسه،
+     فلا يُعاد نشر الموقع مع كل حفظ، ويبقى سجل تعديلات الموقع (فرع main) نظيفًا.
+   - ملف لكل حالة: progress/course.json وprogress/lesson-<id>.json، ولا يُرفع إلا ما تغيّر.
+   - متى يُرفع: عند إنهاء أي مرحلة أو جلسة، وعند مغادرة الموقع، واحتياطًا إن بقي تغيير
+     لم يُرفع أكثر من 3 دقائق. وعند فتح الموقع يُسحب ما تغيّر في السحابة دون إعادة تحميل.
+   - المفتاح يبقى في هذا الجهاز وحده (ep4.sync) ولا يُرفع إلى GitHub أبدًا.
+   - الإعدادات في نافذة الترس، ولا يظهر على الشاشة شيء إلا نقطة صغيرة على الترس
+     عند مشكلة تحتاج تدخلك (مفتاح خاطئ، أو بلا صلاحية، أو تعذّر الحفظ يومًا كاملًا). */
+function createSync(){
+  var API = 'https://api.github.com', BRANCH = 'progress', DIR = 'progress';
+  var busy = false, again = false, againKeep = false, timer = null, branchOK = false, state = 'idle', onChange = null;
+  var MSG = {
+    badkey: ['The key is invalid or expired.', 'المفتاح غير صحيح أو انتهت صلاحيته.'],
+    noperm: ['This key cannot write to the repository.', 'المفتاح لا يملك صلاحية الكتابة في المستودع.'],
+    norepo: ['Repository not found, or the key does not include it.', 'المستودع غير موجود، أو المفتاح لا يشمله.'],
+    offline: ['No connection right now. Progress will upload automatically later.', 'لا يوجد اتصال الآن، وسيُرفع تقدمك تلقائيًا لاحقًا.'],
+    nokey: ['Not connected.', 'المزامنة غير مفعّلة.']
+  };
+  function cfg(){ var c = readJSON(KEY_SYNC); return isObj(c) && c.token && c.owner && c.repo ? c : null; }
+  function meta(){ var m = readJSON(KEY_SYNC_META); m = isObj(m) ? m : {}; if (!isObj(m.files)) m.files = {}; return m; }
+  function setMeta(m){ writeJSON(KEY_SYNC_META, m); }
+  function patchMeta(fn){ var m = meta(); fn(m); setMeta(m); return m; }
+  function defaults(){
+    var host = location.hostname, parts = location.pathname.split('/').filter(Boolean), gh = host.slice(-10) === '.github.io';
+    return { owner: gh ? host.slice(0, -10) : 'vua5l', repo: gh && parts[0] && !/\.html?$/i.test(parts[0]) ? parts[0] : 'engl-pass' };
+  }
+  function fileOf(k){ return k === KEY_G ? DIR + '/course.json' : DIR + '/lesson-' + k.slice('ep4.lesson.'.length) + '.json'; }
+  function keyOf(path){ var n = String(path).split('/').pop(); if (n === 'course.json') return KEY_G; var m = /^lesson-(.+)\.json$/.exec(n); return m ? 'ep4.lesson.' + m[1] : null; }
+  function localKeys(){ var out = []; try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && (k === KEY_G || k.indexOf('ep4.lesson.') === 0)) out.push(k); } } catch (e) {} return out; }
+  /* بصمة المحتوى دون الطابع الزمني وحالة الواجهة، فلا يُرفع ملف لم يتغير فيه شيء مهم. */
+  function digest(v){
+    var s = JSON.stringify(v, function(key, val){ return (key === 'updatedAt' || key === 'ui') ? undefined : val; }) || '', x = 5381;
+    for (var i = 0; i < s.length; i++) x = ((x << 5) + x + s.charCodeAt(i)) | 0;
+    return x + ':' + s.length;
+  }
+  function pendingKeys(){ var m = meta(); return localKeys().filter(function(k){ var v = readJSON(k); return v && digest(v) !== ((m.files[fileOf(k)] || {}).dg); }); }
+  function b64e(str){ var bytes = new TextEncoder().encode(str), bin = ''; for (var i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(bin); }
+  function b64d(b){ var bin = atob(String(b).replace(/\s/g, '')), bytes = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i); return new TextDecoder().decode(bytes); }
+  function fail(code){ var e = new Error(code); e.code = code; return e; }
+  function gh(method, path, body, keep){
+    var c = cfg(); if (!c) return Promise.reject(fail('nokey'));
+    var opt = { method:method, cache:'no-store', headers:{ 'Authorization':'Bearer ' + c.token, 'Accept':'application/vnd.github+json' } };
+    if (body) { opt.body = JSON.stringify(body); opt.headers['Content-Type'] = 'application/json'; if (keep && opt.body.length < 60000) opt.keepalive = true; }
+    return fetch(API + '/repos/' + encodeURIComponent(c.owner) + '/' + encodeURIComponent(c.repo) + path, opt).then(function(r){
+      if (r.status === 401) throw fail('badkey');
+      if (r.status === 403 && r.headers.get('x-ratelimit-remaining') !== '0') throw fail('noperm');
+      if (r.status === 403 || r.status === 429 || r.status >= 500) throw fail('offline');
+      return r.json().catch(function(){ return {}; }).then(function(j){ return { status:r.status, body:j }; });
+    }, function(){ throw fail('offline'); });
+  }
+  function ensureBranch(){
+    if (branchOK) return Promise.resolve();
+    return gh('GET', '/git/ref/heads/' + BRANCH).then(function(r){
+      if (r.status === 200) { branchOK = true; return; }
+      return gh('GET', '').then(function(rr){
+        if (rr.status !== 200) throw fail('norepo');
+        return gh('GET', '/git/ref/heads/' + ((rr.body && rr.body.default_branch) || 'main'));
+      }).then(function(m){
+        if (m.status !== 200 || !m.body || !m.body.object) throw fail('norepo');
+        return gh('POST', '/git/refs', { ref:'refs/heads/' + BRANCH, sha:m.body.object.sha });
+      }).then(function(p){
+        if (p.status === 201 || p.status === 422) { branchOK = true; return; }
+        throw fail(p.status === 404 ? 'noperm' : 'offline');
+      });
+    });
+  }
+  function readRemote(path){
+    return gh('GET', '/contents/' + path + '?ref=' + BRANCH).then(function(g){
+      if (g.status === 404) return null;
+      if (g.status !== 200) throw fail('offline');
+      var v = null; try { v = JSON.parse(b64d(g.body.content)); } catch (e) {}
+      return { sha:g.body.sha, value:v };
+    });
+  }
+  /* يرفع حالة واحدة. إن كانت نسخة السحابة أحدث (من جهاز آخر) أُخذت بدل رفع القديم. */
+  function putKey(k, keep, tries){
+    var v = readJSON(k); if (!v) return Promise.resolve(false);
+    var path = fileOf(k), f = meta().files[path] || {}, dg = digest(v);
+    if (f.dg === dg) return Promise.resolve(false);
+    var body = { message:'حفظ التقدم: ' + path.split('/').pop(), content:b64e(JSON.stringify(v)), branch:BRANCH };
+    if (f.sha) body.sha = f.sha;
+    return gh('PUT', '/contents/' + path, body, keep).then(function(r){
+      if (r.status === 200 || r.status === 201) { patchMeta(function(m){ m.files[path] = { sha:r.body.content && r.body.content.sha, dg:dg }; }); return false; }
+      if ((r.status === 409 || r.status === 422) && (tries || 0) < 2) {
+        return readRemote(path).then(function(rem){
+          patchMeta(function(m){ m.files[path] = { sha:rem && rem.sha, dg:rem && rem.value ? digest(rem.value) : '' }; });
+          if (rem && rem.value && (rem.value.updatedAt || 0) > (v.updatedAt || 0)) { writeJSON(k, rem.value); return true; }
+          return putKey(k, keep, (tries || 0) + 1);
+        });
+      }
+      if (r.status === 404) throw fail('noperm');
+      throw fail('offline');
+    });
+  }
+  function done(err, changedLocal){
+    patchMeta(function(m){
+      if (err) { m.err = err; if (!m.errSince) m.errSince = Date.now(); }
+      else { m.err = null; m.errSince = 0; m.lastOk = Date.now(); }
+      m.dirtyAt = pendingKeys().length ? (m.dirtyAt || Date.now()) : 0;
+    });
+    if (changedLocal) applyPulled();
+    status(err ? 'error' : 'ok');
+  }
+  function push(keep){
+    if (!cfg()) return Promise.resolve();
+    if (busy) { again = true; againKeep = againKeep || !!keep; return Promise.resolve(); }
+    busy = true; status('saving');
+    var keys = pendingKeys(), changedLocal = false;
+    keys.sort(function(a, b){ function w(k){ return k === KEY_L(curLessonId) ? 0 : (k === KEY_G ? 1 : 2); } return w(a) - w(b); });
+    var chain = ensureBranch();
+    keys.forEach(function(k, i){ chain = chain.then(function(){ return putKey(k, keep && i === 0, 0).then(function(took){ if (took) changedLocal = true; }); }); });
+    return chain.then(function(){ done(null, changedLocal); }, function(e){ done((e && e.code) || 'offline', changedLocal); })
+      .then(function(){ busy = false; if (again) { var k2 = againKeep; again = false; againKeep = false; return push(k2); } });
+  }
+  /* يسحب ما تغيّر في السحابة. أول سحب في جهاز جديد يأخذ نسخة السحابة، وبعده الأحدث يغلب. */
+  function pull(opts){
+    opts = opts || {};
+    if (!cfg()) return Promise.resolve(false);
+    if (busy) return Promise.resolve(false);
+    busy = true; status('saving');
+    var first = !meta().lastPull, changed = false;
+    return ensureBranch().then(function(){ return gh('GET', '/contents/' + DIR + '?ref=' + BRANCH); }).then(function(r){
+      if (r.status === 404) return [];
+      if (r.status !== 200 || !Array.isArray(r.body)) throw fail('offline');
+      return r.body.filter(function(x){ return x.type === 'file' && keyOf(x.path); });
+    }).then(function(list){
+      var chain = Promise.resolve();
+      list.forEach(function(x){
+        var k = keyOf(x.path), known = meta().files[x.path] || {};
+        if (!opts.force && known.sha === x.sha) return;
+        chain = chain.then(function(){ return readRemote(x.path).then(function(rem){
+          if (!rem || !rem.value) return;
+          var local = readJSON(k), take = opts.force || first || !local || (rem.value.updatedAt || 0) > (local.updatedAt || 0);
+          if (take) { writeJSON(k, rem.value); changed = true; }
+          patchMeta(function(m){ m.files[x.path] = { sha:rem.sha, dg:digest(rem.value) }; });
+        }); });
+      });
+      return chain;
+    }).then(function(){ patchMeta(function(m){ m.lastPull = Date.now(); }); busy = false; done(null, changed); flushAgain(); return changed; },
+      function(e){ busy = false; done((e && e.code) || 'offline', changed); flushAgain(); return changed; });
+  }
+  function flushAgain(){ if (again) { var k2 = againKeep; again = false; againKeep = false; push(k2); } }
+  function applyPulled(){ reloadState(true); render(); paintDot(); }
+  function dirty(){ if (!cfg()) return; var m = meta(); if (!m.dirtyAt) { m.dirtyAt = Date.now(); setMeta(m); } }
+  function soon(){ if (!cfg()) return; clearTimeout(timer); timer = setTimeout(function(){ push(false); }, 1500); }
+  function hasProblem(){
+    if (!cfg()) return false;
+    var m = meta();
+    if (m.err && m.err !== 'offline') return true;
+    return !!(m.err === 'offline' && m.errSince && Date.now() - m.errSince > 864e5 && m.dirtyAt);
+  }
+  function paintDot(){
+    var b = doc.getElementById('gearBtn'); if (!b) return;
+    var d = b.querySelector('.sync-dot');
+    if (hasProblem()) { if (!d) b.append(h('span', { class:'sync-dot', 'aria-hidden':'true' })); }
+    else if (d) d.remove();
+  }
+  function status(s){ state = s; paintDot(); if (onChange) { try { onChange(); } catch (e) {} } }
+  function init(){
+    /* الحالة تُحفظ في الجهاز مع كل تغيير، فلا نعيد كتابتها هنا (قد تكون نافذة أخرى أحدث). */
+    doc.addEventListener('visibilitychange', function(){ if (doc.visibilityState === 'hidden') push(true); });
+    window.addEventListener('pagehide', function(){ push(true); });
+    window.addEventListener('online', function(){ push(false); });
+    setInterval(function(){ var m = meta(); if (cfg() && m.dirtyAt && Date.now() - m.dirtyAt > 180000) push(false); }, 60000);
+    if (cfg()) pull().then(function(){ return push(false); });
+    paintDot();
+  }
+  function ago(t){
+    var s = Math.max(0, Math.round((Date.now() - t) / 1000)), mi = Math.round(s / 60), hr = Math.round(mi / 60), dd = Math.round(hr / 24);
+    if (s < 60) return ['just now', 'قبل لحظات'];
+    if (mi < 60) return [mi + ' min ago', 'قبل ' + mi + ' دقيقة'];
+    if (hr < 24) return [hr + ' h ago', 'قبل ' + hr + ' ساعة'];
+    return [dd + ' d ago', 'قبل ' + dd + ' يوم'];
+  }
+  /* قسم المزامنة في نافذة الترس. */
+  function panel(){
+    var box = h('div', { class:'bkp-box sync-box', id:'syncBox' });
+    function draw(){
+      var c = cfg(), m = meta(), d = defaults(), problem = hasProblem() || (m.err && m.err !== 'offline');
+      var line;
+      if (!c) line = biNode('Cloud sync is off. Progress is saved on this device only.', 'المزامنة غير مفعّلة، والتقدم محفوظ في هذا الجهاز وحده.');
+      else if (state === 'saving') line = biNode('Syncing…', 'جارٍ المزامنة…');
+      else if (m.err && MSG[m.err]) line = biNode(MSG[m.err][0], MSG[m.err][1]);
+      else if (m.lastOk || m.lastPull) { var a = ago(Math.max(m.lastOk || 0, m.lastPull || 0)); line = biNode('Synced ' + a[0] + '.', 'آخر مزامنة ' + a[1] + '.'); }
+      else line = biNode('Connected.', 'مفعّلة.');
+      var nodes = [
+        h('div', { class:'sync-h' },
+          biNode('Cloud Sync (GitHub)', 'المزامنة السحابية (GitHub)'),
+          h('span', { class:'sync-st ' + (!c ? 'off' : problem ? 'bad' : 'on') }, !c ? 'Off · متوقفة' : problem ? 'Problem · مشكلة' : 'On · مفعّلة')),
+        h('p', { class:'sync-line' }, line)
+      ];
+      if (!c) {
+        var tok = h('input', { class:'sync-in', id:'syncToken', type:'password', dir:'ltr', autocomplete:'off', autocapitalize:'none', spellcheck:'false', placeholder:'github_pat_…', 'aria-label':'GitHub key · مفتاح GitHub' });
+        var own = h('input', { class:'sync-in', type:'text', dir:'ltr', value:d.owner, autocapitalize:'none', spellcheck:'false', 'aria-label':'Account · الحساب' });
+        var rep = h('input', { class:'sync-in', type:'text', dir:'ltr', value:d.repo, autocapitalize:'none', spellcheck:'false', 'aria-label':'Repository · المستودع' });
+        nodes.push(
+          h('label', { class:'sync-lbl', for:'syncToken' }, 'GitHub key · مفتاح GitHub'), tok,
+          h('details', { class:'sync-adv' }, h('summary', {}, 'Repository · المستودع: ' + d.owner + '/' + d.repo), h('div', { class:'sync-grid' }, own, rep)),
+          h('button', { class:'btn sm', type:'button', id:'syncConnect', on:{ click:function(){
+            var t = tok.value.trim();
+            if (!t) { toast('Paste the key first · الصق المفتاح أولًا'); return; }
+            writeJSON(KEY_SYNC, { token:t, owner:own.value.trim() || d.owner, repo:rep.value.trim() || d.repo });
+            setMeta({ files:{} }); branchOK = false; saveLocal(); draw();
+            pull().then(function(){ return push(false); }).then(function(){
+              var mm = meta(); draw();
+              toast(mm.err && MSG[mm.err] ? MSG[mm.err][1] : 'Connected · تم الربط، وتقدمك يُحفظ في السحابة');
+            });
+          } } }, ico('check'), biBtn('Connect', 'ربط')),
+          h('p', { class:'muted sm' }, biNode('The key stays on this device and is never uploaded.', 'المفتاح يبقى في هذا الجهاز ولا يُرفع إلى GitHub.')));
+      } else {
+        nodes.push(
+          h('div', { class:'wbtns' },
+            h('button', { class:'btn sm', type:'button', id:'syncNow', on:{ click:function(){ saveLocal(); pull().then(function(){ return push(false); }); } } }, ico('review'), biBtn('Sync now', 'زامن الآن')),
+            h('button', { class:'btn out sm', type:'button', on:{ click:function(){
+              if (!window.confirm('سيستبدل هذا تقدمك في هذا الجهاز بنسخة السحابة. أتابع؟')) return;
+              pull({ force:true });
+            } } }, biBtn('Restore from cloud', 'استرجع من السحابة'))),
+          h('button', { class:'link', type:'button', style:'align-self:flex-start', on:{ click:function(){
+            if (!window.confirm('حذف المفتاح من هذا الجهاز؟ يبقى تقدمك في الجهاز وفي السحابة.')) return;
+            try { localStorage.removeItem(KEY_SYNC); localStorage.removeItem(KEY_SYNC_META); } catch (e) {}
+            branchOK = false; status('idle'); draw();
+          } } }, biBtn('Remove key from this device', 'حذف المفتاح من هذا الجهاز')));
+      }
+      put(box, nodes);
+    }
+    draw();
+    onChange = function(){ if (box.isConnected) draw(); };
+    return box;
+  }
+  return { init:init, dirty:dirty, soon:soon, push:push, pull:pull, panel:panel, hasProblem:hasProblem };
+}
+
 /* ---------- wiring ---------- */
 function bindGlobal(){
   doc.addEventListener('click', function(e){ var t = e.target; if (!t || !t.closest) return; var w = t.closest('.w'); if (w && !w.closest('.mail-plain')) showWord(w); });
@@ -2562,8 +2818,8 @@ function bindGlobal(){
 }
 function boot(){
   doc.documentElement.setAttribute('lang', 'ar'); doc.documentElement.setAttribute('dir', 'rtl');
-  var hv = (location.hash || '').slice(1); if (['home','lessons','words','review','lesson'].indexOf(hv) >= 0 && S.ui.welcomed) S.ui.view = hv;
-  bindGlobal(); updateProgress(); render(); initAI(); initDb();
+  var hv = (location.hash || '').slice(1); if (['home','lessons','words','review','lesson'].indexOf(hv) >= 0 && G.ui.welcomed) G.ui.view = hv;
+  bindGlobal(); updateProgress(); render(); initAI(); SYNC.init();
 }
 boot();
 })();
