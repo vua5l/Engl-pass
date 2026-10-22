@@ -1,7 +1,7 @@
 # English Passport · جواز الإنجليزية
 
 موقع كورس إنجليزي شخصي لأسامة، من بداية A2 إلى C1 ثم ايلتس. يُنشر عبر GitHub Pages من فرع `main` على:
-https://vua5l.github.io/engl-pass/
+https://vua5l.github.io/Engl-pass/ (اسم المستودع في GitHub: Engl-pass)
 
 الخطة الكاملة للكورس في مشروع Claude «دراسة الانجليزي» (ملف «خطة كورس الإنجليزية»).
 هذا الملف دليل لكل من يعدّل الموقع: Claude أو Gemini أو يدويًا. اقرأه مع `CHANGELOG.md` قبل أي تعديل.
