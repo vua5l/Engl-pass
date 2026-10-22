@@ -291,8 +291,14 @@ function touch(){ var t = Date.now(); G.updatedAt = t; S.updatedAt = t; saveLoca
   } catch (e) {}
 })();
 
-/* ترتيب الدروس: الأسبوع التأسيسي ثم الوحدة 1، وما يُفتح بعدهما. */
-function courseOrder(){ return [].concat(BASE.unit0Lessons || [], BASE.unit1Lessons || []).filter(function(l){ return l.id && l.open && typeof LESSONS !== 'undefined' && LESSONS[l.id]; }).map(function(l){ return l.id; }); }
+/* ترتيب الدروس في الكورس: قوائم unit0Lessons ثم unit1Lessons ثم unit2Lessons... بترتيب أرقامها،
+   ويدخل منها كل درس مفتوح (open) له ملف محمّل. */
+function courseOrder(){
+  var lists = Object.keys(BASE).map(function(k){ var m = /^unit(\d+)Lessons$/.exec(k); return m ? { n:Number(m[1]), list:BASE[k] } : null; })
+    .filter(Boolean).sort(function(a, b){ return a.n - b.n; });
+  var all = []; lists.forEach(function(x){ all = all.concat(x.list || []); });
+  return all.filter(function(l){ return l && l.id && l.open && typeof LESSONS !== 'undefined' && LESSONS[l.id]; }).map(function(l){ return l.id; });
+}
 function stampsOf(id){ var o = (id === curLessonId && S) ? S : readJSON(KEY_L(id)); return (o && isObj(o.stamps)) ? o.stamps : {}; }
 function isLessonDone(id){ var st = stampsOf(id); return PARTS.every(function(p){ return !!st[p.k]; }); }
 function lastStampAt(id){ var st = stampsOf(id), m = 0; Object.keys(st).forEach(function(k){ if (st[k] > m) m = st[k]; }); return m; }
