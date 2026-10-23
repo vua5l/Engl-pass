@@ -699,7 +699,10 @@ function vLessons(){
           return h('li', {}, h('div', { class:'uo-row' }, h('span', { class:'uo-k' }, k), h('span', { class:'uo-t' }, h('b', {}, l.en), h('span', { html:(l.subEn ? '<bdi class="en">' + esc(l.subEn) + '</bdi> · ' : '') + arHTML(l.ar) })), h('span', { class:'u-lock', html:IC.lock })));
         })));
       var hasPre = !!(D.preTests && D.preTests[u.n]);
-      var preSt = (G.preTests && G.preTests[u.n]) || {};
+      /* السجل الصالح وحده (إصداره يطابق إصدار الاختبار)، والمحاولة الأولى وحدها تقرر الإعفاء. */
+      var preRec = ptRecValid(u.n), preFirst = preRec && preRec.first;
+      var prePct = preFirst ? ptPct(preFirst.sc, preFirst.n) : 0;
+      var preExempt = !!(preFirst && ptExemptOK(preFirst.sc, preFirst.n));
       if (!hasPre) {
         return h('div', { class:'unit' }, h('span', { class:'u-n' }, String(u.n)),
           h('span', { class:'u-t' }, h('b', {}, u.en), h('span', { class:'u-ar' }, u.ar), h('span', { html:(u.gEn ? '<bdi class="en">' + esc(u.gEn) + '</bdi> · ' : '') + arHTML(u.g) })),
@@ -709,13 +712,13 @@ function vLessons(){
         h('div', { class:'u-card-top', style:'width:100%' },
           h('span', { class:'u-n' }, String(u.n)),
           h('span', { class:'u-t' }, h('b', {}, u.en), h('span', { class:'u-ar' }, u.ar), h('span', { html:(u.gEn ? '<bdi class="en">' + esc(u.gEn) + '</bdi> · ' : '') + arHTML(u.g) })),
-          h('span', { class:'u-lock', html: preSt.exempt ? IC.check : IC.lock, 'aria-label':'Pre-Test available · متاح للاختبار القبلي' })),
+          h('span', { class:'u-lock', html: preExempt ? IC.check : IC.lock, 'aria-label':'Pre-Test available · متاح للاختبار القبلي' })),
         h('div', { class:'u-card-foot', style:'width:100%' },
-          preSt.exempt
-            ? h('span', { class:'exempt-chip' }, 'Exempted (' + (preSt.best * 10) + '%) · معفى منها (٩٠٪+ · تعود في أسبوع التثبيت)')
-            : h('span', { class:'pre-chip' }, preSt.best != null ? ('Pre-Test Best: ' + (preSt.best * 10) + '% (Need 90% to skip)') : 'Pre-Test Available · تبدأ باختبار قبلي (٩٠٪ للإعفاء)'),
-          h('button', { class:'btn sm' + (preSt.exempt ? ' out' : ''), type:'button', on:{ click:function(){ openSession('pretest:' + u.n); } } },
-            biBtn(preSt.exempt ? 'Retake Pre-Test' : 'Pre-Test (90% Skip)', preSt.exempt ? 'إعادة الاختبار القبلي' : 'اختبار قبلي (٩٠٪ للإعفاء)'), ico('fwd'))));
+          preExempt
+            ? h('span', { class:'exempt-chip' }, 'Exempted (' + prePct + '%) · معفى منها (تعود في أسبوع التثبيت)')
+            : h('span', { class:'pre-chip' }, preFirst ? ('First attempt: ' + prePct + '% · المحاولة الأولى ' + arDigits(prePct) + '٪ — تدرسها عند الوصول إليها') : 'Pre-Test Available · اختبار قبلي (المحاولة الأولى تقرر الإعفاء)'),
+          h('button', { class:'btn sm' + (preExempt ? ' out' : ''), type:'button', on:{ click:function(){ openSession('pretest:' + u.n); } } },
+            preFirst ? biBtn('Practice', 'تدريب') : biBtn('Pre-Test', 'اختبار قبلي'), ico('fwd'))));
     })));
 }
 
@@ -1031,7 +1034,9 @@ function stepsFor(k){
     var pUnit = unitArg(k, 'pretest:', 5);
     var ptObj = D.preTests && D.preTests[pUnit];
     if (!ptObj) return [];
-    PT_STATE = { unit:pUnit, ans:{} };
+    /* first: المحاولة الأولى ما لم يكن في السجل الصالح first. وcounted: هل سُجّلت هذه الجلسة محاولةً (عند أول إجابة). */
+    var pRec0 = ptRecValid(pUnit);
+    PT_STATE = { unit:pUnit, ans:{}, counted:false, first:!(pRec0 && pRec0.first) };
     var pSteps = [{ t:'preTestIntro', unit:pUnit }];
     ptObj.items.forEach(function(_, pi){ pSteps.push({ t:'preTestQ', unit:pUnit, qIdx:pi }); });
     pSteps.push({ t:'preTestResult', unit:pUnit });
@@ -1082,7 +1087,8 @@ var EN_LABELS = {
   'إنهاء المهمة': 'Finish Writing Stage',
   'رجوع للدرس': 'Back to Lesson',
   'رجوع للمراجعة': 'Back to Review',
-  'رجوع للكلمات': 'Back to Words'
+  'رجوع للكلمات': 'Back to Words',
+  'احفظ الإجابة': 'Save answer'
 };
 function formatCtaLabel(label){
   if (typeof label !== 'string') return label;
@@ -1337,11 +1343,13 @@ function stMatch(ctl){ var box = h('div', { class:'mt-box' });
 }
 
 /* item components */
-function fbCard(ok, why, ev, fix, whyEn){
+/* head (اختياري): عنوان بديل للبطاقة، كما في «لم تُجب» في مراجعة الاختبار القبلي. وبدونه يبقى العنوان كما كان. */
+function fbCard(ok, why, ev, fix, whyEn, head){
   var extra = fix ? h('p', { class:'fb-fix' }, fix[0] + ': ', h('bdi', { dir:'ltr', lang:'en' }, fix[1])) : null;
   return h('div', { class:'fb' + (ok ? '' : ' bad'), role:'status' }, h('span', { class:'fb-ic' }, ico(ok ? 'check' : 'x')),
     h('div', { class:'fb-t' },
-      h('b', {}, ok ? 'Correct! · إجابة صحيحة' : 'Not quite · ليست هذه'),
+      /* الجزء الإنجليزي داخل bdi، وإلا انتقلت علامة التعجب في السطر العربي إلى أول الكلمة فظهرت «!Correct». */
+      h('b', {}, head || (ok ? [h('bdi', { dir:'ltr', lang:'en' }, 'Correct!'), ' · إجابة صحيحة'] : [h('bdi', { dir:'ltr', lang:'en' }, 'Not quite'), ' · ليست هذه'])),
       extra,
       whyEn ? h('p', { class:'fb-en' }, whyEn) : null,
       why ? (whyEn ? arReveal(why, false) : h('p', { html:arHTML(why) })) : null,
@@ -1351,7 +1359,10 @@ function blankText(s, word){ return s.replace('___', word || '...'); }
 function qCard(content, opts){ opts = opts || {};
   var c = h('div', { class:'qcard' + (opts.tag ? ' top' : '') }, opts.tag ? h('span', { class:'q-tag' }, opts.tag) : null, content);
   return c; }
-function MCQ(x, o){ o = o || {}; var isBlank = x.prompt.indexOf('___') >= 0, longOpts = x.opts.some(function(t){ return t.length > 22; });
+/* الوضع الصامت (o.quiet) في MCQ وTyping، ويُستعمل في الاختبار القبلي وحده: بعد الإجابة لا صح ولا خطأ ولا بطاقة ولا جواب،
+   بل حالة «حُفظت» محايدة وسطر صغير. وبدون o.quiet يبقى السلوك كما كان في الدروس والاختبارات والمراجعات. */
+function savedNote(){ return h('p', { class:'saved-note', role:'status' }, h('bdi', { dir:'ltr', lang:'en' }, 'Answer saved'), ' · حُفظت إجابتك'); }
+function MCQ(x, o){ o = o || {}; var quiet = !!o.quiet, isBlank = x.prompt.indexOf('___') >= 0, longOpts = x.opts.some(function(t){ return t.length > 22; });
   var picked = null;
   var prompt = h('p', { class:'q-en' + (isBlank ? '' : ' sm'), dir:'ltr' });
   if (isBlank) { var parts = x.prompt.split('___'); prompt.append(parts[0]); var bl = h('span', { class:'blank' }, ' '); prompt.append(bl, parts[1] || ''); } else prompt.textContent = x.prompt;
@@ -1360,6 +1371,11 @@ function MCQ(x, o){ o = o || {}; var isBlank = x.prompt.indexOf('___') >= 0, lon
   var btns = x.opts.map(function(t, i){ var b = h('button', { class:'opt' + (longOpts ? ' long' : ''), type:'button', dir:'ltr' }, h('span', {}, t), h('span', { class:'o-dot', html:'' }));
     b.addEventListener('click', function(){ if (picked != null) return; show(i); if (o.onAnswer) o.onAnswer(i === x.a, i); }); return b; });
   function show(i){ picked = i; var ok = i === x.a;
+    if (quiet) {
+      btns.forEach(function(b, j){ b.disabled = true; b.classList.add(j === i ? 'chosen' : 'rest'); });
+      if (isBlank) prompt.querySelector('.blank').textContent = x.opts[i];
+      fb.hidden = false; put(fb, savedNote()); return;
+    }
     btns.forEach(function(b, j){ b.disabled = true; var dot = b.querySelector('.o-dot');
       if (j === x.a) { b.classList.add('ok'); put(dot, ico('check')); } else if (j === i) { b.classList.add('bad'); put(dot, ico('x')); } else b.classList.add('dim'); });
     if (isBlank) { var blk = prompt.querySelector('.blank'); blk.textContent = x.opts[i]; blk.classList.add(ok ? 'ok' : 'bad'); }
@@ -1399,15 +1415,17 @@ function typedExactOK(x, v){ var n = exactNorm(v), pre = (x.pre && x.pre !== '__
     if (post) [a + sep + post].concat(pre ? [pre + ' ' + a + sep + post] : []).forEach(function(f){ forms.push(f); if (/[.!?]$/.test(post)) forms.push(f.replace(/[.!?]+$/, '')); });
     return forms.indexOf(n) >= 0; }); }
 function typedOK(x, v){ return x.exact ? typedExactOK(x, v) : typedLooseOK(x, v); }
-function Typing(x, o, ctl){ o = o || {};
-  var inp = h('input', { class:'gap-in', type:'text', dir:'ltr', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', enterkeyhint:'done', 'aria-label':(isVerbCue(x) ? 'Verb form · صيغة الفعل ' : 'Correct form · الصيغة الصحيحة ') + x.verb });
+function Typing(x, o, ctl){ o = o || {}; var quiet = !!o.quiet;
+  var inp = h('input', { class:'gap-in' + (o.wide ? ' wide' : ''), type:'text', dir:'ltr', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', enterkeyhint:'done', 'aria-label':(isVerbCue(x) ? 'Verb form · صيغة الفعل ' : 'Correct form · الصيغة الصحيحة ') + x.verb });
   var noSpace = /^[.!?,]/.test(x.post);
   var sent = h('p', { class:'q-en', dir:'ltr' }, x.pre + ' ', inp, ' ', h('span', { class:'verb' }, '(' + x.verb + ')'), noSpace ? '' : ' ', x.post);
   var fb = h('div', { hidden:true }), done = false;
   function check(){ if (done) return; var v = inp.value.trim();
     if (!v) { inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); inp.focus(); return; }
     var ok = typedOK(x, v); show(v, ok); if (o.onAnswer) o.onAnswer(ok, v); }
-  function show(v, ok){ done = true; inp.value = v; inp.disabled = true; inp.classList.add(ok ? 'ok' : 'bad'); fb.hidden = false;
+  function show(v, ok){ done = true; inp.value = v; inp.disabled = true; fb.hidden = false;
+    if (quiet) { inp.classList.add('saved'); put(fb, savedNote()); return; }
+    inp.classList.add(ok ? 'ok' : 'bad');
     /* الإجابة الصحيحة بحروف خاطئة الحالة (riyadh): تنبيه على الحرف الكبير مع الصيغة الصحيحة. */
     var caseOnly = !ok && !!x.exact && typedLooseOK(x, v);
     put(fb, fbCard(ok, caseOnly ? CASE_NOTE_AR + ' ' + x.ans[0] + '. ' + (x.why || '') : x.why, null,
@@ -1415,7 +1433,7 @@ function Typing(x, o, ctl){ o = o || {};
       caseOnly ? CASE_NOTE_EN + ' "' + x.ans[0] + '". ' + (x.whyEn || '') : x.whyEn)); }
   inp.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); check(); } });
   if (o.saved && typeof o.saved.v === 'string') show(o.saved.v, !!o.saved.c);
-  else ctl.set('تحقق', true, check);
+  else ctl.set(quiet ? 'احفظ الإجابة' : 'تحقق', true, check);
   return [qCard(sent), fb];
 }
 function Builder(x, o, ctl){ o = o || {}; var placed = [], locked = false;
@@ -2348,68 +2366,158 @@ function stUnitMiniResult(st, ctl){
     h('p', {}, 'Score: ' + okCnt + ' / ' + idxs.length + '. · النتيجة: ' + okCnt + ' من ' + idxs.length + '.'));
 }
 
-/* ---------- Pre-Tests for Units 5, 8, 9, 12 (90% Exemption) ---------- */
+/* ---------- Pre-Tests for Units 5, 8, 9, 12 (90% Exemption: the first attempt only) ---------- */
+/* قواعد الاختبار القبلي:
+   - المحاولة الأولى وحدها تقرر الإعفاء، وما بعدها تدريب لا يغيّر الإعفاء. والخروج في منتصف الأولى يحسبها، والأسئلة التي لم تُجب خاطئة.
+   - السجل G.preTests[u] = { v, attempts, first:{ sc, n, done, at }, exempt, last, best }.
+     وv إصدار الاختبار (version في content.js): سجل بإصدار آخر يُعدّ فارغًا، فتُهمَل نتائج الأسئلة القديمة.
+   - الإعفاء في كل مكان: sc * 10 >= n * 9 (٩٠٪ فأكثر)، والنسبة المعروضة Math.round(sc / n * 100).
+   - لا صح ولا خطأ أثناء الاختبار (الوضع الصامت quiet)، والإجابات والشروح في شاشة النتيجة وحدها. */
+function ptExemptOK(sc, n){ return sc * 10 >= n * 9; }
+function ptPct(sc, n){ return Math.round(sc / n * 100); }
+/* السجل الصالح للوحدة u، أو null إن غاب أو كان بإصدار قديم. للقراءة وحدها. */
+function ptRecValid(u){ var pt = D.preTests && D.preTests[u], r = G.preTests && G.preTests[u]; return (pt && isObj(r) && r.v === pt.version) ? r : null; }
+/* السجل الصالح للكتابة: إن غاب أو كان قديمًا يُصفَّر عند الحاجة إليه. */
+function ptRecEnsure(u){ var pt = D.preTests && D.preTests[u]; if (!pt) return null;
+  if (!isObj(G.preTests)) G.preTests = {};
+  var r = G.preTests[u];
+  if (!(isObj(r) && r.v === pt.version)) r = G.preTests[u] = { v:pt.version, attempts:0 };
+  return r; }
+function ptScore(pt){ var sc = 0; pt.items.forEach(function(_, i){ if (PT_STATE && PT_STATE.ans[i] && PT_STATE.ans[i].c) sc++; }); return sc; }
+/* عند كل إجابة: أول إجابة في الجلسة تسجّل المحاولة (attempts)، وفي المحاولة الأولى يُحدَّث first.sc والإعفاء بعد كل إجابة،
+   فالخروج في المنتصف يحسب المحاولة الأولى والباقي خاطئ. */
+function ptRecordAnswer(unit, qIdx, ok, v){
+  var pt = D.preTests && D.preTests[unit]; if (!pt) return;
+  if (!PT_STATE || PT_STATE.unit !== unit) { var cur = ptRecValid(unit); PT_STATE = { unit:unit, ans:{}, counted:false, first:!(cur && cur.first) }; }
+  PT_STATE.ans[qIdx] = { c:!!ok, v:v };
+  var rec = ptRecEnsure(unit);
+  if (!PT_STATE.counted) {
+    PT_STATE.counted = true;
+    rec.attempts = (rec.attempts || 0) + 1;
+    if (rec.first) PT_STATE.first = false;   /* سُجّلت محاولة أولى من جهاز أو نافذة أخرى بعد فتح هذه الجلسة: هذه تدريب */
+  }
+  if (PT_STATE.first) {
+    if (!rec.first) rec.first = { sc:0, n:pt.items.length, done:false, at:Date.now() };
+    rec.first.sc = ptScore(pt);
+    rec.exempt = ptExemptOK(rec.first.sc, rec.first.n);
+  }
+  touch(); SYNC.soon();
+}
+function arQCount(k){ return k === 1 ? 'سؤال واحد' : k === 2 ? 'سؤالان' : arQs(k); }
+
 function stPreTestIntro(st, ctl){
   var pt = D.preTests && D.preTests[st.unit];
+  var n = pt.items.length, typed = pt.items.filter(function(x){ return x.type === 'typing'; }).length, mcq = n - typed, need = Math.ceil(n * 9 / 10);
+  var prev = ptRecValid(st.unit), pf = prev && prev.first;
+  /* داخل الجلسة تقرر PT_STATE.first، فلا تنقلب المحاولة الأولى «تدريبًا» إن رجع المتعلم إلى المقدمة بعد أول إجابة. */
+  var practice = (PT_STATE && PT_STATE.unit === st.unit) ? !PT_STATE.first : !!pf;
+  var pfPct = pf ? ptPct(pf.sc, pf.n) : 0, pfEx = !!(pf && ptExemptOK(pf.sc, pf.n));
+  var kindsEn = [], kindsAr = [];
+  if (typed) { kindsEn.push(typed + ' typing'); kindsAr.push(arQCount(typed) + ' تصريف وكتابة'); }
+  if (mcq) { kindsEn.push(mcq + ' multiple choice'); kindsAr.push(arQCount(mcq) + ' اختيار'); }
+  var countsEn = n + ' questions (' + kindsEn.join(' + ') + '). ', countsAr = ' (' + kindsAr.join(' + ') + ').';
   ctl.enable('ابدأ الاختبار');
   return h('div', { class:'qi' },
     h('h1', { class:'bi-h' }, h('span', { class:'en', dir:'ltr', style:'color:#fff' }, pt.en), h('small', { style:'color:var(--honey)' }, pt.ar)),
-    h('p', { class:'en', dir:'ltr', style:'color:#fff;font-weight:600;text-align:left' }, '10 questions (8 conjugation & typing production + 2 context questions). Score 90% (9/10) or higher to be exempted from this unit; its grammar will return in the Consolidation Week.'),
-    h('p', {}, pt.ruleNoteAr + ' (٨ أسئلة تصريف وكتابة + سؤالا اختيار). ونسبة ٩٠٪ للإعفاء وحده، أما حد العبور العادي للوحدة فيبقى ٨٠٪.'),
+    practice
+      ? h('p', { class:'en', dir:'ltr', style:'color:#fff;font-weight:600;text-align:left' }, countsEn + 'This is a practice attempt: it does not change your exemption. Your first attempt on this pre-test already counted' + (pf ? ' (' + pfPct + '%' + (pfEx ? ', exempted' : '') + ')' : '') + '.')
+      : h('p', { class:'en', dir:'ltr', style:'color:#fff;font-weight:600;text-align:left' }, countsEn + 'Only your FIRST attempt counts for the exemption: score at least ' + need + ' of ' + n + ' (90%) to skip this unit; its grammar will return in the Consolidation Week.'),
+    h('p', { class:'en', dir:'ltr', style:'text-align:left' }, practice
+      ? 'Answers and explanations appear at the end.'
+      : 'No feedback while you answer: answers and explanations appear at the end. If you leave midway, it still counts as your first attempt, and unanswered questions count as wrong.'),
+    pt.noteEn ? h('p', { class:'en pt-note', dir:'ltr', style:'text-align:left' }, pt.noteEn) : null,
+    practice
+      ? h('p', {}, 'هذه محاولة تدريب لا تغيّر الإعفاء، فقد حُسبت محاولتك الأولى في هذا الاختبار القبلي من قبل' + (pf ? ' (' + arDigits(pfPct) + '٪' + (pfEx ? ' — معفى' : '') + ')' : '') + countsAr + ' وتظهر الإجابات والشروح في النهاية.')
+      : [h('p', {}, pt.ruleNoteAr + countsAr),
+         h('p', {}, 'المحاولة الأولى وحدها هي التي تُحسب للإعفاء، ويلزمك ' + arDigits(need) + ' من ' + arDigits(n) + ' فأكثر (٩٠٪). ولا تظهر الإجابات والشروح إلا في النهاية، والخروج في المنتصف يُعدّ محاولتك الأولى وتُحسب الأسئلة التي لم تُجب خاطئة. أما حد العبور العادي للوحدة فيبقى ٨٠٪.')],
+    pt.noteAr ? h('p', { class:'pt-note' }, pt.noteAr) : null,
     h('div', { class:'qi-stats' },
-      h('div', { class:'qs' }, h('b', {}, '10'), h('span', {}, 'Questions · أسئلة')),
-      h('div', { class:'qs' }, h('b', {}, '8/10'), h('span', {}, 'Typing · كتابة وتصريف')),
-      h('div', { class:'qs' }, h('b', { dir:'ltr' }, '90%'), h('span', {}, 'To Skip · للإعفاء'))));
+      h('div', { class:'qs' }, h('b', {}, String(n)), h('span', {}, 'Questions · أسئلة')),
+      h('div', { class:'qs' }, h('b', { dir:'ltr' }, typed + '/' + n), h('span', {}, 'Typing · كتابة وتصريف')),
+      h('div', { class:'qs' }, h('b', { dir:'ltr' }, need + '/' + n), h('span', {}, 'To Skip · للإعفاء'))));
 }
 
 function stPreTestQ(st, ctl){
   var pt = D.preTests && D.preTests[st.unit];
-  var item = pt.items[st.qIdx];
+  var item = pt.items[st.qIdx], n = pt.items.length;
   var saved = PT_STATE && PT_STATE.ans[st.qIdx];
   var o = {
-    saved: saved,
-    tag: 'Unit ' + st.unit + ' Pre-Test · Q' + (st.qIdx + 1) + '/10',
-    onAnswer: function(ok, v){
-      if (!PT_STATE) PT_STATE = { unit:st.unit, ans:{} };
-      PT_STATE.ans[st.qIdx] = { c:ok, v:v };
-      ctl.enable('التالي');
-    }
+    saved: saved, quiet: true, wide: true,
+    tag: 'Unit ' + st.unit + ' Pre-Test · Q' + (st.qIdx + 1) + '/' + n,
+    onAnswer: function(ok, v){ ptRecordAnswer(st.unit, st.qIdx, ok, v); ctl.enable('التالي'); }
   };
+  var head = [label('Pre-Test Question ' + (st.qIdx + 1) + ' of ' + n, 'سؤال الاختبار القبلي ' + (st.qIdx + 1) + ' من ' + n)];
   var nodes;
   if (item.type === 'typing') {
+    /* التعليمة (والملاحظة إن وُجدت في الاختبار) بالإنجليزية ثم العربية تحتها، لا في سطر واحد يتداخل فيه الاتجاهان على الجوال الضيق. */
+    head.push(h('div', { class:'pt-ins' },
+      h('div', { class:'pt-ins-t' }, biNode('Type the missing words. Use the words in brackets.', 'اكتب الكلمات الناقصة مستعينًا بما بين القوسين.')),
+      (pt.noteEn || pt.noteAr) ? h('div', { class:'pt-ins-n' }, biNode(pt.noteEn || '', pt.noteAr || '')) : null));
     nodes = Typing(item, o, ctl);
   } else {
     if (!saved) ctl.set('التالي', false, nextStep);
     nodes = MCQ({ prompt:item.s, opts:item.opts, a:item.a, whyEn:item.whyEn, why:item.why }, o);
   }
-  return [label('Pre-Test Question ' + (st.qIdx + 1) + ' of ' + pt.items.length, 'سؤال الاختبار القبلي ' + (st.qIdx + 1) + ' من ' + pt.items.length)].concat(nodes);
+  return head.concat(nodes);
+}
+
+/* بند واحد في قائمة المراجعة: رقمه وجملته (وإجابة المتعلم مظللة) ثم بطاقة fbCard المعتمدة بالإجابة الصحيحة والشرح. */
+function ptReviewItem(item, idx, N, a){
+  var typed = item.type === 'typing', answered = !!(a && a.v != null), ok = !!(a && a.c);
+  var correct = typed ? item.ans[0] : item.opts[item.a];
+  var mark = answered ? (ok ? ' ok' : ' bad') : '';
+  var sent;
+  if (typed) {
+    var noSpace = /^[.!?,]/.test(item.post);
+    sent = h('p', { class:'q-en sm', dir:'ltr' }, item.pre ? item.pre + ' ' : '', h('span', { class:'blank' + mark }, answered ? a.v : ' '), ' ', h('span', { class:'verb' }, '(' + item.verb + ')'), noSpace ? '' : ' ', item.post);
+  } else {
+    var mine = answered ? item.opts[a.v] : null;
+    if (item.s.indexOf('___') >= 0) {
+      var pp = item.s.split('___');
+      sent = h('p', { class:'q-en sm', dir:'ltr' }, pp[0], h('span', { class:'blank' + mark }, answered ? mine : ' '), pp[1] || '');
+    } else {
+      sent = h('div', {}, h('p', { class:'q-en sm', dir:'ltr' }, item.s),
+        answered ? h('p', { class:'pt-pick', dir:'ltr' }, h('small', {}, 'Your answer · إجابتك'), h('span', { class:'blank' + mark }, mine)) : null);
+    }
+  }
+  return h('div', { class:'pt-item' },
+    qCard(sent, { tag:'Q' + (idx + 1) + '/' + N }),
+    fbCard(ok, item.why, null, ['Correct answer · الإجابة الصحيحة', correct], item.whyEn, answered ? null : 'No answer · لم تُجب'));
 }
 
 function stPreTestResult(st, ctl){
   var pt = D.preTests && D.preTests[st.unit];
-  var N = pt.items.length, sc = 0;
-  pt.items.forEach(function(_, idx){
-    if (PT_STATE && PT_STATE.ans[idx] && PT_STATE.ans[idx].c) sc++;
-  });
-  var pct = Math.round((sc / N) * 100);
-  var exempt = pct >= 90;
-  var prev = (G.preTests && G.preTests[st.unit]) || {};
-  G.preTests[st.unit] = {
-    best: Math.max(prev.best || 0, sc),
-    last: sc,
-    exempt: !!(prev.exempt || exempt),
-    at: Date.now()
-  };
-  touch(); SYNC.soon();
+  var N = pt.items.length, sc = ptScore(pt);
+  var pct = ptPct(sc, N), exempt = ptExemptOK(sc, N);
+  var first = !!(PT_STATE && PT_STATE.unit === st.unit && PT_STATE.first);
+  /* تسجيل النتيجة: المحاولة الأولى تُغلق (done)، وما بعدها تدريب يحفظ last وbest ولا يمس الإعفاء. وتُكتب التغييرات وحدها لأن الشاشة قد تُرسم أكثر من مرة. */
+  var rec = ptRecEnsure(st.unit), changed = false;
+  if (first) {
+    if (rec.first && !rec.first.done) { rec.first.done = true; changed = true; }
+  } else if (PT_STATE && PT_STATE.unit === st.unit) {
+    var best = Math.max(rec.best || 0, sc);
+    if (rec.last !== sc || rec.best !== best) { rec.last = sc; rec.best = best; changed = true; }
+  }
+  if (changed) { touch(); SYNC.soon(); }
+  var f = rec.first, fPct = f ? ptPct(f.sc, f.n) : pct, fEx = !!(f && ptExemptOK(f.sc, f.n));
   ctl.set('رجوع للدروس', true, closePlayer);
   return h('div', { class:'result' },
     ring(sc, N),
-    h('div', { class:'res-msg' }, exempt
-      ? biNode('Unit ' + st.unit + ' Exempted (' + pct + '% · ≥90%)!', 'أُعفيت من الوحدة ' + st.unit + ' (' + pct + '٪ — ٩٠٪ فأكثر)!')
-      : biNode('Score: ' + pct + '% (Below 90% Exemption Threshold)', 'النتيجة: ' + pct + '٪ (أقل من حد الإعفاء ٩٠٪)')),
-    h('div', { class:'res-sub' }, exempt
-      ? biNode('You can skip Unit ' + st.unit + '! Its grammar rule will automatically return in the Consolidation Week.', 'يمكنك تخطي الوحدة ' + st.unit + '، وستعود قاعدتها للمراجعة في أسبوع التثبيت.')
-      : biNode('90% is required for pre-test exemption only. You will study Unit ' + st.unit + ' normally when you reach it (with the standard 80% passing threshold).', 'نسبة ٩٠٪ مخصصة للإعفاء القبلي فقط. ستدرس الوحدة ' + st.unit + ' بشكل طبيعي عند الوصول إليها (بحد العبور المعتاد ٨٠٪).')));
+    h('div', { class:'res-msg' }, first
+      ? (exempt
+        ? biNode('Unit ' + st.unit + ' Exempted (' + pct + '% · ≥90%)!', 'أُعفيت من الوحدة ' + st.unit + ' (' + pct + '٪ — ٩٠٪ فأكثر)!')
+        : biNode('Score: ' + pct + '% (Below 90% Exemption Threshold)', 'النتيجة: ' + pct + '٪ (أقل من حد الإعفاء ٩٠٪)'))
+      : biNode('Practice Score: ' + pct + '%', 'نتيجة التدريب: ' + pct + '٪')),
+    h('div', { class:'res-sub' }, first
+      ? (exempt
+        ? biNode('You can skip Unit ' + st.unit + '! Its grammar rule will automatically return in the Consolidation Week.', 'يمكنك تخطي الوحدة ' + st.unit + '، وستعود قاعدتها للمراجعة في أسبوع التثبيت.')
+        : biNode('Only your first attempt decides the exemption (90% needed). You will study Unit ' + st.unit + ' normally when you reach it (with the standard 80% passing threshold).', 'المحاولة الأولى وحدها تقرر الإعفاء (٩٠٪). ستدرس الوحدة ' + st.unit + ' بشكل طبيعي عند الوصول إليها (بحد العبور المعتاد ٨٠٪).'))
+      : (fEx
+        ? biNode('Practice does not change your result: you stay exempted from Unit ' + st.unit + ' (first attempt: ' + fPct + '%). Its grammar rule will return in the Consolidation Week.', 'التدريب لا يغيّر نتيجتك: تبقى معفى من الوحدة ' + st.unit + ' (المحاولة الأولى: ' + fPct + '٪)، وستعود قاعدتها في أسبوع التثبيت.')
+        : biNode('Practice does not change the exemption: only your first attempt (' + fPct + '%) counted. You will study Unit ' + st.unit + ' normally when you reach it.', 'التدريب لا يغيّر الإعفاء: حُسبت المحاولة الأولى وحدها (' + fPct + '٪). ستدرس الوحدة ' + st.unit + ' بشكل طبيعي عند الوصول إليها.'))),
+    h('div', { class:'pt-list' },
+      label('Your Answers & Explanations', 'إجاباتك والشروح'),
+      pt.items.map(function(item, idx){ return ptReviewItem(item, idx, N, PT_STATE && PT_STATE.ans[idx]); })));
 }
 
 /* ---------- Stage 4: Weekly Cambly Card & Session Logger ---------- */

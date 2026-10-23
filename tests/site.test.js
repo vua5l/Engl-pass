@@ -486,6 +486,134 @@ function fakeGitHub(token) {
     await ctx.close();
   }
 
+  /* ---------------- و) الاختبار القبلي: صامت حتى النهاية، والمحاولة الأولى وحدها تقرر الإعفاء، وإصدار السجل ---------------- */
+  {
+    const { ctx, page } = await newPage(null);
+    await startApp(page);
+    await page.locator('.nav-it').nth(1).click(); await sleep(250);
+    const unitCard = u => page.locator('.u-card-wrap').filter({ has: page.locator('.u-n', { hasText: new RegExp('^' + u + '$') }) });
+    const openPre = async u => { await unitCard(u).locator('button.btn').click(); await sleep(250); };
+    const preRec = async u => { const g = await getJSON(page, 'ep4.course'); return (g.preTests || {})[u] || null; };
+    const items = async u => page.evaluate(u => window.DATA.preTests[u].items, u);
+    const N9 = (await items(9)).length;
+    // يجيب عن البند الحالي: right صحيحة، وإلا خاطئة عمدًا
+    async function answerPre(item, right) {
+      if (item.type === 'typing') { await page.locator('.gap-in:enabled').fill(right ? item.ans[0] : 'zzz'); await page.locator('.gap-in:enabled').press('Enter'); }
+      else await page.locator('.opt:enabled').nth(right ? item.a : (item.a + 1) % item.opts.length).click();
+      await sleep(80);
+    }
+    // ما يراه المتعلم بعد الإجابة: لا بطاقة ولا تلوين صح أو خطأ، بل حالة «حُفظت» المحايدة وسطر صغير
+    const quiet = async () => ({
+      fb: await page.locator('.fb').count(),
+      verdict: await page.locator('.gap-in.ok, .gap-in.bad, .opt.ok, .opt.bad, .opt.dim, .blank.ok, .blank.bad').count(),
+      saved: await page.locator('.gap-in.saved, .opt.chosen').count(),
+      note: (await text(page)).includes('Answer saved · حُفظت إجابتك')
+    });
+
+    // 1) الوحدة 9: مقدمة المحاولة الأولى، ثم كل البنود صحيحة
+    await openPre(9);
+    const intro1 = await text(page);
+    ok(/Only your FIRST attempt counts for the exemption/.test(intro1) && /10 questions \(8 typing \+ 2 multiple choice\)/.test(intro1) && /at least 9 of 10 \(90%\)/.test(intro1) && /answers and explanations appear at the end/i.test(intro1) && /leave midway, it still counts as your first attempt/.test(intro1) && intro1.includes('المحاولة الأولى وحدها') && !/practice attempt/i.test(intro1),
+      'pre-test intro (first attempt): the counts come from the items, only the FIRST attempt counts, answers appear at the end, leaving midway still counts');
+    await cta(page);
+    const its9 = await items(9);
+    let quietOK = true, quietMsg = '', scOK = true, scMsg = '', wideOK = true, saveLbl = '', tagOK = true, instrOK = true;
+    for (let i = 0; i < its9.length; i++) {
+      const typed = its9[i].type === 'typing';
+      if (typed) {
+        if (i === 0) saveLbl = await page.locator('.pl-foot .btn:visible').last().innerText();
+        wideOK = wideOK && (await page.locator('.gap-in.wide').count()) === 1;
+        const t = await text(page);
+        instrOK = instrOK && t.includes('Type the missing words. Use the words in brackets.') && t.includes('اكتب الكلمات الناقصة مستعينًا بما بين القوسين.');
+      } else tagOK = tagOK && (await page.locator('.q-tag').first().innerText()).trim() === 'Unit 9 Pre-Test · Q' + (i + 1) + '/' + its9.length;
+      await answerPre(its9[i], true);
+      const q = await quiet();
+      if (!(q.fb === 0 && q.verdict === 0 && q.saved === 1 && q.note)) { quietOK = false; quietMsg += ' Q' + (i + 1) + ' ' + JSON.stringify(q); }
+      const r = await preRec(9);
+      if (!(r && r.first && r.first.sc === i + 1 && r.first.n === its9.length && r.first.done === false && r.exempt === ((i + 1) * 10 >= its9.length * 9))) { scOK = false; scMsg += ' after Q' + (i + 1) + ': ' + JSON.stringify(r); }
+      if (i === 1) {
+        // «رجوع» يعيد البند السابق بحالته المحايدة نفسها (محفوظ بلا بطاقة ولا تلوين)، ثم «التالي» يعيد البند الحالي كذلك
+        await cta(page);
+        await page.locator('.pl-foot .ib.back').click(); await sleep(150);
+        await page.locator('.pl-foot .ib.back').click(); await sleep(150);
+        const b = await quiet(), v0 = await page.locator('.gap-in.saved').inputValue().catch(() => null);
+        ok(b.fb === 0 && b.verdict === 0 && b.saved === 1 && b.note && v0 === its9[0].ans[0], 'going back to a saved pre-test answer restores the same neutral state with the typed text (no card, no right/wrong colours): ' + JSON.stringify(b) + ' value=' + v0);
+        await cta(page); await cta(page); // الأول ← الثاني ← الثالث
+        continue;
+      }
+      await cta(page);
+    }
+    ok(quietOK, 'pre-test is quiet: after every answer no feedback card and no right/wrong classes, only the neutral saved state and the "Answer saved" line (all ' + its9.length + ' items)' + quietMsg);
+    ok(/Save answer/.test(saveLbl) && wideOK && instrOK && tagOK, 'typed pre-test items: "Save answer" button, wide input, the instruction line above; the question tag uses the real item count (' + saveLbl.replace(/\n/g, ' ') + ')');
+    ok(scOK, 'during the first attempt first.sc and the exemption flag are saved after every answer' + scMsg);
+
+    // 2) شاشة النتيجة: الإعفاء وقائمة مراجعة بعدد البنود
+    const res1 = await text(page);
+    ok((await page.locator('.result .ring-w').count()) === 1 && /Unit 9 Exempted \(100%/.test(res1), 'pre-test result shows the score ring and the exemption message');
+    const rv = await page.evaluate(() => Array.from(document.querySelectorAll('.pt-item')).map(e => ({ t: e.textContent, ok: !!e.querySelector('.fb:not(.bad)'), bad: !!e.querySelector('.fb.bad') })));
+    const rvOK = rv.length === its9.length && rv.every((e, i) => { const x = its9[i], c = x.type === 'typing' ? x.ans[0] : x.opts[x.a]; return e.ok && !e.bad && e.t.includes('Q' + (i + 1) + '/' + its9.length) && e.t.includes(c) && e.t.includes(x.whyEn) && e.t.includes(x.why); });
+    ok(rvOK, 'result review lists every item with its number, right/wrong mark, the correct answer and the explanation (' + rv.length + ' entries)');
+    const r9 = await preRec(9);
+    ok(r9 && r9.v === 2 && r9.attempts === 1 && r9.first && r9.first.sc === its9.length && r9.first.done === true && r9.exempt === true && r9.last === undefined, 'first attempt record: version 2, one attempt, 10/10, done, exempt, no practice score yet: ' + JSON.stringify(r9));
+    await cta(page); // رجوع للدروس
+    const lc9 = await unitCard(9).innerText();
+    ok(/Exempted \(100%\)/.test(lc9) && lc9.includes('معفى منها') && /Practice/.test(lc9) && !/Pre-Test Available/.test(lc9), 'lessons chip: "Exempted (100%)" and the button becomes "Practice"');
+
+    // 3) محاولة تدريب بإجابات خاطئة: لا تلغي الإعفاء
+    await openPre(9);
+    const intro2 = await text(page);
+    ok(/This is a practice attempt: it does not change your exemption/.test(intro2) && /already counted \(100%, exempted\)/.test(intro2) && !/Only your FIRST attempt counts/.test(intro2), 'a later attempt says it is practice and does not change the exemption');
+    await cta(page);
+    for (let i = 0; i < its9.length; i++) { await answerPre(its9[i], false); await cta(page); }
+    const res2 = await text(page);
+    ok(/Practice Score: 0%/.test(res2) && /you stay exempted from Unit 9/.test(res2) && (await page.locator('.pt-item .fb.bad').count()) === its9.length, 'practice result with all-wrong answers shows 0% yet keeps the exemption, and the review marks every item wrong');
+    const r9b = await preRec(9);
+    ok(r9b && r9b.attempts === 2 && r9b.last === 0 && r9b.best === 0 && r9b.exempt === true && r9b.first.sc === its9.length && r9b.first.done === true, 'practice stores last/best only; the first attempt and the exemption are unchanged: ' + JSON.stringify(r9b));
+    await cta(page);
+    ok(/Exempted \(100%\)/.test(await unitCard(9).innerText()), 'the lessons chip still shows Exempted after a failed practice attempt');
+
+    // 4) الوحدة 5: إجابة البند الأول فقط ثم الخروج تحسب المحاولة الأولى (والباقي خاطئ)
+    const its5 = await items(5);
+    await openPre(5);
+    await cta(page);
+    await answerPre(its5[0], true);
+    await page.click('[aria-label="Close · إغلاق"]'); await sleep(250);
+    const r5 = await preRec(5), lc5 = await unitCard(5).innerText();
+    ok(r5 && r5.v === 2 && r5.attempts === 1 && r5.first && r5.first.sc === 1 && r5.first.n === its5.length && r5.first.done === false && r5.exempt === false, 'leaving after one answer still counts as the first attempt (1/10, not done, not exempt): ' + JSON.stringify(r5));
+    ok(/First attempt: 10%/.test(lc5) && lc5.includes('المحاولة الأولى') && /Practice/.test(lc5) && !/Exempted/.test(lc5), 'lessons chip shows the first-attempt percent and the button becomes "Practice"');
+    await openPre(5);
+    const intro5 = await text(page);
+    ok(/This is a practice attempt/.test(intro5) && /already counted \(10%\)/.test(intro5) && !/Only your FIRST attempt counts/.test(intro5), 'reopening after an abandoned first attempt shows a practice attempt');
+    await cta(page);
+    await answerPre(its5[0], false);
+    await page.click('[aria-label="Close · إغلاق"]'); await sleep(250);
+    const r5b = await preRec(5);
+    ok(r5b && r5b.attempts === 2 && r5b.first.sc === 1 && r5b.exempt === false && r5b.last === undefined, 'a practice answer does not touch the first attempt: ' + JSON.stringify(r5b));
+
+    // 5) سجل بلا إصدار الاختبار الحالي يُهمَل: يبدأ المتعلم محاولة أولى جديدة
+    await page.evaluate(() => { const g = JSON.parse(localStorage.getItem('ep4.course')); g.preTests[8] = { v: 1, attempts: 3, first: { sc: 10, n: 10, done: true, at: 1 }, exempt: true, last: 10, best: 10 }; g.preTests[12] = { best: 10, last: 10, exempt: true, at: 1 }; localStorage.setItem('ep4.course', JSON.stringify(g)); });
+    await page.reload(); await sleep(400);
+    await page.locator('.nav-it').nth(1).click(); await sleep(250);
+    const lc8 = await unitCard(8).innerText(), lc12 = await unitCard(12).innerText();
+    ok(/Pre-Test Available/.test(lc8) && !/Exempted/.test(lc8) && /Pre-Test Available/.test(lc12) && !/Exempted/.test(lc12), 'records saved for an older version (or in the old format) are ignored on the lessons screen');
+    const its8 = await items(8);
+    await openPre(8);
+    ok(/Only your FIRST attempt counts/.test(await text(page)) && !/practice attempt/i.test(await text(page)), 'a stale record does not turn the new attempt into practice');
+    await cta(page);
+    await answerPre(its8[0], true);
+    const r8 = await preRec(8);
+    ok(r8 && r8.v === 2 && r8.attempts === 1 && r8.first && r8.first.sc === 1 && r8.first.n === its8.length && r8.exempt === false && r8.best === undefined, 'the stale record is reset to the current version on the first answer: ' + JSON.stringify(r8));
+    // خانة الكتابة في الاختبار القبلي أعرض من العادية على جوال عادي، ولا تتجاوز بطاقتها على جوال ضيق (320px)
+    const wd = () => page.evaluate(() => { const i = document.querySelector('.gap-in.wide'), c = i && i.closest('.qcard'); if (!i || !c) return { w: 0, inner: 0, inside: false, noHScroll: false }; const ib = i.getBoundingClientRect(), cb = c.getBoundingClientRect(); return { w: Math.round(ib.width), inner: Math.round(cb.width - 44), inside: ib.left >= cb.left - 0.5 && ib.right <= cb.right + 0.5, noHScroll: document.documentElement.scrollWidth <= window.innerWidth }; });
+    const w390 = await wd();
+    await page.setViewportSize({ width: 320, height: 700 }); await sleep(200);
+    const w320 = await wd();
+    await page.setViewportSize({ width: 390, height: 844 });
+    ok(w390.w >= 255 && w390.inside && w320.w <= w320.inner + 1 && w320.inside && w320.noHScroll, 'the wide pre-test input is wider than the normal one on a 390px phone and never overflows its card on a 320px phone: ' + JSON.stringify({ w390, w320 }));
+    ok(page.errors.length === 0, 'no page errors (pre-tests): ' + page.errors.join(' | '));
+    await ctx.close();
+  }
+
   await browser.close(); srv.close();
   console.log(results.join('\n'));
   console.log('\n' + (results.length - fails) + '/' + results.length + ' passed');

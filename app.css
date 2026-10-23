@@ -690,6 +690,33 @@ button.uo-row .uo-k{background:var(--accent);color:#fff}
 .u-card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-top:8px;border-top:1px dashed var(--line)}
 .exempt-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:var(--ok-soft);border:1px solid var(--ok-line);color:var(--ok-ink);font-size:11.5px;font-weight:700}
 .pre-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--accent-ink);font-size:11.5px;font-weight:700}
+/* نصوص الشارتين صارت أطول، فتلتف على الجوال الضيق بحواف لا تقطع الحروف. */
+.exempt-chip,.pre-chip{max-width:100%;line-height:1.5;border-radius:14px}
+
+/* ---------- الاختبار القبلي الصامت: لا صح ولا خطأ قبل النهاية ----------
+   حالة «حُفظت» محايدة بألوان الموقع المعتمدة نفسها (الأزرق والرمادي)، لا الأخضر ولا الأحمر.
+   وليس .opt.picked لأنه بلون التيراكوتا نفسه الذي يوحي بالخطأ. */
+.gap-in.wide{width:13em;max-width:100%}
+.gap-in.saved{border-color:var(--on-dark-2);color:#fff}
+.opt.chosen{box-shadow:inset 0 0 0 2px var(--dark);background:var(--simple-bg);color:var(--dark)}
+.opt.chosen .o-dot{background:var(--dark)}
+.opt.rest{opacity:.7}
+.saved-note{font-size:13px;font-weight:600;color:var(--muted);text-align:center}
+.pt-ins{display:flex;flex-direction:column;gap:6px}
+.pt-ins .bi{line-height:1.45}
+.pt-ins-t .bi{gap:2px}
+.pt-ins-t .bi-en{font-size:14.5px;font-weight:600;color:var(--ink-2)}
+.pt-ins-t .bi-ar{font-size:13.5px;font-weight:500;color:var(--ink-2)}
+.pt-ins-n .bi-en{font-size:12.5px;font-weight:500;color:var(--muted)}
+.pt-ins-n .bi-ar{font-size:12.5px}
+.qi p.pt-note{font-size:13px}
+/* قائمة مراجعة الاختبار القبلي في شاشة النتيجة: بطاقة السؤال الداكنة ثم fbCard المعتمدة. */
+.pt-list{width:100%;display:flex;flex-direction:column;gap:20px;text-align:right}
+.pt-item{display:flex;flex-direction:column;gap:8px}
+.pt-item .blank.bad{text-decoration:line-through}
+.pt-item .fb-fix bdi{display:inline-block;max-width:100%;overflow-wrap:anywhere}
+.pt-pick{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin-top:12px;font-family:var(--f-en);font-size:17px;font-weight:600;text-align:left}
+.pt-pick small{font-family:var(--f-ar);font-size:12px;font-weight:500;color:var(--on-dark-2)}
 
 .cambly-card{padding:14px;border-radius:18px;border:1.5px solid var(--line-dark);background:var(--surface);display:flex;flex-direction:column;gap:10px}
 .cambly-pre{margin:0;padding:12px;border-radius:12px;background:var(--bg);border:1px solid var(--line);font-family:var(--f-en);font-size:12.5px;line-height:1.55;color:var(--ink);direction:ltr;text-align:left;white-space:pre-wrap;overflow-wrap:anywhere;max-height:240px;overflow-y:auto}
