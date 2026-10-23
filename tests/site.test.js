@@ -250,11 +250,17 @@ function fakeGitHub(token) {
     const { ctx, page } = await newPage(null);
     await startApp(page);
     const norm = s => String(s || '').replace(/_{3}/g, '').replace(/\s+/g, '').toLowerCase();
+    const LISTEN_IDS = ['u0l2', 'u0l4']; // درسا المقطعين الحقيقيين
+    const seenListen = {};               // ما يظهر فيهما في مرحلتي الاستماع ١ و٣
     async function drive(lid) {
       const data = await page.evaluate(lid => { const L = LESSONS[lid]; const v = (L.vocab || []).concat(L.legalPhrase ? [L.legalPhrase] : []); return { pairs: v.map(x => [x.en, x.ar]), quiz: L.quiz.map(q => [q.s, q.opts[q.a]]) }; }, lid);
       const arOf = Object.fromEntries(data.pairs);
       for (let n = 0; n < 600; n++) {
         if (!(await page.locator('.pl').count())) return true;
+        if (LISTEN_IDS.includes(lid)) {
+          const scr = await page.innerText('#screen').catch(() => '');
+          if (/Stage 3 of 3/.test(scr) && /Listening/.test(scr)) seenListen[lid] = Object.assign(seenListen[lid] || {}, { s3: scr, s3html: await page.innerHTML('#screen') });
+        }
         if (await page.locator('.m-it.en:not(.matched)').count()) {
           const ens = await page.locator('.m-it.en:not(.matched)').allInnerTexts();
           for (const en of ens) {
@@ -271,7 +277,9 @@ function fakeGitHub(token) {
           const q = norm(await page.locator('.q-en').first().innerText().catch(() => ''));
           const hit = data.quiz.find(x => norm(x[0]) === q);
           if (hit) await page.locator('.opt:enabled', { hasText: hit[1] }).first().click(); else await opt.first().click();
-          await sleep(60); await cta(page); continue;
+          await sleep(60);
+          if (LISTEN_IDS.includes(lid)) { const scr = await page.innerText('#screen').catch(() => ''); if (/Stage 1 of 3/.test(scr)) seenListen[lid] = Object.assign(seenListen[lid] || {}, { s1: scr }); }
+          await cta(page); continue;
         }
         const inp = page.locator('.gap-in:enabled');
         if (await inp.count()) { const c = await inp.count(); for (let i = 0; i < c; i++) await inp.nth(i).fill('x'); await inp.last().press('Enter'); await sleep(60); await cta(page); continue; }
@@ -293,6 +301,13 @@ function fakeGitHub(token) {
       const stamped = st && st.stamps ? ['recall', 'vocab', 'grammar', 'reading', 'writing', 'quiz'].filter(k => st.stamps[k]).length : 0;
       ok(finished && stamped === 6, lid + ': all 6 stages can be completed (' + stamped + '/6)');
       await backHome(page);
+    }
+    // المقاطع الحقيقية: لا يُنسخ نصها إلى الموقع، والمرحلة الثالثة تفتحه في صفحة المصدر، وشرح سؤال الفكرة العامة يظهر بعد الإجابة
+    for (const lid of LISTEN_IDS) {
+      const L = await page.evaluate(lid => { const x = LESSONS[lid].listening; return { url: x.url, why: x.predict.revealEn || x.predict.whyEn || '', copied: !!(x.transcriptParas || x.paras || x.transcript) }; }, lid);
+      const s = seenListen[lid] || {};
+      ok(!L.copied && !!s.s3 && s.s3.includes('Open Transcript & Clip') && s.s3html.includes(L.url) && !s.s3html.includes('mail-body'), lid + ': stage 3 opens the transcript on the source page (none copied into the site)');
+      ok(!!s.s1 && !!L.why && s.s1.includes(L.why.slice(0, 40)), lid + ': the main-idea answer shows its explanation');
     }
     const g = await getJSON(page, 'ep4.course');
     ok(Object.keys(g.mistakes).some(k => k.startsWith('u0l2|')) && Object.keys(g.mistakes).some(k => k.startsWith('u1l1|')), 'mistakes from several lessons live together in one notebook');
