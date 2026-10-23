@@ -20,12 +20,12 @@ LESSONS.u0l4 = {
   canDoEn: "I can write 4 separate, well-ordered sentences with capital letters (including 'I') and periods without run-on sentences.",
   canDoAr: "أقدر أن أكتب 4 جمل منفصلة ومرتّبة (فاعل + فعل + مفعول) تبدأ بحرف كبير وتنتهي بنقطة مع كتابة الضمير I كبيرًا دائمًا.",
   descEn: "I can build clear Subject–Verb–Object sentences and separate them with periods and capital letters.",
-  descAr: "أقدر أن أبني جملًا إنجليزية واضحة (فاعل ثم فعل) وأفصل بينها بنقطة وحرف كبير، مع مقطع استماع عن مراجعة مسودة بريد قانوني.",
+  descAr: "أقدر أن أبني جملًا إنجليزية واضحة (فاعل ثم فعل) وأفصل بينها بنقطة وحرف كبير، مع مقطع استماع حقيقي لمكالمة تُترك فيها رسالة.",
   goals: [
     { en: "I can start every English sentence with a Subject + Verb (never Verb + Subject in statements).", ar: "أقدر أن أبدأ كل جملة خبرية بالفاعل ثم الفعل (وليس الفعل ثم الفاعل كما في العربية)." },
     { en: "I can capitalize the first word of a sentence, the pronoun 'I', and proper nouns (days, cities, languages).", ar: "أقدر أن أكتب الحرف الكبير في بداية كل جملة، ومع ضمير المتكلم I، وأسماء المدن والأيام واللغات." },
     { en: "I can separate ideas into 4 distinct sentences ending with periods (.) instead of one long run-on sentence.", ar: "أقدر أن أفصل أفكاري في 4 جمل مستقلة تنتهي كل منها بنقطة (.) بدل وصلها في جملة واحدة طويلة." },
-    { en: "I can understand a 3-stage listening clip on editing a legal email and use 'legal right' in writing.", ar: "أقدر أن أفهم مقطع استماع من 3 مراحل عن تحرير إيميل قانوني وأستخدم العبارة القانونية legal right." }
+    { en: "I can understand a real phone call where someone leaves a message, and write that message in 4 clear sentences.", ar: "أقدر أن أفهم مكالمة حقيقية تُترك فيها رسالة، وأكتب الرسالة في 4 جمل واضحة." }
   ],
   intro: {
     recall: {
@@ -55,20 +55,20 @@ LESSONS.u0l4 = {
       ]
     },
     reading: {
-      dEn: "3-Stage Listening: Mr. Salman reviews Faisal's first email draft and shows him how to split a long run-on text into 4 clear sentences.",
-      d: "استماع على 3 مراحل: الأستاذ سلمان يراجع مسودة إيميل كتبها فيصل ويعلّمه كيف يقسّم الجملة الطويلة إلى 4 جمل واضحة.",
+      dEn: "3-Stage Listening (real recording): Peter calls an office for Maria, and Jane takes a message with his phone number and email.",
+      d: "استماع على 3 مراحل لتسجيل حقيقي: بيتر يتصل بمكتب يطلب ماريا، فتكتب جين رسالة برقم هاتفه وبريده.",
       items: [
         ["speaker", "Stage 1: Listen for the main idea without reading the transcript", "المرحلة 1: استماع أول للفكرة العامة بدون النص المكتوب"],
         ["quiz", "Stage 2: Listen again and answer 8 detail questions", "المرحلة 2: استماع ثانٍ للإجابة عن 8 أسئلة تفاصيل بالدليل"],
-        ["mail", "Stage 3: Interactive transcript with word meanings & Shadowing Timer", "المرحلة 3: قراءة النص التفاعلي مع الترديد (Shadowing)"]
+        ["mail", "Stage 3: Transcript on the source page & Shadowing Timer", "المرحلة 3: النص المكتوب في صفحة المصدر لمراجعة ما فات، مع الترديد (Shadowing)"]
       ]
     },
     writing: {
-      dEn: "Write 4 separate, clean sentences about a client or student and their legal right, checking every capital letter and period.",
-      d: "اكتب 4 جمل منفصلة ونظيفة عن طالب أو موكّل وحقه القانوني، مع التحقق من كل حرف كبير ونقطة.",
+      dEn: "You are Jane: write Peter's message for Maria in 4 separate sentences, checking every capital letter and period.",
+      d: "تخيّل أنك جين: اكتب رسالة بيتر لماريا في 4 جمل منفصلة، مع التحقق من كل حرف كبير ونقطة.",
       items: [
         ["pen", "4 separate sentences—each starting with a Capital and ending with a Period (.)", "4 جمل منفصلة تبدأ كل منها بحرف كبير وتنتهي بنقطة (.)"],
-        ["spark", "Instant check for capital 'I', sentence boundaries, and Subject–Verb order", "فحص فوري للحرف الكبير للضمير I وفصل الجمل وترتيب الفاعل والفعل"]
+        ["spark", "Instant check for sentence starts, capital names and 'I', and sentence boundaries", "فحص فوري لبدايات الجمل والأسماء والضمير I وفصل الجمل"]
       ]
     },
     quiz: {
@@ -407,101 +407,91 @@ LESSONS.u0l4 = {
       why: "الفاعل We ثم الفعل start work ثم الزمان on Sunday بحرف كبير.", errCat: "word_order" }
   ],
 
+  /* ---------- المرحلة 4: الاستماع على ثلاث مراحل (مقطع حقيقي من LearnEnglish، ونصه المكتوب في صفحة المصدر) ---------- */
   listening: {
-    title: "Editing Faisal's First Email Draft",
-    sourceLabel: "British Council A2 / Legal Writing Workshop Dialogue",
-    url: "https://learnenglish.britishcouncil.org/skills/listening/a2-listening",
+    title: "Leaving a message",
+    sourceTag: "LearnEnglish · Real recording · تسجيل حقيقي",
+    sourceMeta: "LearnEnglish (British Council) · Listening A2",
+    speakers: "Jane & Peter (a phone call)",
+    url: "https://learnenglish.britishcouncil.org/free-resources/listening/a2/leaving-message",
     audioWord: "sentence",
-    targetSeconds: 80,
-    introEn: "Listen to Mr. Salman reviewing the first draft of an email that Faisal wrote to a client, showing him how to fix his sentences and capital letters.",
-    intro: "استمع إلى الأستاذ سلمان وهو يراجع المسودة الأولى لإيميل كتبه فيصل لأحد الموكّلين، ويوضّح له كيف يصحح تقسيم الجمل والحروف الكبيرة.",
+    targetSeconds: 90,
+    introEn: "Listen to a phone call to an office. Peter wants to speak to Maria, but she isn't there, so Jane takes a message for her.",
+    intro: "استمع إلى مكالمة هاتفية لمكتب: بيتر يريد أن يكلّم ماريا، لكنها ليست موجودة، فتكتب جين رسالة لها.",
     predict: {
-      qEn: "Stage 1 Main-Idea Question: What is the main problem in Faisal's first email draft?",
-      q: "سؤال الفكرة العامة (قبل قراءة النص): ما المشكلة الرئيسية في مسودة الإيميل الأولى التي كتبها فيصل؟",
+      qEn: "Stage 1 Main-Idea Question: Why does Jane take a message?",
+      q: "سؤال الفكرة العامة: لماذا تكتب جين رسالة؟",
       optsEn: [
-        "All fifty words are in one long sentence without periods, and 'i' is lowercase",
-        "The email is written in French instead of English",
-        "He forgot the client's phone number"
+        "Because Peter wants to buy a new phone from Jane",
+        "Because Jane is late for a meeting with Peter",
+        "Because Maria isn't in the office, and Peter wants her to call him back"
       ],
       opts: [
-        "كتب خمسين كلمة في جملة واحدة طويلة بلا نقاط، وكتب الضمير i بحرف صغير",
-        "كتب الإيميل بالفرنسية بدل الإنجليزية",
-        "نسي رقم هاتف الموكّل"
+        "لأن بيتر يريد أن يشتري هاتفًا جديدًا من جين",
+        "لأن جين متأخرة عن اجتماع مع بيتر",
+        "لأن ماريا ليست في المكتب، وبيتر يريدها أن تعاود الاتصال به"
       ],
-      a: 0,
-      whyEn: "Mr. Salman points out that the whole draft is one long sentence of 50 words without periods, and the pronoun 'I' is lowercase.",
-      why: "الأستاذ سلمان يلاحظ أن المسودة كلها جملة واحدة طويلة من 50 كلمة بلا نقاط، وأن الضمير I مكتوب بحرف صغير."
+      a: 2,
+      revealEn: "Maria is on her lunch break, so Jane writes down Peter's message, his phone number and his email address.",
+      reveal: "ماريا في استراحة الغداء، فتكتب جين رسالة بيتر ورقم هاتفه وبريده الإلكتروني."
     },
-    transcriptParas: [
-      "<b>Faisal:</b> Mr. Salman, <<c:do>> you <<c:have>> two [[minutes|دقيقتان]]? <<s:This>> <<s:is>> the [[first|الأولى]] {draft} of my [[email|إيميل]] to our [[new|الجديد]] {client} in Jeddah.",
-      "<b>Mr. Salman:</b> Of course, Faisal. Let's [[read|نقرأ]] it together. Hmm… the [[message|الرسالة]] <<s:is>> {polite}, and you <<c:{explain}>> the [[client's|الموكّل]] {legal right} [[well|جيدًا]]. [[However|ومع ذلك]], <<s:there is>> one [[big|كبيرة]] [[problem|مشكلة]].",
-      "<b>Faisal:</b> <<s:Is>> <<s:there>> a [[grammar|قواعد]] {mistake} with <<t:am, is, are>>?",
-      "<b>Mr. Salman:</b> No, your [[verbs|أفعالك]] <<s:are>> [[good|جيدة]]! [[But|لكن]] the [[whole|كامل]] [[email|الإيميل]] <<s:is>> [[one|واحدة]] [[long|طويلة]] {sentence} of [[fifty|خمسين]] [[words|كلمة]]. <<s:There aren't>> [[any|أي]] {periods|period} in the [[middle|الوسط]]!",
-      "<b>Faisal:</b> Oh! In Arabic, I [[often|غالبًا]] [[connect|أربط]] [[my ideas|أفكاري]] with [[commas|فواصل]] and \"and\".",
-      "<b>Mr. Salman:</b> That <<s:is>> [[common|شائع]] in Arabic, [[but|لكن]] in English we <<c:write>> {short}, {clear} {sentences|sentence}. Put a {period} [[after|بعد]] [[each|كل]] [[complete|تامة]] [[idea|فكرة]], and [[start|ابدأ]] the [[next|التالية]] {sentence} with a {capital} [[letter|حرف]].",
-      "<b>Faisal:</b> I <<c:understand>>. If I <<c:put>> [[three|ثلاث]] {periods|period} here, the [[email|الإيميل]] <<c:becomes>> [[four|أربع]] {short} {sentences|sentence}.",
-      "<b>Mr. Salman:</b> Exactly! Also, [[look at|انظر إلى]] the [[pronoun|الضمير]] \"I\" in [[line|السطر]] two, and the [[words|الكلمات]] \"Jeddah\" and \"Thursday\". They <<c:need>> {capital} [[letters|حروف]].",
-      "<b>Faisal:</b> Thank you! I <<c:will fix>> <<s:these>> {mistakes|mistake} right now."
-    ],
     insight: {
-      titleEn: "How Faisal Fixed His Draft",
-      titleAr: "كيف صحّح فيصل مسودته؟",
-      l1En: "1) Break one 50-word run-on line into 4 short sentences with periods (.):",
-      ex1: "Subject + Verb + Object. + [Capital] Subject + Verb + Object.",
-      l2En: "2) Capitalize 'I', cities, and days of the week:",
-      ex2: "i → I · jeddah → Jeddah · thursday → Thursday"
+      titleEn: "Capital Letters in a Phone Message",
+      titleAr: "الحروف الكبيرة في رسالة هاتفية",
+      l1En: "Names of people and projects start with a capital letter, even in the middle of a sentence:",
+      ex1: "Maria Fernandez · Peter Griffin · the PXO project",
+      l2En: "A clear message is a few short sentences. Each one starts with a capital letter and ends with a period:",
+      ex2: "Peter called. He needs the figures. Please call him back.",
+      arHtml: "<p><b>انتبه:</b> أسماء الأشخاص والمشاريع تبدأ بحرف كبير أينما وقعت في الجملة.</p><p>والرسالة الواضحة جمل قصيرة، تبدأ كل منها بحرف كبير وتنتهي بنقطة، ولا توصل كلها في جملة واحدة.</p>"
     },
     questions: [
-      { q: "Who is Faisal's email draft for?", opts: ["For a new client in Jeddah", "For a scientist in Antarctica", "For a university professor in London"], a: 0,
-        ev: "This is the first draft of my email to our new client in Jeddah.",
-        whyEn: "Faisal says it is the first draft of his email to their new client in Jeddah.",
-        why: "المسودة موجهة إلى موكّل جديد للمكتب في جدة.", errCat: "reading" },
-      { q: "What does Mr. Salman praise in Faisal's draft?", opts: ["The message is polite and explains the client's legal right well.", "The email has twenty sentences.", "The email has no words."], a: 0,
-        ev: "the message is polite, and you explain the client's legal right well.",
-        whyEn: "He praises that the message is polite and explains the client's legal right well.",
-        why: "أثنى على أن الرسالة مهذبة (polite) وتشرح الحق القانوني للموكّل بوضوح.", errCat: "reading" },
-      { tf: true, q: "Faisal made many mistakes with 'am, is, are' in his draft.", a: false,
-        ev: "No, your verbs are good! But the whole email is one long sentence of fifty words.",
-        whyEn: "Mr. Salman says his verbs are good; the issue is punctuation and sentence separation.",
-        why: "الأستاذ سلمان قال إن أفعاله صحيحة، والمشكلة في وصل الجمل بلا نقاط.", errCat: "reading" },
-      { q: "How many words were in Faisal's single long sentence?", opts: ["Fifteen words", "Fifty words", "Five hundred words"], a: 1,
-        ev: "But the whole email is one long sentence of fifty words. There aren't any periods in the middle!",
-        whyEn: "The whole email was one long sentence of fifty (50) words without periods in the middle.",
-        why: "كانت الرسالة كلها جملة واحدة من خمسين (50) كلمة دون أي نقطة في وسطها.", errCat: "reading" },
-      { q: "Why did Faisal connect all his ideas into one long sentence?", opts: ["Because in Arabic he often connects ideas with commas and 'and'", "Because his keyboard had no period key", "Because English does not use periods"], a: 0,
-        ev: "In Arabic, I often connect my ideas with commas and 'and'.",
-        whyEn: "He transferred the Arabic habit of linking clauses with commas and 'and'.",
-        why: "لأنه نقل عادة ربط الجمل بالواو والفواصل من العربية إلى الإنجليزية.", errCat: "word_order" },
-      { q: "How many short sentences does the email become when Faisal adds three periods?", opts: ["Two sentences", "Four short sentences", "Ten sentences"], a: 1,
-        ev: "If I put three periods here, the email becomes four short sentences.",
-        whyEn: "Adding three periods in the middle divides the text into four short sentences.",
-        why: "بوضع ثلاث نقاط في الوسط يتحول النص إلى أربع جمل قصيرة ومستقلة.", errCat: "reading" },
-      { q: "Which three words in Faisal's draft needed capital letters?", opts: ["'I', 'Jeddah', and 'Thursday'", "'lawyer', 'office', and 'court'", "'polite', 'short', and 'clear'"], a: 0,
-        ev: "Also, look at the pronoun 'I' in line two, and the words 'Jeddah' and 'Thursday'. They need capital letters.",
-        whyEn: "The pronoun 'I', the city 'Jeddah', and the day 'Thursday' all require capital letters.",
-        why: "الضمير I، ومدينة Jeddah، ويوم Thursday كلها تتطلب حروفًا كبيرة.", errCat: "spelling" },
-      { tf: true, q: "In English writing, short and clear sentences are better than one long run-on sentence.", a: true,
-        ev: "in English we write short, clear sentences. Put a period after each complete idea…",
-        whyEn: "True—English prefers short, clear sentences separated by periods.",
-        why: "صحيح؛ الإنجليزية تفضّل الجمل القصيرة والواضحة المفصولة بنقاط.", errCat: "word_order" }
+      { q: "Which department does Jane work in?", opts: ["The legal department", "The sales department", "The IT department"], a: 1,
+        whyEn: "At the start, Jane answers the phone with her name and says she is from the sales department.",
+        why: "في أول المكالمة تذكر جين اسمها وأنها من قسم المبيعات.", errCat: "reading" },
+      { q: "Who does Peter want to speak to?", opts: ["Jane Solomon", "Mr. Griffin", "Maria Fernandez"], a: 2,
+        whyEn: "Peter asks for Maria Fernandez. Mr. Griffin is Peter himself, and Jane Solomon is the person who answers the phone.",
+        why: "بيتر يطلب ماريا فرنانديز؛ أما Mr. Griffin فهو بيتر نفسه، وجين سولومون هي التي ردّت على الهاتف.", errCat: "reading" },
+      { q: "Where is Maria?", opts: ["On her lunch break", "In a meeting with a client", "On holiday"], a: 0,
+        whyEn: "Jane says Maria is out of the office on her lunch break.",
+        why: "جين تقول إن ماريا خارج المكتب في استراحة الغداء.", errCat: "reading" },
+      { q: "What is Peter's call about?", opts: ["A new phone contract", "A court case", "The PXO project"], a: 2,
+        whyEn: "Peter is calling about the PXO project.",
+        why: "مكالمة بيتر عن مشروع PXO.", errCat: "reading" },
+      { q: "What does Peter need?", opts: ["A new email address", "The new figures for the project", "A room for a meeting"], a: 1,
+        whyEn: "He needs the new project figures, so he wants Maria to call him back.",
+        why: "يحتاج الأرقام الجديدة للمشروع، فيريد أن تعاود ماريا الاتصال به.", errCat: "reading" },
+      { tf: true, q: "Jane writes down Peter's phone number correctly the first time.", a: false,
+        whyEn: "False. When Jane reads the number back, Peter corrects some of the numbers.",
+        why: "خطأ؛ حين تعيد جين قراءة الرقم يصحّح بيتر بعض أرقامه.", errCat: "reading" },
+      { q: "Why does Peter also give his email address?", opts: ["He may be in a meeting when Maria calls back", "His phone is broken", "Jane needs it for a contract"], a: 0,
+        whyEn: "He gives his email address too, because he may be in a meeting when Maria calls back.",
+        why: "أعطى بريده أيضًا لأنه قد يكون في اجتماع حين تعاود ماريا الاتصال.", errCat: "reading" },
+      { q: "Jane writes a note for Maria. Which sentence has correct capital letters?", opts: ["peter griffin called about the PXO project.", "Peter griffin called about the pxo project.", "Peter Griffin called about the PXO project."], a: 2,
+        whyEn: "A sentence starts with a capital letter, and names (Peter Griffin) and the project name (PXO) always have capitals.",
+        why: "الجملة تبدأ بحرف كبير، وأسماء الأشخاص (Peter Griffin) واسم المشروع (PXO) تُكتب بحروف كبيرة دائمًا.", errCat: "spelling" }
     ]
   },
 
   writing: {
-    taskEn: "Write 4 separate, clear sentences about preparing a draft or explaining a legal right to a client on a specific day (e.g., Sunday or Tuesday) in Riyadh or Jeddah.",
-    task: "اكتب 4 جمل منفصلة وواضحة عن تجهيز مسودة (draft) أو شرح حق قانوني (legal right) لموكّل في يوم محدد (مثل Sunday أو Tuesday) وفي مدينة مثل Riyadh أو Jeddah، مع مراعاة الحروف الكبيرة والنقاط الأربع.",
+    taskEn: "You are Jane. Write a message for Maria in at least 4 separate sentences: who called, what the call was about, what he needs, and what Maria should do. Use capital letters for names and for 'I', and end every sentence with a period.",
+    task: "تخيّل أنك جين: اكتب رسالة لماريا في 4 جمل منفصلة على الأقل: من اتصل، وعن أي شيء، وماذا يحتاج، وماذا تفعل ماريا. اكتب الأسماء والضمير I بحرف كبير، وأنهِ كل جملة بنقطة.",
     checks: [
       { k: "sentences", tEn: "At least 4 separate sentences (4 periods ., no run-on)", t: "4 جمل منفصلة على الأقل (تنتهي كل جملة بنقطة . ولا توصل معًا)",
         ok: function(a){ return a.sentences >= 4 && !a.runOn; } },
-      { k: "capI", tEn: "Pronoun 'I' and sentence starts are capitalized (no lowercase 'i')", t: "الضمير I وبدايات الجمل مكتوبة بحرف كبير (بلا i صغيرة)", ex: "I prepare the first draft.",
-        ok: function(a, text){ var s = String(text || ''); return /\bI\b/.test(s) && !/\bi\b/.test(s); } },
-      { k: "proper", tEn: "At least 1 capitalized city, day, or language (Riyadh, Jeddah, Sunday, English…)", t: "اسم مدينة أو يوم أو لغة بحرف كبير", ex: "Riyadh · Jeddah · Sunday · Tuesday · English · Arabic",
-        ok: function(a, text){ return /\b(?:Riyadh|Jeddah|Dammam|Makkah|Saudi|English|Arabic|Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday)\b/.test(String(text || '')); } },
-      { k: "vocab", tEn: "At least 3 words/phrases from today's lesson", t: "3 كلمات أو عبارات من درس اليوم", ex: "sentence · capital · period · draft · polite · short · explain · legal right",
-        ok: function(a){ return a.used.length >= 3; } }
+      { k: "starts", tEn: "Every sentence starts with a capital letter, and 'I' is always a capital", t: "كل جملة تبدأ بحرف كبير، والضمير I كبير دائمًا", ex: "Peter called. He needs the figures.",
+        ok: function(a, text){
+          var s = String(text || '').replace(/\S+@\S+/g, ' ');
+          if (/\bi\b/.test(s)) return false;
+          var parts = s.split(/[.!?]+/).map(function(p){ return p.trim(); }).filter(function(p){ return /[A-Za-z]/.test(p); });
+          return parts.length > 0 && parts.every(function(p){ var m = p.match(/[A-Za-z]/); return m[0] === m[0].toUpperCase(); }); } },
+      { k: "names", tEn: "People's names with capital letters (Maria, Peter Griffin…)", t: "أسماء الأشخاص بحرف كبير (Maria وPeter Griffin…)", ex: "Maria · Peter Griffin · Jane",
+        ok: function(a, text){
+          var s = String(text || '').replace(/\S+@\S+/g, ' ');
+          return /\b(?:Maria|Peter|Griffin|Fernandez|Jane|Solomon)\b/.test(s) && !/\b(?:maria|peter|griffin|fernandez|jane|solomon)\b/.test(s); } },
+      { k: "content", tEn: "The key facts: the PXO project and 'call him back'", t: "المعلومات الأساسية: مشروع PXO وطلب معاودة الاتصال (call him back)", ex: "the PXO project · Please call him back.",
+        ok: function(a, text){ var s = String(text || ''); return /\bPXO\b/i.test(s) && /\bcall\s+(?:him|Peter|Mr\.?\s*Griffin)\s+back\b/i.test(s); } }
     ],
-    modelMarked: "I <<c:work>> as a trainee at a law office in Riyadh on Sunday. I <<c:write>> the first {draft} of our client emails in English. My {sentences|sentence} <<s:are>> {short}, {clear}, and {polite}. Our lawyers always <<c:{explain}>> every {legal right} to the clients.",
-    model: "I work as a trainee at a law office in Riyadh on Sunday. I write the first draft of our client emails in English. My sentences are short, clear, and polite. Our lawyers always explain every legal right to the clients."
+    model: "Maria, Peter Griffin called during your lunch break. It was about the PXO project, and he needs the new figures. Please call him back. He may be in a meeting, so I wrote down his email address too."
   },
 
   quiz: [

@@ -26,11 +26,11 @@ LESSONS.u0l2 = {
   canDoEn: "I can match singular and plural nouns with is/are, There is/There are, and this/these in statements and questions.",
   canDoAr: "أقدر أن أطابق الأسماء المفردة والجمع مع is/are وThere is/There are وthis/these في الجمل والأسئلة.",
   descEn: "I can ask and answer about singular and plural things using There is / There are and This / These without mixing them.",
-  descAr: "أقدر أن أسأل وأجيب عن المفرد والجمع باستخدام There is / There are وThis / These دون خلط بينهما، مع مقطع استماع عن التحضير لجلسة محكمة.",
+  descAr: "أقدر أن أسأل وأجيب عن المفرد والجمع باستخدام There is / There are وThis / These دون خلط بينهما، مع مقطع استماع حقيقي يصف فيه متحدثان مدينتيهما.",
   goals: [
     { en: "I can use 'There is / Is there' with singular nouns and 'There are / Are there' with plural nouns.", ar: "أقدر أن أستخدم There is / Is there مع المفرد وThere are / Are there مع الجمع." },
     { en: "I can match 'this / that' with singular nouns + is, and 'these / those' with plural nouns + are.", ar: "أقدر أن أطابق this / that مع المفرد + is، وthese / those مع الجمع + are." },
-    { en: "I can understand a 3-stage listening conversation about two court cases and shadow the speakers.", ar: "أقدر أن أفهم محادثة استماع من 3 مراحل عن قضيتين في المحكمة وأردّد مع المتحدثين." },
+    { en: "I can understand two people describing their hometowns in a real recording, and shadow the speakers.", ar: "أقدر أن أفهم متحدثين يصفان مدينتيهما في تسجيل حقيقي، وأردّد معهما." },
     { en: "I can write at least 4 separate sentences using singular and plural agreement and 'go to court'.", ar: "أقدر أن أكتب 4 جمل منفصلة على الأقل تطابق بين المفرد والجمع وتستخدم العبارة القانونية go to court." }
   ],
   intro: {
@@ -61,12 +61,12 @@ LESSONS.u0l2 = {
       ]
     },
     reading: {
-      dEn: "3-Stage Listening: Listen for the main idea without the text, answer 8 detail questions, then read the interactive transcript and shadow.",
-      d: "استماع على 3 مراحل: استمع أولًا للفكرة العامة بدون النص، ثم أجب عن 8 أسئلة تفاصيل، ثم اقرأ النص التفاعلي وردّد مع المتحدث.",
+      dEn: "3-Stage Listening (real recording): Listen for the main idea without the text, answer 8 detail questions, then read the transcript on the source page and shadow.",
+      d: "استماع على 3 مراحل لتسجيل حقيقي: استمع أولًا للفكرة العامة بدون النص، ثم أجب عن 8 أسئلة تفاصيل، ثم اقرأ النص المكتوب في صفحة المصدر وردّد مع المتحدثين.",
       items: [
         ["speaker", "Stage 1: Listen for the main idea without reading the transcript", "المرحلة 1: استماع أول للفكرة العامة بدون النص المكتوب"],
         ["quiz", "Stage 2: Listen again and answer 8 detail questions", "المرحلة 2: استماع ثانٍ للإجابة عن 8 أسئلة تفاصيل بالدليل"],
-        ["mail", "Stage 3: Interactive transcript with word meanings & Shadowing Timer", "المرحلة 3: يظهر النص المكتوب لمراجعة ما فات مع الترديد (Shadowing)"]
+        ["mail", "Stage 3: Transcript on the source page & Shadowing Timer", "المرحلة 3: النص المكتوب في صفحة المصدر لمراجعة ما فات، مع الترديد (Shadowing)"]
       ]
     },
     writing: {
@@ -418,85 +418,68 @@ LESSONS.u0l2 = {
       why: "سؤال عن مفرد: Is there ثم الاسم المفرد a witness.", errCat: "word_order" }
   ],
 
-  /* ---------- المرحلة 4: الاستماع ذو المراحل الثلاث (3-Stage Listening) ---------- */
+  /* ---------- المرحلة 4: الاستماع على ثلاث مراحل (مقطع حقيقي من ELLLO، ونصه المكتوب في صفحة المصدر) ---------- */
   listening: {
-    title: "Two Cases on Tuesday Morning",
-    sourceLabel: "British Council A2 / ELLLO Court Office Dialogue",
-    url: "https://learnenglish.britishcouncil.org/skills/listening/a2-listening",
+    title: "My Hometown",
+    sourceTag: "ELLLO · Real recording · تسجيل حقيقي",
+    sourceMeta: "ELLLO · Grammar Talks A1-21 · There is / There are",
+    speakers: "Sarah & John (USA)",
+    url: "https://elllo.org/english/grammar/A1-21-There-is-are-Hometowns.htm",
     audioWord: "court",
-    targetSeconds: 75,
-    introEn: "Listen to Mr. Salman (senior lawyer) and Faisal (law trainee) checking their folders before they go to court on Tuesday morning.",
-    intro: "استمع إلى الأستاذ سلمان (المحامي المشرف) وفيصل (المتدرّب القانوني) وهما يراجعان الملفات قبل الذهاب إلى المحكمة صباح الثلاثاء.",
+    targetSeconds: 240,
+    introEn: "Listen to Sarah and John, two Americans from the state of Wisconsin. They describe their hometowns: what there is there and what there isn't.",
+    intro: "استمع إلى سارة وجون، وهما أمريكيان من ولاية ويسكونسن، يصفان مدينتيهما: ما فيهما وما ليس فيهما.",
     predict: {
-      qEn: "Stage 1 Main-Idea Question: Why are Mr. Salman and Faisal checking the folders right now?",
-      q: "سؤال الفكرة العامة (قبل قراءة النص): لماذا يراجع الأستاذ سلمان وفيصل الملفات الآن؟",
+      qEn: "Stage 1 Main-Idea Question: How are the two hometowns different?",
+      q: "سؤال الفكرة العامة: ما الفرق بين المدينتين؟",
       optsEn: [
-        "Because they go to court this morning for two cases",
-        "Because they are closing the law office for a holiday",
-        "Because they are interviewing new university students"
+        "Both hometowns are big cities with a lot of nightlife",
+        "Sarah's hometown is a big city, and John's hometown is a small town",
+        "Sarah and John live in the same small town"
       ],
       opts: [
-        "لأنهما ذاهبان إلى المحكمة هذا الصباح لحضور قضيتين",
-        "لأنهما يغلقان المكتب في إجازة",
-        "لأنهما يجريان مقابلات لطلاب جدد"
+        "المدينتان كبيرتان وفيهما حياة ليلية كثيرة",
+        "مدينة سارة كبيرة، ومدينة جون بلدة صغيرة",
+        "سارة وجون يسكنان البلدة الصغيرة نفسها"
       ],
-      a: 0,
-      whyEn: "They have two cases in court this morning (at 9:30 and 11:00) and are checking that all folders and witnesses are ready.",
-      why: "لديهما قضيتان في المحكمة هذا الصباح (الساعة 9:30 و11:00) ويتأكدان من جاهزية الملفات والشهود."
+      a: 1,
+      revealEn: "Sarah's hometown is a city of about 80,000 people. John's hometown is a small town of about 5,000 people.",
+      reveal: "مدينة سارة يسكنها نحو 80 ألف شخص، وبلدة جون يسكنها نحو 5 آلاف."
     },
-    transcriptParas: [
-      "<b>Mr. Salman:</b> Good morning, Faisal. <<s:Are>> you {ready}? We <<c:{go to court}>> at nine-thirty [[this morning|هذا الصباح]].",
-      "<b>Faisal:</b> Good morning, Mr. Salman. Yes, I <<s:am>> {ready}. <<s:There are>> two {cases|case} on [[our schedule|جدولنا]] today.",
-      "<b>Mr. Salman:</b> Good. <<s:Where>> <<s:are>> the {folders|folder} for the [[first|الأولى]] {case}?",
-      "<b>Faisal:</b> <<s:This>> [[blue|الأزرق]] {folder} <<s:is>> for the [[first|الأولى]] {case}. <<s:It>> <<s:is>> a [[contract|عقد]] [[dispute|نزاع]] in Courtroom 2. <<s:There is>> one {judge}, and <<s:there are>> two {witnesses|witness} from the [[shipping company|شركة الشحن]].",
-      "<b>Mr. Salman:</b> <<s:Are there>> [[any|أي]] {mistakes|mistake} in the [[contract|العقد]] [[copies|نُسخ]]?",
-      "<b>Faisal:</b> No, <<s:there aren't>> [[any|أي]] {mistakes|mistake}. [[All|جميع]] the [[pages|الصفحات]] <<s:are>> [[clear|واضحة]] and [[signed|موقّعة]].",
-      "<b>Mr. Salman:</b> Excellent. And what about <<s:those>> [[green|الخضراء]] {folders|folder} on your [[desk|مكتب]]?",
-      "<b>Faisal:</b> <<s:These>> [[three|ثلاثة]] [[green|خضراء]] {folders|folder} <<s:are>> for the [[second|الثانية]] {case} at eleven o'clock in Courtroom 5. <<s:There isn't>> a {witness} in <<s:that>> {case}, [[only|فقط]] the two {lawyers|lawyer} and the {judge}.",
-      "<b>Mr. Salman:</b> <<s:Are there>> [[enough|كافية]] {seats|seat} in Courtroom 2 for the [[company|الشركة]] [[team|فريق]]?",
-      "<b>Faisal:</b> Yes, <<s:there are>> [[twenty|عشرون]] {seats|seat} in the [[front rows|الصفوف الأمامية]]. Let's [[take|نأخذ]] <<s:these>> {folders|folder} and [[go|نذهب]]!"
-    ],
     insight: {
-      titleEn: "Singular vs. Plural Agreement in the Dialogue",
-      titleAr: "لاحظ المطابقة بين المفرد والجمع في المحادثة",
-      l1En: "Notice how Faisal matches singular nouns with This / There is / isn't:",
-      ex1: "This blue folder is… · There is one judge · There isn't a witness",
-      l2En: "And matches plural nouns with These / Those / There are / Are there:",
-      ex2: "There are two cases · Are there any mistakes? · These three green folders are…"
+      titleEn: "There is / There are in the Clip",
+      titleAr: "لاحظ there is وthere are في المقطع",
+      l1En: "A singular noun comes after 'there is / there isn't / is there':",
+      ex1: "There is a river. · There isn't a mall. · Is there a park?",
+      l2En: "A plural noun comes after 'there are / there aren't / are there'. In fast speech you may hear 'there's' with a plural noun, but in writing always use 'there are'.",
+      ex2: "There are many trees. · There aren't any mountains. · Are there any lakes?",
+      arHtml: "<p><b>انتبه:</b> بعد there is وthere isn't وis there يأتي اسم مفرد، وبعد there are وthere aren't وare there يأتي اسم جمع.</p><p>وقد تسمع في الكلام السريع there's مع اسم جمع، وهذا يقع في الحديث العفوي، أما في الكتابة فاكتب there are مع الجمع دائمًا.</p>"
     },
     questions: [
-      { q: "What time do Mr. Salman and Faisal go to court for the first case?", opts: ["At 8:00", "At 9:30", "At 11:00"], a: 1,
-        ev: "We go to court at nine-thirty this morning.",
-        whyEn: "Mr. Salman says they go to court at nine-thirty (9:30); 11:00 is the second case.",
-        why: "يذهبان للمحكمة للقضية الأولى الساعة 9:30 (أما 11:00 فهو موعد القضية الثانية).", errCat: "reading" },
-      { q: "How many cases are on their schedule today?", opts: ["One case", "Two cases", "Three cases"], a: 1,
-        ev: "There are two cases on our schedule today.",
-        whyEn: "Faisal says: 'There are two cases on our schedule today.'",
-        why: "فيصل يذكر وجود قضيتين (two cases) في جدولهما اليوم.", errCat: "reading" },
-      { q: "Which folder is for the first case in Courtroom 2?", opts: ["This blue folder", "These three green folders", "A red folder"], a: 0,
-        ev: "This blue folder is for the first case. It is a contract dispute in Courtroom 2.",
-        whyEn: "The singular blue folder ('This blue folder') is for the first case.",
-        why: "الملف الأزرق المفرد (This blue folder) هو المخصص للقضية الأولى.", errCat: "agreement" },
-      { q: "How many witnesses are there in the first case?", opts: ["No witnesses", "One witness", "Two witnesses"], a: 2,
-        ev: "There is one judge, and there are two witnesses from the shipping company.",
-        whyEn: "There is one judge, and there are two witnesses from the shipping company.",
-        why: "يوجد قاضٍ واحد وشاهدان اثنان (two witnesses) من شركة الشحن.", errCat: "reading" },
-      { tf: true, q: "There are some mistakes in the contract copies.", a: false,
-        ev: "No, there aren't any mistakes. All the pages are clear and signed.",
-        whyEn: "Faisal confirms: 'No, there aren't any mistakes.'",
-        why: "فيصل يؤكد عدم وجود أي أخطاء في نسخ العقد (there aren't any mistakes).", errCat: "reading" },
-      { q: "What are the three green folders for?", opts: ["For the second case at 11:00 in Courtroom 5", "For new university students", "For the shipping company's witnesses"], a: 0,
-        ev: "These three green folders are for the second case at eleven o'clock in Courtroom 5.",
-        whyEn: "The three green folders are for the second case at 11:00 in Courtroom 5.",
-        why: "الملفات الخضراء الثلاثة مخصصة للقضية الثانية الساعة 11:00 في القاعة 5.", errCat: "reading" },
-      { tf: true, q: "There isn't a witness in the second case.", a: true,
-        ev: "There isn't a witness in that case, only the two lawyers and the judge.",
-        whyEn: "True—there isn't a witness in the second case.",
-        why: "صحيح؛ لا يوجد شاهد في القضية الثانية، بل المحاميان والقاضي فقط.", errCat: "reading" },
-      { q: "Why does Mr. Salman ask 'Are there any mistakes?' instead of 'Is there any mistakes?'", opts: ["Because 'mistakes' is a plural noun.", "Because 'mistakes' is an action verb.", "Because it is in the past."], a: 0,
-        ev: "Are there any mistakes in the contract copies?",
-        whyEn: "'mistakes' is plural, so the question must use 'Are there…?'.",
-        why: "لأن كلمة mistakes جمع، فالسؤال عنها يجب أن يبدأ بـ Are there.", errCat: "agreement" }
+      { q: "Where is Sarah's hometown?", opts: ["London, England", "Dallas, Texas", "Eau Claire, Wisconsin"], a: 2,
+        whyEn: "At the start, Sarah says her hometown is Eau Claire, in the state of Wisconsin.",
+        why: "في أول المقطع تقول سارة إن مدينتها Eau Claire في ولاية Wisconsin.", errCat: "reading" },
+      { q: "About how many people live in Sarah's hometown?", opts: ["About 8,000", "About 80,000", "About 800,000"], a: 1,
+        whyEn: "Near the start, Sarah says about 80,000 people live there.",
+        why: "قرب البداية تقول سارة إن نحو 80 ألف شخص يسكنون مدينتها.", errCat: "reading" },
+      { tf: true, q: "There are a lot of nightclubs in Sarah's hometown.", a: false,
+        whyEn: "False. Sarah says there are no nightclubs and not many bars, so there isn't much to do at night.",
+        why: "خطأ؛ سارة تقول إنه لا توجد نوادٍ ليلية ولا حانات كثيرة، فليس هناك الكثير لفعله ليلًا.", errCat: "reading" },
+      { q: "About how many people live in John's hometown?", opts: ["About 5,000", "About 50,000", "About 500"], a: 0,
+        whyEn: "In the middle, John says his small town has about 5,000 people.",
+        why: "في وسط المقطع يقول جون إن بلدته الصغيرة يسكنها نحو 5 آلاف شخص.", errCat: "reading" },
+      { q: "Which of these is in John's hometown?", opts: ["A big shopping mall", "A bowling alley", "Mountains"], a: 1,
+        whyEn: "John says there is a bowling alley. There isn't a shopping mall, and the land is flat, so there aren't any mountains.",
+        why: "جون يقول إن في بلدته صالة بولينغ، وليس فيها مركز تسوق، وأرضها منبسطة فلا جبال فيها.", errCat: "reading" },
+      { q: "What is John's hometown known for?", opts: ["Its big lakes", "Its nightclubs", "The trees along its streets"], a: 2,
+        whyEn: "At the end, John says his town is known for the trees along its streets. There are even trees on the town's sign.",
+        why: "في آخر المقطع يقول جون إن بلدته معروفة بالأشجار على جانبي شوارعها، حتى إن لافتة البلدة عليها أشجار.", errCat: "reading" },
+      { tf: true, q: "There is only one high school in John's hometown.", a: true,
+        whyEn: "True. John's town has one elementary school, one junior high school and one high school, so there aren't many schools.",
+        why: "صحيح؛ في بلدة جون مدرسة ابتدائية واحدة ومتوسطة واحدة وثانوية واحدة، فليست فيها مدارس كثيرة.", errCat: "reading" },
+      { q: "Sarah asks John about schools. Which question is correct?", opts: ["Are there many schools in your town?", "Is there many schools in your town?", "Do there are many schools in your town?"], a: 0,
+        whyEn: "'schools' is plural, so the question starts with 'Are there'.",
+        why: "كلمة schools جمع، فيبدأ السؤال بـ Are there.", errCat: "agreement" }
     ]
   },
 

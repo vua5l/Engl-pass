@@ -1495,7 +1495,7 @@ function stListen1(ctl){
     if (sel == null) ctl.set('إلى الأسئلة', false, function(){ S.listen1Done = true; touch(); nextStep(); });
     else ctl.set('إلى الأسئلة', true, function(){ S.listen1Done = true; touch(); nextStep(); });
     var fb = h('div', { hidden: sel == null });
-    if (sel != null) put(fb, fbCard(sel === p.a, p.reveal, null, null, p.revealEn));
+    if (sel != null) put(fb, fbCard(sel === p.a, p.reveal || p.why, null, null, p.revealEn || p.whyEn));
     var btns = p.opts.map(function(t, i){
       var enOpt = p.optsEn && p.optsEn[i];
       var b = h('button', { class:'opt ar' + (sel === i ? ' picked' : ''), type:'button' },
@@ -1505,7 +1505,7 @@ function stListen1(ctl){
         S.predict = i; S.revealed = true; touch();
         btns.forEach(function(x, j){ x.classList.toggle('picked', j === i); });
         fb.hidden = false;
-        put(fb, fbCard(i === p.a, p.reveal, null, null, p.revealEn));
+        put(fb, fbCard(i === p.a, p.reveal || p.why, null, null, p.revealEn || p.whyEn));
         ctl.set('إلى الأسئلة', true, function(){ S.listen1Done = true; touch(); nextStep(); });
       });
       return b;
@@ -1535,7 +1535,34 @@ function stListen1(ctl){
 function stListen3(ctl){
   var L = D.listening || {};
   ctl.enable('التالي');
-  var paras = L.paras || (L.transcript ? [L.transcript] : []);
+  var paras = L.paras || L.transcriptParas || (L.transcript ? [L.transcript] : []);
+  var ins = L.insight;
+  var insightBox = ins ? h('div', { class:'insight' },
+      h('h3', { class:'bi-h', style:'font-size:16px' }, h('span', { class:'en', dir:'ltr' }, ins.titleEn), h('small', {}, ins.titleAr)),
+      h('p', { class:'en', dir:'ltr', style:'font-size:14px;color:var(--ink-2);text-align:left' }, ins.l1En),
+      h('p', { class:'xen' }, ins.ex1),
+      h('p', { class:'en', dir:'ltr', style:'font-size:14px;color:var(--ink-2);text-align:left' }, ins.l2En),
+      h('p', { class:'xen' }, ins.ex2),
+      arReveal(ins.arHtml, true)) : null;
+  var shSec = 0, shOn = false;
+  var shBtn = h('button', { class:'ar-btn', type:'button' }, 'Shadowing Timer · مؤقت الترديد مع المتحدث (00:00)');
+  shBtn.addEventListener('click', function(){
+    if (shOn) { clearReadTimer(); shOn = false; shBtn.textContent = 'Shadowing Timer · مؤقت الترديد (' + fmtSec(shSec) + ')'; }
+    else { shSec = 0; shOn = true; clearReadTimer(); readTimerId = setInterval(function(){ shSec++; shBtn.textContent = 'Stop Shadowing · إيقاف (' + fmtSec(shSec) + ')'; }, 1000); }
+  });
+  /* Real recordings: the transcript belongs to the source, so it is read there, not copied here. */
+  if (!paras.length) {
+    return [
+      label('Listening · Stage 3 of 3 (Transcript & Shadowing)', 'الاستماع ٣ من ٣ · النص المكتوب والترديد مع المتحدث'),
+      h('div', { class:'xbox' },
+        h('p', { class:'en-p', dir:'ltr' }, 'Now open the transcript on the source page and read it while you listen again. Check anything you missed, then replay the clip and shadow the speakers aloud.'),
+        h('p', {}, 'الآن افتح النص المكتوب في صفحة المصدر، واقرأه وأنت تستمع مرة أخرى لتراجع ما فاتك، ثم أعد تشغيل المقطع وردّد مع المتحدثين بصوت مسموع.'),
+        L.url ? h('a', { class:'btn sm', href:L.url, target:'_blank', rel:'noopener noreferrer', style:'align-self:flex-start' }, biBtn('Open Transcript & Clip ↗', 'افتح النص والمقطع في صفحة المصدر ↗')) : null,
+        L.sourceMeta ? h('p', { class:'fine', dir:'ltr' }, 'Source · المصدر: ' + L.sourceMeta + (L.speakers ? ' · ' + L.speakers : '')) : null),
+      insightBox,
+      h('div', { class:'mail-tools' }, shBtn)
+    ];
+  }
   var bodyHtml = paras.map(function(p){ return '<p>' + parseMarkup(p) + '</p>'; }).join('');
   var mail = h('article', { class:'mail' + (S.hl ? ' hl-on' : ''), 'aria-label':'Audio Transcript · النص المكتوب للمقطع' },
     h('div', { class:'mail-meta' },
@@ -1549,26 +1576,13 @@ function stListen3(ctl){
     h('span', { class:'lg t' }, 'Key Signal · علامة مفتاحية'));
   var tg = h('input', { type:'checkbox', id:'hlToggleL' }); tg.checked = !!S.hl;
   tg.addEventListener('change', function(){ S.hl = tg.checked; saveLocal(); mail.classList.toggle('hl-on', S.hl); legend.hidden = !S.hl; });
-  var shSec = 0, shOn = false;
-  var shBtn = h('button', { class:'ar-btn', type:'button' }, 'Shadowing Timer · مؤقت الترديد مع المتحدث (00:00)');
-  shBtn.addEventListener('click', function(){
-    if (shOn) { clearReadTimer(); shOn = false; shBtn.textContent = 'Shadowing Timer · مؤقت الترديد (' + fmtSec(shSec) + ')'; }
-    else { shSec = 0; shOn = true; clearReadTimer(); readTimerId = setInterval(function(){ shSec++; shBtn.textContent = 'Stop Shadowing · إيقاف (' + fmtSec(shSec) + ')'; }, 1000); }
-  });
-  var ins = L.insight;
   return [
     label('Listening · Stage 3 of 3 (Transcript & Shadowing)', 'الاستماع ٣ من ٣ · النص المكتوب والترديد مع المتحدث'),
     h('div', { class:'xbox' },
       h('p', { class:'en-p', dir:'ltr' }, 'Now read the full transcript to verify anything you missed, tap underlined words for Oxford ↗ & human audio, and replay the source clip to shadow the speaker aloud.'),
       h('p', {}, 'الآن اقرأ النص الكامل لمراجعة ما فاتك، واضغط الكلمات المسطّرة لمعناها ونطقها، ثم أعد تشغيل المقطع وردّد مع المتحدث بصوت مسموع.'),
       L.url ? h('a', { class:'btn sm out', href:L.url, target:'_blank', rel:'noopener noreferrer', style:'align-self:flex-start' }, biBtn('Replay Clip for Shadowing ↗', 'أعد تشغيل المقطع للترديد مع المتحدث ↗')) : null),
-    ins ? h('div', { class:'insight' },
-      h('h3', { class:'bi-h', style:'font-size:16px' }, h('span', { class:'en', dir:'ltr' }, ins.titleEn), h('small', {}, ins.titleAr)),
-      h('p', { class:'en', dir:'ltr', style:'font-size:14px;color:var(--ink-2);text-align:left' }, ins.l1En),
-      h('p', { class:'xen' }, ins.ex1),
-      h('p', { class:'en', dir:'ltr', style:'font-size:14px;color:var(--ink-2);text-align:left' }, ins.l2En),
-      h('p', { class:'xen' }, ins.ex2),
-      arReveal(ins.arHtml, true)) : null,
+    insightBox,
     h('div', { class:'mail-tools' },
       h('label', { class:'toggle', for:'hlToggleL' }, tg, h('span', {}, 'Highlight grammar · إظهار القاعدة')),
       shBtn,
