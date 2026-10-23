@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* خريطة الكورس لأول كل جلسة عمل (مهارة english-passport-workshop).
    تطبع HTML خريطة «ما بُني وما بقي» من حالة الموقع نفسها: مراحل الرحلة، ووحدات A2 بمربعات دروسها،
-   واختبار كل وحدة، والاختبارات القبلية. يُعطى ناتجها كما هو لأداة show_widget.
+   واختبار كل وحدة، والاختبارات القبلية. يُعطى ناتجها كما هو لأداة show_widget، وهو HTML ثابت بلا <script>.
    الاستعمال: node tests/course-map.js [جذر الموقع]
    البيانات من `node tests/content-check.js --map`، فلا تُكتب الخريطة باليد ولا تتأخر عن الموقع.
    ويطبع سطر خلاصة على stderr لمن يكتب تحت الخريطة. */
@@ -47,7 +47,15 @@ const t = map.totals || {};
 const done = (map.units || []).filter(u => u.status === 'built').length;
 console.error(`course-map: ${t.lessonsBuilt || 0} lessons built, ${done} unit(s) complete, current unit: ${current}, unit tests: ${t.unitTests || 0}, pre-tests: ${t.preTests || 0}`);
 
-const DATA = JSON.stringify(U);
+/* الخريطة HTML ثابت بلا <script>: فشل عرضها مرة بالبرنامج الذي يبنيها في الصفحة (24 أكتوبر 2026). */
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const SQ = { b: 'k b', x: 'k x', '-': 'k' };
+const sq = (c, e = '') => '<span class="' + SQ[c] + e + '"></span>';
+const GRID = U.map((B, i) => '<div class="row">' + B.map(([n, ti, g, l, q, p]) =>
+  '<div class="c"><b>' + esc(n) + '</b> · ' + esc(ti) + '<small dir="ltr" style="text-align:right">' + esc(g) + '</small>' +
+  '<div style="display:flex;gap:3px;margin-top:5px">' + [...l].map(c => sq(c)).join('') + '<span style="width:3px"></span>' + sq(q, ' o') + '</div>' +
+  (p ? '<span class="chip">اختبار قبلي مبني · الإصدار ' + p + '</span>' : '') + '</div>').join('') +
+  (i ? '<div class="th">تثبيت</div>' : '') + '</div>').join('\n');
 process.stdout.write(`<h2 class="sr-only">خريطة كورس الإنجليزية: ما بُني وما بقي</h2>
 <style>
 .m{direction:rtl;font-size:13px;line-height:1.6;color:var(--text-primary);padding:.5rem 0}.m b{font-weight:500}
@@ -68,12 +76,9 @@ process.stdout.write(`<h2 class="sr-only">خريطة كورس الإنجليزي
 <div class="c s"><b>C1</b><small>9–10 أشهر وايلتس</small></div>
 </div>
 <div class="lb">مرحلة A2</div>
-<div id="g"></div>
+<div id="g">
+${GRID}
+</div>
 <div style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:11px;color:var(--text-secondary)"><span><span class="k b"></span> مبني</span><span><span class="k x"></span> الوحدة الحالية</span><span><span class="k"></span> باقٍ</span><span><span class="k o"></span> اختبار الوحدة</span></div>
 </div>
-<script>
-const U=${DATA};
-const C={b:"k b",x:"k x","-":"k"},sq=(c,e="")=>'<span class="'+C[c]+e+'"></span>';
-document.getElementById("g").innerHTML=U.map((B,i)=>'<div class="row">'+B.map(([n,t,g,l,q,p])=>'<div class="c"><b>'+n+'</b> · '+t+'<small dir="ltr" style="text-align:right">'+g+'</small><div style="display:flex;gap:3px;margin-top:5px">'+[...l].map(c=>sq(c)).join("")+'<span style="width:3px"></span>'+sq(q," o")+'</div>'+(p?'<span class="chip">اختبار قبلي مبني · الإصدار '+p+'</span>':'')+'</div>').join("")+(i?'<div class="th">تثبيت</div>':'')+'</div>').join("");
-</script>
 `);
