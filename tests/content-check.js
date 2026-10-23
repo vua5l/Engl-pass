@@ -625,8 +625,10 @@ function checkLesson(id, L, S) {
     for (const k of ['en', 'ar', 'ex']) need(log, f, v, k);
     for (const k of ['pos', 'say', 'exAr', 'tipEn', 'tip']) need(log, f, v, k, 'warn');
   });
-  if (A('vocab').length && (A('vocab').length < CFG.vocabMin || A('vocab').length > CFG.vocabMax))
-    log.warn('vocab', `${A('vocab').length} vocab items; the course uses ${CFG.vocabMin}-${CFG.vocabMax}`);
+  // The plan counts the legal phrase inside the 6-8 new items (vocab 5-7 + legalPhrase).
+  const nNew = A('vocab').length + (L.legalPhrase ? 1 : 0);
+  if (A('vocab').length && (nNew < CFG.vocabMin || nNew > CFG.vocabMax))
+    log.warn('vocab', `${nNew} new items (${A('vocab').length} vocab + ${L.legalPhrase ? 1 : 0} legal phrase); the course uses ${CFG.vocabMin}-${CFG.vocabMax} in total`);
   if (L.legalPhrase) {
     for (const k of ['en', 'ar', 'ex']) need(log, 'legalPhrase', L.legalPhrase, k);
     for (const k of ['exAr', 'tipEn', 'tip']) need(log, 'legalPhrase', L.legalPhrase, k, 'warn');
