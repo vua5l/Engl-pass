@@ -28,19 +28,19 @@ LESSONS.u0l1 = {
   descEn: "I can describe who I am and what I do without putting am/is/are before action verbs.",
   descAr: "أقدر أن أصف من أنا وماذا أعمل دون وضع am/is/are قبل أفعال الحدث، من رسالة متدرب قانوني في الرياض.",
   goals: [
-    { en: "I can choose am/is/are when there is no action verb (noun, adjective, or place).", ar: "أقدر أن أختار am/is/are حين لا يوجد فعل حدث (مع الاسم والصفة والمكان)." },
+    { en: "I can choose am/is/are when there is no other verb (with a noun, an adjective, or a place).", ar: "أقدر أن أختار am/is/are حين لا يكون في الجملة فعل آخر (مع الاسم والصفة والمكان)." },
     { en: "I can avoid the common mistake 'I am work / She is go' in Present Simple.", ar: "أقدر أن أتجنب خطأ الجمع بين am/is/are والفعل المجرد مثل I am work." },
     { en: "I can use don't/doesn't and Do/Does with base verbs in negatives and questions.", ar: "أقدر أن أستخدم don't/doesn't وDo/Does مع الفعل المجرد في النفي والسؤال." },
     { en: "I can use 7 work & law words plus the legal phrase 'give legal advice' in 4 separate sentences.", ar: "أقدر أن أستخدم 7 كلمات من بيئة القانون والعمل مع العبارة القانونية give legal advice في 4 جمل منفصلة." }
   ],
   intro: {
     recall: {
-      dEn: "Type each foundational word from memory before seeing the answer to train both active recall and spelling.",
-      d: "اكتب كل كلمة أساسية من ذاكرتك بلوحة المفاتيح قبل ظهور الإجابة لتدريب الاسترجاع والإملاء معًا.",
+      dEn: "Type five words from memory before you see the answer. Today's words target the spelling and capital-letter mistakes from your diagnostic test.",
+      d: "اكتب خمس كلمات من ذاكرتك قبل أن ترى الإجابة؛ وكلمات اليوم تعالج أخطاء الإملاء والحروف الكبيرة التي ظهرت في اختبارك التشخيصي.",
       items: [
-        ["review", "5 foundational words & grammar forms from memory", "5 كلمات وصيغ أساسية من الذاكرة"],
+        ["review", "5 everyday words from memory (spelling & capital letters)", "5 كلمات يومية من الذاكرة (إملاء وحروف كبيرة)"],
         ["pen", "Keyboard typing to fix spelling patterns early", "كتابة بلوحة المفاتيح لتثبيت أنماط الإملاء من البداية"],
-        ["spark", "Includes core legal & office words (lawyer, court, client)", "تشمل كلمات قانونية ومكتبية أساسية"]
+        ["spark", "Targets your diagnostic errors: studing, rainning, butefull, lowercase i", "تعالج أخطاء التشخيص: studing وrainning وbutefull والضمير i الصغير"]
       ]
     },
     vocab: {
@@ -57,7 +57,7 @@ LESSONS.u0l1 = {
       d: "لماذا نقول I am a lawyer لكن نقول I work in Riyadh (ولا نقول أبدًا I am work)؟ أتقن الفرق بين be وdo خطوة بخطوة.",
       items: [
         ["book", "6 short grammar cards (English first, Arabic on tap)", "6 بطاقات شرح (الإنجليزي أولًا، والعربي عند الطلب)"],
-        ["quiz", "24 guided exercises across 4 types, one question per screen", "24 تمرينًا موجّهًا على 4 أنماط، سؤال في كل شاشة"]
+        ["quiz", "16 guided exercises (4 of each type), one question per screen", "16 تمرينًا موجّهًا (4 من كل نمط)، سؤال في كل شاشة"]
       ]
     },
     reading: {
@@ -87,66 +87,68 @@ LESSONS.u0l1 = {
     }
   },
 
-  /* ---------- المرحلة 1: مراجعة بالاسترجاع النشط (5 عناصر كتابة من الذاكرة) ---------- */
+  /* ---------- المرحلة 1: مراجعة بالاسترجاع النشط (5 عناصر كتابة من الذاكرة تعالج أخطاء التشخيص في الإملاء والحروف الكبيرة) ---------- */
   recall: [
     {
       id: "rc-0",
-      promptAr: "محامٍ (مهنة قانونية تبدأ بحرف l — انتبه لوجود a قبل المهنة المفردة)",
-      promptEn: "A person whose job is to advise people about the law (a ___)",
-      sentPre: "My older brother is a",
-      sentPost: "in Riyadh.",
-      ans: ["lawyer"],
-      hint: "l _ _ _ _ r (6 letters)",
-      spellNoteEn: "Spelled law + yer (lawyer). Remember: always put 'a' before a singular job (a lawyer).",
-      spellNote: "تتكوّن من law ثم yer (lawyer)، ولا تنسَ الأداة a قبل الوظيفة المفردة.",
+      promptAr: "يذاكر / يدرس (صيغة ing من الفعل study — لا تحذف حرف y)",
+      promptEn: "The -ing form of the verb 'study'",
+      sentPre: "I like",
+      sentPost: "in the university library.",
+      ans: ["studying"],
+      hint: "s _ _ _ _ _ _ g (8 letters)",
+      spellNoteEn: "Keep the 'y' and add -ing: study → studying (never 'studing').",
+      spellNote: "نُبقي حرف y ثم نضيف ing: study ← studying، ولا نكتب studing.",
       errCat: "spelling"
     },
     {
       id: "rc-1",
-      promptAr: "محكمة (مكان عمل القاضي والمحامي — تبدأ بحرف c)",
-      promptEn: "The place where a judge and lawyers work on legal cases",
-      sentPre: "The judge is in the",
-      sentPost: "this morning.",
-      ans: ["court"],
-      hint: "c _ _ _ t (5 letters)",
-      spellNoteEn: "Spelled c-o-u-r-t (with 'ou' in the middle).",
-      spellNote: "تُكتب بحرفي العلة ou في الوسط: c-o-u-r-t.",
+      promptAr: "تمطر (صيغة ing من الفعل rain — بنون واحدة)",
+      promptEn: "rain + -ing (only one 'n'!)",
+      sentPre: "We can't play football outside when it starts",
+      sentPost: ".",
+      ans: ["raining"],
+      hint: "r _ _ _ _ _ g (7 letters)",
+      spellNoteEn: "'rain' has two vowels (a + i) before the 'n', so do not double the 'n': raining (never 'rainning').",
+      spellNote: "قبل حرف n حرفا علة (ai)، فلا نضاعف النون: raining، ولا نكتب rainning.",
       errCat: "spelling"
     },
     {
       id: "rc-2",
-      promptAr: "مكتب (مكان العمل — يبدأ بحرف o وفيه حرف f مضاعف)",
-      promptEn: "A room or building where people work at desks",
-      sentPre: "Our law",
-      sentPost: "is on King Fahd Road.",
-      ans: ["office"],
-      hint: "o _ _ _ _ e (6 letters)",
-      spellNoteEn: "Pattern: double 'f' and silent '-e' at the end (of-fice).",
-      spellNote: "انتبه لمضاعفة حرف f والـ e الصامتة في آخر الكلمة: office.",
+      promptAr: "جميل / جميلة (صفة تنتهي بالمقطع ful بلام واحدة)",
+      promptEn: "Adjective meaning very nice to look at (ends in -ful, one 'l')",
+      sentPre: "Abha is a",
+      sentPost: "city in the mountains.",
+      ans: ["beautiful"],
+      hint: "b _ _ _ _ _ _ _ l (9 letters)",
+      spellNoteEn: "Spelled b-e-a-u-t-i-f-u-l: 'beau' at the start and only ONE 'l' at the end (never 'butefull').",
+      spellNote: "تُكتب b-e-a-u-t-i-f-u-l: تبدأ بـ beau وتنتهي بلام واحدة، ولا نكتب butefull.",
       errCat: "spelling"
     },
     {
       id: "rc-3",
-      promptAr: "فعل النفي المساعد مع المفرد الغائب (he / she / it) قبل الفعل المجرد",
-      promptEn: "Negative helper verb with 'she' in Present Simple (does + not)",
-      sentPre: "Sara",
-      sentPost: "work on Saturdays.",
-      ans: ["doesn't", "does not"],
-      hint: "d o e s n ' t",
-      spellNoteEn: "With he/she/it, use 'doesn't' + base verb (work), never 'don't' and never 'is not work'.",
-      spellNote: "مع he/she/it نستخدم doesn't مع الفعل المجرد، ولا نقول don't ولا is not work.",
-      errCat: "be_verb"
+      promptAr: "ضمير المتكلم «أنا» (يُكتب بحرف كبير دائمًا)",
+      promptEn: "The word for yourself (always a capital letter!)",
+      sentPre: "My friend and",
+      sentPost: "go to the gym on Mondays.",
+      ans: ["I"],
+      exact: true,
+      hint: "_ (1 letter: a capital!)",
+      spellNoteEn: "The pronoun 'I' is always a capital letter, even in the middle of a sentence.",
+      spellNote: "ضمير المتكلم I يُكتب بحرف كبير دائمًا، حتى في وسط الجملة.",
+      errCat: "spelling"
     },
     {
       id: "rc-4",
-      promptAr: "عميل / موكّل (الشخص الذي يطلب استشارة المحامي — تبدأ بحرف c)",
-      promptEn: "A person who pays a lawyer or company for a service",
-      sentPre: "Mr. Salman meets a new",
-      sentPost: "every afternoon.",
-      ans: ["client"],
-      hint: "c _ _ _ _ t (6 letters)",
-      spellNoteEn: "Spelled c-l-i-e-n-t ('i' before 'e': cli-ent).",
-      spellNote: "حرف i يسبق حرف e في وسط الكلمة: c-l-i-e-n-t.",
+      promptAr: "اللغة الإنجليزية (أسماء اللغات تبدأ بحرف كبير)",
+      promptEn: "The language of this course (languages start with a capital letter)",
+      sentPre: "Every evening, I watch short videos in",
+      sentPost: "to improve my listening.",
+      ans: ["English"],
+      exact: true,
+      hint: "E _ _ _ _ _ h (7 letters)",
+      spellNoteEn: "Names of languages always start with a capital letter: English, Arabic.",
+      spellNote: "أسماء اللغات تبدأ دائمًا بحرف كبير: English وArabic.",
       errCat: "spelling"
     }
   ],
@@ -179,8 +181,8 @@ LESSONS.u0l1 = {
       wikiCredit: "File:En-us-lawyer.ogg · Dvortygirl / Wikimedia Commons (CC BY-SA 3.0)" },
     { en: "client", pos: "noun", ar: "عميل / موكّل", say: "كْلَايَنْت",
       ex: "Each client has a file in our office.", exAr: "لكل موكّل ملف في مكتبنا.",
-      tipEn: "A 'customer' buys things in a shop; a 'client' gets professional services from a lawyer or bank.",
-      tip: "نستخدم client للموكّل أو عميل المكاتب المهنية كالمحاماة، بينما customer للمتاجر.",
+      tipEn: "A 'customer' buys things in a shop; a 'client' gets professional services from a lawyer or an accountant.",
+      tip: "نستخدم client للموكّل أو عميل أصحاب المهن كالمحامي والمحاسب، بينما customer لزبون المتجر.",
       oxfordSlug: "client",
       wikiFile: "En-us-client.ogg",
       wikiCredit: "File:En-us-client.ogg · Wikimedia Commons (CC BY-SA 3.0)" },
@@ -222,30 +224,30 @@ LESSONS.u0l1 = {
   ],
 
   vocabGaps: [
-    { s: "My uncle is a ___ who works on commercial contracts.", opts: ["lawyer", "court", "office"], a: 0,
-      whyEn: "'a lawyer' is a person whose profession is law.",
-      why: "lawyer هو الشخص الذي يعمل في المحاماة.", errCat: "vocab" },
-    { s: "We meet the new ___ at ten o'clock to discuss his case.", opts: ["office", "client", "busy"], a: 1,
-      whyEn: "A 'client' is the person who comes to a lawyer for help.",
-      why: "client هو الموكّل أو العميل صاحب القضية.", errCat: "vocab" },
-    { s: "The judge is not in his office; he is in ___.", opts: ["court", "lawyer", "helpful"], a: 0,
-      whyEn: "'in court' is the place where a judge hears cases.",
-      why: "in court تعني في المحكمة.", errCat: "vocab" },
-    { s: "I cannot talk right now because I am very ___.", opts: ["prepare", "busy", "client"], a: 1,
-      whyEn: "'busy' is an adjective after 'I am' meaning having a lot of work.",
-      why: "بعد I am نحتاج صفة، وbusy تعني مشغول.", errCat: "vocab" },
-    { s: "Our team leader is very ___; she always answers my questions.", opts: ["helpful", "court", "prepare"], a: 0,
-      whyEn: "'helpful' describes someone who gladly helps others.",
-      why: "helpful صفة تعني متعاون أو مساعد للآخرين.", errCat: "vocab" },
-    { s: "Every morning, the trainees ___ the files for the lawyers.", opts: ["busy", "prepare", "office"], a: 1,
-      whyEn: "'prepare' is an action verb meaning get something ready.",
-      why: "الجملة تحتاج فعلًا بعد الفاعل trainees، وprepare تعني يجهّز.", errCat: "vocab" },
-    { s: "Our law ___ is on the fifth floor of a modern building.", opts: ["office", "client", "helpful"], a: 0,
-      whyEn: "A 'law office' is the place where lawyers work.",
-      why: "law office تعني مكتب محاماة.", errCat: "vocab" },
-    { s: "Only licensed lawyers can ___ to clients.", opts: ["give legal advice", "busy", "court"], a: 0,
-      whyEn: "'give legal advice' is the legal collocation meaning advise clients about the law.",
-      why: "give legal advice هي العبارة القانونية بمعنى يقدّم استشارة قانونية.", errCat: "vocab" }
+    { s: "My sister is a ___, so her friends often ask her questions about the law.", opts: ["lawyer", "client", "driver"], a: 0,
+      whyEn: "A 'lawyer' knows the law and explains it to people.",
+      why: "lawyer هو المحامي الذي يعرف القانون ويشرحه للناس، ولذلك يسأله الناس عنه.", errCat: "vocab" },
+    { s: "My father is an accountant, and his first ___ arrives at nine every morning.", opts: ["office", "client", "court"], a: 1,
+      whyEn: "A 'client' is a person who pays a professional, like an accountant or a lawyer, for help.",
+      why: "client هو العميل الذي يدفع لصاحب مهنة، كالمحاسب أو المحامي، مقابل خدمته.", errCat: "vocab" },
+    { s: "Our neighbor is a judge, and he works at the ___ near Al-Olaya Street.", opts: ["court", "client", "lawyer"], a: 0,
+      whyEn: "A 'court' is the building where a judge works.",
+      why: "court هي المحكمة، المبنى الذي يعمل فيه القاضي.", errCat: "vocab" },
+    { s: "I can't meet you today because I'm very ___ with my exams.", opts: ["helpful", "busy", "ready"], a: 1,
+      whyEn: "'busy' means having a lot to do: 'busy with my exams'.",
+      why: "busy تعني مشغولًا بأشياء كثيرة، ونقول busy with my exams.", errCat: "vocab" },
+    { s: "My cousin is very ___; he carried our heavy boxes to the car.", opts: ["helpful", "busy", "late"], a: 0,
+      whyEn: "'helpful' describes someone who helps other people.",
+      why: "helpful تصف الشخص المتعاون الذي يساعد غيره.", errCat: "vocab" },
+    { s: "Every evening, I ___ my clothes and books for the next day.", opts: ["arrive", "prepare", "explain"], a: 1,
+      whyEn: "'prepare' means get something ready before you need it.",
+      why: "prepare تعني يجهّز الشيء قبل أن يحتاج إليه.", errCat: "vocab" },
+    { s: "My brother works in a small ___ with one desk, one computer and a big window.", opts: ["office", "client", "lawyer"], a: 0,
+      whyEn: "An 'office' is a room where people work at desks.",
+      why: "office هو المكتب: غرفة يعمل فيها الناس على مكاتبهم.", errCat: "vocab" },
+    { s: "My aunt is a lawyer; on Thursdays, she ___ to students at our university for free.", opts: ["gives legal advice", "makes legal advice", "does legal advice"], a: 0,
+      whyEn: "The collocation is 'give legal advice' (with she: gives). We never say 'make advice' or 'do advice'.",
+      why: "المتلازمة الصحيحة give legal advice (ومع she تصبح gives)، ولا نقول make advice ولا do advice.", errCat: "vocab" }
   ],
 
   /* ---------- المرحلة 3: بطاقات شرح القواعد (6 بطاقات) ---------- */
@@ -255,7 +257,7 @@ LESSONS.u0l1 = {
       t: "القاعدة الذهبية: متى نضع am / is / are؟",
       enHtml:
         '<h2 class="bi-h"><span class="en" dir="ltr">The Golden Rule: Be vs. Action Verbs</span><small>القاعدة الذهبية: متى نضع am / is / are؟</small></h2>' +
-        '<p class="en-p" dir="ltr">In English, every sentence needs a verb. We use <b>am / is / are</b> ONLY when there is <b>no action verb</b> (with a noun, an adjective, or a place):</p>' +
+        '<p class="en-p" dir="ltr">In English, every sentence needs a verb. We use <b>am / is / are</b> when there is <b>no other verb</b> (with a noun, an adjective, or a place). Never put <b>am / is / are</b> before a base verb (✗ I am work).</p>' +
         '<div class="xbox"><span class="xtag s" dir="ltr">BE · Noun / Adjective / Place (بلا فعل حدث)</span><p class="xen">I am a student. · She is tired. · We are in Riyadh.</p></div>' +
         '<div class="xbox"><span class="xtag c" dir="ltr">DO · Action Verb (مع فعل حدث)</span><p class="xen">I study law. · She works here. · We live in Riyadh.</p></div>' +
         BE_DO_SVG,
@@ -329,92 +331,68 @@ LESSONS.u0l1 = {
           '<p><b>am / is / are · فعل الكون</b><span>Use with a noun, adjective, or place (never before a base verb)</span></p>' +
           '<p><b>do / does · الفعل المساعد</b><span>Use in negatives & questions when there is a base action verb</span></p>' +
         '</div>' +
-        '<p class="en-p" dir="ltr">Now let\'s practice: 24 guided exercises with brand-new sentences.</p>',
+        '<p class="en-p" dir="ltr">Now let\'s practice: 16 guided exercises with brand-new sentences.</p>',
       arHtml:
         '<p><b>am / is / are:</b> مع الاسم والمهنة والصفة والمكان، ولا تدخل على الفعل المجرد أبدًا.</p>' +
         '<p><b>do / does:</b> تدخل في النفي والسؤال عندما يكون في الجملة فعل حدث أصلي.</p>'
     }
   ],
 
-  /* ---------- المرحلة 3: تمارين القواعد (24 تمرينًا بجمل جديدة لم ترد في الشرح) ---------- */
+  /* ---------- المرحلة 3: تمارين القواعد (16 تمرينًا، 4 من كل نمط، بجمل جديدة لم ترد في الشرح) ---------- */
   gA: [
-    { s: "Tariq ___ a senior lawyer at our firm.", opts: ["is", "does"], a: 0,
-      whyEn: "'a senior lawyer' is a noun (no action verb) → use 'is'.",
-      why: "بعد الفراغ اسم مهنة (a senior lawyer) ولا يوجد فعل حدث، فنستخدم is.", errCat: "be_verb" },
-    { s: "___ you read legal articles in English?", opts: ["Are", "Do"], a: 1,
-      whyEn: "'read' is a base action verb → ask with 'Do you read…?'.",
-      why: "وجود الفعل الأصلي read يجعل السؤال بـ Do وليس Are.", errCat: "be_verb" },
     { s: "The meeting room ___ on the third floor.", opts: ["is", "does"], a: 0,
       whyEn: "'on the third floor' is a place (no action verb) → use 'is'.",
       why: "شبه الجملة on the third floor يدل على مكان بلا فعل حدث، فنختار is.", errCat: "be_verb" },
-    { s: "Our manager ___ check emails after eight in the evening.", opts: ["isn't", "doesn't"], a: 1,
-      whyEn: "'check' is a base action verb + singular subject → doesn't check.",
-      why: "الفعل check فعل حدث أصلي والفاعل مفرد، فننفي بـ doesn't.", errCat: "be_verb" },
-    { s: "___ the new trainees ready for the meeting?", opts: ["Are", "Do"], a: 0,
-      whyEn: "'ready' is an adjective (no action verb) + plural subject → Are.",
-      why: "كلمة ready صفة وليست فعلًا، والفاعل جمع، فنسأل بـ Are.", errCat: "be_verb" },
+    { s: "___ your parents ready for the trip to Abha?", opts: ["Are", "Do"], a: 0,
+      whyEn: "'ready' is an adjective (no action verb) + plural subject (your parents) → Are.",
+      why: "كلمة ready صفة وليست فعلًا، والفاعل جمع (your parents)، فنسأل بـ Are.", errCat: "be_verb" },
     { s: "I ___ drink coffee in the afternoon.", opts: ["am not", "don't"], a: 1,
       whyEn: "'drink' is a base action verb → I don't drink.",
       why: "مع الفعل الأصلي drink ننفي بـ don't وليس am not.", errCat: "be_verb" },
-    { s: "Where ___ your cousin study law?", opts: ["is", "does"], a: 1,
+    { s: "Where ___ your cousin study engineering?", opts: ["is", "does"], a: 1,
       whyEn: "'study' is a base verb and 'your cousin' is singular → Where does your cousin study?",
-      why: "لوجود الفعل الأصلي study مع فاعل مفرد نستخدم المساعد does.", errCat: "be_verb" },
-    { s: "These legal documents ___ very important for the client.", opts: ["are", "do"], a: 0,
-      whyEn: "'important' is an adjective and 'documents' is plural → are.",
-      why: "كلمة important صفة والفاعل جمع (documents)، فنستخدم are.", errCat: "agreement" }
+      why: "لوجود الفعل الأصلي study مع فاعل مفرد نستخدم المساعد does.", errCat: "be_verb" }
   ],
 
   gB: [
-    { s: "He is work in a bank in Dammam.", ok: false, fix: "He works in a bank in Dammam.",
+    { s: "He is work in a hospital in Dammam.", ok: false, fix: "He works in a hospital in Dammam.",
       whyEn: "Never put 'is' before a base verb. Use Present Simple: 'He works'.",
       why: "لا نضع is قبل الفعل الأصلي work؛ الصواب في المضارع البسيط He works.", errCat: "be_verb" },
-    { s: "Are the clients in the waiting room?", ok: true,
-      whyEn: "'in the waiting room' is a place with a plural subject → 'Are the clients…?' is correct.",
-      why: "سؤال عن مكان بلا فعل حدث ومع فاعل جمع، فاستخدام Are صحيح.", errCat: "be_verb" },
+    { s: "Does the bus to the university leave at seven?", ok: true,
+      whyEn: "Correct question: Does + singular subject (the bus) + base verb (leave).",
+      why: "سؤال صحيح: Does مع الفاعل المفرد (the bus) ثم الفعل المجرد leave.", errCat: "be_verb" },
     { s: "Do you busy this afternoon?", ok: false, fix: "Are you busy this afternoon?",
       whyEn: "'busy' is an adjective, not a verb. Ask: 'Are you busy?'",
       why: "كلمة busy صفة وليست فعلًا، لذلك نسأل بـ Are you busy وليس Do you busy.", errCat: "be_verb" },
-    { s: "Reem doesn't prepares the contracts on Sundays.", ok: false, fix: "Reem doesn't prepare the contracts on Sundays.",
-      whyEn: "After 'doesn't', the verb returns to its base form without -s (prepare).",
-      why: "بعد doesn't يعود الفعل إلى أصله المجرد بدون s (prepare).", errCat: "agreement" },
-    { s: "Does the judge start at nine o'clock?", ok: true,
-      whyEn: "Correct question: Does + singular subject (the judge) + base verb (start).",
-      why: "سؤال صحيح: Does مع الفاعل المفرد ثم الفعل المجرد start.", errCat: "be_verb" },
-    { s: "My uncle is lawyer in Makkah.", ok: false, fix: "My uncle is a lawyer in Makkah.",
-      whyEn: "Always use 'a' or 'an' before a singular job: 'is a lawyer'.",
-      why: "لا تنسَ أداة التنكير a قبل المهنة المفردة: is a lawyer.", errCat: "articles_prep" }
+    { s: "My sister is engineer at a car company.", ok: false, fix: "My sister is an engineer at a car company.",
+      whyEn: "Always use 'a' or 'an' before a singular job: 'an engineer' ('an' because 'engineer' starts with a vowel sound).",
+      why: "لا بد من أداة التنكير قبل المهنة المفردة، ونقول an engineer لأن الكلمة تبدأ بصوت علة.", errCat: "articles_prep" }
   ],
 
   gC: [
-    { pre: "I", verb: "be", post: "a law student in Riyadh.", ans: ["am", "'m"],
-      whyEn: "With 'I' + a noun ('a law student'), use 'am'.",
-      why: "مع الضمير I والاسم نستخدم am.", errCat: "be_verb" },
-    { pre: "Mona", verb: "prepare", post: "the client files every morning.", ans: ["prepares"],
-      whyEn: "'Mona' is singular (she) in a positive habit sentence → prepares.",
-      why: "الفاعل مفرد غائب (Mona) في جملة مثبتة، فنضيف s للفعل: prepares.", errCat: "agreement" },
+    { pre: "My grandparents", verb: "be", post: "from Hail, but they live in Riyadh now.", ans: ["are"],
+      whyEn: "'My grandparents' is plural, and 'from Hail' is a place (no action verb) → are.",
+      why: "الفاعل جمع (My grandparents) وبعده مكان (from Hail) بلا فعل حدث، فنكتب are.", errCat: "be_verb" },
+    { pre: "My sister", verb: "not / watch", post: "TV on school nights.", ans: ["doesn't watch", "does not watch"],
+      whyEn: "'My sister' is singular (she) + action verb → doesn't watch (base verb, no -s).",
+      why: "الفاعل مفرد (My sister) والفعل فعل حدث، فننفي بـ doesn't ثم الفعل المجرد watch بلا s.", errCat: "agreement" },
     { pre: "We", verb: "not / work", post: "on Fridays and Saturdays.", ans: ["don't work", "do not work"],
       whyEn: "Negative action verb with 'We' → don't work.",
       why: "نفي فعل الحدث work مع الفاعل We يكون بـ don't work.", errCat: "be_verb" },
-    { pre: "The court", verb: "not / be", post: "open on Saturdays.", ans: ["isn't", "is not", "'s not"],
-      whyEn: "'open' is an adjective and 'The court' is singular → isn't / is not.",
-      why: "كلمة open هنا صفة والفاعل مفرد، فننفي بـ isn't أو is not.", errCat: "be_verb" },
-    { pre: "What time", verb: "you / arrive", post: "at the office?", ans: ["do you arrive"],
-      whyEn: "Question with action verb 'arrive' + 'you' → do you arrive.",
-      why: "في السؤال مع الفعل الأصلي arrive والفاعل you نستخدم do you arrive.", errCat: "word_order" },
-    { pre: "The new trainees", verb: "be", post: "very helpful.", ans: ["are", "'re"],
-      whyEn: "'trainees' is plural and 'helpful' is an adjective → are.",
-      why: "الفاعل جمع (trainees) والخبر صفة (helpful)، فنستخدم are.", errCat: "agreement" }
+    { pre: "What time", verb: "you / arrive", post: "at the university?", ans: ["do you arrive"],
+      whyEn: "Question with the action verb 'arrive' + 'you' → do you arrive.",
+      why: "في السؤال مع الفعل الأصلي arrive والفاعل you نستخدم do you arrive.", errCat: "word_order" }
   ],
 
   gD: [
-    { chips: ["in", "the lawyer", "Is", "court today?"], ans: "Is the lawyer in court today?",
-      whyEn: "Place ('in court') without an action verb → Is + subject + place?",
+    { chips: ["at", "your brother", "Is", "home now?"], ans: "Is your brother at home now?",
+      whyEn: "A place ('at home') and no action verb → Is + subject + place?",
       why: "السؤال عن مكان بلا فعل حدث يبدأ بـ Is ثم الفاعل ثم المكان.", errCat: "word_order" },
     { chips: ["advice.", "gives", "Our office", "legal"], ans: "Our office gives legal advice.",
       whyEn: "Subject (Our office) + verb (gives) + object (legal advice).",
       why: "ترتيب الجملة: الفاعل ثم الفعل gives ثم المفعول به legal advice.", errCat: "word_order" },
-    { chips: ["do", "live?", "Where", "your clients"], ans: "Where do your clients live?",
-      whyEn: "Question word (Where) + do + plural subject (your clients) + base verb (live)?",
+    { chips: ["do", "live?", "Where", "your best friends"], ans: "Where do your best friends live?",
+      whyEn: "Question word (Where) + do + plural subject (your best friends) + base verb (live)?",
       why: "أداة الاستفهام Where ثم المساعد do ثم الفاعل الجمع ثم الفعل المجرد live.", errCat: "word_order" },
     { chips: ["isn't", "morning.", "The office", "busy this"], ans: "The office isn't busy this morning.",
       whyEn: "Subject + isn't + adjective (busy) + time.",
@@ -427,6 +405,8 @@ LESSONS.u0l1 = {
     from: "Faisal",
     fromMeta: "Faisal · Law Trainee, Riyadh",
     to: "Omar",
+    lg1: "be: am / is / are · فعل الكون",
+    lg2: "do / does + action verb · فعل الحدث",
     targetSeconds: 95,
     introEn: "Faisal is a Saudi law student in Riyadh. He started training at a law office this week and sent this email to his cousin Omar.",
     intro: "فيصل طالب قانون سعودي في الرياض، بدأ تدريبه في مكتب محاماة هذا الأسبوع وأرسل هذا الإيميل لابن عمه عمر.",
@@ -434,7 +414,7 @@ LESSONS.u0l1 = {
       "Hi Omar,",
       "How <<s:are>> you? I <<s:am>> very [[excited|متحمّس]] [[this week|هذا الأسبوع]]! I <<s:am>> a [[trainee|متدرّب]] at Al-Noor Law {Office|office} in Riyadh. The {office} <<s:is>> [[near|قريب من]] the [[main|الرئيسية]] {court}, and the [[building|المبنى]] <<s:is>> [[modern|حديث]] and [[quiet|هادئ]].",
       "There <<s:are>> six {lawyers|lawyer} in our [[team|فريق]], and they <<s:are>> very {helpful}. Mr. Salman <<s:is>> my [[supervisor|مشرف]]. He <<s:is>> a [[commercial|تجاري]] {lawyer}. He <<c:meets>> [[new|جدد]] {clients|client} <<t:every morning>> and <<c:{gives legal advice|give legal advice}>> about [[contracts|العقود]].",
-      "My [[schedule|جدول]] <<s:is>> [[clear|واضح]]. I <<c:arrive>> at the {office} at eight o'clock <<t:every day>>. I <<c:don't go>> to {court} [[alone|بمفردي]] because I <<s:am>> still a [[student|طالب]]. Instead, I <<c:{prepare}>> the {client} [[files|ملفات]] and <<c:read>> [[short|قصيرة]] [[reports|تقارير]] in English. Sundays <<s:are>> very {busy}, but Thursdays <<s:aren't>> {busy}.",
+      "My [[schedule|جدول]] <<s:is>> [[simple|بسيط]]. I <<c:arrive>> at the {office} at eight o'clock <<t:every day>>. I <<c:don't go>> to {court} [[alone|بمفردي]] because I <<s:am>> still a [[student|طالب]]. Instead, I <<c:{prepare}>> the {client} [[files|ملفات]] and <<c:read>> [[short|قصيرة]] [[reports|تقارير]] in English. Sundays <<s:are>> very {busy}, but Thursdays <<s:aren't>> {busy}.",
       "<<c:Do>> you <<c:have>> [[free time|وقت فراغ]] <<t:on Friday>>? Let's [[meet|نلتقي]] for coffee!",
       "Best,<br>Faisal"
     ],
@@ -444,8 +424,8 @@ LESSONS.u0l1 = {
       optsEn: ["Yes, he goes to court alone every day", "No, he doesn't go to court alone because he is still a student", "He only works from home"],
       opts: ["نعم، يذهب للمحكمة بمفرده كل يوم", "لا، لا يذهب للمحكمة بمفرده لأنه ما زال طالبًا", "يعمل من البيت فقط"],
       a: 1,
-      revealEn: "Correct! Faisal writes: 'I don't go to court alone because I am still a student.'",
-      reveal: "صحيح! فيصل يقول في رسالته: I don't go to court alone because I am still a student."
+      revealEn: "Faisal writes: 'I don't go to court alone because I am still a student.'",
+      reveal: "يقول فيصل في رسالته: I don't go to court alone because I am still a student."
     },
     insight: {
       titleEn: "Notice 'Be' vs. 'Do' in Faisal's Email",
@@ -500,14 +480,18 @@ LESSONS.u0l1 = {
       { k: "sentences", tEn: "At least 4 separate sentences (end each with a period .)", t: "4 جمل منفصلة على الأقل (بنقطة في نهاية كل جملة)",
         ok: function(a){ return a.sentences >= 4; } },
       { k: "be", tEn: "At least 2 sentences with am / is / are (noun, adjective, or place)", t: "جملتان بـ am / is / are مع اسم أو صفة أو مكان", ex: "I am a law student. · My schedule is busy.",
-        ok: function(a, text){ return (String(text || '').match(/\b(?:am|is|are|i'm|he's|she's|it's|we're|they're|isn't|aren't)\b/gi) || []).length >= 2; } },
+        ok: function(a, text){ return (String(text || '').match(/\b(?:am|is|are|i['’]m|he['’]s|she['’]s|it['’]s|we['’]re|they['’]re|isn['’]t|aren['’]t)\b/gi) || []).length >= 2; } },
       { k: "do", tEn: "At least 1 negative or question with don't / doesn't / do / does", t: "جملة منفية أو سؤال بـ don't / doesn't / do / does", ex: "I don't work on Saturdays.",
-        ok: function(a, text){ return /\b(?:don't|doesn't|do\s+not|does\s+not|do\s+you|does\s+he|does\s+she)\b/i.test(String(text || '')); } },
+        ok: function(a, text){ var s = String(text || '').replace(/[’‘]/g, "'");
+          if (/\b(?:don't|doesn't|do\s+not|does\s+not)\b/i.test(s)) return true;
+          return (s.match(/[^.!?]*\?/g) || []).some(function(q){ return /\b(?:do|does)\b/i.test(q); }); } },
       { k: "vocab", tEn: "At least 3 words/phrases from today's lesson", t: "3 كلمات أو عبارات من درس اليوم", ex: "lawyer · office · court · busy · helpful · prepare · client",
         ok: function(a){ return a.used.length >= 3; } }
     ],
     modelMarked: "I <<s:am>> a law student in Riyadh, and my [[goal|هدف]] <<s:is>> to become a {lawyer}. My [[teachers|معلمون]] <<s:are>> very {helpful}. I <<c:{prepare}>> my [[notes|ملاحظات]] <<t:every morning>>, and I <<c:read>> about {court} [[cases|قضايا]]. My [[weekdays|أيام الأسبوع]] <<s:are>> {busy}, but I <<c:don't study>> late on Friday nights.",
-    model: "I am a law student in Riyadh, and my goal is to become a lawyer. My teachers are very helpful. I prepare my notes every morning, and I read about court cases. My weekdays are busy, but I don't study late on Friday nights."
+    model: "I am a law student in Riyadh, and my goal is to become a lawyer. My teachers are very helpful. I prepare my notes every morning, and I read about court cases. My weekdays are busy, but I don't study late on Friday nights.",
+    legendEn: "Light blue = am / is / are · Terracotta = action verbs (prepare, read, don't study) · Dashed = time words",
+    legendAr: "الأزرق الفاتح لـ am / is / are، والطوبي لأفعال الحدث (prepare وread وdon't study)، والإطار المنقّط لكلمات الزمن."
   },
 
   /* ---------- المرحلة 6: الاختبار القصير (10 أسئلة · النجاح من 80%) ---------- */
@@ -515,33 +499,33 @@ LESSONS.u0l1 = {
     { s: "My older sister ___ a legal advisor in Riyadh.", opts: ["is", "does", "are"], a: 0, tag: "Grammar · قواعد",
       whyEn: "'a legal advisor' is a singular noun (no action verb) → is.",
       why: "بعد الفراغ اسم مفرد بلا فعل حدث، فنستخدم is.", errCat: "be_verb" },
-    { s: "___ you prepare the files before the meeting?", opts: ["Are", "Do", "Is"], a: 1, tag: "Grammar · قواعد",
+    { s: "___ you prepare dinner for your family on Fridays?", opts: ["Are", "Do", "Is"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'prepare' is a base action verb → Do you prepare…?",
       why: "لوجود الفعل الأصلي prepare نسأل بـ Do.", errCat: "be_verb" },
     { s: "Which sentence is correct?", opts: ["I am study English every day.", "I study English every day.", "I studying English every day."], a: 1, tag: "Grammar · قواعد",
       whyEn: "In Present Simple, use the verb directly after the subject without 'am': I study.",
       why: "في المضارع البسيط نضع الفعل بعد الفاعل مباشرة بدون am: I study.", errCat: "be_verb" },
-    { s: "Our law office ___ open on Fridays.", opts: ["doesn't", "isn't", "don't"], a: 1, tag: "Grammar · قواعد",
-      whyEn: "'open' here is an adjective (no action verb) → isn't open.",
-      why: "كلمة open هنا صفة بمعنى مفتوح، فننفي بـ isn't وليس doesn't.", errCat: "be_verb" },
+    { s: "Our university library ___ busy on Fridays.", opts: ["doesn't", "isn't", "don't"], a: 1, tag: "Grammar · قواعد",
+      whyEn: "'busy' is an adjective (no action verb) → isn't busy.",
+      why: "كلمة busy صفة، فننفي بـ isn't وليس doesn't.", errCat: "be_verb" },
     { s: "Mr. Salman ___ meet clients on Saturdays.", opts: ["isn't", "doesn't", "don't"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'meet' is a base verb and 'Mr. Salman' is singular (he) → doesn't meet.",
       why: "مع الفاعل المفرد والفعل الأصلي meet ننفي بـ doesn't.", errCat: "be_verb" },
     { s: "Where ___ the new trainees from?", opts: ["do", "are", "is"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'from' has no action verb and 'trainees' is plural → Where are the new trainees from?",
       why: "السؤال عن البلد بـ from ليس فيه فعل حدث، والفاعل جمع فنستخدم are.", errCat: "agreement" },
-    { s: "Which question is correct?", opts: ["Are you agree with the lawyer?", "Do you agree with the lawyer?", "Is you agree with the lawyer?"], a: 1, tag: "Grammar · قواعد",
-      whyEn: "'agree' is an action/mental verb, not an adjective → Do you agree…?",
-      why: "كلمة agree فعل وليست صفة، فنسأل بـ Do you agree.", errCat: "be_verb" },
-    { s: "The senior lawyers are very ___; they explain every contract clearly.", opts: ["helpful", "court", "prepare"], a: 0, tag: "Vocabulary · مفردات",
-      whyEn: "After 'are very' we need an adjective: 'helpful' (spelled with one 'l').",
-      why: "نحتاج صفة بعد are very، وhelpful تعني متعاون.", errCat: "vocab" },
-    { s: "Each ___ signs an agreement at our law office.", opts: ["court", "client", "busy"], a: 1, tag: "Vocabulary · مفردات",
-      whyEn: "A 'client' is the person who receives services from a law office.",
-      why: "client هو الموكّل أو العميل في مكتب المحاماة.", errCat: "vocab" },
-    { s: "Experienced lawyers ___ to companies and families.", opts: ["give legal advice", "make legal advice", "are legal advice"], a: 0, tag: "Legal Track · المسار القانوني",
-      whyEn: "The natural collocation is 'give legal advice'.",
-      why: "المتلازمة الصحيحة هي give legal advice.", errCat: "vocab" }
+    { s: "Which question is correct?", opts: ["Are you want a cup of tea?", "Do you want a cup of tea?", "Is you want a cup of tea?"], a: 1, tag: "Grammar · قواعد",
+      whyEn: "'want' is a verb, not an adjective → Do you want…?",
+      why: "كلمة want فعل وليست صفة، فنسأل بـ Do you want.", errCat: "be_verb" },
+    { s: "My classmates are very ___: when I miss a class, they always send me their notes.", opts: ["helpful", "busy", "late"], a: 0, tag: "Vocabulary · مفردات",
+      whyEn: "After 'are very' we need an adjective: 'helpful' (one 'l' at the end) describes people who help you.",
+      why: "نحتاج صفة بعد are very، وhelpful تعني متعاونين يساعدونك.", errCat: "vocab" },
+    { s: "My personal trainer can't take a new ___ this month; he already has twenty.", opts: ["court", "client", "office"], a: 1, tag: "Vocabulary · مفردات",
+      whyEn: "A 'client' is a person who pays a professional, like a trainer or a lawyer, for a service.",
+      why: "client هو العميل الذي يدفع لصاحب مهنة، كالمدرّب أو المحامي، مقابل خدمته.", errCat: "vocab" },
+    { s: "My cousin is a lawyer, and he often ___ to our relatives for free.", opts: ["gives legal advice", "makes legal advice", "gives a legal advice"], a: 0, tag: "Legal Track · المسار القانوني",
+      whyEn: "We say 'give legal advice' (he gives), and 'advice' is uncountable, so never 'a legal advice'.",
+      why: "نقول give legal advice (ومع he تصبح gives)، وadvice اسم غير معدود فلا نقول a legal advice.", errCat: "vocab" }
   ]
 };
 })();

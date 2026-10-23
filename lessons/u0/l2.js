@@ -6,13 +6,13 @@ var AGREE_SVG = '<svg class="tl" viewBox="0 0 340 168" role="img" aria-label="Di
   '<text x="87" y="52" text-anchor="middle" font-family="Readex Pro, sans-serif" font-weight="600" font-size="10.5" fill="#5A6B7C">is · was · does · this / that</text>' +
   '<text x="20" y="78" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">+ : There is one judge.</text>' +
   '<text x="20" y="102" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">? : Is there a witness?</text>' +
-  '<text x="20" y="126" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">👉 : This case is clear.</text>' +
+  '<text x="20" y="126" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">• : This case is clear.</text>' +
   '<rect x="176" y="12" width="154" height="144" rx="16" fill="#F9EBE7" stroke="#B94A33" stroke-width="1.8"/>' +
   '<text x="253" y="34" text-anchor="middle" font-family="Quicksand, sans-serif" font-weight="700" font-size="13" fill="#A8432E">PLURAL · الجمع (2+)</text>' +
   '<text x="253" y="52" text-anchor="middle" font-family="Readex Pro, sans-serif" font-weight="600" font-size="10.5" fill="#A8432E">are · were · do · these / those</text>' +
   '<text x="186" y="78" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">+ : There are two judges.</text>' +
   '<text x="186" y="102" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">? : Are there any witnesses?</text>' +
-  '<text x="186" y="126" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">👉 : These cases are clear.</text>' +
+  '<text x="186" y="126" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">• : These cases are clear.</text>' +
   '</svg>';
 
 LESSONS.u0l2 = {
@@ -31,7 +31,7 @@ LESSONS.u0l2 = {
     { en: "I can use 'There is / Is there' with singular nouns and 'There are / Are there' with plural nouns.", ar: "أقدر أن أستخدم There is / Is there مع المفرد وThere are / Are there مع الجمع." },
     { en: "I can match 'this / that' with singular nouns + is, and 'these / those' with plural nouns + are.", ar: "أقدر أن أطابق this / that مع المفرد + is، وthese / those مع الجمع + are." },
     { en: "I can understand two people describing their hometowns in a real recording, and shadow the speakers.", ar: "أقدر أن أفهم متحدثين يصفان مدينتيهما في تسجيل حقيقي، وأردّد معهما." },
-    { en: "I can write at least 4 separate sentences using singular and plural agreement and 'go to court'.", ar: "أقدر أن أكتب 4 جمل منفصلة على الأقل تطابق بين المفرد والجمع وتستخدم العبارة القانونية go to court." }
+    { en: "I can write at least 4 separate sentences about my hometown or university using singular and plural agreement.", ar: "أقدر أن أكتب 4 جمل منفصلة على الأقل عن مدينتي أو جامعتي أطابق فيها بين المفرد والجمع." }
   ],
   intro: {
     recall: {
@@ -57,7 +57,7 @@ LESSONS.u0l2 = {
       d: "لماذا تُعد جملة Is there any restaurants أو These phones is made خاطئة؟ أتقن المطابقة بين المفرد والجمع.",
       items: [
         ["book", "6 grammar cards (English first, Arabic on tap)", "6 بطاقات شرح (الإنجليزي أولًا، والعربي عند الطلب)"],
-        ["quiz", "24 guided exercises across 4 types, one per screen", "24 تمرينًا موجّهًا على 4 أنماط، سؤال في كل شاشة"]
+        ["quiz", "16 guided exercises (4 of each type), one per screen", "16 تمرينًا موجّهًا (4 من كل نمط)، سؤال في كل شاشة"]
       ]
     },
     reading: {
@@ -70,8 +70,8 @@ LESSONS.u0l2 = {
       ]
     },
     writing: {
-      dEn: "Write at least 4 separate sentences describing your office, university, or courtroom using singular and plural agreement.",
-      d: "اكتب 4 جمل منفصلة على الأقل تصف فيها قاعتك أو مكتبك باستخدام المفرد والجمع (There is / There are / These are).",
+      dEn: "Write at least 4 separate sentences describing your hometown, your university, or a courtroom using singular and plural agreement.",
+      d: "اكتب 4 جمل منفصلة على الأقل تصف فيها مدينتك أو جامعتك أو قاعة محكمة باستخدام المفرد والجمع (There is / There are / These are).",
       items: [
         ["pen", "At least 4 separate sentences with periods (.)", "4 جمل منفصلة على الأقل تنتهي كل منها بنقطة"],
         ["spark", "Instant check separating Singular/Plural Agreement from Spelling", "تصحيح فوري يفصل أخطاء المطابقة والقواعد عن الإملاء"]
@@ -92,10 +92,10 @@ LESSONS.u0l2 = {
       id: "rc-0",
       promptAr: "متعاون / مفيد (صفة من الدرس السابق تنتهي بالمقطع ful بلام واحدة)",
       promptEn: "Adjective meaning glad to help others (ends with -ful, one 'l'!)",
-      sentPre: "The senior lawyers in our office are very",
-      sentPost: ".",
+      sentPre: "The nurses at the hospital are very",
+      sentPost: "to my grandmother.",
       ans: ["helpful"],
-      hint: "h e l p f _ l (7 letters)",
+      hint: "h _ _ _ _ _ l (7 letters)",
       spellNoteEn: "Pattern: Suffix -ful always ends with ONE 'l' (helpful, careful, beautiful).",
       spellNote: "قاعدة إملاء: المقطع ful في نهاية الصفات يُكتب بلام واحدة دائمًا (helpful).",
       errCat: "spelling"
@@ -103,11 +103,11 @@ LESSONS.u0l2 = {
     {
       id: "rc-1",
       promptAr: "يجهّز / يُعدّ (فعل حدث من الدرس السابق يبدأ بحرف p)",
-      promptEn: "Action verb meaning to get files or documents ready",
-      sentPre: "Every morning, I",
-      sentPost: "the client files before nine.",
+      promptEn: "Action verb meaning to get something ready",
+      sentPre: "My sisters",
+      sentPost: "breakfast for everyone before school.",
       ans: ["prepare"],
-      hint: "p r e p _ _ e (7 letters)",
+      hint: "p _ _ _ _ _ e (7 letters)",
       spellNoteEn: "Spelled pre + pare (prepare) with a silent -e at the end.",
       spellNote: "تتكوّن من المقطع pre ثم pare (prepare).",
       errCat: "spelling"
@@ -115,11 +115,12 @@ LESSONS.u0l2 = {
     {
       id: "rc-2",
       promptAr: "يقدّم استشارة قانونية (العبارة القانونية من الدرس الأول: give legal ___)",
-      promptEn: "Legal collocation:Experienced lawyers give legal ___ to clients.",
-      sentPre: "Only licensed lawyers can give legal",
-      sentPost: "to clients.",
-      ans: ["advice", "give legal advice"],
-      hint: "a d v _ c e (with 'c')",
+      promptEn: "Legal phrase from Lesson 1: give legal ___ (help someone with the law)",
+      sentPre: "Before you sign a contract for a new apartment, ask a lawyer for legal",
+      sentPost: ".",
+      ans: ["advice"],
+      isLegal: true,
+      hint: "a _ _ _ _ e (6 letters)",
       spellNoteEn: "Noun 'advice' is spelled with 'c' and is uncountable (give legal advice).",
       spellNote: "الاسم advice يُكتب بحرف c وهو غير معدود ضمن عبارة give legal advice.",
       errCat: "spelling"
@@ -127,11 +128,11 @@ LESSONS.u0l2 = {
     {
       id: "rc-3",
       promptAr: "مشغول / مزدحم (صفة تحتاج قبلها am / is / are)",
-      promptEn: "Adjective meaning having a lot of work (starts with b)",
-      sentPre: "Sundays are very",
-      sentPost: "at the law office.",
+      promptEn: "Adjective meaning full of people, cars or work (starts with b)",
+      sentPre: "The roads in Riyadh are very",
+      sentPost: "at five o'clock.",
       ans: ["busy"],
-      hint: "b u s _ (4 letters)",
+      hint: "b _ _ y (4 letters)",
       spellNoteEn: "Spelled b-u-s-y (pronounced 'bizi').",
       spellNote: "تُكتب b-u-s-y وإن كانت تُنطق قريبًا من (بِزي).",
       errCat: "spelling"
@@ -139,11 +140,11 @@ LESSONS.u0l2 = {
     {
       id: "rc-4",
       promptAr: "فعل السؤال المساعد مع you قبل فعل الحدث agree (تذكّر: agree فعل وليست صفة!)",
-      promptEn: "Helper verb to start a question with 'you' + action verb 'agree'",
-      sentPre: "___ you",
-      sentPost: "agree with the lawyer's plan?",
-      ans: ["do"],
-      hint: "D o (2 letters)",
+      promptEn: "Helper verb to start a question with 'you' + the action verb 'agree'",
+      sentPre: "",
+      sentPost: "you agree with our plan for the weekend?",
+      ans: ["Do"],
+      hint: "D _ (2 letters)",
       spellNoteEn: "With action/mental verbs like 'agree', ask with 'Do you agree?' (never 'Are you agree?').",
       spellNote: "مع الفعل agree نسأل بـ Do you agree وليس Are you agree.",
       errCat: "be_verb"
@@ -219,30 +220,30 @@ LESSONS.u0l2 = {
   ],
 
   vocabGaps: [
-    { s: "The ___ listens carefully to both lawyers in the courtroom.", opts: ["judge", "folder", "seat"], a: 0,
-      whyEn: "The 'judge' is the official who leads the court and decides cases.",
-      why: "القاضي (judge) هو الذي يدير الجلسة ويستمع للمحامين.", errCat: "vocab" },
-    { s: "There are two eye-___ waiting outside the courtroom.", opts: ["mistakes", "witnesses", "seats"], a: 1,
-      whyEn: "'witnesses' are people who saw what happened and testify in court.",
-      why: "الشهود (witnesses) هم من يدلون بشهادتهم في القضية.", errCat: "vocab" },
-    { s: "Please put the signed contracts inside this yellow ___.", opts: ["folder", "judge", "witness"], a: 0,
-      whyEn: "A 'folder' holds paper documents together.",
-      why: "folder هي حافظة الأوراق أو الملف الذي توضع فيه المستندات.", errCat: "vocab" },
-    { s: "Are there any empty ___ in the meeting room?", opts: ["cases", "seats", "judges"], a: 1,
-      whyEn: "'empty seats' means places where people can sit.",
-      why: "empty seats تعني مقاعد شاغرة للجلوس.", errCat: "vocab" },
-    { s: "Check the numbers twice so you don't make a ___.", opts: ["mistake", "witness", "seat"], a: 0,
-      whyEn: "Collocation: 'make a mistake'.",
-      why: "المتلازمة الصحيحة هي make a mistake (يرتكب خطأ).", errCat: "vocab" },
+    { s: "My uncle is a ___; at work, he listens to both sides and then decides who is right.", opts: ["judge", "witness", "client"], a: 0,
+      whyEn: "A 'judge' listens to both sides in court and then makes the decision.",
+      why: "القاضي (judge) يستمع إلى الطرفين في المحكمة ثم يصدر الحكم.", errCat: "vocab" },
+    { s: "Two ___ saw the car accident on our street, and they told the police what happened.", opts: ["mistakes", "witnesses", "seats"], a: 1,
+      whyEn: "'witnesses' are people who see something happen and then tell others, like the police or a judge.",
+      why: "الشهود (witnesses) هم من رأوا ما حدث ثم يخبرون به الشرطة أو القاضي.", errCat: "vocab" },
+    { s: "I keep my university notes in a blue ___ so they stay clean.", opts: ["folder", "seat", "mistake"], a: 0,
+      whyEn: "A 'folder' is a cover that holds papers together.",
+      why: "folder حافظة تُجمع فيها الأوراق.", errCat: "vocab" },
+    { s: "Excuse me, is this ___ free? Can I sit here?", opts: ["case", "seat", "folder"], a: 1,
+      whyEn: "A 'seat' is a place where you sit, like a chair on a bus.",
+      why: "seat هو المقعد الذي تجلس عليه، ككرسي الحافلة.", errCat: "vocab" },
+    { s: "There is one spelling ___ in my email: I wrote 'studing' instead of 'studying'.", opts: ["mistake", "case", "seat"], a: 0,
+      whyEn: "A 'mistake' is something that is wrong, like 'studing' instead of 'studying'.",
+      why: "mistake هو الخطأ، مثل كتابة studing بدل studying.", errCat: "vocab" },
     { s: "Mr. Salman handles commercial ___ for big companies.", opts: ["seats", "cases", "judges"], a: 1,
       whyEn: "'commercial cases' are legal matters involving business.",
       why: "commercial cases تعني القضايا التجارية.", errCat: "vocab" },
-    { s: "Are the client files ___ for the morning session?", opts: ["ready", "witness", "mistake"], a: 0,
-      whyEn: "'ready' is an adjective meaning prepared and complete.",
-      why: "ready صفة تعني جاهزة ومكتملة.", errCat: "vocab" },
-    { s: "When companies cannot solve a dispute, they ___.", opts: ["go to court", "make a seat", "ready a judge"], a: 0,
-      whyEn: "'go to court' is the legal phrase meaning take a legal dispute to a court.",
-      why: "go to court تعني يلجأ إلى المحكمة أو يذهب للتقاضي.", errCat: "vocab" }
+    { s: "Dinner is ___! Please come to the table.", opts: ["busy", "ready", "helpful"], a: 1,
+      whyEn: "'ready' means prepared and finished, so we can start now.",
+      why: "ready تعني جاهزًا، فنقدر أن نبدأ الآن.", errCat: "vocab" },
+    { s: "My father and our neighbor can't agree about the wall between our houses, so they want to ___.", opts: ["go to court", "make a mistake", "take a seat"], a: 0,
+      whyEn: "'go to court' means ask a judge to decide a problem; 'make a mistake' and 'take a seat' don't fit.",
+      why: "go to court تعني اللجوء إلى القاضي ليحكم في المشكلة، ولا يناسب السياق make a mistake ولا take a seat.", errCat: "vocab" }
   ],
 
   gCards: [
@@ -327,7 +328,7 @@ LESSONS.u0l2 = {
           '<p><b>Singular (1) · المفرد</b><span>There is / Is there · This / That + singular noun + is</span></p>' +
           '<p><b>Plural (2+) · الجمع</b><span>There are / Are there · These / Those + plural noun + are (even for things!)</span></p>' +
         '</div>' +
-        '<p class="en-p" dir="ltr">Now let\'s practice: 24 guided exercises on Singular & Plural Agreement.</p>',
+        '<p class="en-p" dir="ltr">Now let\'s practice: 16 guided exercises on Singular & Plural Agreement.</p>',
       arHtml:
         '<p><b>مع المفرد:</b> نستخدم <bdi class="en">There is / Is there</bdi> و<bdi class="en">This / That … is</bdi>.</p>' +
         '<p><b>مع الجمع (عاقل أو غير عاقل):</b> نستخدم <bdi class="en">There are / Are there</bdi> و<bdi class="en">These / Those … are</bdi>.</p>'
@@ -335,18 +336,9 @@ LESSONS.u0l2 = {
   ],
 
   gA: [
-    { s: "There ___ two commercial cases on the schedule today.", opts: ["is", "are"], a: 1,
-      whyEn: "'two commercial cases' is plural → There are.",
-      why: "عبارة two commercial cases جمع، فنستخدم There are.", errCat: "agreement" },
     { s: "___ there a copy machine on this floor?", opts: ["Is", "Are"], a: 0,
       whyEn: "'a copy machine' is singular → Is there…?",
       why: "الاسم مفرد مسبوق بـ a (a copy machine)، فنسأل بـ Is there.", errCat: "agreement" },
-    { s: "___ there any witnesses waiting in Room 2?", opts: ["Is", "Are"], a: 1,
-      whyEn: "'witnesses' is plural → Are there any witnesses…?",
-      why: "كلمة witnesses جمع، لذلك نسأل بـ Are there.", errCat: "agreement" },
-    { s: "These legal folders ___ for Mr. Salman.", opts: ["is", "are"], a: 1,
-      whyEn: "Plural 'These folders' (even though they are things) must take 'are'.",
-      why: "الفاعل جمع غير عاقل (These folders) ويأخذ في الإنجليزية are دائمًا.", errCat: "agreement" },
     { s: "___ seat next to the window is empty.", opts: ["This", "These"], a: 0,
       whyEn: "'seat' is singular + 'is' → This seat.",
       why: "كلمة seat مفرد وبعدها الفعل is، فنختار اسم الإشارة للمفرد This.", errCat: "agreement" },
@@ -355,67 +347,52 @@ LESSONS.u0l2 = {
       why: "كلمة people جمع، فنستخدم معها There are.", errCat: "agreement" },
     { s: "___ reports on your desk are very clear.", opts: ["That", "Those"], a: 1,
       whyEn: "'reports' is plural + 'are' → Those reports.",
-      why: "كلمة reports جمع وبعدها are، فنختار اسم الإشارة للجمع Those.", errCat: "agreement" },
-    { s: "There ___ any mistakes in your contract.", opts: ["isn't", "aren't"], a: 1,
-      whyEn: "'any mistakes' is plural → There aren't.",
-      why: "مع الجمع المنفي (any mistakes) نستخدم There aren't.", errCat: "agreement" }
+      why: "كلمة reports جمع وبعدها are، فنختار اسم الإشارة للجمع Those.", errCat: "agreement" }
   ],
 
   gB: [
-    { s: "Are there any new clients in the office today?", ok: true,
-      whyEn: "'clients' is plural, so 'Are there any…?' is completely correct.",
-      why: "كلمة clients جمع، فالسؤال بـ Are there any صحيح تمامًا.", errCat: "agreement" },
     { s: "These computers is very fast.", ok: false, fix: "These computers are very fast.",
       whyEn: "'These computers' is plural → use 'are', never 'is'.",
       why: "الاسم جمع (These computers) فيأخذ are وليس is.", errCat: "agreement" },
-    { s: "Is there any empty seats in the courtroom?", ok: false, fix: "Are there any empty seats in the courtroom?",
+    { s: "Is there any empty seats on the bus?", ok: false, fix: "Are there any empty seats on the bus?",
       whyEn: "'seats' is plural → start the question with 'Are there…?'.",
       why: "كلمة seats جمع، لذلك يجب أن يبدأ السؤال بـ Are there.", errCat: "agreement" },
-    { s: "This witness speaks English and Arabic.", ok: true,
-      whyEn: "Singular 'This witness' + singular verb 'speaks' with -s is correct.",
-      why: "المفرد This witness مع الفعل المضاف له s (speaks) تركيب صحيح.", errCat: "agreement" },
-    { s: "We have three importants meetings this week.", ok: false, fix: "We have three important meetings this week.",
+    { s: "This shop sells Arabic and English books.", ok: true,
+      whyEn: "Singular 'This shop' + singular verb with -s ('sells') is correct.",
+      why: "المفرد This shop مع الفعل المضاف إليه s (sells) تركيب صحيح.", errCat: "agreement" },
+    { s: "We have three importants exams this week.", ok: false, fix: "We have three important exams this week.",
       whyEn: "Adjectives in English ('important') never take a plural '-s'.",
-      why: "الصفات في الإنجليزية لا تُجمع بحرف s أبدًا؛ نقول important meetings.", errCat: "agreement" },
-    { s: "There is five lawyers in the meeting room.", ok: false, fix: "There are five lawyers in the meeting room.",
-      whyEn: "'five lawyers' is plural → There are.",
-      why: "وجود العدد والجمع (five lawyers) يتطلب There are.", errCat: "agreement" }
+      why: "الصفات في الإنجليزية لا تُجمع بحرف s أبدًا؛ نقول important exams.", errCat: "agreement" }
   ],
 
   gC: [
-    { pre: "There", verb: "be", post: "a judge in Courtroom 3.", ans: ["is", "'s"],
-      whyEn: "'a judge' is singular → There is.",
-      why: "بعد الفراغ اسم مفرد (a judge)، فنكتب is.", errCat: "agreement" },
-    { pre: "There", verb: "be", post: "four witnesses for the second case.", ans: ["are"],
-      whyEn: "'four witnesses' is plural → There are.",
-      why: "بعد الفراغ جمع (four witnesses)، فنكتب are.", errCat: "agreement" },
-    { pre: "___", verb: "this / these", post: "documents ready for the client?", ans: ["Are these"],
-      whyEn: "Question with plural 'documents' → Are these documents ready?",
-      why: "سؤال عن اسم جمع (documents)، فنبدأ بـ Are ثم اسم الإشارة للجمع these.", errCat: "agreement" },
+    { pre: "There", verb: "be", post: "a small park behind our house.", ans: ["is", "'s"],
+      whyEn: "'a small park' is singular → There is.",
+      why: "بعد الفراغ اسم مفرد (a small park)، فنكتب is.", errCat: "agreement" },
+    { pre: "", verb: "be + this / these", post: "shoes new?", ans: ["Are these"],
+      whyEn: "A question about plural 'shoes' → Are + these: 'Are these shoes new?'",
+      why: "سؤال عن اسم جمع (shoes)، فنبدأ بـ Are ثم اسم الإشارة للجمع these.", errCat: "agreement" },
     { pre: "There", verb: "not / be", post: "any meetings on Saturday.", ans: ["aren't", "are not"],
       whyEn: "Negative with plural 'any meetings' → There aren't.",
       why: "نفي مع اسم جمع (any meetings)، فنكتب aren't أو are not.", errCat: "agreement" },
-    { pre: "How many cases", verb: "be / there", post: "this morning?", ans: ["are there"],
-      whyEn: "'How many cases' is a plural question → How many cases are there?",
-      why: "السؤال بـ How many يتبعه جمع، فنقدم الفعل المساعد على there: are there.", errCat: "word_order" },
-    { pre: "These two contracts", verb: "need", post: "a signature today.", ans: ["need"],
-      whyEn: "'These two contracts' is plural (they), so the Present Simple verb takes NO -s (need).",
-      why: "الفاعل جمع (These two contracts)، فالفعل في المضارع البسيط يبقى مجردًا بدون s.", errCat: "agreement" }
+    { pre: "How many students", verb: "be / there", post: "in your English class?", ans: ["are there"],
+      whyEn: "'How many students' is a plural question → How many students are there?",
+      why: "السؤال بـ How many يتبعه جمع، فنقدم الفعل على there: are there.", errCat: "word_order" }
   ],
 
   gD: [
-    { chips: ["any", "mistakes?", "Are", "there"], ans: "Are there any mistakes?",
-      whyEn: "Plural question: Are + there + any + plural noun (mistakes)?",
-      why: "سؤال عن الجمع: Are there ثم any ثم الاسم الجمع mistakes.", errCat: "word_order" },
-    { chips: ["are", "ready.", "folders", "These"], ans: "These folders are ready.",
-      whyEn: "Plural demonstrative (These) + plural noun (folders) + are + adjective (ready).",
-      why: "اسم الإشارة للجمع These ثم الاسم الجمع folders ثم are ثم الصفة ready.", errCat: "word_order" },
-    { chips: ["one", "judge", "There is", "in court."], ans: "There is one judge in court.",
-      whyEn: "There is + singular noun (one judge) + place (in court).",
-      why: "There is مع المفرد one judge ثم المكان in court.", errCat: "word_order" },
-    { chips: ["there", "a witness", "Is", "today?"], ans: "Is there a witness today?",
-      whyEn: "Singular question: Is + there + a witness + time?",
-      why: "سؤال عن مفرد: Is there ثم الاسم المفرد a witness.", errCat: "word_order" }
+    { chips: ["any", "on your street?", "Are there", "tall trees"], ans: "Are there any tall trees on your street?",
+      whyEn: "Plural question: Are there + any + plural noun (tall trees) + place?",
+      why: "سؤال عن الجمع: Are there ثم any ثم الاسم الجمع tall trees ثم المكان.", errCat: "word_order" },
+    { chips: ["are", "very sweet.", "apples", "These"], ans: "These apples are very sweet.",
+      whyEn: "Plural pointing word (These) + plural noun (apples) + are + adjective (very sweet).",
+      why: "اسم الإشارة للجمع These ثم الاسم الجمع apples ثم are ثم الصفة very sweet.", errCat: "word_order" },
+    { chips: ["one", "in our town.", "There is", "big hospital"], ans: "There is one big hospital in our town.",
+      whyEn: "There is + singular noun (one big hospital) + place (in our town).",
+      why: "There is مع المفرد one big hospital ثم المكان in our town.", errCat: "word_order" },
+    { chips: ["there", "a bank", "Is", "near the station?"], ans: "Is there a bank near the station?",
+      whyEn: "Singular question: Is + there + a bank + place?",
+      why: "سؤال عن مفرد: Is there ثم الاسم المفرد a bank ثم المكان.", errCat: "word_order" }
   ],
 
   /* ---------- المرحلة 4: الاستماع على ثلاث مراحل (مقطع حقيقي من ELLLO، ونصه المكتوب في صفحة المصدر) ---------- */
@@ -434,12 +411,12 @@ LESSONS.u0l2 = {
       q: "سؤال الفكرة العامة: ما الفرق بين المدينتين؟",
       optsEn: [
         "Both hometowns are big cities with a lot of nightlife",
-        "Sarah's hometown is a big city, and John's hometown is a small town",
+        "Sarah's hometown is a city, and John's hometown is a small town",
         "Sarah and John live in the same small town"
       ],
       opts: [
         "المدينتان كبيرتان وفيهما حياة ليلية كثيرة",
-        "مدينة سارة كبيرة، ومدينة جون بلدة صغيرة",
+        "موطن سارة مدينة، وموطن جون بلدة صغيرة",
         "سارة وجون يسكنان البلدة الصغيرة نفسها"
       ],
       a: 1,
@@ -447,13 +424,13 @@ LESSONS.u0l2 = {
       reveal: "مدينة سارة يسكنها نحو 80 ألف شخص، وبلدة جون يسكنها نحو 5 آلاف."
     },
     insight: {
-      titleEn: "There is / There are in the Clip",
-      titleAr: "لاحظ there is وthere are في المقطع",
-      l1En: "A singular noun comes after 'there is / there isn't / is there':",
-      ex1: "There is a river. · There isn't a mall. · Is there a park?",
+      titleEn: "Listen for These Patterns",
+      titleAr: "استمع لهذه الأنماط",
+      l1En: "Example sentences about the two towns. A singular noun comes after 'there is / there isn't / is there':",
+      ex1: "There is a bowling alley in John's town. · There isn't a shopping mall there. · Is there a high school? Yes, there is one.",
       l2En: "A plural noun comes after 'there are / there aren't / are there'. In fast speech you may hear 'there's' with a plural noun, but in writing always use 'there are'.",
-      ex2: "There are many trees. · There aren't any mountains. · Are there any lakes?",
-      arHtml: "<p><b>انتبه:</b> بعد there is وthere isn't وis there يأتي اسم مفرد، وبعد there are وthere aren't وare there يأتي اسم جمع.</p><p>وقد تسمع في الكلام السريع there's مع اسم جمع، وهذا يقع في الحديث العفوي، أما في الكتابة فاكتب there are مع الجمع دائمًا.</p>"
+      ex2: "There are about 80,000 people in Sarah's city. · There aren't any nightclubs there. · Are there any mountains near John's town? No, there aren't.",
+      arHtml: "<p><b>انتبه:</b> بعد there is وthere isn't وis there يأتي اسم مفرد، وبعد there are وthere aren't وare there يأتي اسم جمع.</p><p>وقد تسمع في الكلام السريع there's مع اسم جمع، وهذا يقع في الحديث العفوي، أما في الكتابة فاكتب there are مع الجمع دائمًا.</p><p>وهذه جمل أمثلة كتبناها عن البلدتين، وليست كلام المتحدثين بنصه.</p>"
     },
     questions: [
       { q: "Where is Sarah's hometown?", opts: ["London, England", "Dallas, Texas", "Eau Claire, Wisconsin"], a: 2,
@@ -484,20 +461,22 @@ LESSONS.u0l2 = {
   },
 
   writing: {
-    taskEn: "Write at least 4 separate sentences about your study room, law office, or a courtroom: use 'There is' (singular), 'There are' (plural), and 'This / These' with LESSON words.",
-    task: "اكتب 4 جمل منفصلة على الأقل تصف فيها مكتبك أو قاعة المحكمة أو غرفتك الدراسية: استخدم There is للمفرد، وThere are للجمع، وThis / These مع كلمات الدرس.",
+    taskEn: "Write at least 4 separate sentences about your hometown, your university, or a courtroom: use 'There is' (singular), 'There are' (plural), and 'This / These' with lesson words.",
+    task: "اكتب 4 جمل منفصلة على الأقل تصف فيها مدينتك أو جامعتك أو قاعة محكمة: استخدم There is للمفرد، وThere are للجمع، وThis / These مع كلمات الدرس.",
     checks: [
       { k: "sentences", tEn: "At least 4 separate sentences (end each with a period .)", t: "4 جمل منفصلة على الأقل (بنقطة في نهاية كل جملة)",
         ok: function(a){ return a.sentences >= 4; } },
-      { k: "thereIs", tEn: "At least 1 singular sentence with 'There is' or 'This … is'", t: "جملة مفردة بـ There is أو This … is", ex: "There is one judge in the court. · This folder is ready.",
-        ok: function(a, text){ return /\b(?:there\s+is|there's|this\s+[a-z]+\s+is|that\s+[a-z]+\s+is)\b/i.test(String(text || '')); } },
-      { k: "thereAre", tEn: "At least 1 plural sentence with 'There are' or 'These … are'", t: "جملة جمع بـ There are أو These … are", ex: "There are two cases today. · These folders are ready.",
-        ok: function(a, text){ return /\b(?:there\s+are|there\s+aren't|are\s+there|these\s+[a-z]+(?:\s+[a-z]+)?\s+are|those\s+[a-z]+(?:\s+[a-z]+)?\s+are)\b/i.test(String(text || '')); } },
-      { k: "vocab", tEn: "At least 3 words/phrases from today's lesson", t: "3 كلمات أو عبارات من درس اليوم", ex: "case · judge · witness · folder · seat · mistake · ready · go to court",
-        ok: function(a){ return a.used.length >= 3; } }
+      { k: "thereIs", tEn: "At least 1 singular sentence with 'There is' or 'This … is'", t: "جملة مفردة بـ There is أو This … is", ex: "There is one big park in my city. · This room is quiet.",
+        ok: function(a, text){ return /\b(?:there\s+is|there['’]s|there\s+isn['’]t|is\s+there|(?:this|that)\s+[a-z]+(?:\s+[a-z]+)?\s+is)\b/i.test(String(text || '')); } },
+      { k: "thereAre", tEn: "At least 1 plural sentence with 'There are' or 'These … are'", t: "جملة جمع بـ There are أو These … are", ex: "There are two libraries. · These seats are free.",
+        ok: function(a, text){ return /\b(?:there\s+are|there\s+aren['’]t|are\s+there|these\s+[a-z]+(?:\s+[a-z]+)?\s+are|those\s+[a-z]+(?:\s+[a-z]+)?\s+are)\b/i.test(String(text || '')); } },
+      { k: "vocab", tEn: "At least 2 words/phrases from today's lesson", t: "كلمتان أو عبارتان من درس اليوم", ex: "case · judge · witness · folder · seat · mistake · ready · go to court",
+        ok: function(a){ return a.used.length >= 2; } }
     ],
-    modelMarked: "<<s:There are>> two important {cases|case} on my schedule today. <<s:This>> blue {folder} <<s:is>> for the morning {case}, and all the [[documents|مستندات]] <<s:are>> {ready}. <<s:There aren't>> any {mistakes|mistake} in the [[pages|صفحات]]. At nine o'clock, I <<c:{go to court}>> with my [[supervisor|مشرف]], and <<s:there are>> empty {seats|seat} for the {witnesses|witness}.",
-    model: "There are two important cases on my schedule today. This blue folder is for the morning case, and all the documents are ready. There aren't any mistakes in the pages. At nine o'clock, I go to court with my supervisor, and there are empty seats for the witnesses."
+    modelMarked: "<<s:There are>> two big [[libraries|مكتبات]] at my [[university|جامعة]]. <<s:There is>> one [[quiet|هادئة]] [[study room|غرفة مذاكرة]] on the [[first floor|الطابق الأول]]. <<s:This>> room has forty {seats|seat}, and it <<s:is>> {ready} for students at seven o'clock. <<s:These>> {seats|seat} <<s:are>> always [[full|ممتلئة]] before [[exams|الاختبارات]], so I go [[early|مبكرًا]].",
+    model: "There are two big libraries at my university. There is one quiet study room on the first floor. This room has forty seats, and it is ready for students at seven o'clock. These seats are always full before exams, so I go early.",
+    legendEn: "Light blue = There is / There are, This / These and the verb that matches them (is / are)",
+    legendAr: "الأزرق الفاتح لـ There is / There are وThis / These وما يطابقها من is / are."
   },
 
   quiz: [
@@ -507,30 +486,30 @@ LESSONS.u0l2 = {
     { s: "These two commercial cases ___ very important.", opts: ["is", "are", "does"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'These two commercial cases' is plural → are.",
       why: "الفاعل جمع (These two commercial cases) فيأخذ are.", errCat: "agreement" },
-    { s: "There ___ one judge and two lawyers in the room.", opts: ["is", "are", "have"], a: 0, tag: "Grammar · قواعد",
-      whyEn: "'one judge' immediately after 'There' is singular → There is.",
-      why: "الاسم المباشر بعد There مفرد (one judge) فنستخدم There is.", errCat: "agreement" },
-    { s: "Which sentence is grammatically correct?", opts: ["These folders is ready.", "This folders are ready.", "These folders are ready."], a: 2, tag: "Grammar · قواعد",
-      whyEn: "Plural 'These' + plural 'folders' + plural 'are'.",
-      why: "نطابق اسم الإشارة للجمع These مع الاسم الجمع folders والفعل are.", errCat: "agreement" },
-    { s: "There ___ many people waiting outside the courtroom.", opts: ["is", "are", "does"], a: 1, tag: "Grammar · قواعد",
-      whyEn: "'people' is a plural noun → There are.",
-      why: "كلمة people جمع، فنستخدم There are.", errCat: "agreement" },
-    { s: "Which sentence has correct adjective grammar?", opts: ["We have two importants cases.", "We have two important cases.", "We have two importantes cases."], a: 1, tag: "Grammar · قواعد",
-      whyEn: "Adjectives ('important') never take a plural -s in English.",
-      why: "الصفات في الإنجليزية لا تُجمع بحرف s.", errCat: "agreement" },
+    { s: "There ___ two pharmacies and a bakery near the university.", opts: ["is", "are", "have"], a: 1, tag: "Grammar · قواعد",
+      whyEn: "The noun right after 'There' is plural (two pharmacies) → There are.",
+      why: "الاسم الذي يلي There مباشرة جمع (two pharmacies)، فنستخدم There are.", errCat: "agreement" },
+    { s: "Which sentence is grammatically correct?", opts: ["These boxes is heavy.", "This boxes are heavy.", "These boxes are heavy."], a: 2, tag: "Grammar · قواعد",
+      whyEn: "Plural 'These' + plural 'boxes' + plural 'are'.",
+      why: "نطابق اسم الإشارة للجمع These مع الاسم الجمع boxes والفعل are.", errCat: "agreement" },
+    { s: "There ___ a lot of people at the beach in Jeddah on Fridays.", opts: ["is", "are", "does"], a: 1, tag: "Grammar · قواعد",
+      whyEn: "'people' is plural (one person → many people) → There are.",
+      why: "كلمة people جمع (مفردها person)، فنستخدم There are.", errCat: "agreement" },
+    { s: "Which sentence has correct adjective grammar?", opts: ["My cousins have two smalls cats.", "My cousins have two small cats.", "My cousins have two smalles cats."], a: 1, tag: "Grammar · قواعد",
+      whyEn: "Adjectives ('small') never take a plural -s in English: two small cats.",
+      why: "الصفات في الإنجليزية لا تُجمع بحرف s؛ نقول two small cats.", errCat: "agreement" },
     { s: "___ contract on my desk needs a signature.", opts: ["This", "These", "Those"], a: 0, tag: "Grammar · قواعد",
       whyEn: "'contract' is singular and the verb is 'needs' → This contract.",
       why: "كلمة contract مفرد والفعل بعدها للمفرد (needs)، فنختار This.", errCat: "agreement" },
-    { s: "The ___ saw the accident and spoke to the judge.", opts: ["folder", "witness", "seat"], a: 1, tag: "Vocabulary · مفردات",
-      whyEn: "A 'witness' is a person who sees an event and testifies in court.",
-      why: "الشاهد (witness) هو من رأى الحادثة وأدلى بشهادته أمام القاضي.", errCat: "vocab" },
+    { s: "The police officer asked the ___ to describe the man he saw.", opts: ["folder", "witness", "seat"], a: 1, tag: "Vocabulary · مفردات",
+      whyEn: "A 'witness' is a person who saw something happen and can describe it.",
+      why: "الشاهد (witness) هو من رأى ما حدث ويقدر أن يصفه.", errCat: "vocab" },
     { s: "Please check the document carefully so there aren't any ___.", opts: ["mistakes", "judges", "seats"], a: 0, tag: "Vocabulary · مفردات",
       whyEn: "'mistakes' means errors in the document.",
       why: "mistakes تعني أخطاء في المستند.", errCat: "vocab" },
-    { s: "The lawyers ___ every morning at nine to present their cases.", opts: ["go to court", "go to the folder", "make a witness"], a: 0, tag: "Legal Track · المسار القانوني",
-      whyEn: "'go to court' is the legal phrase for attending court hearings.",
-      why: "العبارة القانونية الصحيحة للذهاب للتقاضي وحضور الجلسات هي go to court.", errCat: "vocab" }
+    { s: "The shop doesn't want to return my father's money for a broken TV, so he will ___.", opts: ["go to court", "go to bed", "go to school"], a: 0, tag: "Legal Track · المسار القانوني",
+      whyEn: "'go to court' means ask a judge to decide a problem (no 'the'). 'Go to bed' and 'go to school' don't fit here.",
+      why: "go to court تعني اللجوء إلى القضاء ليحكم القاضي (بدون the)، ولا يناسب السياق go to bed ولا go to school.", errCat: "vocab" }
   ]
 };
 })();

@@ -1,20 +1,20 @@
 /* ===== الأسبوع التأسيسي (الوحدة 0) · الدرس 5: Spelling Patterns in Action — Core Spelling & Review (6 مراحل · قراءة + كتابة) ===== */
 (function(){
-var SPELL_SVG = '<svg class="tl" viewBox="0 0 340 168" role="img" aria-label="4 Core Spelling Patterns from Diagnostic: 1) Keep y + ing (studying), 2) Two vowels + 1 consonant + ing (raining), 3) Drop silent e + ing (writing), 4) Suffix -ful has one l (beautiful, helpful)" direction="ltr">' +
+var SPELL_SVG = '<svg class="tl" viewBox="0 0 340 168" role="img" aria-label="Four spelling fixes from the diagnostic test: keep y before -ing (studying), no double letter after two vowels (raining), drop the silent e (writing), and -ful has one l (careful, beautiful)" direction="ltr">' +
   '<rect x="10" y="10" width="154" height="68" rx="12" fill="#E8EEF5" stroke="#2C4A6E" stroke-width="1.6"/>' +
-  '<text x="20" y="30" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.5" fill="#2C4A6E">1) Keep "y" + ing</text>' +
+  '<text x="20" y="30" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.5" fill="#2C4A6E">Keep "y" + ing</text>' +
   '<text x="20" y="50" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.5" fill="#2A7454">✓ study → studying</text>' +
   '<text x="20" y="66" font-family="Quicksand, sans-serif" font-weight="700" font-size="10.5" fill="#A8432E">✗ studing</text>' +
   '<rect x="176" y="10" width="154" height="68" rx="12" fill="#E8EEF5" stroke="#2C4A6E" stroke-width="1.6"/>' +
-  '<text x="186" y="30" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.5" fill="#2C4A6E">2) 2 Vowels → No Double</text>' +
+  '<text x="186" y="30" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.5" fill="#2C4A6E">2 Vowels → No Double</text>' +
   '<text x="186" y="50" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.5" fill="#2A7454">✓ rain → raining</text>' +
   '<text x="186" y="66" font-family="Quicksand, sans-serif" font-weight="700" font-size="10.5" fill="#A8432E">✗ rainning</text>' +
   '<rect x="10" y="88" width="154" height="68" rx="12" fill="#F9EBE7" stroke="#B94A33" stroke-width="1.6"/>' +
-  '<text x="20" y="108" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.5" fill="#A8432E">3) Drop Silent "-e"</text>' +
+  '<text x="20" y="108" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.5" fill="#A8432E">Drop Silent "-e"</text>' +
   '<text x="20" y="128" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.5" fill="#2A7454">✓ write → writing</text>' +
   '<text x="20" y="144" font-family="Quicksand, sans-serif" font-weight="700" font-size="10.5" fill="#A8432E">✗ writeing / writting</text>' +
   '<rect x="176" y="88" width="154" height="68" rx="12" fill="#F9EBE7" stroke="#B94A33" stroke-width="1.6"/>' +
-  '<text x="186" y="108" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.5" fill="#A8432E">4) Suffix "-ful" (One L!)</text>' +
+  '<text x="186" y="108" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.5" fill="#A8432E">Suffix "-ful" (One L!)</text>' +
   '<text x="186" y="128" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.5" fill="#2A7454">✓ careful · beautiful</text>' +
   '<text x="186" y="144" font-family="Quicksand, sans-serif" font-weight="700" font-size="10.5" fill="#A8432E">✗ carefull · butefull</text>' +
   '</svg>';
@@ -39,7 +39,7 @@ LESSONS.u0l5 = {
   ],
   intro: {
     recall: {
-      dEn: "Recall and type key words from Lessons 1–4 from memory (draft, period, explain, legal right, witnesses).",
+      dEn: "Recall and type key words from Lessons 1–4 from memory (office, witnesses, traffic, draft, legal right).",
       d: "استرجع واكتب كلمات الدروس الأربعة السابقة من ذاكرتك لتثبيت الحفظ والإملاء.",
       items: [
         ["review", "5 active recall items across Foundation Lessons 1–4", "5 عناصر استرجاع نشط شاملة للدروس 1–4"],
@@ -57,11 +57,11 @@ LESSONS.u0l5 = {
       ]
     },
     grammar: {
-      dEn: "Master the 4 spelling patterns from your diagnostic test (studying, raining, writing, beautiful/careful) + full Foundation Week review.",
-      d: "أتقن أنماط الإملاء الأربعة التي ظهرت في الاختبار التشخيصي (studying, raining, writing, beautiful/careful) مع مراجعة شاملة للأسبوع التأسيسي.",
+      dEn: "Master 4 spelling patterns (-ing, double letters, -ful, -s/-es/-ies) that fix your diagnostic errors (studying, raining, writing, beautiful), plus a full Foundation Week review.",
+      d: "أتقن أربعة أنماط إملائية (ing، ومضاعفة الحرف الأخير، وful، وs/es/ies) تعالج أخطاء اختبارك التشخيصي (studying, raining, writing, beautiful)، مع مراجعة شاملة للأسبوع التأسيسي.",
       items: [
         ["book", "6 cards: 4 Spelling Patterns + Foundation Week Synthesis", "6 بطاقات: أنماط الإملاء الأربعة + خلاصة الأسبوع التأسيسي"],
-        ["quiz", "24 guided exercises combining Spelling, Be/Do, Agreement, Was/Were & Capitals", "24 تمرينًا متدرجًا تجمع الإملاء وقواعد التأسيس الأربع"]
+        ["quiz", "16 guided exercises (4 of each type) combining Spelling, Be/Do, Agreement, Was/Were & Capitals", "16 تمرينًا موجّهًا (4 من كل نمط) تجمع الإملاء وقواعد التأسيس الأربع"]
       ]
     },
     reading: {
@@ -95,61 +95,62 @@ LESSONS.u0l5 = {
     {
       id: "rc-0",
       promptAr: "مسودة أولى (كلمة من الدرس الرابع تبدأ بـ dr وتنتهي بـ ft)",
-      promptEn: "An initial version of a contract or email (first ___)",
+      promptEn: "An early version of an email or essay (first ___)",
       sentPre: "I wrote the first",
       sentPost: "of the email on Monday.",
       ans: ["draft"],
-      hint: "d r a _ t (5 letters)",
+      hint: "d _ _ _ t (5 letters)",
       spellNoteEn: "Spelled d-r-a-f-t.",
       spellNote: "تُكتب d-r-a-f-t.",
       errCat: "spelling"
     },
     {
       id: "rc-1",
-      promptAr: "يشرح / يوضّح (فعل حدث من الدرس الرابع يحتوي على المقطع plain)",
-      promptEn: "Verb meaning to make a rule or contract clear to someone",
-      sentPre: "Our lawyers",
-      sentPost: "every clause to the client.",
-      ans: ["explain"],
-      hint: "e x p l _ _ n (7 letters)",
-      spellNoteEn: "Spelled ex + plain (explain, with 'ai').",
-      spellNote: "تتكوّن من ex ثم plain بحرفي العلة ai في الوسط.",
+      promptAr: "مكتب (كلمة من الدرس الأول فيها حرف f مضاعف وحرف e صامت)",
+      promptEn: "A room where people work at desks (double 'f', silent 'e')",
+      sentPre: "My father's",
+      sentPost: "is on the tenth floor of a tall building.",
+      ans: ["office"],
+      hint: "o _ _ _ _ e (6 letters)",
+      spellNoteEn: "Spelled o-f-f-i-c-e: double 'f' and a silent 'e' at the end.",
+      spellNote: "تُكتب o-f-f-i-c-e: حرف f مضاعف وحرف e صامت في آخرها.",
       errCat: "spelling"
     },
     {
       id: "rc-2",
       promptAr: "حق قانوني (العبارة القانونية من الدرس الرابع: legal ___ — تذكّر الحرفين الصامتين gh)",
-      promptEn: "Legal phrase: Every citizen has a legal ___ (spelled with silent 'gh')",
-      sentPre: "Every client has a legal",
-      sentPost: "to read the contract.",
+      promptEn: "Legal phrase from Lesson 4: legal ___ (spelled with silent 'gh')",
+      sentPre: "If a new phone is broken, the buyer has a legal",
+      sentPost: "to get his money back.",
       ans: ["right", "legal right"],
-      hint: "r i _ _ t (5 letters)",
+      isLegal: true,
+      hint: "r _ _ _ t (5 letters)",
       spellNoteEn: "Remember the silent 'gh' in r-i-g-h-t (legal right).",
       spellNote: "لا تنسَ الحرفين الصامتين gh في كتابة r-i-g-h-t.",
       errCat: "spelling"
     },
     {
       id: "rc-3",
-      promptAr: "نقطة نهاية الجملة (.) في الإنجليزية الأمريكية (تبدأ بحرف p)",
-      promptEn: "The punctuation mark (.) at the end of a sentence",
-      sentPre: "Always put a",
-      sentPost: "at the end of each sentence.",
-      ans: ["period"],
-      hint: "p e r i _ d (6 letters)",
-      spellNoteEn: "Spelled p-e-r-i-o-d.",
-      spellNote: "تُكتب p-e-r-i-o-d.",
+      promptAr: "شهود (جمع witness من الدرس الثاني — ينتهي بـ ss فنضيف es)",
+      promptEn: "Plural of 'witness' (a word that ends in -ss)",
+      sentPre: "Three",
+      sentPost: "saw the fire at the market and called for help.",
+      ans: ["witnesses"],
+      hint: "w _ _ _ _ _ _ _ s (9 letters)",
+      spellNoteEn: "Nouns that end in -ss add -es in the plural: witness → witnesses.",
+      spellNote: "الاسم المنتهي بـ ss يُجمع بإضافة es: witness ← witnesses.",
       errCat: "spelling"
     },
     {
       id: "rc-4",
-      promptAr: "مهذّب / لبق (صفة من الدرس الرابع تنتهي بـ e صامتة)",
-      promptEn: "Respectful and courteous in speech or writing (starts with p)",
-      sentPre: "Your message to the judge is very",
-      sentPost: ".",
-      ans: ["polite"],
-      hint: "p o l i t _ (6 letters)",
-      spellNoteEn: "Spelled p-o-l-i-t-e with a silent -e at the end.",
-      spellNote: "تُكتب p-o-l-i-t-e مع حرف e صامت في آخرها.",
+      promptAr: "حركة المرور (كلمة من الدرس الثالث فيها حرف f مضاعف)",
+      promptEn: "The cars and buses on the roads (double 'f')",
+      sentPre: "The",
+      sentPost: "in Riyadh is usually heavy at seven in the morning.",
+      ans: ["traffic"],
+      hint: "t _ _ _ _ _ c (7 letters)",
+      spellNoteEn: "Spelled t-r-a-f-f-i-c: double 'f' and no 'k' at the end.",
+      spellNote: "تُكتب t-r-a-f-f-i-c: حرف f مضاعف، ولا نضيف k في آخرها.",
       errCat: "spelling"
     }
   ],
@@ -159,11 +160,11 @@ LESSONS.u0l5 = {
     headword: "document",
     pos: "legal phrase",
     ar: "مستند رسمي / وثيقة رسمية",
-    say: "أُوفِشَل دُوكْيُمَنْت",
+    say: "أَفِشَل دَاكْيُمَنْت",
     ex: "A birth certificate is an official document.",
     exAr: "شهادة الميلاد مستند رسمي.",
-    tipEn: "Article alert: 'official' starts with a vowel sound (o), so singular takes 'an': an official document (plural: official documents).",
-    tip: "انتبه: كلمة official تبدأ بصوت علة (o) فنضع قبلها في المفرد an (نقول an official document)، وفيها حرف f مكرر.",
+    tipEn: "Article alert: 'official' starts with a vowel sound, so singular takes 'an': an official document (plural: official documents).",
+    tip: "انتبه: كلمة official تبدأ بصوت علة، فنضع قبلها في المفرد an (نقول an official document)، وفيها حرف f مكرر.",
     legal: true,
     oxfordSlug: "document_1",
     wikiFiles: ["En-us-official.ogg", "En-us-document.ogg"],
@@ -196,7 +197,7 @@ LESSONS.u0l5 = {
       ex: "I study law in Riyadh, and my sister studies medicine.", exAr: "أنا أدرس القانون في الرياض، وأختي تدرس الطب.",
       tipEn: "Two key patterns: 1) With -ing, KEEP 'y' → studying. 2) With he/she/it, consonant + y → studies.",
       tip: "انتبه لقاعدتي الفعل study: ١) عند إضافة ing تبقى الـ y كما هي (studying)، ٢) مع he/she/it تتحول الـ y إلى ies (studies).",
-      oxfordSlug: "study_1",
+      oxfordSlug: "study_2",
       wikiFile: "En-us-study.ogg",
       wikiCredit: "File:En-us-study.ogg · Dvortygirl / Wikimedia Commons (CC BY-SA 3.0)" },
     { en: "write", pos: "verb", ar: "يكتب", say: "رَايْت",
@@ -210,7 +211,7 @@ LESSONS.u0l5 = {
       ex: "It rarely rains in Riyadh in the summer.", exAr: "نادرًا ما تمطر في الرياض صيفًا.",
       tipEn: "Diagnostic fix: 'rain' has TWO vowels (a + i) before 'n', so NEVER double the 'n' → raining (not rainning).",
       tip: "تصحيح مباشر من التشخيص: قبل حرف n يوجد حرفا علة (ai)، لذلك لا نضاعف الـ n أبدًا عند إضافة ing فنكتب raining.",
-      oxfordSlug: "rain_1",
+      oxfordSlug: "rain_2",
       wikiFile: "En-us-rain.ogg",
       wikiCredit: "File:En-us-rain.ogg · Dvortygirl / Wikimedia Commons (CC BY-SA 3.0)" },
     { en: "check", pos: "verb", ar: "يفحص / يراجع / يدقّق", say: "تْشِك",
@@ -223,30 +224,30 @@ LESSONS.u0l5 = {
   ],
 
   vocabGaps: [
-    { s: "A lawyer must be very ___ when reading the numbers in a contract.", opts: ["careful", "rain", "write"], a: 0,
-      whyEn: "'careful' means paying close attention so you don't make a mistake.",
-      why: "careful تعني حريصًا ودقيقًا (وتنتهي بلام واحدة).", errCat: "spelling" },
-    { s: "These grammar notes are very ___ for my university exam.", opts: ["useful", "rain", "study"], a: 0,
+    { s: "My grandfather is a very ___ driver; he always drives slowly.", opts: ["useful", "careful", "beautiful"], a: 1,
+      whyEn: "'careful' means paying attention so nothing goes wrong (spelled with one 'l').",
+      why: "careful تعني حريصًا منتبهًا حتى لا يقع خطأ، وتُكتب بلام واحدة.", errCat: "spelling" },
+    { s: "These grammar notes are very ___ for my university exam.", opts: ["useful", "careful", "beautiful"], a: 0,
       whyEn: "'useful' means helpful for doing or achieving something.",
       why: "useful تعني مفيدة ونافعة.", errCat: "vocab" },
-    { s: "Al-Ula has ___ mountains and ancient historical sites.", opts: ["beautiful", "careful", "check"], a: 0,
+    { s: "Al-Ula has ___ mountains and ancient historical sites.", opts: ["careful", "useful", "beautiful"], a: 2,
       whyEn: "'beautiful' (spelled b-e-a-u-t-i-f-u-l) describes places that look wonderful.",
       why: "beautiful تعني جميلة.", errCat: "spelling" },
-    { s: "Please ___ every name and date on the page before printing.", opts: ["check", "rain", "useful"], a: 0,
-      whyEn: "'check' means examine carefully to make sure it is accurate.",
-      why: "الفعل check يعني يراجع ويدقّق.", errCat: "vocab" },
-    { s: "My younger brother wants to ___ computer science at university.", opts: ["study", "careful", "beautiful"], a: 0,
+    { s: "Before you leave the house, ___ that the doors and windows are closed.", opts: ["check", "rain", "arrive"], a: 0,
+      whyEn: "'check' means look carefully to make sure something is right.",
+      why: "الفعل check يعني يتأكد ويراجع.", errCat: "vocab" },
+    { s: "My younger brother wants to ___ computer science at university.", opts: ["check", "study", "rain"], a: 1,
       whyEn: "'study' is the verb used with an academic subject.",
       why: "study هو الفعل بمعنى يدرس تخصصًا جامعيًا.", errCat: "vocab" },
     { s: "Look at the dark clouds! I think it is going to ___.", opts: ["rain", "write", "check"], a: 0,
       whyEn: "'rain' (r-a-i-n) refers to water falling from clouds.",
       why: "rain تعني تمطر.", errCat: "vocab" },
-    { s: "Every Friday, I ___ a short summary of the week's lessons.", opts: ["write", "useful", "careful"], a: 0,
+    { s: "Every Friday, I ___ a short summary of the week's lessons.", opts: ["arrive", "rain", "write"], a: 2,
       whyEn: "'write' is the action verb for producing text.",
       why: "write فعل حدث بمعنى يكتب.", errCat: "vocab" },
-    { s: "A passport or a court judgment is an ___.", opts: ["official document", "absent witness", "empty seat"], a: 0,
-      whyEn: "An 'official document' is a formal legal or government paper.",
-      why: "official document تعني مستندًا رسميًا أو وثيقة رسمية.", errCat: "vocab" }
+    { s: "To travel to another country, you need ___ such as a passport.", opts: ["a beautiful photo", "an official document", "a useful dictionary"], a: 1,
+      whyEn: "An 'official document', like a passport, is a formal paper from the government.",
+      why: "official document مستند رسمي تصدره الجهات الحكومية، كجواز السفر.", errCat: "vocab" }
   ],
 
   gCards: [
@@ -258,10 +259,12 @@ LESSONS.u0l5 = {
         '<p class="en-p" dir="ltr">Let\'s fix two of the most common spelling mistakes from the diagnostic test:</p>' +
         '<div class="xbox"><span class="xtag s" dir="ltr">Rule A: NEVER drop \"y\" before -ing · لا تحذف y أبدًا قبل ing</span><p class="xen">study + ing → <b>studying</b> (✗ NOT studing)<br>play + ing → <b>playing</b> · try + ing → <b>trying</b></p></div>' +
         '<div class="xbox"><span class="xtag c" dir="ltr">Rule B: Drop silent \"-e\" before -ing · احذف الـ e الصامتة فقط</span><p class="xen">write + ing → <b>writing</b> (✗ NOT writeing / writting)<br>prepare + ing → <b>preparing</b> · make + ing → <b>making</b></p></div>' +
+        '<p class="en-p" dir="ltr"><b>Note:</b> <b>am / is / are + verb-ing</b> (I am studying) is Present Continuous; you will study it in Unit 1.</p>' +
         SPELL_SVG,
       arHtml:
         '<p>١) حرف <b>y</b> لا يُحذف أبدًا عند إضافة <bdi class="en">ing</bdi>؛ لأن اجتماع حرفي <bdi class="en">ii</bdi> غير مقبول في الإنجليزية، فتبقى الـ <bdi class="en">y</bdi> كما هي: <b>studying</b>.</p>' +
-        '<p>٢) الفعل المنتهي بحرف <b>e</b> صامت نحذف منه الـ <bdi class="en">e</bdi> فقط دون مضاعفة الحرف الذي قبله: <b>writing</b>.</p>'
+        '<p>٢) الفعل المنتهي بحرف <b>e</b> صامت نحذف منه الـ <bdi class="en">e</bdi> فقط دون مضاعفة الحرف الذي قبله: <b>writing</b>.</p>' +
+        '<p>ملاحظة: <bdi class="en">am / is / are</bdi> مع الفعل المنتهي بـ <bdi class="en">ing</bdi> (مثل <bdi class="en">I am studying</bdi>) هو المضارع المستمر، وستدرسه في الوحدة 1.</p>'
     },
     {
       tEn: "Pattern 2: When to Double the Last Consonant",
@@ -300,7 +303,7 @@ LESSONS.u0l5 = {
         '<p class="en-p" dir="ltr">The exact same spelling rule works for <b>plural nouns</b> AND for <b>he / she / it verbs</b> in Present Simple:</p>' +
         '<ul class="spell" dir="ltr">' +
           '<li>1. Consonant + <b>y</b> → change <b>y</b> to <b>-ies</b>:<span class="s-en">study → he <b>studies</b> · city → two <b>cities</b> · company → <b>companies</b></span></li>' +
-          '<li>2. Vowel (a, e, o, u) + <b>y</b> → keep <b>y</b> and add <b>-s</b>:<span class="s-en">day → <b>days</b> · lawyer → <b>lawyers</b> · pay → he <b>pays</b></span></li>' +
+          '<li>2. Vowel (a, e, o, u) + <b>y</b> → keep <b>y</b> and add <b>-s</b>:<span class="s-en">day → <b>days</b> · key → <b>keys</b> · pay → he <b>pays</b></span></li>' +
           '<li>3. Endings <b>-ss, -sh, -ch, -x, -o</b> → add <b>-es</b>:<span class="s-en">witness → <b>witnesses</b> · watch → he <b>watches</b> · go → he <b>goes</b></span></li>' +
         '</ul>',
       arHtml:
@@ -313,12 +316,12 @@ LESSONS.u0l5 = {
       t: "أخطاء العرب الشائعة (مراجعة الأسبوع التأسيسي)",
       bilingual: true,
       enHtml:
-        '<h2 class="bi-h"><span class="en" dir="ltr">Foundation Week Checklist</span><small>الأخطاء التأسيسية الخمسة التي عالجناها هذا الأسبوع</small></h2>' +
+        '<h2 class="bi-h"><span class="en" dir="ltr">Foundation Week Checklist</span><small>الأخطاء التأسيسية الأربعة التي عالجناها هذا الأسبوع</small></h2>' +
         '<ul class="mist">' +
-          '<li><span class="no">L1 · Be vs. Do: I am prepare the files. / Are you agree?</span><span class="yes">I prepare the files. / Do you agree?</span><p>لا نضع <bdi class="en">am/is/are</bdi> قبل الفعل المجرد، ونسأل عن الأفعال بـ <bdi class="en">Do/Does</bdi>.</p></li>' +
-          '<li><span class="no">L2 · Agreement: Is there any mistakes? / These folders is ready.</span><span class="yes">Are there any mistakes? / These folders are ready.</span><p>نطابق الجمع مع <bdi class="en">Are there</bdi> ومع <bdi class="en">These … are</bdi>.</p></li>' +
-          '<li><span class="no">L3 · Was & Were: Yesterday I am busy. / Where was you?</span><span class="yes">Yesterday I was busy. / Where were you?</span><p>مع الماضي نستخدم <bdi class="en">was/were</bdi>، والضمير <bdi class="en">you</bdi> يأخذ <bdi class="en">were</bdi> دائمًا.</p></li>' +
-          '<li><span class="no">L4 & L5 · Capitals, Periods & Spelling: i am studing in riyadh, it is a butefull city</span><span class="yes">I am studying in Riyadh. It is a beautiful city.</span><p>نكتب <bdi class="en">I</bdi> والمدن بحرف كبير، ونفصل الجمل بنقطة، ونلتزم بأنماط <bdi class="en">studying / raining / writing / beautiful</bdi>.</p></li>' +
+          '<li><span class="no">L1 · Be vs. Do: I am prepare the files. / Are you agree?</span><span class="yes">I prepare the files. / Do you agree?</span><p class="en-m" dir="ltr">Never put <b>am / is / are</b> before a base verb, and ask about action verbs with <b>Do / Does</b>.</p><p>لا نضع <bdi class="en">am/is/are</bdi> قبل الفعل المجرد، ونسأل عن الأفعال بـ <bdi class="en">Do/Does</bdi>.</p></li>' +
+          '<li><span class="no">L2 · Agreement: Is there any mistakes? / These folders is ready.</span><span class="yes">Are there any mistakes? / These folders are ready.</span><p class="en-m" dir="ltr">Plural nouns take <b>Are there</b> and <b>These … are</b>.</p><p>نطابق الجمع مع <bdi class="en">Are there</bdi> ومع <bdi class="en">These … are</bdi>.</p></li>' +
+          '<li><span class="no">L3 · Was & Were: Yesterday I am busy. / Where was you?</span><span class="yes">Yesterday I was busy. / Where were you?</span><p class="en-m" dir="ltr">Use <b>was / were</b> for the past; <b>you</b> always takes <b>were</b>.</p><p>مع الماضي نستخدم <bdi class="en">was/were</bdi>، والضمير <bdi class="en">you</bdi> يأخذ <bdi class="en">were</bdi> دائمًا.</p></li>' +
+          '<li><span class="no">L4 & L5 · Capitals, Periods & Spelling: i am studing in riyadh, it is a butefull city</span><span class="yes">I am studying in Riyadh. It is a beautiful city.</span><p class="en-m" dir="ltr">Write <b>I</b> and city names with a capital letter, end each sentence with a period, and follow the spelling patterns (studying · raining · writing · beautiful).</p><p>نكتب <bdi class="en">I</bdi> والمدن بحرف كبير، ونفصل الجمل بنقطة، ونلتزم بأنماط <bdi class="en">studying / raining / writing / beautiful</bdi>.</p></li>' +
         '</ul>'
     },
     {
@@ -327,10 +330,12 @@ LESSONS.u0l5 = {
       enHtml:
         '<h2 class="bi-h"><span class="en" dir="ltr">Ready for Unit 1!</span><small>جاهز للوحدة الأولى!</small></h2>' +
         '<div class="sumc" dir="ltr"><h3>4 Golden Spelling Patterns · ٤ أنماط إملائية ذهبية</h3>' +
-          '<p><b>studying · raining · writing</b><span>Keep y + ing · No double after 2 vowels · Drop silent -e</span></p>' +
-          '<p><b>helpful · careful · useful · beautiful</b><span>Suffix -ful always ends with ONE "l"</span></p>' +
+          '<p><b>1 · studying · writing</b><span>-ing: keep "y", drop the silent "-e"</span></p>' +
+          '<p><b>2 · sitting · raining</b><span>Double after 1 vowel, never after 2 vowels</span></p>' +
+          '<p><b>3 · careful · beautiful</b><span>Suffix -ful always ends with ONE "l"</span></p>' +
+          '<p><b>4 · studies · keys · watches</b><span>-s / -es / -ies for plurals and he / she / it verbs</span></p>' +
         '</div>' +
-        '<p class="en-p" dir="ltr">Complete these 24 synthesis exercises to finish Foundation Week!</p>',
+        '<p class="en-p" dir="ltr">Complete these 16 guided synthesis exercises to finish Foundation Week!</p>',
       arHtml:
         '<p>بإتقانك لهذه الأنماط الأربعة وقواعد الأسبوع التأسيسي تكون جاهزًا تمامًا للانطلاق في الوحدة الأولى (المضارع البسيط والمضارع المستمر).</p>'
     }
@@ -343,24 +348,12 @@ LESSONS.u0l5 = {
     { s: "Choose the correct -ing spelling of 'rain':", opts: ["rainning", "raining", "raning"], a: 1,
       whyEn: "'rain' has two vowels (a + i) before 'n', so do NOT double the 'n': raining.",
       why: "قبل حرف n حرفا علة (ai)، فلا نضاعف النون أبدًا: raining.", errCat: "spelling" },
-    { s: "Choose the correct -ing spelling of 'write':", opts: ["writeing", "writting", "writing"], a: 2,
-      whyEn: "Drop silent '-e' without doubling 't': write → writing.",
-      why: "نحذف الـ e الصامتة دون مضاعفة حرف t: writing.", errCat: "spelling" },
-    { s: "Choose the correct spelling of the adjective:", opts: ["careful", "carefull", "carfull"], a: 0,
-      whyEn: "Adjectives ending in '-ful' always have ONE 'l': careful.",
-      why: "المقطع -ful في نهاية الصفات يُكتب بلام واحدة: careful.", errCat: "spelling" },
     { s: "Choose the correct spelling of the adjective meaning 'pretty / lovely':", opts: ["butefull", "beautifull", "beautiful"], a: 2,
       whyEn: "Spelled b-e-a-u-t-i-f-u-l with one 'l' at the end.",
       why: "تُكتب beautiful وتنتهي بلام واحدة.", errCat: "spelling" },
-    { s: "My sister ___ law at King Saud University.", opts: ["studys", "studies", "is study"], a: 1,
+    { s: "My sister ___ medicine at King Saud University.", opts: ["studys", "studies", "is study"], a: 1,
       whyEn: "'study' ends in consonant + y → change y to -ies with 'she' (studies).",
-      why: "الفعل study ينتهي بـ y مسبوقة بساكن، فتتحول مع المفرد الغائب إلى studies.", errCat: "spelling" },
-    { s: "This passport is ___ official document.", opts: ["a", "an"], a: 1,
-      whyEn: "'official' begins with a vowel sound (o), so use 'an official document'.",
-      why: "كلمة official تبدأ بصوت علة، فنضع قبلها في المفرد an.", errCat: "articles_prep" },
-    { s: "___ there any mistakes in these official documents?", opts: ["Is", "Are"], a: 1,
-      whyEn: "Review (L2): 'mistakes' is plural → Are there any mistakes…?",
-      why: "مراجعة الدرس 2: كلمة mistakes جمع، فنسأل بـ Are there.", errCat: "agreement" }
+      why: "الفعل study ينتهي بـ y مسبوقة بساكن، فتتحول مع المفرد الغائب إلى studies.", errCat: "spelling" }
   ],
 
   gB: [
@@ -370,54 +363,42 @@ LESSONS.u0l5 = {
     { s: "Look! It is rainning outside right now.", ok: false, fix: "Look! It is raining outside right now.",
       whyEn: "Do not double 'n' after two vowels 'ai': raining.",
       why: "لا نضاعف حرف n بعد حرفي العلة ai؛ الصواب raining.", errCat: "spelling" },
-    { s: "This legal dictionary is very usefull for trainees.", ok: false, fix: "This legal dictionary is very useful for trainees.",
+    { s: "My new phone has a very usefull camera.", ok: false, fix: "My new phone has a very useful camera.",
       whyEn: "Suffix '-ful' always has one 'l': useful.",
       why: "المقطع -ful يُكتب بلام واحدة دائمًا: useful.", errCat: "spelling" },
-    { s: "Yesterday, the two witnesses were very calm.", ok: true,
-      whyEn: "Review (L3): 'Yesterday' + plural 'witnesses' + 'were' + 'calm' is completely correct.",
-      why: "مراجعة الدرس 3: مطابقة الجمع في الماضي مع were وإملاء calm صحيحان.", errCat: "agreement" },
     { s: "He is check the official document every morning.", ok: false, fix: "He checks the official document every morning.",
       whyEn: "Review (L1): Never put 'is' before a base verb in Present Simple ('He checks').",
-      why: "مراجعة الدرس 1: لا نضع is قبل الفعل في المضارع البسيط؛ الصواب He checks.", errCat: "be_verb" },
-    { s: "These two cases is on Monday.", ok: false, fix: "These two cases are on Monday.",
-      whyEn: "Review (L2): Plural 'These two cases' requires 'are'.",
-      why: "مراجعة الدرس 2: الفاعل الجمع (These two cases) يأخذ are وليس is.", errCat: "agreement" }
+      why: "مراجعة الدرس 1: لا نضع is قبل الفعل في المضارع البسيط؛ الصواب He checks.", errCat: "be_verb" }
   ],
 
   gC: [
-    { pre: "Right now, Faisal is", verb: "study + ing", post: "for his law exam.", ans: ["studying"],
-      whyEn: "Keep 'y' when adding -ing: studying.",
-      why: "تبقى الـ y عند إضافة ing: studying.", errCat: "spelling" },
-    { pre: "I am", verb: "write + ing", post: "the final draft of the email now.", ans: ["writing"],
-      whyEn: "Drop silent '-e' in write: writing.",
-      why: "نحذف الـ e الصامتة من write فتصبح writing.", errCat: "spelling" },
+    { pre: "My brother is", verb: "write + ing", post: "a long message to his friend in Canada.", ans: ["writing"],
+      whyEn: "Drop the silent '-e' in write: writing (one 't').",
+      why: "نحذف الـ e الصامتة من write فتصبح writing بتاء واحدة.", errCat: "spelling" },
     { pre: "Take an umbrella because it is", verb: "rain + ing", post: "today.", ans: ["raining"],
       whyEn: "Two vowels 'ai' before 'n' → do not double 'n': raining.",
       why: "حرفا علة قبل n فلا نضاعفها: raining.", errCat: "spelling" },
-    { pre: "Please be", verb: "care + ful", post: "with these official documents.", ans: ["careful"],
+    { pre: "Please be", verb: "care + ful", post: "with the hot tea; it can burn you.", ans: ["careful"],
       whyEn: "Suffix -ful has one 'l': careful.",
       why: "المقطع ful بلام واحدة: careful.", errCat: "spelling" },
-    { pre: "There are three", verb: "witness — plural", post: "in Courtroom 2.", ans: ["witnesses"],
-      whyEn: "Nouns ending in -ss take -es in the plural: witnesses.",
-      why: "الاسم المنتهي بـ ss يُجمع بإضافة es: witnesses.", errCat: "spelling" },
-    { pre: "Yesterday, the clients", verb: "be", post: "at our office in Jeddah.", ans: ["were"],
-      whyEn: "Review (L3): 'Yesterday' + plural 'the clients' → were.",
-      why: "مراجعة الدرس 3: الفاعل جمع في الماضي فيأخذ were.", errCat: "agreement" }
+    { pre: "My mother washed all the", verb: "dish — plural", post: "after dinner.", ans: ["dishes"],
+      whyEn: "Nouns that end in -sh take -es in the plural: dishes.",
+      why: "الاسم المنتهي بـ sh يُجمع بإضافة es: dishes.", errCat: "spelling" }
   ],
 
   gD: [
-    { chips: ["is", "an official", "This contract", "document."], ans: "This contract is an official document.",
-      whyEn: "Subject (This contract) + is + an official document.",
-      why: "الفاعل المفرد This contract ثم is ثم an official document.", errCat: "word_order" },
+    { chips: ["keeps", "in a safe place.", "My father", "his official documents"], ans: "My father keeps his official documents in a safe place.",
+      whyEn: "Subject (My father) + verb (keeps) + object (his official documents) + place.",
+      why: "الفاعل My father ثم الفعل keeps ثم المفعول به his official documents ثم المكان.", errCat: "word_order" },
     { chips: ["careful", "Lawyers", "with numbers.", "are"], ans: "Lawyers are careful with numbers.",
       whyEn: "Plural subject (Lawyers) + are + adjective (careful) + with numbers.",
       why: "الفاعل الجمع Lawyers ثم فعل الكون are ثم الصفة careful.", errCat: "word_order" },
-    { chips: ["studying", "I am", "in Riyadh.", "law"], ans: "I am studying law in Riyadh.",
-      whyEn: "Subject + am + studying (with y) + law + in Riyadh (capital R).",
-      why: "الفاعل I am ثم studying ثم المفعول به والمكان.", errCat: "word_order" },
-    { chips: ["any mistakes", "There weren't", "yesterday.", "in the draft"], ans: "There weren't any mistakes in the draft yesterday.",
-      whyEn: "There weren't + plural (any mistakes) + place + past time (yesterday).",
-      why: "There weren't للجمع في الماضي ثم any mistakes ثم المكان والزمان.", errCat: "word_order" }
+    { chips: ["are", "Riyadh", "beautiful.", "The parks in"], ans: "The parks in Riyadh are beautiful.",
+      whyEn: "Plural subject (The parks in Riyadh) + are + adjective (beautiful, one 'l').",
+      why: "الفاعل الجمع The parks in Riyadh ثم are ثم الصفة beautiful بلام واحدة.", errCat: "word_order" },
+    { chips: ["There were", "at the wedding", "many guests", "last night."], ans: "There were many guests at the wedding last night.",
+      whyEn: "There were + plural noun (many guests) + place + past time (last night).",
+      why: "There were للجمع ثم many guests ثم المكان ثم الزمان الماضي last night.", errCat: "word_order" }
   ],
 
   reading: {
@@ -425,14 +406,16 @@ LESSONS.u0l5 = {
     from: "Faisal",
     fromMeta: "Faisal · Law Trainee, Riyadh",
     to: "Personal Study Log",
+    lg1: "be: is / was / were · فعل الكون",
+    lg2: "action verbs & -ing forms · أفعال الحدث وصيغة ing",
     targetSeconds: 100,
     introEn: "At the end of his first week at Al-Noor Law Office, Faisal wrote this Friday reflection combining everything he learned.",
     intro: "في نهاية أسبوعه الأول في مكتب النور للمحاماة، كتب فيصل هذه المذكرة يوم الجمعة جامعًا فيها كل ما تعلّمه في الأسبوع التأسيسي.",
     paras: [
       "Friday Reflection · Riyadh",
       "Today <<s:is>> Friday, and my [[first|الأول]] [[week|أسبوع]] at Al-Noor Law Office <<s:is>> [[complete|مكتمل]]. Right now, I<<c:'m sitting>> in a [[quiet|هادئ]] [[café|مقهى]] in Riyadh, and it <<c:is {raining|rain}>> [[outside|في الخارج]]. The [[weather|الطقس]] <<s:is>> {beautiful} today!",
-      "Every weekday, I <<c:{study}>> [[commercial|التجاري]] [[law|القانون]] and <<c:{check}>> client {folders|folder} at the office. Mr. Salman <<s:is>> a [[very|جدًا]] {helpful} [[supervisor|مشرف]]. He <<c:teaches>> me how to [[prepare|أجهّز]] an {official document} and how to <<c:{write}>> {short}, {clear} {sentences|sentence}.",
-      "{Yesterday} <<s:was>> Thursday, and <<s:there were>> two [[important|مهمتان]] {hearings|hearing} at the [[main|الرئيسية]] {court}. I <<s:was>> {careful} with [[every|كل]] {official document}. <<s:There weren't>> [[any|أي]] {mistakes|mistake} in our [[files|ملفات]], and the {judge} <<s:was>> very {calm}.",
+      "Every weekday, I <<c:{study}>> [[commercial|التجاري]] [[law|القانون]] and <<c:{check}>> client [[folders|ملفات]] at the office. Mr. Salman <<s:is>> a [[very|جدًا]] [[helpful|متعاون]] [[supervisor|مشرف]]. He <<c:teaches>> me how to [[prepare|أجهّز]] an {official document} and how to <<c:{write}>> [[short|قصيرة]], [[clear|واضحة]] [[sentences|جملًا]].",
+      "[[Yesterday|أمس]] <<s:was>> Thursday, and <<s:there were>> two [[important|مهمتان]] [[hearings|جلستا استماع]] at the [[main|الرئيسية]] [[court|المحكمة]]. I <<s:was>> {careful} with [[every|كل]] {official document}. <<s:There weren't>> [[any|أي]] [[mistakes|أخطاء]] in our [[files|ملفات]], and the [[judge|القاضي]] <<s:was>> very [[calm|هادئًا]].",
       "This month, I<<c:'m {studying|study}>> English <<t:every day>> because it <<s:is>> very {useful} for my [[future|مستقبلي]] [[career|المهني]]. My [[writing|كتابتي]] <<s:is>> [[much|كثيرًا]] [[better|أفضل]] now!"
     ],
     predict: {
@@ -441,12 +424,12 @@ LESSONS.u0l5 = {
       optsEn: ["It is raining outside, and the weather is beautiful", "It is very hot and dusty", "It is snowing heavily"],
       opts: ["تمطر في الخارج، والطقس جميل", "حار جدًا ومغبر", "يتساقط الثلج بكثافة"],
       a: 0,
-      revealEn: "Correct! Faisal writes: 'it is raining outside. The weather is beautiful today!'",
-      reveal: "صحيح! فيصل يقول: it is raining outside. The weather is beautiful today."
+      revealEn: "Faisal writes: '…it is raining outside. The weather is beautiful today!'",
+      reveal: "يقول فيصل: it is raining outside. The weather is beautiful today."
     },
     insight: {
-      titleEn: "All 4 Spelling Patterns in Faisal's Reflection",
-      titleAr: "لاحظ أنماط الإملاء الأربعة في مذكرة فيصل",
+      titleEn: "Spelling Patterns in Faisal's Reflection",
+      titleAr: "لاحظ أنماط الإملاء في مذكرة فيصل",
       l1En: "Look at how Faisal spells the -ing verbs in Paragraphs 1 and 4:",
       ex1: "sit → sitting (1 vowel) · rain → raining (2 vowels) · study → studying (keep y)",
       l2En: "And look at the four '-ful' adjectives across the text (all with ONE 'l'):",
@@ -462,7 +445,7 @@ LESSONS.u0l5 = {
         ev: "…and it is raining outside.",
         whyEn: "When a verb has two vowels before the final consonant (r-ai-n), we never double the consonant.",
         why: "لأن الفعل rain فيه حرفا علة (ai) قبل النون، فلا نضاعف النون عند إضافة ing.", errCat: "spelling" },
-      { q: "What does Mr. Salman teach Faisal to prepare?", opts: ["An official document and short, clear sentences", "Coffee for the café", "A trip to Antarctica"], a: 0,
+      { q: "What does Mr. Salman teach Faisal?", opts: ["How to prepare an official document and write short, clear sentences", "How to make coffee for the café", "How to plan a trip to Antarctica"], a: 0,
         ev: "He teaches me how to prepare an official document and how to write short, clear sentences.",
         whyEn: "He teaches him how to prepare an official document and write short, clear sentences.",
         why: "يعلّمه كيف يجهّز مستندًا رسميًا (an official document) وكيف يكتب جملًا قصيرة وواضحة.", errCat: "reading" },
@@ -482,9 +465,9 @@ LESSONS.u0l5 = {
         whyEn: "Every adjective ending in the suffix '-ful' is spelled with a single 'l'.",
         ev: "The weather is beautiful… a very helpful supervisor… I was careful… very useful…",
         why: "جميع الصفات المنتهية بالمقطع -ful تُكتب بلام واحدة فقط في آخرها.", errCat: "spelling" },
-      { q: "Why does Faisal write 'an official document' (with 'an') instead of 'a official document'?", opts: ["Because 'official' starts with a vowel sound (o)", "Because 'document' is plural", "Because 'official' is a verb"], a: 0,
+      { q: "Why does Faisal write 'an official document' (with 'an') instead of 'a official document'?", opts: ["Because 'official' starts with a vowel sound", "Because 'document' is plural", "Because 'official' is a verb"], a: 0,
         ev: "He teaches me how to prepare an official document…",
-        whyEn: "We use 'an' before singular countable phrases that start with a vowel sound (a, e, i, o, u).",
+        whyEn: "We use 'an' before a singular countable noun phrase that starts with a vowel sound.",
         why: "نستخدم الأداة an قبل الصفة أو الاسم المفرد الذي يبدأ بصوت علة مثل official.", errCat: "articles_prep" }
     ]
   },
@@ -496,14 +479,20 @@ LESSONS.u0l5 = {
       { k: "sentences", tEn: "At least 4 separate sentences (capital letter + period . for each)", t: "4 جمل منفصلة على الأقل (بحرف كبير ونقطة لكل جملة)",
         ok: function(a){ return a.sentences >= 4 && !a.runOn; } },
       { k: "past", tEn: "At least 1 past sentence with 'was / were / wasn't / weren't'", t: "جملة في الماضي بـ was أو were", ex: "Yesterday, I was at the university. · The folders were ready.",
-        ok: function(a, text){ return /\b(?:was|were|wasn't|weren't)\b/i.test(String(text || '')); } },
-      { k: "patterns", tEn: "At least 1 '-ful' adjective AND 1 correctly spelled '-ing' verb", t: "صفة منتهية بـ -ful (بلام واحدة) وفعل منتهٍ بـ -ing بإملاء صحيح", ex: "careful · useful · helpful · beautiful + studying · writing · checking · raining",
-        ok: function(a, text){ var s = String(text || ''); return /\b(?:careful|useful|helpful|beautiful)\b/i.test(s) && /\b(?:studying|writing|raining|checking|sitting|preparing|reading|learning|working)\b/i.test(s); } },
+        ok: function(a, text){ return /\b(?:was|were|wasn['’]t|weren['’]t)\b/i.test(String(text || '')); } },
+      { k: "patterns", tEn: "At least 1 '-ful' adjective AND 1 correctly spelled '-ing' verb", t: "صفة منتهية بـ -ful (بلام واحدة) وفعل منتهٍ بـ -ing بإملاء صحيح", ex: "careful · useful · helpful · beautiful + studying · writing · playing · swimming",
+        ok: function(a, text){ var s = String(text || '');
+          var NOT = ['interesting','boring','amazing','exciting','morning','evening','everything','nothing','something','anything','thing','king','spring','ring','sing','bring','during','ceiling','building','wedding','string','swing','wing','sibling','darling','studing','studeying','writting','writeing','rainning','raning','makeing','comeing','haveing','runing','siting','swiming','stoping','geting','puting'];
+          var ful = /\b[a-z]{2,}ful(?:ly)?\b/i.test(s);
+          var ing = (s.match(/\b[a-z]{2,}ing\b/gi) || []).some(function(w){ return NOT.indexOf(w.toLowerCase()) < 0; });
+          return ful && ing; } },
       { k: "vocab", tEn: "At least 3 words/phrases from today's lesson", t: "3 كلمات أو عبارات من درس اليوم", ex: "careful · useful · beautiful · study · write · rain · check · official document",
         ok: function(a){ return a.used.length >= 3; } }
     ],
-    modelMarked: "I <<c:{study}>> law in Riyadh, and I always <<c:{check}>> every {official document} at the office. {Yesterday}, I <<s:was>> at the court with my supervisor, and our folders <<s:were>> {ready}. I <<s:am>> very {careful} with my spelling when I <<c:{write}>> in English. This month, I<<c:'m {studying|study}>> with a {useful} course every day.",
-    model: "I study law in Riyadh, and I always check every official document at the office. Yesterday, I was at the court with my supervisor, and our folders were ready. I am very careful with my spelling when I write in English. This month, I'm studying with a useful course every day."
+    modelMarked: "I <<c:{study}>> law in Riyadh, and I always <<c:{check}>> every {official document} at the office. [[Yesterday|أمس]], I <<s:was>> at the court with my supervisor, and our folders <<s:were>> [[ready|جاهزة]]. I <<s:am>> very {careful} with my spelling when I <<c:{write}>> in English. This month, I<<c:'m {studying|study}>> English every day, and my course <<s:is>> very {useful}.",
+    model: "I study law in Riyadh, and I always check every official document at the office. Yesterday, I was at the court with my supervisor, and our folders were ready. I am very careful with my spelling when I write in English. This month, I'm studying English every day, and my course is very useful.",
+    legendEn: "Light blue = am / is / was / were · Terracotta = action verbs and -ing forms (study, check, write, 'm studying)",
+    legendAr: "الأزرق الفاتح لـ am / is / was / were، والطوبي لأفعال الحدث وصيغة ing (study وcheck وwrite و'm studying)."
   },
 
   quiz: [
@@ -519,24 +508,24 @@ LESSONS.u0l5 = {
     { s: "Review (L1): ___ you check the official documents every morning?", opts: ["Are", "Do", "Were"], a: 1, tag: "Foundation L1 · تأسيس ١",
       whyEn: "'check' is a base action verb + 'every morning' → Do you check…?",
       why: "الفعل check فعل حدث في المضارع البسيط مع you، فنسأل بـ Do.", errCat: "be_verb" },
-    { s: "Review (L2): ___ there any witnesses in the courtroom right now?", opts: ["Is", "Are", "Do"], a: 1, tag: "Foundation L2 · تأسيس ٢",
-      whyEn: "'witnesses' is plural → Are there any witnesses…?",
-      why: "كلمة witnesses جمع، لذلك نسأل بـ Are there.", errCat: "agreement" },
-    { s: "Review (L2): These court documents ___ ready for the judge.", opts: ["is", "are", "does"], a: 1, tag: "Foundation L2 · تأسيس ٢",
-      whyEn: "Plural 'These official documents' requires 'are'.",
-      why: "الفاعل جمع (These official documents) فيأخذ are.", errCat: "agreement" },
-    { s: "Review (L3): Where ___ you and your supervisor yesterday morning?", opts: ["was", "were", "are"], a: 1, tag: "Foundation L3 · تأسيس ٣",
-      whyEn: "'you and your supervisor' + 'yesterday morning' → were.",
-      why: "مع you والجمع في الماضي نستخدم were.", errCat: "agreement" },
-    { s: "Review (L4): Choose the sentence with correct word order, capitals, and punctuation:", opts: ["on sunday, i prepare the draft.", "On Sunday, I prepare the draft.", "On Sunday, Prepare I the draft."], a: 1, tag: "Foundation L4 · تأسيس ٤",
-      whyEn: "Capital 'On', capital 'Sunday', capital 'I', Subject + Verb order ('I prepare'), and a period.",
-      why: "بداية الجملة ويوم Sunday والضمير I بحرف كبير، والفاعل قبل الفعل، ونقطة في النهاية.", errCat: "word_order" },
-    { s: "Be ___ when you write the contract numbers so there are no mistakes.", opts: ["careful", "rain", "absent"], a: 0, tag: "Vocabulary · مفردات",
-      whyEn: "'careful' means attentive and accurate.",
-      why: "careful تعني حريصًا ودقيقًا.", errCat: "vocab" },
-    { s: "Every court judgment is ___ that must be signed and dated.", opts: ["an official document", "a short rain", "an absent seat"], a: 0, tag: "Legal Track · المسار القانوني",
-      whyEn: "'an official document' is a formal legal record.",
-      why: "an official document تعني مستندًا رسميًا.", errCat: "vocab" }
+    { s: "Review (L2): ___ there any free tables in the restaurant right now?", opts: ["Is", "Are", "Do"], a: 1, tag: "Foundation L2 · تأسيس ٢",
+      whyEn: "'tables' is plural → Are there any free tables…?",
+      why: "كلمة tables جمع، لذلك نسأل بـ Are there.", errCat: "agreement" },
+    { s: "Review (L2): These sandwiches ___ for our picnic tomorrow.", opts: ["is", "are", "does"], a: 1, tag: "Foundation L2 · تأسيس ٢",
+      whyEn: "Plural 'These sandwiches' requires 'are'.",
+      why: "الفاعل جمع (These sandwiches) فيأخذ are.", errCat: "agreement" },
+    { s: "Review (L3): ___ your grandparents in Taif last summer?", opts: ["Was", "Were", "Did"], a: 1, tag: "Foundation L3 · تأسيس ٣",
+      whyEn: "'your grandparents' is plural + 'last summer' (past) + no action verb → Were.",
+      why: "الفاعل جمع (your grandparents) والزمن ماضٍ ولا يوجد فعل حدث، فنسأل بـ Were.", errCat: "agreement" },
+    { s: "Review (L4): Choose the sentence with correct word order, capitals, and punctuation:", opts: ["on sunday, i visit my uncle in dammam.", "On Sunday, I visit my uncle in Dammam.", "On Sunday, Visit I my uncle in Dammam."], a: 1, tag: "Foundation L4 · تأسيس ٤",
+      whyEn: "Capital 'On', 'Sunday', 'I' and 'Dammam', Subject + Verb order ('I visit'), and a period at the end.",
+      why: "بداية الجملة ويوم Sunday والضمير I ومدينة Dammam بحرف كبير، والفاعل قبل الفعل، ونقطة في النهاية.", errCat: "word_order" },
+    { s: "I was ___ in my exam, so I checked every answer twice.", opts: ["useful", "careful", "beautiful"], a: 1, tag: "Vocabulary · مفردات",
+      whyEn: "'careful' means paying close attention so you don't make mistakes.",
+      why: "careful تعني حريصًا منتبهًا حتى لا تخطئ.", errCat: "vocab" },
+    { s: "A driver's license and an ID card are both ___.", opts: ["officials documents", "official documents", "official document"], a: 1, tag: "Legal Track · المسار القانوني",
+      whyEn: "Two things → plural noun 'documents'; the adjective 'official' never takes -s.",
+      why: "شيئان فنحتاج الاسم بالجمع documents، والصفة official لا تُجمع أبدًا.", errCat: "vocab" }
   ]
 };
 })();

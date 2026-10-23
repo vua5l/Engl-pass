@@ -9,6 +9,8 @@ var TL_SVG = '<svg class="tl" viewBox="0 0 340 176" role="img" aria-label="Timel
   '<line x1="30" y1="124" x2="326" y2="124" stroke="#5A6B7C" stroke-width="1.5"/><path d="M22 124l10-5v10z" fill="#5A6B7C"/>' +
   '<rect x="134" y="114" width="72" height="20" rx="10" fill="#F9EBE7" stroke="#B94A33" stroke-width="2"/>' +
   '<text x="326" y="158" text-anchor="end" font-family="Quicksand, Readex Pro, sans-serif" font-size="11.5" fill="#5A6B7C">Past · الماضي</text><text x="30" y="158" text-anchor="start" font-family="Quicksand, Readex Pro, sans-serif" font-size="11.5" fill="#5A6B7C">Future · المستقبل</text></svg>';
+/* صورة رأس إيميل نور (شمس منتصف الليل فوق القارة القطبية): خاصة بهذا الدرس، وتظهر عبر reading.art. */
+var SUN_SVG = '<svg viewBox="0 0 320 96" role="img" aria-label="Midnight Sun over Antarctic ice · شمس منتصف الليل فوق جليد القارة القطبية" direction="ltr"><rect width="320" height="64" fill="#2C4A6E"/><circle cx="238" cy="34" r="22" fill="#F2B857" opacity="0.22"/><circle cx="238" cy="34" r="12" fill="#F2B857"/><path d="M0 64 L28 57 L52 61 L86 52 L118 60 L150 55 L176 61 L208 54 L240 60 L272 53 L300 59 L320 56 L320 64 Z" fill="#F7F3EC"/><rect y="64" width="320" height="32" fill="#1E3550"/><path d="M228 72h20M222 79h32M231 86h14" stroke="#F2B857" stroke-width="2" stroke-linecap="round" opacity="0.7"/><text x="14" y="24" font-family="Quicksand, sans-serif" font-weight="700" font-size="11" fill="#F7F3EC">00:00 · 77°S · −5°C</text><text x="14" y="40" font-family="Quicksand, sans-serif" font-weight="700" font-size="8.5" letter-spacing="2" fill="#F2B857">MIDNIGHT SUN</text></svg>';
 
 LESSONS.u1l1 = {
   id: "u1l1",
@@ -131,7 +133,8 @@ LESSONS.u1l1 = {
       spellNoteEn: "Legal collocation: sign a contract (con-tract).",
       spellNoteAr: "المتلازمة القانونية: sign a contract (يوقّع عقدًا).",
       cat: "legal",
-      legal: true
+      legal: true,
+      isLegal: true
     },
     {
       id: "rc-4",
@@ -499,7 +502,23 @@ LESSONS.u1l1 = {
   reading: {
     title: "Hello from Antarctica!",
     from: "Noor", to: "Reem",
+    fromMeta: "Noor · Research Station, Antarctica",
+    art: SUN_SVG,
     targetSeconds: 110,
+    // أسماء ألوان التظليل في القراءة الثانية
+    lg1: "Present Simple · المضارع البسيط",
+    lg2: "Present Continuous · المستمر",
+    lg3: "Signal word · كلمة إشارة",
+    hlLabel: "Highlight tenses · إظهار الأزمنة",
+    insight: {
+      titleEn: "Tenses in the Email",
+      titleAr: "نظرة على الأزمنة في الإيميل",
+      l1En: "Noor uses Present Simple for her daily routine:",
+      ex1: "I wake up at 6:30 · I check the data",
+      l2En: "And Present Continuous for this month and right now:",
+      ex2: "I'm studying penguins · I'm sitting in the kitchen",
+      arHtml: '<p>نور تستخدم <b style="color:var(--dark)">المضارع البسيط</b> لروتينها اليومي، و<b style="color:var(--accent-ink)">المضارع المستمر</b> لما تفعله هذا الشهر وفي هذه اللحظة.</p>'
+    },
     introEn: "Noor is a young Saudi scientist from Jeddah working this summer at a research station in Antarctica. She wrote this email to her friend Reem.",
     intro: "نور عالِمة سعودية شابة من جدة، تعمل هذا الصيف في محطة أبحاث في القارة القطبية الجنوبية، وكتبت إيميلًا لصديقتها ريم.",
     // <<s:..>> مضارع بسيط · <<c:..>> مضارع مستمر · <<t:..>> كلمة إشارة زمنية
@@ -569,6 +588,9 @@ LESSONS.u1l1 = {
   writing: {
     taskEn: "Write at least 4 separate sentences about your daily routine and something different happening in your life this month.",
     task: "اكتب 4 جمل منفصلة على الأقل عن روتينك اليومي، وعن شيء مختلف يحدث في حياتك هذا الشهر.",
+    placeholder: "I usually …\nThis month, I'm …",
+    legendEn: "Light blue = Present Simple, Terracotta = Present Continuous, Dashed = Signal words.",
+    legendAr: "الأزرق الفاتح للمضارع البسيط، والطوبي للمستمر، والإطار المنقّط لكلمات الإشارة.",
     modelMarked: "I <<t:usually>> <<s:wake up>> at six o'clock and <<s:have>> breakfast with my family. I <<s:study>> at university, and I <<t:often>> <<s:spend>> the afternoon in the library. <<t:On Fridays>>, I <<s:visit>> my grandparents. <<t:This month>>, I<<c:'m learning>> English with a new course, and I<<c:'m reading>> short stories about different {cultures|culture}. <<t:Right now>>, I<<c:'m sitting>> in my room and <<c:writing>> this paragraph. I <<s:{miss}>> my friends from school, but I <<s:love>> my new routine!",
     model: "I usually wake up at six o'clock and have breakfast with my family. I study at university, and I often spend the afternoon in the library. On Fridays, I visit my grandparents. This month, I'm learning English with a new course, and I'm reading short stories about different cultures. Right now, I'm sitting in my room and writing this paragraph. I miss my friends from school, but I love my new routine!"
   },

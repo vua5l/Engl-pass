@@ -29,11 +29,11 @@ LESSONS.u0l4 = {
   ],
   intro: {
     recall: {
-      dEn: "Recall and type words from Lessons 1–3 from memory (yesterday, hearing, calm, hire a lawyer).",
-      d: "استرجع واكتب كلمات الدروس الثلاثة السابقة من ذاكرتك لتثبيت الإملاء والقواعد.",
+      dEn: "Recall and type words from Lesson 3 from memory (yesterday, hearing, calm, hire a lawyer).",
+      d: "استرجع واكتب كلمات الدرس الثالث من ذاكرتك لتثبيت الإملاء والقواعد.",
       items: [
-        ["review", "5 active recall items from Foundation Lessons 1–3", "5 عناصر استرجاع نشط من الدروس التأسيسية 1–3"],
-        ["pen", "Type from memory (yesterday, calm, absent, hire a lawyer)", "كتابة من الذاكرة لتثبيت الحروف الصامتة وأنماط الماضي"],
+        ["review", "5 active recall items from Foundation Lesson 3", "5 عناصر استرجاع نشط من الدرس التأسيسي الثالث"],
+        ["pen", "Type from memory (yesterday, calm, were, hire a lawyer)", "كتابة من الذاكرة لتثبيت الحروف الصامتة وأنماط الماضي"],
         ["spark", "Reinforces Was & Were agreement", "يثبّت قاعدة was وwere"]
       ]
     },
@@ -51,7 +51,7 @@ LESSONS.u0l4 = {
       d: "في الاختبار التشخيصي كتبت الضمير i صغيرًا ووصلت الأفكار في جملة واحدة طويلة بلا نقاط؛ في هذا الدرس نعالج النقطتين جذريًا.",
       items: [
         ["book", "6 grammar cards (English first, Arabic on tap)", "6 بطاقات شرح (الإنجليزي أولًا، والعربي عند الطلب)"],
-        ["quiz", "24 guided exercises across 4 types, one per screen", "24 تمرينًا موجّهًا على 4 أنماط، سؤال في كل شاشة"]
+        ["quiz", "16 guided exercises (4 of each type), one per screen", "16 تمرينًا موجّهًا (4 من كل نمط)، سؤال في كل شاشة"]
       ]
     },
     reading: {
@@ -68,7 +68,7 @@ LESSONS.u0l4 = {
       d: "تخيّل أنك جين: اكتب رسالة بيتر لماريا في 4 جمل منفصلة، مع التحقق من كل حرف كبير ونقطة.",
       items: [
         ["pen", "4 separate sentences—each starting with a Capital and ending with a Period (.)", "4 جمل منفصلة تبدأ كل منها بحرف كبير وتنتهي بنقطة (.)"],
-        ["spark", "Instant check for sentence starts, capital names and 'I', and sentence boundaries", "فحص فوري لبدايات الجمل والأسماء والضمير I وفصل الجمل"]
+        ["spark", "Instant check: capitals (sentence starts, names, 'I'), sentence ends, key facts and 2 lesson words", "فحص فوري للحروف الكبيرة (بدايات الجمل والأسماء والضمير I) ونهايات الجمل والمعلومات الأساسية وكلمتين من الدرس"]
       ]
     },
     quiz: {
@@ -86,10 +86,10 @@ LESSONS.u0l4 = {
       id: "rc-0",
       promptAr: "أمس / يوم أمس (كلمة الزمان الدالة على الماضي — تبدأ بحرف y)",
       promptEn: "The day before today (signals the Past tense)",
-      sentPre: "We were in Courtroom 4",
-      sentPost: "morning.",
+      sentPre: "We were at my uncle's farm",
+      sentPost: "afternoon, and the weather was perfect.",
       ans: ["yesterday"],
-      hint: "y e s t e r d _ y (9 letters)",
+      hint: "y _ _ _ _ _ _ _ y (9 letters)",
       spellNoteEn: "Spelled yes + ter + day (yesterday).",
       spellNote: "تتكوّن من المقاطع yes + ter + day (yesterday).",
       errCat: "spelling"
@@ -97,11 +97,11 @@ LESSONS.u0l4 = {
     {
       id: "rc-1",
       promptAr: "هادئ (صفة من الدرس الثالث فيها حرف l صامت يُكتب ولا يُنطق)",
-      promptEn: "Peaceful and not nervous (4 letters, silent 'l' before 'm')",
-      sentPre: "The judge was very",
-      sentPost: "during the hearing.",
+      promptEn: "Peaceful and quiet (4 letters, silent 'l' before 'm')",
+      sentPre: "The sea was very",
+      sentPost: "this morning, so we went out in a small boat.",
       ans: ["calm"],
-      hint: "c a _ m (4 letters)",
+      hint: "c _ _ m (4 letters)",
       spellNoteEn: "Remember the silent 'l' in c-a-l-m.",
       spellNote: "لا تنسَ حرف l الصامت في كتابة c-a-l-m.",
       errCat: "spelling"
@@ -109,23 +109,24 @@ LESSONS.u0l4 = {
     {
       id: "rc-2",
       promptAr: "يوكّل محاميًا (العبارة القانونية من الدرس الثالث: ___ a lawyer)",
-      promptEn: "Legal phrase: To pay a lawyer to represent you (___ a lawyer)",
-      sentPre: "The company decided to",
-      sentPost: "a lawyer last week.",
+      promptEn: "Legal phrase from Lesson 3: ___ a lawyer (pay a lawyer to help you)",
+      sentPre: "After the car accident, my cousin needed help, so he decided to",
+      sentPost: "a lawyer.",
       ans: ["hire", "hire a lawyer"],
-      hint: "h i r e (4 letters)",
+      isLegal: true,
+      hint: "h _ _ e (4 letters)",
       spellNoteEn: "Collocation: 'hire a lawyer' (h-i-r-e).",
       spellNote: "المتلازمة القانونية: hire a lawyer (يوكّل محاميًا).",
       errCat: "vocab"
     },
     {
       id: "rc-3",
-      promptAr: "فعل الكون في الماضي مع الضمير you: Where ___ you yesterday?",
-      promptEn: "Past form of 'be' with the subject 'you'",
-      sentPre: "Where",
-      sentPost: "you yesterday afternoon?",
-      ans: ["were"],
-      hint: "w e r e (4 letters)",
+      promptAr: "فعل الكون في الماضي مع الضمير you في بداية السؤال",
+      promptEn: "Past form of 'be' with 'you' (to start a question)",
+      sentPre: "",
+      sentPost: "you at home when I called yesterday?",
+      ans: ["Were"],
+      hint: "W _ _ e (4 letters)",
       spellNoteEn: "With 'you', always use 'were' in the past (never 'was').",
       spellNote: "الضمير you يأخذ were دائمًا في الماضي.",
       errCat: "agreement"
@@ -133,11 +134,11 @@ LESSONS.u0l4 = {
     {
       id: "rc-4",
       promptAr: "جلسة استماع في المحكمة (اسم يبدأ بـ hear وينتهي بـ ing)",
-      promptEn: "An official session in court before a judge (court ___)",
-      sentPre: "The commercial",
-      sentPost: "was at ten o'clock.",
+      promptEn: "A session at a court where a judge listens to both sides (hear + ing)",
+      sentPre: "The",
+      sentPost: "at the court finished early, so my father was home for lunch.",
       ans: ["hearing"],
-      hint: "h e a r i n g (7 letters)",
+      hint: "h _ _ _ _ _ g (7 letters)",
       spellNoteEn: "Spelled hear + ing (hearing).",
       spellNote: "تتكوّن من hear + ing (hearing بمعنى جلسة استماع قضائية).",
       errCat: "spelling"
@@ -155,7 +156,7 @@ LESSONS.u0l4 = {
     tipEn: "Spelling: 'right' has a silent 'gh' (r-i-g-h-t). Collocation: have a legal right / protect your legal rights.",
     tip: "انتبه للحرفين الصامتين gh في كلمة r-i-g-h-t، ونقول have a legal right (يملك حقًا قانونيًا).",
     legal: true,
-    oxfordSlug: "right_2",
+    oxfordSlug: "right_3",
     wikiFiles: ["En-us-legal.ogg", "En-us-right.ogg"],
     wikiCredit: "File:En-us-legal.ogg & File:En-us-right.ogg · Wikimedia Commons (CC BY-SA 3.0)"
   },
@@ -213,30 +214,30 @@ LESSONS.u0l4 = {
   ],
 
   vocabGaps: [
-    { s: "Always put a ___ at the end of a statement.", opts: ["period", "draft", "polite"], a: 0,
-      whyEn: "A 'period' (.) marks the end of a declarative sentence.",
-      why: "النقطة (period) توضع في نهاية الجملة التامة.", errCat: "spelling" },
-    { s: "Names of cities like Riyadh and Jeddah start with a ___ letter.", opts: ["short", "capital", "draft"], a: 1,
+    { s: "My teacher circled the end of my sentence because the ___ was missing.", opts: ["period", "capital", "draft"], a: 0,
+      whyEn: "A 'period' (.) is the mark at the end of a sentence.",
+      why: "النقطة (period) هي العلامة التي تنتهي بها الجملة.", errCat: "vocab" },
+    { s: "Names of cities like Riyadh and Jeddah start with a ___ letter.", opts: ["short", "capital", "polite"], a: 1,
       whyEn: "Proper nouns always begin with a 'capital letter'.",
       why: "أسماء المدن والأعلام تبدأ دائمًا بحرف كبير (capital letter).", errCat: "spelling" },
     { s: "Mr. Salman checked the first ___ of my email before I sent it.", opts: ["draft", "period", "capital"], a: 0,
       whyEn: "A 'first draft' is the initial version of a text that you review and edit.",
       why: "first draft تعني المسودة الأولى للنص قبل اعتماده وإرساله.", errCat: "vocab" },
-    { s: "Don't write one long line; break it into four ___ sentences.", opts: ["absent", "short", "traffic"], a: 1,
-      whyEn: "'short sentences' are concise and easy to read.",
-      why: "short sentences تعني جملًا قصيرة وواضحة.", errCat: "vocab" },
-    { s: "Can you ___ this legal term to me in simple English?", opts: ["explain", "period", "polite"], a: 0,
-      whyEn: "'explain … to me' is an action verb meaning make something clear.",
-      why: "الفعل explain يعني يشرح أو يوضّح.", errCat: "vocab" },
+    { s: "Don't write one long line; break it into four ___ sentences.", opts: ["late", "short", "absent"], a: 1,
+      whyEn: "'short sentences' are easy to read, the opposite of one long line.",
+      why: "short sentences جمل قصيرة سهلة القراءة، عكس السطر الطويل.", errCat: "vocab" },
+    { s: "Can you ___ this question to me? I don't understand it.", opts: ["explain", "prepare", "arrive"], a: 0,
+      whyEn: "'explain something to someone' means make it clear and easy to understand.",
+      why: "explain something to someone تعني يشرح الشيء ويوضّحه لشخص.", errCat: "vocab" },
     { s: "Every ___ in English needs a subject and a verb.", opts: ["sentence", "traffic", "capital"], a: 0,
       whyEn: "A 'sentence' is a complete grammatical unit with a subject and a verb.",
       why: "كل جملة (sentence) في الإنجليزية تحتاج إلى فاعل وفعل.", errCat: "word_order" },
-    { s: "Even when we disagree in court, our language is always ___.", opts: ["polite", "period", "draft"], a: 0,
-      whyEn: "'polite' means respectful and courteous.",
-      why: "polite صفة تعني مهذّبًا ومحترمًا.", errCat: "vocab" },
-    { s: "Every employee has the ___ to a safe workplace.", opts: ["legal right", "first draft", "capital letter"], a: 0,
-      whyEn: "'legal right' means a right protected by the law.",
-      why: "legal right تعني حقًا قانونيًا يحميه النظام.", errCat: "vocab" }
+    { s: "My grandmother always says 'please' and 'thank you'; she is very ___.", opts: ["late", "polite", "absent"], a: 1,
+      whyEn: "'polite' describes someone with good manners who speaks kindly.",
+      why: "polite تصف الشخص المهذّب الذي يتكلم بلطف.", errCat: "vocab" },
+    { s: "My sister is a nurse; she has a ___ to a day off every week.", opts: ["legal right", "first draft", "capital letter"], a: 0,
+      whyEn: "A 'legal right' is something the law allows or protects, like a weekly day off.",
+      why: "legal right حق يحميه القانون، كالحق في يوم إجازة أسبوعي.", errCat: "vocab" }
   ],
 
   gCards: [
@@ -244,7 +245,7 @@ LESSONS.u0l4 = {
       tEn: "Rule 1: Start with the Subject, Not the Verb",
       t: "القاعدة الأولى: ابدأ الجملة بالفاعل ثم الفعل",
       enHtml:
-        '<h2 class="bi-h"><span class="en" dir="ltr">Rule 1: Subject + Verb + Object</span><small>ابدأ بالفاعل دائمًا (لا توجد جملة فعلية في الإنجليزية)</small></h2>' +
+        '<h2 class="bi-h"><span class="en" dir="ltr">Rule 1: Subject + Verb + Object</span><small>ابدأ الجملة الخبرية بالفاعل</small></h2>' +
         '<p class="en-p" dir="ltr">In Arabic, we often start with the verb («يعمل فيصل في مكتب» / «وصل الموكّل»). In English statements, the <b>Subject MUST come first</b>, followed immediately by the <b>Verb</b>:</p>' +
         '<div class="xbox"><span class="xtag s" dir="ltr">Correct English Order · الترتيب الصحيح</span><p class="xen">Faisal works in an office. · The client arrived early.</p></div>' +
         '<div class="xbox"><span class="xtag c" dir="ltr">Arabic Verb-First Order · خطأ ترجمة الجملة الفعلية</span><p class="xen"><span class="no">Works Faisal in an office.</span><span class="no">Arrived the client early.</span></p></div>' +
@@ -288,7 +289,7 @@ LESSONS.u0l4 = {
       t: "القاعدة الرابعة: افصل الجمل بنقطة (.) ولا تصلها بلا توقف",
       enHtml:
         '<h2 class="bi-h"><span class="en" dir="ltr">Rule 4: Four Separate Sentences, Not One Long Line</span><small>افصل كل فكرة تامة بنقطة (.) وحرف كبير</small></h2>' +
-        '<p class="en-p" dir="ltr">In Arabic, we can connect 4 or 5 clauses with «و» and commas. In English, connecting complete sentences with only commas or endless \"and\"s is a <b>run-on error</b>. End each complete thought (10–14 words) with a <b>period (.)</b>:</p>' +
+        '<p class="en-p" dir="ltr">In Arabic, we can connect 4 or 5 clauses with «و» and commas. In English, connecting complete sentences with only commas or endless \"and\"s is a <b>run-on error</b>. End each complete thought with a <b>period (.)</b>:</p>' +
         '<div class="xbox"><span class="xtag c" dir="ltr">✗ Run-On Sentence (Diagnostic Error)</span><p class="xen"><span class="no">i am a law student in riyadh and i go to the office every morning, the lawyers are helpful and i prepare the files.</span></p></div>' +
         '<div class="xbox"><span class="xtag s" dir="ltr">✓ 4 Clear Separate Sentences</span><p class="xen"><span class="yes"><b>I</b> am a law student in <b>R</b>iyadh<b>.</b> <b>I</b> go to the office every morning<b>.</b> <b>T</b>he lawyers are very helpful<b>.</b> <b>I</b> prepare the client files<b>.</b></span></p></div>',
       arHtml:
@@ -316,7 +317,7 @@ LESSONS.u0l4 = {
           '<p><b>Word Order · ترتيب الجملة</b><span>Subject first + Verb second (never Verb + Subject, and no double subject)</span></p>' +
           '<p><b>Capitals & Periods · الحرف الكبير والنقطة</b><span>Capitalize 1st word, "I", Names/Cities/Days/Languages, and end each sentence with (.)</span></p>' +
         '</div>' +
-        '<p class="en-p" dir="ltr">Now let\'s practice: 24 guided exercises on Capitals, Periods & Word Order.</p>',
+        '<p class="en-p" dir="ltr">Now let\'s practice: 16 guided exercises on Capitals, Periods & Word Order.</p>',
       arHtml:
         '<p><b>الترتيب:</b> الفاعل أولًا ثم الفعل، دون تكرار الضمير بعد الفاعل.</p>' +
         '<p><b>الترقيم والحرف الكبير:</b> ابدأ كل جملة بحرف كبير، واكتب <b>I</b> والمدن والأيام واللغات بحرف كبير، وانهِ كل جملة بنقطة (<b>.</b>).</p>'
@@ -324,84 +325,60 @@ LESSONS.u0l4 = {
   ],
 
   gA: [
-    { s: "Choose the sentence with correct word order:", opts: ["Prepares Faisal the draft every morning.", "Faisal prepares the draft every morning."], a: 1,
-      whyEn: "English statements must begin with the Subject ('Faisal') before the verb ('prepares').",
-      why: "الجملة الإنجليزية تبدأ بالفاعل (Faisal) قبل الفعل (prepares).", errCat: "word_order" },
-    { s: "Choose the sentence without a double-subject mistake:", opts: ["The new client he has a legal right.", "The new client has a legal right."], a: 1,
-      whyEn: "Do not repeat 'he' after the subject 'The new client'.",
-      why: "لا نكرر الضمير he بعد ذكر الفاعل الظاهر The new client.", errCat: "word_order" },
-    { s: "Choose the sentence with correct capitalization:", opts: ["Yesterday, i was at the office in Riyadh.", "Yesterday, I was at the office in Riyadh."], a: 1,
-      whyEn: "The pronoun 'I' is always capitalized, even in the middle of a sentence.",
-      why: "ضمير المتكلم I يُكتب بحرف كبير دائمًا حتى في وسط الجملة.", errCat: "spelling" },
+    { s: "Choose the sentence with correct word order:", opts: ["Plays my brother football every Friday.", "My brother plays football every Friday."], a: 1,
+      whyEn: "English statements begin with the Subject ('My brother') before the verb ('plays').",
+      why: "الجملة الخبرية الإنجليزية تبدأ بالفاعل (My brother) قبل الفعل (plays).", errCat: "word_order" },
+    { s: "Choose the sentence without a double-subject mistake:", opts: ["My father drives us to school every day.", "My father he drives us to school every day."], a: 0,
+      whyEn: "Do not repeat 'he' after the subject 'My father'.",
+      why: "لا نكرر الضمير he بعد ذكر الفاعل الظاهر My father.", errCat: "word_order" },
     { s: "Choose the sentence with correct capitalization of days and languages:", opts: ["We study English on Tuesday.", "We study english on tuesday."], a: 0,
       whyEn: "Languages ('English') and days of the week ('Tuesday') always start with a capital letter.",
       why: "أسماء اللغات (English) وأيام الأسبوع (Tuesday) تبدأ بحرف كبير دائمًا.", errCat: "spelling" },
-    { s: "How should you punctuate these two complete thoughts?", opts: ["The draft is ready, it is on your desk.", "The draft is ready. It is on your desk."], a: 1,
+    { s: "How should you punctuate these two complete thoughts?", opts: ["My phone is old, it is very slow.", "My phone is old. It is very slow."], a: 1,
       whyEn: "Two separate complete sentences need a period (.) and a capital letter ('It').",
-      why: "جملتان تامتان ومستقلتان؛ نفصل بينهما بنقطة (.) ونبدأ الثانية بحرف كبير (It).", errCat: "word_order" },
-    { s: "Which word in this sentence needs a capital letter? 'Our lawyer travels to jeddah every Thursday.'", opts: ["lawyer", "jeddah → Jeddah", "every"], a: 1,
-      whyEn: "'Jeddah' is the name of a city, so it must begin with a capital 'J'.",
-      why: "كلمة Jeddah اسم مدينة، فيجب أن تبدأ بحرف كبير J.", errCat: "spelling" },
-    { s: "Choose the correct sentence:", opts: ["Our supervisor explains the rules clearly.", "Our supervisor he explains the rules clearly."], a: 0,
-      whyEn: "Subject ('Our supervisor') + verb ('explains') directly without 'he'.",
-      why: "نضع الفعل explains مباشرة بعد الفاعل Our supervisor دون إضافة he.", errCat: "word_order" },
-    { s: "What comes right after a period (.) when you start the next sentence?", opts: ["A lowercase letter", "A capital letter"], a: 1,
-      whyEn: "Every new sentence after a period (.) must start with a capital letter.",
-      why: "بداية كل جملة جديدة بعد النقطة يجب أن تكون بحرف كبير.", errCat: "spelling" }
+      why: "جملتان تامتان ومستقلتان؛ نفصل بينهما بنقطة (.) ونبدأ الثانية بحرف كبير (It).", errCat: "word_order" }
   ],
 
   gB: [
-    { s: "I read legal reports in English every Sunday.", ok: true,
-      whyEn: "Correct Subject–Verb order, capital 'I', capital 'English', capital 'Sunday', and a period at the end.",
-      why: "ترتيب الجملة سليم، والحروف الكبيرة في I وEnglish وSunday والنقطة في آخر الجملة كلها صحيحة.", errCat: "spelling" },
-    { s: "Works my brother in a court in Dammam.", ok: false, fix: "My brother works in a court in Dammam.",
-      whyEn: "Put the subject ('My brother') before the verb ('works').",
-      why: "لا نبدأ الجملة الخبرية بالفعل Works، بل بالفاعل My brother.", errCat: "word_order" },
-    { s: "The judge was calm, and i was ready.", ok: false, fix: "The judge was calm, and I was ready.",
+    { s: "Lives my grandmother in a small village near Taif.", ok: false, fix: "My grandmother lives in a small village near Taif.",
+      whyEn: "Put the subject ('My grandmother') before the verb ('lives').",
+      why: "لا نبدأ الجملة الخبرية بالفعل Lives، بل بالفاعل My grandmother.", errCat: "word_order" },
+    { s: "The exam was easy, and i finished early.", ok: false, fix: "The exam was easy, and I finished early.",
       whyEn: "Always capitalize the pronoun 'I'.",
       why: "يجب كتابة الضمير I بحرف كبير.", errCat: "spelling" },
-    { s: "The two witnesses they were in the waiting room.", ok: false, fix: "The two witnesses were in the waiting room.",
-      whyEn: "Remove the extra pronoun 'they' after 'The two witnesses'.",
-      why: "نحذف الضمير الزائد they بعد الفاعل الظاهر The two witnesses.", errCat: "word_order" },
     { s: "This draft is short. The sentences are clear.", ok: true,
       whyEn: "Two clean separate sentences, each starting with a capital letter and ending with a period.",
       why: "جملتان منفصلتان بوضوح، تبدأ كل منهما بحرف كبير وتنتهي بنقطة.", errCat: "word_order" },
-    { s: "Mr. salman is a commercial lawyer in riyadh.", ok: false, fix: "Mr. Salman is a commercial lawyer in Riyadh.",
-      whyEn: "Capitalize people's names ('Salman') and city names ('Riyadh').",
-      why: "اسم العلم (Salman) واسم المدينة (Riyadh) يجب أن يبدآ بحرف كبير.", errCat: "spelling" }
+    { s: "My cousin khalid studies at a university in jeddah.", ok: false, fix: "My cousin Khalid studies at a university in Jeddah.",
+      whyEn: "Capitalize people's names ('Khalid') and city names ('Jeddah').",
+      why: "اسم العلم (Khalid) واسم المدينة (Jeddah) يجب أن يبدآ بحرف كبير.", errCat: "spelling" }
   ],
 
   gC: [
-    { pre: "Yesterday,", verb: "capitalize: i", post: "prepared the first draft of the contract.", ans: ["I"],
+    { pre: "On Fridays,", verb: "capitalize: i", post: "visit my grandparents with my parents.", ans: ["I"], exact: true,
       whyEn: "The pronoun 'I' is always a capital letter.",
       why: "ضمير المتكلم يُكتب كبيرًا دائمًا: I.", errCat: "spelling" },
-    { pre: "Our law office is in", verb: "capitalize: riyadh", post: "near the main court.", ans: ["Riyadh"],
+    { pre: "My uncle has a small shop in", verb: "capitalize: riyadh", post: "near the old market.", ans: ["Riyadh"], exact: true,
       whyEn: "City names start with a capital letter: Riyadh.",
       why: "أسماء المدن تبدأ بحرف كبير: Riyadh.", errCat: "spelling" },
-    { pre: "The hearing is on", verb: "capitalize: monday", post: "at ten o'clock.", ans: ["Monday"],
+    { pre: "Our football match is on", verb: "capitalize: monday", post: "at eight o'clock in the evening.", ans: ["Monday"], exact: true,
       whyEn: "Days of the week start with a capital letter: Monday.",
       why: "أيام الأسبوع تبدأ بحرف كبير: Monday.", errCat: "spelling" },
-    { pre: "___", verb: "order: explains / the lawyer", post: "every legal right to the client.", ans: ["The lawyer explains"],
-      whyEn: "Subject ('The lawyer') first + verb ('explains') second.",
-      why: "نضع الفاعل The lawyer أولًا ثم الفعل explains.", errCat: "word_order" },
-    { pre: "The folders are ready.", verb: "capitalize: they", post: "are on your desk.", ans: ["They"],
+    { pre: "My brothers are at the gym.", verb: "capitalize: they", post: "go there every evening.", ans: ["They"], exact: true,
       whyEn: "After a period (.), the first word of the new sentence must be capitalized: They.",
-      why: "أول كلمة في الجملة الجديدة بعد النقطة تبدأ بحرف كبير: They.", errCat: "spelling" },
-    { pre: "Faisal speaks Arabic and", verb: "capitalize: english", post: "at the office.", ans: ["English"],
-      whyEn: "Names of languages always start with a capital letter: English.",
-      why: "أسماء اللغات تبدأ بحرف كبير دائمًا: English.", errCat: "spelling" }
+      why: "أول كلمة في الجملة الجديدة بعد النقطة تبدأ بحرف كبير: They.", errCat: "spelling" }
   ],
 
   gD: [
-    { chips: ["has", "a legal right.", "Every", "client"], ans: "Every client has a legal right.",
-      whyEn: "Subject (Every client) + verb (has) + object (a legal right).",
-      why: "الفاعل Every client ثم الفعل has ثم المفعول به a legal right.", errCat: "word_order" },
-    { chips: ["explains", "the contract.", "Mr. Salman", "clearly"], ans: "Mr. Salman clearly explains the contract.",
-      whyEn: "Subject (Mr. Salman) + adverb + verb (explains) + object (the contract).",
-      why: "الفاعل Mr. Salman ثم الفعل explains ثم المفعول به the contract.", errCat: "word_order" },
-    { chips: ["short", "Keep", "and clear.", "your sentences"], ans: "Keep your sentences short and clear.",
-      whyEn: "Imperative verb (Keep) + object (your sentences) + adjectives (short and clear).",
-      why: "فعل الأمر Keep ثم المفعول به your sentences ثم الصفتان short and clear.", errCat: "word_order" },
+    { chips: ["has", "a legal right", "Every customer", "to a receipt."], ans: "Every customer has a legal right to a receipt.",
+      whyEn: "Subject (Every customer) + verb (has) + object (a legal right) + to a receipt.",
+      why: "الفاعل Every customer ثم الفعل has ثم المفعول به a legal right ثم to a receipt.", errCat: "word_order" },
+    { chips: ["explains", "the rules", "Our coach", "clearly."], ans: "Our coach explains the rules clearly.",
+      whyEn: "Subject (Our coach) + verb (explains) + object (the rules) + adverb (clearly) at the end.",
+      why: "الفاعل Our coach ثم الفعل explains ثم المفعول به the rules ثم الحال clearly في آخر الجملة.", errCat: "word_order" },
+    { chips: ["writes", "short", "My sister", "emails."], ans: "My sister writes short emails.",
+      whyEn: "Subject (My sister) + verb (writes) + adjective + noun (short emails).",
+      why: "الفاعل My sister ثم الفعل writes ثم الصفة والموصوف short emails.", errCat: "word_order" },
     { chips: ["on", "We", "Sunday.", "start work"], ans: "We start work on Sunday.",
       whyEn: "Subject (We) + verb + object (start work) + time (on Sunday, capitalized).",
       why: "الفاعل We ثم الفعل start work ثم الزمان on Sunday بحرف كبير.", errCat: "word_order" }
@@ -473,25 +450,25 @@ LESSONS.u0l4 = {
   },
 
   writing: {
-    taskEn: "You are Jane. Write a message for Maria in at least 4 separate sentences: who called, what the call was about, what he needs, and what Maria should do. Use capital letters for names and for 'I', and end every sentence with a period.",
-    task: "تخيّل أنك جين: اكتب رسالة لماريا في 4 جمل منفصلة على الأقل: من اتصل، وعن أي شيء، وماذا يحتاج، وماذا تفعل ماريا. اكتب الأسماء والضمير I بحرف كبير، وأنهِ كل جملة بنقطة.",
+    taskEn: "You are Jane. Write a message for Maria in at least 4 separate sentences: who called, what the call was about, what he needs, and what Maria should do. Use capital letters for names and for 'I', end every sentence with a period, and use at least 2 words from today's lesson (for example: short, polite).",
+    task: "تخيّل أنك جين: اكتب رسالة لماريا في 4 جمل منفصلة على الأقل: من اتصل، وعن أي شيء، وماذا يحتاج، وماذا تفعل ماريا. اكتب الأسماء والضمير I بحرف كبير، وأنهِ كل جملة بنقطة، واستعمل كلمتين على الأقل من كلمات الدرس (مثل short وpolite).",
     checks: [
       { k: "sentences", tEn: "At least 4 separate sentences (4 periods ., no run-on)", t: "4 جمل منفصلة على الأقل (تنتهي كل جملة بنقطة . ولا توصل معًا)",
-        ok: function(a){ return a.sentences >= 4 && !a.runOn; } },
-      { k: "starts", tEn: "Every sentence starts with a capital letter, and 'I' is always a capital", t: "كل جملة تبدأ بحرف كبير، والضمير I كبير دائمًا", ex: "Peter called. He needs the figures.",
+        ok: function(a, text){ return a.sentences >= 4 && !a.runOn && /[.!?]["')\]]?\s*$/.test(String(text || '')); } },
+      { k: "starts", tEn: "Every sentence starts with a capital letter, and 'I' and names (Maria, Peter Griffin) always have capitals", t: "كل جملة تبدأ بحرف كبير، والضمير I والأسماء (Maria وPeter Griffin) بحرف كبير دائمًا", ex: "Peter Griffin called. He needs the figures.",
         ok: function(a, text){
-          var s = String(text || '').replace(/\S+@\S+/g, ' ');
+          var s = String(text || '').replace(/\S+@\S+/g, ' ').replace(/\b(?:[ap]\.m\.|Mrs?\.|Ms\.|Dr\.)/gi, function(m){ return m.replace(/\./g, ''); });
           if (/\bi\b/.test(s)) return false;
+          if (/\b(?:maria|peter|griffin|fernandez|jane|solomon)\b/.test(s)) return false;
+          if (!/\b(?:Maria|Peter|Griffin|Fernandez|Jane|Solomon)\b/.test(s)) return false;
           var parts = s.split(/[.!?]+/).map(function(p){ return p.trim(); }).filter(function(p){ return /[A-Za-z]/.test(p); });
           return parts.length > 0 && parts.every(function(p){ var m = p.match(/[A-Za-z]/); return m[0] === m[0].toUpperCase(); }); } },
-      { k: "names", tEn: "People's names with capital letters (Maria, Peter Griffin…)", t: "أسماء الأشخاص بحرف كبير (Maria وPeter Griffin…)", ex: "Maria · Peter Griffin · Jane",
-        ok: function(a, text){
-          var s = String(text || '').replace(/\S+@\S+/g, ' ');
-          return /\b(?:Maria|Peter|Griffin|Fernandez|Jane|Solomon)\b/.test(s) && !/\b(?:maria|peter|griffin|fernandez|jane|solomon)\b/.test(s); } },
       { k: "content", tEn: "The key facts: the PXO project and 'call him back'", t: "المعلومات الأساسية: مشروع PXO وطلب معاودة الاتصال (call him back)", ex: "the PXO project · Please call him back.",
-        ok: function(a, text){ var s = String(text || ''); return /\bPXO\b/i.test(s) && /\bcall\s+(?:him|Peter|Mr\.?\s*Griffin)\s+back\b/i.test(s); } }
+        ok: function(a, text){ var s = String(text || ''); return /\bPXO\b/.test(s) && /\b(?:call|phone|ring)\s+(?:him|Peter(?:\s+Griffin)?|Mr\.?\s*Griffin)\s+back\b/i.test(s); } },
+      { k: "vocab", tEn: "At least 2 words from today's lesson", t: "كلمتان على الأقل من كلمات الدرس", ex: "short · polite · explain · sentence · draft",
+        ok: function(a){ return a.used.length >= 2; } }
     ],
-    model: "Maria, Peter Griffin called during your lunch break. It was about the PXO project, and he needs the new figures. Please call him back. He may be in a meeting, so I wrote down his email address too."
+    model: "Maria, Peter Griffin called during your lunch break. His message was short and polite. It was about the PXO project, and he needs the new figures. Please call him back. He may be in a meeting when you call, so I also wrote down his email address."
   },
 
   quiz: [
@@ -504,27 +481,27 @@ LESSONS.u0l4 = {
     { s: "What is wrong with this text? 'The draft is ready, the lawyer is in court.'", opts: ["It joins two complete sentences with a comma instead of a period (.).", "It is too short.", "The word 'draft' is a verb."], a: 0, tag: "Grammar · قواعد",
       whyEn: "Two complete sentences must be separated by a period (.): 'The draft is ready. The lawyer is in court.'",
       why: "ربط جملتين تامتين بفاصلة فقط خطأ (Run-on)؛ الصواب وضع نقطة بعد الجملة الأولى.", errCat: "word_order" },
-    { s: "Which word is ALWAYS capitalized in English, even in the middle of a sentence?", opts: ["lawyer", "I (the pronoun for myself)", "court"], a: 1, tag: "Grammar · قواعد",
+    { s: "Which of these words do we write with a capital letter everywhere in a sentence?", opts: ["teacher", "I (the pronoun for myself)", "morning"], a: 1, tag: "Grammar · قواعد",
       whyEn: "The pronoun 'I' is always a capital letter in English.",
       why: "ضمير المتكلم I يُكتب بحرف كبير دائمًا أينما وقع في الجملة.", errCat: "spelling" },
-    { s: "Choose the sentence without a double-subject error:", opts: ["These folders they are ready for Tuesday.", "These folders are ready for Tuesday.", "Are ready these folders for Tuesday."], a: 1, tag: "Grammar · قواعد",
-      whyEn: "Subject ('These folders') + verb ('are') directly.",
-      why: "الفاعل These folders يليه الفعل are مباشرة دون الضمير الزائد they.", errCat: "word_order" },
-    { s: "Which language name is capitalized correctly?", opts: ["arabic and english", "Arabic and English", "Arabic and english"], a: 1, tag: "Grammar · قواعد",
+    { s: "Choose the sentence without a double-subject error:", opts: ["My parents they are in Makkah this week.", "My parents are in Makkah this week.", "Are in Makkah my parents this week."], a: 1, tag: "Grammar · قواعد",
+      whyEn: "Subject ('My parents') + verb ('are') directly, with no extra 'they'.",
+      why: "الفاعل My parents يليه الفعل are مباشرة دون الضمير الزائد they.", errCat: "word_order" },
+    { s: "Which option is capitalized correctly?", opts: ["arabic and english", "Arabic and English", "Arabic and english"], a: 1, tag: "Grammar · قواعد",
       whyEn: "All language names ('Arabic', 'English') begin with a capital letter.",
       why: "أسماء جميع اللغات تبدأ بحرف كبير في الإنجليزية.", errCat: "spelling" },
-    { s: "Put a ___ at the end of every statement before starting a new sentence.", opts: ["period (.)", "capital", "draft"], a: 0, tag: "Vocabulary · مفردات",
-      whyEn: "A 'period' (.) ends a statement.",
-      why: "نضع نقطة (period) في نهاية كل جملة خبرية.", errCat: "vocab" },
-    { s: "This is only the first ___ of the contract; we will review it tomorrow.", opts: ["period", "draft", "polite"], a: 1, tag: "Vocabulary · مفردات",
-      whyEn: "'first draft' means the first version of a written text.",
-      why: "first draft تعني المسودة الأولى للعقد.", errCat: "vocab" },
-    { s: "Please write ___ sentences so the client can read them easily.", opts: ["short and clear", "absent and late", "traffic and period"], a: 0, tag: "Vocabulary · مفردات",
-      whyEn: "'short and clear' describes good, readable sentences.",
-      why: "الجمل القصيرة والواضحة (short and clear) أسهل في القراءة والفهم.", errCat: "vocab" },
-    { s: "Every citizen has the ___ to a fair trial in court.", opts: ["legal right", "first draft", "capital letter"], a: 0, tag: "Legal Track · المسار القانوني",
-      whyEn: "'legal right' means a right guaranteed by law.",
-      why: "legal right تعني الحق القانوني.", errCat: "vocab" }
+    { s: "A question ends with a question mark, but a statement ends with a ___.", opts: ["period", "capital", "draft"], a: 0, tag: "Vocabulary · مفردات",
+      whyEn: "A 'period' (.) ends a statement; a question mark (?) ends a question.",
+      why: "النقطة (period) تنهي الجملة الخبرية، وعلامة الاستفهام تنهي السؤال.", errCat: "vocab" },
+    { s: "My sister is writing the first ___ of her speech for the graduation party.", opts: ["period", "draft", "capital"], a: 1, tag: "Vocabulary · مفردات",
+      whyEn: "A 'first draft' is the first version of a text, before you correct it.",
+      why: "first draft هي المسودة الأولى للنص قبل تصحيحه.", errCat: "vocab" },
+    { s: "Please write ___ sentences in your message to the hotel, so they can read it quickly.", opts: ["short and clear", "long and difficult", "late and absent"], a: 0, tag: "Vocabulary · مفردات",
+      whyEn: "'short and clear' sentences are quick and easy to read.",
+      why: "الجمل القصيرة الواضحة (short and clear) سريعة وسهلة القراءة.", errCat: "vocab" },
+    { s: "In many countries, every child has a ___ to go to school.", opts: ["legal right", "first draft", "capital letter"], a: 0, tag: "Legal Track · المسار القانوني",
+      whyEn: "A 'legal right' is something the law gives every person, like going to school.",
+      why: "legal right حق يكفله القانون لكل شخص، كالحق في التعليم.", errCat: "vocab" }
   ]
 };
 })();

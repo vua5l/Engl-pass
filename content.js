@@ -310,11 +310,11 @@ var DATA = window.DATA = {
       titleEn: "Unit 0 · Foundation Week (Be/Do, Agreement, Was/Were, 4 Sentences & Spelling)",
       titleAr: "الأسبوع التأسيسي · أساسيات القواعد والإملاء والجمل الأربع",
       grammarEn: "1) Be (am/is/are) vs. Do (do/does), 2) Singular & Plural Agreement (There is/are, This/These), 3) Past of Be (was/were), 4) 4 Clear Sentences & Spelling (-ing, -s, -ful).",
-      phrases: ["lawyer", "client", "office", "give legal advice", "case", "judge", "witness", "go to court", "hearing", "hire a lawyer", "legal right", "official document"],
+      phrases: ["busy", "helpful", "give legal advice", "make a mistake", "go to court", "traffic", "late", "hire a lawyer", "polite", "legal right", "useful", "official document"],
       questions: [
-        "Tell me about yourself and your weekly routine in Riyadh using 'am / is / are' and action verbs.",
-        "Where were you yesterday morning and afternoon, and how was the traffic in your city?",
-        "Why is it important to check every official document carefully before a client signs a contract?"
+        "Tell me about yourself and your week: which days are you busy, and what don't you do on the weekend?",
+        "Describe your hometown: what is there, and what isn't there? Where were you yesterday, and how was the traffic?",
+        "When is it a good idea to hire a lawyer, and why should we be careful with every official document?"
       ]
     },
     1: {
@@ -333,6 +333,93 @@ var DATA = window.DATA = {
 
   /* ---------- المرحلة 4: الركن القانوني الأسبوعي واختبار الوحدة 1 (20 سؤالًا جديدًا + مهمة تطبيقية) ---------- */
   unitTests: {
+    /* اختبار الأسبوع التأسيسي: 20 سؤالًا جديدًا (4 لكل درس) بجمل يومية لم ترد في الدروس + الركن القانوني للعبارات الخمس + مهمة تطبيقية */
+    0: {
+      unit: 0,
+      titleEn: "Foundation Week Review, Legal Corner & Mastery Test",
+      titleAr: "مراجعة الأسبوع التأسيسي والركن القانوني واختبار الإتقان",
+      masteryPct: 90,
+      passPct: 80,
+      legalCorner: {
+        titleEn: "Weekly Legal Corner (10 min) · The Five Foundation Legal Phrases",
+        titleAr: "الركن القانوني الأسبوعي (10 دقائق) · العبارات القانونية الخمس في الأسبوع التأسيسي",
+        introEn: "Review this week's five legal phrases in new everyday sentences before you start the Foundation Week Mastery Test:",
+        introAr: "راجع العبارات القانونية الخمس التي تعلمتها هذا الأسبوع في جمل يومية جديدة قبل أن تبدأ اختبار إتقان الأسبوع التأسيسي:",
+        terms: [
+          { en: "give legal advice", ar: "يقدّم استشارة قانونية", ex: "The university has a free clinic where law students give legal advice to families.", exAr: "في الجامعة عيادة مجانية يقدّم فيها طلاب القانون استشارات قانونية للأسر." },
+          { en: "go to court", ar: "يذهب إلى المحكمة (يلجأ إلى القضاء)", ex: "Most people don't like to go to court, so they try to solve problems with their families first.", exAr: "لا يحب أكثر الناس الذهاب إلى المحكمة، فيحاولون حل مشكلاتهم مع عائلاتهم أولًا." },
+          { en: "hire a lawyer", ar: "يوكّل محاميًا", ex: "When a company doesn't pay its workers, the workers can hire a lawyer together.", exAr: "حين لا تدفع شركة رواتب عمالها، يستطيع العمال أن يوكّلوا محاميًا معًا." },
+          { en: "legal right", ar: "حق قانوني", ex: "You have a legal right to know the price before you pay.", exAr: "لك حق قانوني في معرفة السعر قبل أن تدفع." },
+          { en: "official document", ar: "مستند رسمي / وثيقة رسمية", ex: "At the airport, the officer checked our passports and other official documents.", exAr: "في المطار تحقق الموظف من جوازات سفرنا ومستنداتنا الرسمية الأخرى." }
+        ]
+      },
+      questions: [
+        { s: "My cousin ___ a nurse at a hospital in Tabuk.", opts: ["is", "does", "are"], a: 0, errCat: "be_verb", lesson: "u0l1",
+          whyEn: "'a nurse' is a noun, 'My cousin' is singular, and there is no action verb → is.",
+          why: "بعد الفراغ اسم (a nurse) والفاعل مفرد ولا يوجد فعل حدث، فنستخدم is." },
+        { s: "___ your parents live near the university?", opts: ["Do", "Are", "Does"], a: 0, errCat: "be_verb", lesson: "u0l1",
+          whyEn: "'live' is an action verb and 'your parents' is plural → Do your parents live…?",
+          why: "الفعل live فعل حدث والفاعل جمع (your parents)، فنسأل بـ Do." },
+        { s: "Choose the correct sentence about a daily habit:", opts: ["My father is drive to work at seven.", "My father drives to work at seven.", "My father driving to work at seven."], a: 1, errCat: "be_verb", lesson: "u0l1",
+          whyEn: "A habit in Present Simple: no 'is' before the base verb, and he/she/it adds -s → drives.",
+          why: "العادة في المضارع البسيط: لا نضع is قبل الفعل المجرد، ونضيف s مع المفرد الغائب: drives." },
+        { s: "My brother is ___ English teacher at a school in Hail.", opts: ["a", "an", "— (no article)"], a: 1, errCat: "articles_prep", lesson: "u0l1",
+          whyEn: "A singular job needs 'a / an', and 'English' starts with a vowel sound → an English teacher.",
+          why: "المهنة المفردة تحتاج a أو an، وكلمة English تبدأ بصوت علة، فنقول an English teacher." },
+        { s: "___ there any good parks near your new apartment?", opts: ["Is", "Are", "Do"], a: 1, errCat: "agreement", lesson: "u0l2",
+          whyEn: "'parks' is plural → Are there any…?",
+          why: "كلمة parks جمع، فنسأل بـ Are there." },
+        { s: "These shoes ___ too small for my little brother.", opts: ["is", "are", "does"], a: 1, errCat: "agreement", lesson: "u0l2",
+          whyEn: "'These shoes' is plural → are.",
+          why: "الفاعل جمع (These shoes)، فنستخدم are." },
+        { s: "There ___ only one bakery in my grandfather's village.", opts: ["is", "are", "have"], a: 0, errCat: "agreement", lesson: "u0l2",
+          whyEn: "'one bakery' is singular → There is.",
+          why: "الاسم بعد There مفرد (one bakery)، فنستخدم There is." },
+        { s: "Choose the sentence where the words agree:", opts: ["Those bags is heavy.", "That bags are heavy.", "Those bags are heavy."], a: 2, errCat: "agreement", lesson: "u0l2",
+          whyEn: "Plural 'bags' needs plural 'Those' and plural 'are'.",
+          why: "الاسم الجمع bags يحتاج اسم الإشارة للجمع Those والفعل are." },
+        { s: "___ your brothers at home yesterday afternoon?", opts: ["Was", "Were", "Did"], a: 1, errCat: "agreement", lesson: "u0l3",
+          whyEn: "'your brothers' is plural, the time is past, and there is no action verb → Were.",
+          why: "الفاعل جمع (your brothers) والزمن ماضٍ ولا يوجد فعل حدث، فنسأل بـ Were." },
+        { s: "The weather in Taif ___ very cold last January.", opts: ["was", "were", "is"], a: 0, errCat: "tense", lesson: "u0l3",
+          whyEn: "'last January' is past, and 'the weather' is singular → was.",
+          why: "last January تدل على الماضي، والفاعل مفرد (the weather)، فنستخدم was." },
+        { s: "There ___ many cars outside the stadium after yesterday's match.", opts: ["was", "were", "are"], a: 1, errCat: "agreement", lesson: "u0l3",
+          whyEn: "'many cars' is plural, and 'yesterday's match' is past → There were.",
+          why: "عبارة many cars جمع، والزمن ماضٍ (yesterday's match)، فنستخدم There were." },
+        { s: "Choose the correct sentence about the past:", opts: ["I didn't tired after the trip.", "I wasn't tired after the trip.", "I weren't tired after the trip."], a: 1, errCat: "be_verb", lesson: "u0l3",
+          whyEn: "'tired' is an adjective, so we use 'wasn't' (not 'didn't'), and 'I' takes 'was'.",
+          why: "كلمة tired صفة فننفي بـ wasn't لا didn't، والضمير I يأخذ was." },
+        { s: "Choose the sentence with every capital letter in the right place:", opts: ["my brother and i live in dammam.", "My brother and I live in Dammam.", "My brother and i live in Dammam."], a: 1, errCat: "spelling", lesson: "u0l4",
+          whyEn: "Capitalize the first word, the pronoun 'I', and the city name 'Dammam'.",
+          why: "أول كلمة في الجملة والضمير I واسم المدينة Dammam تُكتب كلها بحرف كبير." },
+        { s: "Choose the sentence in the right English order:", opts: ["Works my sister at a big hospital.", "My sister she works at a big hospital.", "My sister works at a big hospital."], a: 2, errCat: "word_order", lesson: "u0l4",
+          whyEn: "The subject comes first ('My sister'), then the verb ('works'), with no extra 'she'.",
+          why: "الفاعل أولًا (My sister) ثم الفعل (works)، دون ضمير زائد she." },
+        { s: "Which text has two correct sentences?", opts: ["We visited Abha in June, the weather was cool.", "We visited Abha in June. The weather was cool.", "We visited Abha in June. the weather was cool."], a: 1, errCat: "word_order", lesson: "u0l4",
+          whyEn: "Two complete sentences need a period between them, and the second one starts with a capital letter ('The').",
+          why: "الجملتان التامتان تفصل بينهما نقطة، وتبدأ الثانية بحرف كبير (The)." },
+        { s: "Which word in this sentence needs a capital letter? 'My cousins play basketball every friday.'", opts: ["cousins", "basketball", "friday"], a: 2, errCat: "spelling", lesson: "u0l4",
+          whyEn: "Days of the week always start with a capital letter: Friday.",
+          why: "أيام الأسبوع تبدأ دائمًا بحرف كبير: Friday." },
+        { s: "My mother is ___ for new clothes at the mall.", opts: ["shoping", "shopping", "shopeing"], a: 1, errCat: "spelling", lesson: "u0l5",
+          whyEn: "'shop' has one vowel (o) before the last consonant, so we double the 'p': shopping.",
+          why: "قبل الحرف الأخير في shop حرف علة واحد (o)، فنضاعف p: shopping." },
+        { s: "This map app is very ___ when I travel to a new city.", opts: ["usefull", "useful", "usful"], a: 1, errCat: "spelling", lesson: "u0l5",
+          whyEn: "The suffix -ful has only one 'l': useful.",
+          why: "المقطع ful يُكتب بلام واحدة: useful." },
+        { s: "My brother ___ English every evening before he goes to bed.", opts: ["studys", "studies", "studyes"], a: 1, errCat: "spelling", lesson: "u0l5",
+          whyEn: "Consonant + y → change 'y' to '-ies' with he / she / it: studies.",
+          why: "الفعل study ينتهي بساكن ثم y، فتتحول مع المفرد الغائب إلى studies." },
+        { s: "Which sentence spells the plural correctly?", opts: ["Three buss stop near our school.", "Three buses stop near our school.", "Three busies stop near our school."], a: 1, errCat: "spelling", lesson: "u0l5",
+          whyEn: "Nouns that end in -s add -es in the plural: bus → buses.",
+          why: "الاسم المنتهي بـ s يُجمع بإضافة es: bus ← buses." }
+      ],
+      appliedTask: {
+        promptEn: "Short Applied Task: Write at least 4 separate sentences about your week. Use 1) am / is / are and do / does (or don't / doesn't), 2) There is or There are, 3) was or were, and 4) correct capital letters (I, names, cities, days). Finish each sentence with a period (.).",
+        promptAr: "مهمة تطبيقية قصيرة: اكتب 4 جمل منفصلة على الأقل عن أسبوعك، واستعمل فيها: ١) am / is / are وdo / does (أو don't / doesn't)، ٢) There is أو There are، ٣) was أو were، ٤) الحروف الكبيرة الصحيحة (I والأسماء والمدن والأيام)، وأنهِ كل جملة بنقطة."
+      }
+    },
     1: {
       unit: 1,
       titleEn: "Unit 1 Review, Legal Corner & Mastery Test",

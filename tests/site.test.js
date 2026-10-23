@@ -117,7 +117,8 @@ function fakeGitHub(token) {
     const g0 = await getJSON(page, 'ep4.course');
     ok(g0 && g0.ui.welcomed === true && g0.startedAt > 0 && g0.cur === 'u0l1', 'course state saved with welcome flag, start date and current lesson');
 
-    const seed = (g0.errorLab.spelling || {}).count || 0, seedBe = (g0.errorLab.be_verb || {}).count || 0, seedTense = (g0.errorLab.tense || {}).count || 0;
+    // ما يُنتظر في مختبر الأخطاء من نوع كل سؤال استرجاع في الدرس (المفردات والقراءة لا تُحسب، والحالة تُحسب مع الأزمنة)
+    const rcWant = await page.evaluate(() => { const w = {}; LESSONS.u0l1.recall.forEach(r => { const c = r.errCat || 'spelling'; if (c === 'vocab' || c === 'reading') return; const m = c === 'stative' ? 'tense' : c; w[m] = (w[m] || 0) + 1; }); return w; });
     await doRecallStage(page, () => 'zzzz');
     const l1 = await getJSON(page, 'ep4.lesson.u0l1');
     ok(l1 && l1.stamps && l1.stamps.recall, 'recall stage stamped in the lesson state');
@@ -125,7 +126,7 @@ function fakeGitHub(token) {
     const mk = Object.keys(g1.mistakes);
     ok(mk.length === 5 && mk.every(k => k.startsWith('u0l1|rc-')), 'five wrong recall answers enter the course-wide notebook as u0l1|rc-*');
     ok(mk.every(k => g1.mistakes[k].due - Date.now() > 20 * 3600e3), 'new mistakes are due the next day (spaced schedule step 1)');
-    ok((g1.errorLab.spelling || {}).count === seed + 4 && (g1.errorLab.be_verb || {}).count === seedBe + 1, 'Error Lab counts grow by category (4 spelling + 1 be_verb in lesson 1 recall)');
+    ok(Object.keys(rcWant).length > 0 && Object.keys(rcWant).every(c => ((g1.errorLab[c] || {}).count || 0) === ((g0.errorLab[c] || {}).count || 0) + rcWant[c]), 'Error Lab counts grow by category (one per wrong lesson-1 recall answer: ' + JSON.stringify(rcWant) + ')');
 
     await page.click('[aria-label="Close · إغلاق"]'); await sleep(200); await backHome(page);
     await openFoundation(page, 2);
@@ -220,21 +221,22 @@ function fakeGitHub(token) {
     g = await getJSON(page, 'ep4.course');
     ok(Object.keys(g.errorLab).some(k => (g.errorLab[k].solved || 0) > 0 || (g.errorLab[k].box || 0) > 0), 'Error Lab drills update the shared Error Lab');
     if (await page.locator('[aria-label="Close · إغلاق"]').count()) { await page.click('[aria-label="Close · إغلاق"]'); await sleep(150); }
-    // اختبار الوحدة
+    // اختبار الوحدة 1 مقفل في جهاز جديد: لا يُختبر المتعلم في وحدة لم يدرسها
     await page.locator('.nav-it').nth(0).click(); await sleep(200);
-    await page.locator('.qtile', { hasText: 'Unit 1 Test' }).click(); await sleep(200);
-    await cta(page);
-    for (let i = 0; i < 20; i++) { const opt = page.locator('.opt:enabled'); if (!(await opt.count())) break; await opt.first().click(); await sleep(60); await cta(page); }
-    if (await page.locator('textarea.wt').count()) { await page.fill('textarea.wt', 'I work in Riyadh. I am studying law this year. We sign a contract today.'); await cta(page); }
+    const ut1Tile = page.locator('.qtile', { hasText: 'Unit 1 Test' });
+    const ut1Tag = await ut1Tile.evaluate(el => el.tagName), ut1Txt = await ut1Tile.innerText();
+    await ut1Tile.click(); await sleep(200);
+    const ut1Opened = (await page.locator('.pl').count()) > 0;
+    if (ut1Opened) { await page.click('[aria-label="Close · إغلاق"]'); await sleep(150); await page.locator('.nav-it').nth(0).click(); await sleep(200); }
     g = await getJSON(page, 'ep4.course');
-    ok(g.unitTests && g.unitTests[1] && g.unitTests[1].attempts === 1, 'unit test result is saved in the course state');
-    if (await page.locator('[aria-label="Close · إغلاق"]').count()) { await page.click('[aria-label="Close · إغلاق"]'); await sleep(150); }
-    // كامبلي
-    await page.locator('.nav-it').nth(0).click(); await sleep(200);
+    ok(ut1Tag === 'DIV' && ut1Txt.includes('Opens after Unit 1') && !ut1Opened && !(g.unitTests && g.unitTests[1]), 'the Unit 1 test tile is locked on Home ("Opens after Unit 1") and does not open');
+    // كامبلي: بطاقة وحدة درس اليوم (الأسبوع التأسيسي ما دام F1 هو الدرس الحالي)
     await page.locator('.qtile', { hasText: 'Cambly Card' }).click(); await sleep(200);
+    const cSheet = await page.innerText('#sheetBox'), c0Title = await page.evaluate(() => DATA.camblyUnits[0].titleEn);
     await page.locator('#sheetBox .btn', { hasText: 'Log Cambly Session' }).click(); await sleep(150);
     g = await getJSON(page, 'ep4.course');
     ok(g.camblyLogs.length === 1 && g.camblyLogs[0].mins === 30, 'Cambly session log is saved in the course state');
+    ok(cSheet.includes('Foundation Week · Weekly Cambly Card') && cSheet.includes(c0Title) && g.camblyLogs[0].unit === 0, "the Cambly card follows the current lesson's unit (Foundation Week card while F1 is current)");
     await page.click('#sheetBox .close'); await sleep(150);
     // درس اليوم ينتقل إلى التالي إذا اكتمل في يوم سابق
     await page.evaluate(() => { const y = Date.now() - 864e5 * 1.2; const l = JSON.parse(localStorage.getItem('ep4.lesson.u0l1') || '{"v":4}'); l.stamps = { recall:y, vocab:y, grammar:y, reading:y, writing:y, quiz:y }; localStorage.setItem('ep4.lesson.u0l1', JSON.stringify(l)); const g = JSON.parse(localStorage.getItem('ep4.course')); g.cur = 'u0l1'; localStorage.setItem('ep4.course', JSON.stringify(g)); });
@@ -252,6 +254,7 @@ function fakeGitHub(token) {
     const norm = s => String(s || '').replace(/_{3}/g, '').replace(/\s+/g, '').toLowerCase();
     const LISTEN_IDS = ['u0l2', 'u0l4']; // درسا المقطعين الحقيقيين
     const seenListen = {};               // ما يظهر فيهما في مرحلتي الاستماع ١ و٣
+    const seenRead = {};                 // رأس الإيميل ومؤقت القراءة الأولى وشارة عدد الكلمات في دروس القراءة
     async function drive(lid) {
       const data = await page.evaluate(lid => { const L = LESSONS[lid]; const v = (L.vocab || []).concat(L.legalPhrase ? [L.legalPhrase] : []); return { pairs: v.map(x => [x.en, x.ar]), quiz: L.quiz.map(q => [q.s, q.opts[q.a]]) }; }, lid);
       const arOf = Object.fromEntries(data.pairs);
@@ -260,6 +263,10 @@ function fakeGitHub(token) {
         if (LISTEN_IDS.includes(lid)) {
           const scr = await page.innerText('#screen').catch(() => '');
           if (/Stage 3 of 3/.test(scr) && /Listening/.test(scr)) seenListen[lid] = Object.assign(seenListen[lid] || {}, { s3: scr, s3html: await page.innerHTML('#screen') });
+        } else if (!(seenRead[lid] && seenRead[lid].read1) && await page.locator('.rtimer-t').count() && await page.locator('.mail-meta').count()) {
+          seenRead[lid] = Object.assign(seenRead[lid] || {}, { read1: true, art: await page.locator('.mail-art').count(), from: await page.locator('.mail-meta > div').first().innerText(), timer: await page.locator('.rtimer-t').innerText() });
+        } else if (!(seenRead[lid] && seenRead[lid].tag) && await page.locator('#hlToggle').count()) {
+          seenRead[lid] = Object.assign(seenRead[lid] || {}, { tag: await page.locator('.st-lbl .tag').first().innerText() });
         }
         if (await page.locator('.m-it.en:not(.matched)').count()) {
           const ens = await page.locator('.m-it.en:not(.matched)').allInnerTexts();
@@ -301,6 +308,18 @@ function fakeGitHub(token) {
       const stamped = st && st.stamps ? ['recall', 'vocab', 'grammar', 'reading', 'writing', 'quiz'].filter(k => st.stamps[k]).length : 0;
       ok(finished && stamped === 6, lid + ': all 6 stages can be completed (' + stamped + '/6)');
       await backHome(page);
+      if (lid === 'u0l4') {
+        // أربعة دروس تأسيسية من خمسة: سطر اختبار الأسبوع مقفل في الرئيسية وفي شاشة الدروس
+        const lockedRow = async () => { const r = page.locator('.u0-test'); return (await r.count()) === 1 && (await r.evaluate(el => el.tagName)) === 'DIV' && (await r.locator('.u-lock').count()) === 1 && (await r.innerText()).includes('Opens after Foundation Week'); };
+        const onHome = await lockedRow();
+        if (await page.locator('.u0-test').count()) { await page.locator('.u0-test').click(); await sleep(150); }
+        const noPlayer = !(await page.locator('.pl').count());
+        if (!noPlayer) { await page.click('[aria-label="Close · إغلاق"]'); await sleep(150); }
+        await page.locator('.nav-it').nth(1).click(); await sleep(200);
+        const onLessons = await lockedRow();
+        await page.locator('.nav-it').nth(0).click(); await sleep(200);
+        ok(onHome && noPlayer && onLessons, 'the Foundation Week test row is shown locked (Home and Lessons) while a foundation lesson is still incomplete');
+      }
     }
     // المقاطع الحقيقية: لا يُنسخ نصها إلى الموقع، والمرحلة الثالثة تفتحه في صفحة المصدر، وشرح سؤال الفكرة العامة يظهر بعد الإجابة
     for (const lid of LISTEN_IDS) {
@@ -315,6 +334,77 @@ function fakeGitHub(token) {
     const dash = await page.innerText('#sheetBox');
     ok(/360m/.test(dash), 'dashboard counts the 6 completed lessons as 360 minutes');
     await page.click('#sheetBox .close'); await sleep(100);
+
+    // القراءة: صورة القارة القطبية وسطر «Research Station» في درس نور وحده، والمؤقت من targetSeconds، وعدد الكلمات من النص
+    const rInfo = await page.evaluate(() => Object.keys(LESSONS).filter(id => LESSONS[id].reading).map(id => ({ id, t: LESSONS[id].reading.targetSeconds })));
+    const fmt = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+    const readOK = rInfo.every(({ id, t }) => { const r = seenRead[id] || {}; return r.read1 && (!t || r.timer.endsWith('/ ' + fmt(t))) && (id === 'u1l1' ? (r.art === 1 && /Research Station, Antarctica/.test(r.from) && /~210 words/.test(r.tag || '')) : (r.art === 0 && !/Antarctica/.test(r.from) && /~\d+ words/.test(r.tag || '') && !/~210 words/.test(r.tag || ''))); });
+    ok(rInfo.length >= 2 && readOK, 'reading header art and "Research Station, Antarctica" appear only in U1·L1; timers use targetSeconds and the word tag is counted from each text: ' + JSON.stringify(seenRead).slice(0, 300));
+
+    // الكتابة: فاصلة الآيفون العليا (’) تجتاز فحوص الكتابة نفسها، ومربع الكتابة بلا تصحيح تلقائي من iOS
+    const wl = await page.evaluate(() => { for (const id of Object.keys(LESSONS)) { const w = LESSONS[id].writing; if (w && Array.isArray(w.checks) && /\b\w+'\w+\b/.test(w.model || '')) return { id, model: w.model }; } return null; });
+    let wOK = false, wMsg = 'no lesson model with an apostrophe';
+    if (wl) {
+      const m = /^u0l(\d)$/.exec(wl.id);
+      if (m) await openFoundation(page, Number(m[1]) - 1); else { await page.locator('.lcard').first().click(); await sleep(250); }
+      await page.locator('.pstep').nth(4).click(); await sleep(200); await cta(page);
+      const ta = page.locator('textarea.wt');
+      const attrs = await ta.evaluate(el => ['autocapitalize', 'autocorrect', 'spellcheck'].map(a => el.getAttribute(a)).join(','));
+      await ta.fill(wl.model); await sleep(400); const onStraight = await page.locator('.checks li.on').count();
+      await ta.fill(wl.model.replace(/'/g, '’')); await sleep(400); const onCurly = await page.locator('.checks li.on').count();
+      wOK = attrs === 'off,off,false' && onStraight > 0 && onCurly === onStraight; wMsg = wl.id + ' ' + onCurly + '/' + onStraight + ' · ' + attrs;
+      await page.click('[aria-label="Close · إغلاق"]'); await sleep(200); await backHome(page);
+    }
+    ok(wOK, "iPhone apostrophes (’) pass the same writing checks as straight ones, and the writing box turns off iOS autocorrect (" + wMsg + ')');
+
+    // اختبار الأسبوع التأسيسي: يُفتح بعد الدروس الخمسة، ويكتمل، وتُحفظ نتيجته في G.unitTests[0]
+    await page.locator('.nav-it').nth(0).click(); await sleep(200);
+    const u0btn = page.locator('button.u0-test');
+    const u0open = (await u0btn.count()) === 1;
+    let u0result = false;
+    if (u0open) {
+      await u0btn.click(); await sleep(250);
+      await cta(page); // الركن القانوني ← السؤال الأول
+      for (let i = 0; i < 60; i++) { const opt = page.locator('.opt:enabled'); if (!(await opt.count())) break; await opt.first().click(); await sleep(60); await cta(page); }
+      if (await page.locator('textarea.wt').count()) { await page.fill('textarea.wt', 'I am a law student in Riyadh. My classes are on Sunday. I was at the library yesterday. I do not work on Fridays.'); await cta(page); }
+      u0result = (await page.locator('.result .ring-w').count()) === 1;
+      await cta(page); // رجوع للدروس
+    }
+    const gu = await getJSON(page, 'ep4.course');
+    ok(u0open && u0result && gu.unitTests && gu.unitTests[0] && gu.unitTests[0].attempts === 1 && typeof gu.unitTests[0].last === 'number' && !gu.unitTests[1] && !(await page.locator('.pl').count()), 'unit test result is saved in the course state: the Foundation Week test opens after the five lessons, can be finished, and is saved in G.unitTests[0]');
+
+    // اختبار الوحدة 1 يبقى مقفلًا: دروسها 2–6 لم تُبنَ بعد، وإن اكتمل درسها الأول
+    await page.locator('.nav-it').nth(0).click(); await sleep(200);
+    const t1 = page.locator('.qtile', { hasText: 'Unit 1 Test' });
+    const t1Tag = await t1.evaluate(el => el.tagName), t1Txt = await t1.innerText();
+    await t1.click(); await sleep(150);
+    const t1NoPlayer = !(await page.locator('.pl').count());
+    if (!t1NoPlayer) { await page.click('[aria-label="Close · إغلاق"]'); await sleep(150); }
+    await page.locator('.nav-it').nth(1).click(); await sleep(200);
+    const r1 = page.locator('.u-test');
+    const r1Locked = (await r1.count()) === 1 && (await r1.evaluate(el => el.tagName)) === 'DIV' && (await r1.innerText()).includes('Opens after Unit 1');
+    const g1 = await getJSON(page, 'ep4.course');
+    ok(t1Tag === 'DIV' && t1Txt.includes('Opens after Unit 1') && t1NoPlayer && r1Locked && !(g1.unitTests && g1.unitTests[1]), 'the Unit 1 test stays locked on Home and Lessons after every built lesson is complete (Unit 1 lessons 2–6 do not exist yet)');
+
+    // كتابة حساسة لحالة الحرف (exact: true): يُرفض riyadh وتظهر الصيغة الصحيحة، ويُقبل Riyadh
+    // عنصر واحد من كل نوع (تمرين كتابة القواعد gC، وسؤال الاسترجاع rc) إن وُجد، ويُفضَّل جواب من أكثر من حرف
+    const exList = await page.evaluate(() => { const pick = p => { const c = []; for (const lid of Object.keys(LESSONS)) { const arr = (p === 'gC' ? LESSONS[lid].gC : LESSONS[lid].recall) || []; arr.forEach((x, i) => { const a = x.ans && x.ans[0]; if (x.exact && a && a !== a.toLowerCase()) c.push({ lid, id: p + '-' + i, ans: a }); }); } return c.filter(x => x.ans.length > 1)[0] || c[0] || null; }; return [pick('gC'), pick('rc')].filter(Boolean); });
+    async function reviewTyped(ex, v) {
+      await page.evaluate(ex => { const g = JSON.parse(localStorage.getItem('ep4.course')); const t = Date.now(); g.mistakes[ex.lid + '|' + ex.id] = { lid: ex.lid, id: ex.id, box: 0, t: t, due: t - 1000 }; localStorage.setItem('ep4.course', JSON.stringify(g)); }, ex);
+      await page.reload(); await sleep(400);
+      await page.locator('.nav-it').nth(3).click(); await sleep(250);
+      if (!(await page.locator('#nbHero .btn').count())) return { bad: 0, good: 0, fb: '' };
+      await page.locator('#nbHero .btn').click(); await sleep(250);
+      if (!(await page.locator('.gap-in:enabled').count())) return { bad: 0, good: 0, fb: '' };
+      await page.locator('.gap-in:enabled').fill(v); await page.locator('.gap-in').press('Enter'); await sleep(150);
+      const r = { bad: await page.locator('.gap-in.bad').count(), good: await page.locator('.gap-in.ok').count(), fb: (await page.locator('.fb').count()) ? await page.locator('.fb').first().innerText() : '' };
+      await page.click('[aria-label="Close · إغلاق"]'); await sleep(150);
+      return r;
+    }
+    const exRes = [];
+    for (const ex of exList) { const low = await reviewTyped(ex, ex.ans.toLowerCase()), right = await reviewTyped(ex, ex.ans); exRes.push({ ex, ok: low.bad === 1 && low.fb.includes(ex.ans) && /capital/i.test(low.fb) && right.good === 1 }); }
+    ok(exRes.some(r => r.ex.id.startsWith('gC-')) && exRes.every(r => r.ok), 'typed items with exact: true (grammar typing and recall) reject the lowercase answer, show the correct form, and accept the capitalised one (' + (exRes.map(r => r.ex.lid + ' ' + r.ex.id + ' ' + r.ex.ans + (r.ok ? ' ok' : ' FAILED')).join(', ') || 'no exact item in the lessons yet') + ')');
+
     ok(page.errors.length === 0, 'no page errors while completing all lessons: ' + page.errors.join(' | '));
     await ctx.close();
   }
