@@ -98,19 +98,26 @@ LESSONS.u1l2 = {
 
 الموضوع: «الحياة والعمل حول العالم». القاعدة: المضارع البسيط مقابل المستمر (Present Simple vs Present Continuous): العادة والحقيقة مقابل الآن والمؤقت. دروسها الخمسة وعناوينها ومحاورها بترتيب الخطة في الخريطة (القسم 6)، ثم `u1l6` Unit Review & Test بلا ملف درس (`unitTests[1]` في `content.js`).
 
-**المقترح** للنوع (يثبّته المنسّق): u1l1 وu1l3 وu1l5 قراءة، وu1l2 وu1l4 استماع. ما علّمه u1l1 (إملاء s وing، وكلمات الزمن، وأفعال الحالة، وموقع `usually`) يُبنى عليه ولا يُعاد كجديد.
+النوع كما ثبّته المنسّق في الخريطة (القسم 6): u1l1 وu1l4 وu1l5 قراءة، وu1l2 وu1l3 استماع. ما علّمه u1l1 (إملاء s وing، وكلمات الزمن، وموقع `usually` باختصار) يُبنى عليه ولا يُعاد كجديد؛ وأفعال الحالة صارت لـ u1l4 وحده بعد حذف بطاقتها من u1l1.
 
 ## 6. خريطة الوحدة (يملؤها المنسّق قبل أن يبدأ أي كاتب)
 
-وجود `…` في صف الكاتب يعني التوقف وسؤال المنسّق.
+وجود `…` في صف الكاتب يعني التوقف وسؤال المنسّق. كتبها المنسّق في 24 أكتوبر 2026، وهي ملزمة للكتّاب والمراجعين.
 
-| id | العنوان | `mode` | المقطع (رابطه) أو موضوع النص | الكلمات (5–7 + العبارة) | العبارة القانونية | محور القاعدة ضمن قاعدة الوحدة | معاد تدويره | مواضيع جمل التمارين |
-|---|---|---|---|---|---|---|---|---|
-| u1l1 | Hello from Antarctica | reading | إيميل عالِمة من محطة قطبية | (مبني) في ملفه | sign a contract | Present Simple vs Present Continuous | — | من ملفه |
-| u1l2 | The Night Shift | … | مقابلة مع ممرضة | … | … | Questions & Short Answers | … | … |
-| u1l3 | How Often Do You Sleep Well? | … | … | … | … | Adverbs of Frequency & Word Order | … | … |
-| u1l4 | Habits and Cultures | … | … | … | … | Stative Verbs (know / want / need / prefer) | … | … |
-| u1l5 | Your First Work Email | … | … | … | … | Writing: Short Work or Study Email | … | … |
+| id | العنوان | `mode` | المقطع (رابطه) أو موضوع النص | الكلمات (`vocab`) | العبارة القانونية | محور القاعدة ضمن قاعدة الوحدة | الاسترجاع (`recall`) | معاد تدويره (يظهر في النص أو التمارين، لا كجديد) | مواضيع جمل التمارين |
+|---|---|---|---|---|---|---|---|---|---|
+| u1l1 | Hello from Antarctica | reading | إيميل نور من محطة أبحاث في القارة القطبية (النص كما هو) | scientist · research (do research) · data (collect / check the data) · measure (measure the temperature) · safe · strange · miss (miss my family) | sign a contract | المضارع البسيط مقابل المستمر: العادة والحقيقة مقابل الآن والمؤقت، وإملاء s وing، وكلمات الزمن | من u0l5: careful وuseful وcheck وأنماط ing وful، والقانونية official document | من الأسبوع التأسيسي: busy, late, helpful, check | علوم وطقس وأسرة وجامعة وتقنية |
+| u1l2 | What's a Typical Day for You? | listening | [ELLLO Views #1554 «My Day»](https://elllo.org/english/1551/1554-Nat-Verbs-Schedule.htm): تود يسأل ناتالي (إنجلترا)، وهي معلمة، عن يومها. A2، نحو 4:10 (`targetSeconds: 250`) | typical (a typical day) · wake up · get out of bed · canteen · last (each class lasts an hour) · get changed | working hours | الأسئلة والإجابات القصيرة في المضارع البسيط والمستمر: Do / Does + الفعل المجرد، وIs / Are + ing، وأسئلة What time / Where / How many، وYes, I do / No, she isn't | من u1l1: scientist, do research, measure, safe أو strange، والقانونية sign a contract | من u1l1: safe, strange, miss؛ ومن التأسيسي: busy, late, helpful | الوظائف وأماكن العمل، وجداول الجامعة والمدرسة، وروتين الأسرة، والمواصلات |
+| u1l3 | How Often Do You Cook? | listening | [ELLLO Views #1555 «Eating Habits»](https://elllo.org/english/1551/1555-DanielHana-YNQs-Cooking.htm): هنا (المملكة المتحدة) ودانيال (تشيلي) يتحدثان عن الطبخ والأكل خارج البيت. A2، 2:44 (`targetSeconds: 164`) | eat out · takeaway · on the way home · invite (invite my friends over) · have people over (for dinner) · roommate | break the law | كلمات التكرار وموقعها: always / usually / often / sometimes / rarely / never، قبل الفعل الأساسي وبعد am / is / are، وHow often…? والجواب every day / once a week في آخر الجملة، وDo you ever…? (يُبنى على ما علّمه u1l1 من موقع usually) | من u1l2: typical, wake up, get out of bed, canteen, last، والقانونية working hours | من u1l2: typical, canteen, get home؛ ومن u1l1: strange؛ ومن التأسيسي: busy, late | الطعام والطبخ والمطاعم وزيارات الأصدقاء والتسوق والرياضة |
+| u1l4 | Habits and Cultures | reading | إيميل من طالب سعودي يدرس في اليابان إلى أخيه عن عادات الناس هناك وما يعرفه ويحتاجه ويفضّله، 150–230 كلمة | culture · custom · local · greet · foreign · gift | against the law | أفعال الحالة: know / understand / want / need / prefer / like / love / believe / think (رأيًا) تبقى في المضارع البسيط، مقابل أفعال الحدث في المستمر (I'm cooking / I like cooking)، وthink وhave بمعنييهما | من u1l3: eat out, takeaway, on the way home, invite, have people over، والقانونية break the law | من u1l3: eat out, invite, takeaway؛ ومن u1l1: miss, strange؛ ومن التأسيسي: polite, helpful | السفر والبلدان والعادات واللغات والأعياد والتحية والهدايا |
+| u1l5 | Your First Work Email | reading | إيميل متدرّب جديد في شركة إلى مديرته في أسبوعه الأول: يعرّف بنفسه، وروتينه، وما يعمل عليه هذا الأسبوع، وسؤال، ومرفق، 150–230 كلمة. وهو نموذج لكتابة المتعلم | colleague · schedule · attach · reply · deadline · introduce (introduce myself) | sick leave | المضارع البسيط والمستمر في إيميل العمل (مراجعة الوحدة): I'm writing to + فعل، والعادة مقابل هذا الأسبوع، وأفعال الحالة في الطلب (I need / I want to know)، وكلمات التكرار؛ مع أجزاء الإيميل: التحية والغرض والتفاصيل والختام | من u1l4: culture, custom, local, greet, foreign أو gift، والقانونية against the law | من u1l4: culture, local؛ ومن u1l2: working hours, typical؛ ومن u1l3: invite؛ ومن التأسيسي: polite, draft, check, explain | إيميلات العمل والجامعة، والاجتماعات والمشاريع والمحاضرات والمواعيد |
+
+قرارات المنسّق في هذه الخريطة (24 أكتوبر 2026):
+- **نوع الدروس:** u1l1 وu1l4 وu1l5 قراءة، وu1l2 وu1l3 استماع، فيبقى التوزيع 3 أيام قراءة ويومين استماع. والسبب أن مقطع #1555 مبني على كلمات التكرار نفسها، ونص u1l4 نكتبه فيحمل أفعال الحالة كلها.
+- **المقطعان مختلفان** كما في الأسبوع التأسيسي، ويتكرر كل مقطع داخل درسه ثلاث مرات بمهام مختلفة، وتعود كلماته في الدرس التالي. والمقطعان من سلسلة ELLLO الجديدة بمستوى A2 والمتحدثة الأساسية فيهما بريطانية.
+- **العناوين:** «The Night Shift» صار «What's a Typical Day for You?» و«How Often Do You Sleep Well?» صار «How Often Do You Cook?» ليوافقا المقطعين، والخطة تجيز تغيير الموضوع ليناسب المقطع.
+- **محور u1l5:** مراجعة قاعدة الوحدة داخل إيميل العمل، فله بطاقاته الست وتمارينه الستة عشر كبقية الدروس.
+- **الكلمات المحذوفة من u1l1** (team, lab, temperature, health, culture) تبقى في نصه شرحًا بـ `[[ ]]`، وculture صارت من كلمات u1l4.
 
 - **الكاتب:** لا يضع في `vocab` و`legalPhrase` و`vocabGaps` و`{ }` إلا كلمات صفه، وما زاد من النص يُشرح بـ `[[ ]]` فقط؛ ولا تتكرر كلمة مستهدفة بين درسين ولا مع الأسبوع التأسيسي وu1l1 (ابحث في `vocab` و`legalPhrase` في ملفاتها). الاسترجاع من صف الدرس السابق. المقطع هو المسمّى في صفه، وإلا اختار مقطعًا بموضوعه يحمل كلماته، فإن لم يجده أبلغ المنسّق ولا يغيّر الكلمات. ولا يعدّل الخريطة.
 - **المراجع:** يطابق الدرس بصفه: الكلمات والعبارة بلا زيادة، ونوع الدرس، ومحور القاعدة، وظهور الكلمات المعاد تدويرها، ومواضيع الجمل. المخالفة في الكلمات أو العبارة أو القاعدة `high`، وفي التدوير أو المواضيع `medium`.
@@ -124,7 +131,7 @@ LESSONS.u1l2 = {
 
 ## 8. ضمانات الجودة
 
-- يكتب الدروس ويراجعها أقوى نموذج.
+- يكتب الدروس ويراجعها نموذج Opus وحده، بقرار صاحب الموقع في 24 أكتوبر 2026، ولا يُستعمل غيره إلا بإذنه.
 - المراجع نسخة أخرى لم تشارك في كتابة الدرس الذي يراجعه.
 - يُشغَّل الفاحص الآلي `tests/content-check.js` على كل درس قبل المراجعة، ولا يُراجع درس فيه ERROR.
 - المنسّق وحده يدمج الدرس في المستودع، ويشغّل الاختبار الشامل `tests/site.test.js`، ويوثّق في `CHANGELOG.md`، وينشر؛ فلا يعدّل الكتّاب ولا المراجعون المستودع.
