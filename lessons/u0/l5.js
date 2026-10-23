@@ -408,6 +408,7 @@ LESSONS.u0l5 = {
     to: "Personal Study Log",
     lg1: "be: is / was / were · فعل الكون",
     lg2: "action verbs & -ing forms · أفعال الحدث وصيغة ing",
+    lg3: "Time words · كلمات الزمن",
     targetSeconds: 100,
     introEn: "At the end of his first week at Al-Noor Law Office, Faisal wrote this Friday reflection combining everything he learned.",
     intro: "في نهاية أسبوعه الأول في مكتب النور للمحاماة، كتب فيصل هذه المذكرة يوم الجمعة جامعًا فيها كل ما تعلّمه في الأسبوع التأسيسي.",

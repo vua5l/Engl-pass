@@ -210,7 +210,7 @@ function buildIndex(L){
   (L.vocabGaps || []).forEach(function(x, i){ items['vg-' + i] = { type:'mcq', secEn:'New Phrases', sec:'عبارات جديدة', groupEn:'Choose the right word', group:'اختر الكلمة المناسبة', errCat:x.errCat || 'vocab', x:mcqOf(x) }; });
   (L.gA || []).forEach(function(x, i){ items['gA-' + i] = { type:'mcq', secEn:'Grammar', sec:'القواعد', groupEn:'Choose the correct form', group:'اختر الصيغة الصحيحة', errCat:x.errCat || 'tense', x:mcqOf(x) }; });
   (L.gB || []).forEach(function(x, i){ items['gB-' + i] = { type:'tf', secEn:'Grammar', sec:'القواعد', groupEn:'Correct or has a mistake?', group:'صحيحة أم فيها خطأ؟', errCat:x.errCat || 'be_verb', x:x }; });
-  (L.gC || []).forEach(function(x, i){ items['gC-' + i] = { type:'typing', secEn:'Grammar', sec:'القواعد', groupEn:'Write the verb in the correct form', group:'اكتب الفعل بالصيغة الصحيحة', errCat:x.errCat || 'tense', x:x }; });
+  (L.gC || []).forEach(function(x, i){ var tg = typingGroup(x); items['gC-' + i] = { type:'typing', secEn:'Grammar', sec:'القواعد', groupEn:x.groupEn || tg[0], group:x.group || tg[1], errCat:x.errCat || 'tense', x:x }; });
   (L.gD || []).forEach(function(x, i){ items['gD-' + i] = { type:'builder', secEn:'Grammar', sec:'القواعد', groupEn:'Put the words in order', group:'رتّب الكلمات', errCat:x.errCat || 'word_order', x:x }; });
   if (L.reading && L.reading.questions) {
     L.reading.questions.forEach(function(x, i){ items['rq-' + i] = x.tf ? { type:'rtf', secEn:'Reading', sec:'القراءة', groupEn:'Comprehension Questions', group:'أسئلة الفهم', errCat:x.errCat || 'reading', x:x } : { type:'mcq', secEn:'Reading', sec:'القراءة', groupEn:'Comprehension Questions', group:'أسئلة الفهم', errCat:x.errCat || 'reading', x:{ prompt:x.q, opts:x.opts, a:x.a, whyEn:x.whyEn, why:x.why, ev:x.ev, errCat:x.errCat || 'reading' } }; });
@@ -221,6 +221,10 @@ function buildIndex(L){
   (L.quiz || []).forEach(function(x, i){ items['qz-' + i] = { type:'mcq', secEn:'Quiz', sec:'الاختبار', groupEn:'Lesson Quiz', group:'اختبار الدرس', errCat:x.errCat || (x.tag && x.tag.indexOf('Vocabulary') >= 0 ? 'vocab' : 'tense'), x:mcqOf(x) }; });
   return { IDS:ids, ITEMS:items, GCARDS:L.gCards || [], ALL_VOCAB:vocab, VOCAB_LIST:vocab.map(function(v){ return v.en; }).join(', ') };
 }
+/* عنوان تمرين الكتابة (gC): «اكتب الفعل» حين يكون التلميح فعلًا (visit · not / like)، وتسمية محايدة
+   حين يكون تعليمة (capitalize: riyadh · care + ful · dish — plural). وللسؤال أن يضع groupEn / group بنفسه. */
+function isVerbCue(x){ return !!x.verb && !/[:+—–]/.test(x.verb); }
+function typingGroup(x){ return isVerbCue(x) ? ['Write the verb in the correct form', 'اكتب الفعل بالصيغة الصحيحة'] : ['Write the correct form', 'اكتب الصيغة الصحيحة']; }
 function indexFor(lid){
   if (lid === curLessonId) return { IDS:IDS, ITEMS:ITEMS, ALL_VOCAB:ALL_VOCAB, GCARDS:GCARDS };
   if (!INDEX_CACHE[lid]) INDEX_CACHE[lid] = buildIndex(lessonData(lid));
@@ -716,7 +720,7 @@ function vLessons(){
 }
 
 /* ---------- words tab (Lesson Phrases + 60 Irregular Verbs in Spaced Repetition) ---------- */
-var POS_AR = { noun:'اسم', verb:'فعل', adjective:'صفة', 'legal phrase':'عبارة قانونية' };
+var POS_AR = { noun:'اسم', verb:'فعل', adjective:'صفة', adverb:'ظرف', 'legal phrase':'عبارة قانونية' };
 function irrStatus(base){
   var st = G.irrSr && G.irrSr[base];
   if (!st || !st.box) return { st:'new', lbl:'New · جديد', due:true, days:0 };
@@ -1212,7 +1216,7 @@ function RecallTyping(x, o, ctl){
     fb.hidden = false;
     var caseOnly = !exact && !!x.exact && x.ans.some(function(a){ return norm(a) === norm(v); });
     var whyEn = caseOnly ? (CASE_NOTE_EN + ' "' + targetWord + '". ' + (x.spellNoteEn || '')) : closeSpell ? ('Close! You recalled the word, but check the spelling: "' + targetWord + '". ' + (x.spellNoteEn || '')) : (x.spellNoteEn || 'Spelling pattern checked.');
-    var whyAr = caseOnly ? (CASE_NOTE_AR + ' ' + targetWord + '. ' + (x.spellNote || '')) : closeSpell ? ('تذكّرت الكلمة بشكل قريب، لكن انتبه للإملاء الصحيح: ' + targetWord + '. ' + (x.spellNote || '')) : (x.spellNote || '');
+    var whyAr = caseOnly ? (CASE_NOTE_AR + ' ' + targetWord + '. ' + (x.spellNote || x.spellNoteAr || '')) : closeSpell ? ('تذكّرت الكلمة بشكل قريب، لكن انتبه للإملاء الصحيح: ' + targetWord + '. ' + (x.spellNote || x.spellNoteAr || '')) : (x.spellNote || x.spellNoteAr || '');
     var cardNode = fbCard(exact, whyAr, null, exact ? null : [caseOnly ? 'Correct form · الصيغة الصحيحة' : 'Correct spelling · الإملاء الصحيح', targetWord], whyEn);
     var tools = h('div', { class:'audio-row' },
       sayBtn(targetWord, 'Human Pronunciation · نطق بشري'),
@@ -1396,7 +1400,7 @@ function typedExactOK(x, v){ var n = exactNorm(v), pre = (x.pre && x.pre !== '__
     return forms.indexOf(n) >= 0; }); }
 function typedOK(x, v){ return x.exact ? typedExactOK(x, v) : typedLooseOK(x, v); }
 function Typing(x, o, ctl){ o = o || {};
-  var inp = h('input', { class:'gap-in', type:'text', dir:'ltr', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', enterkeyhint:'done', 'aria-label':'Verb form · صيغة الفعل ' + x.verb });
+  var inp = h('input', { class:'gap-in', type:'text', dir:'ltr', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', enterkeyhint:'done', 'aria-label':(isVerbCue(x) ? 'Verb form · صيغة الفعل ' : 'Correct form · الصيغة الصحيحة ') + x.verb });
   var noSpace = /^[.!?,]/.test(x.post);
   var sent = h('p', { class:'q-en', dir:'ltr' }, x.pre + ' ', inp, ' ', h('span', { class:'verb' }, '(' + x.verb + ')'), noSpace ? '' : ' ', x.post);
   var fb = h('div', { hidden:true }), done = false;
@@ -1557,6 +1561,10 @@ function stEmail(ctl){ var r = D.reading, raw = (r.paras || []).join(' ');
 }
 
 /* 3-stage Listening support for Listening days */
+/* كلمة زر «Key Phrase Audio»: عبارة الدرس التي يطابق en (ثم headword) فيها listening.audioWord، وإلا أول كلمات الدرس. */
+function keyPhraseOf(L){ var w = String((L && L.audioWord) || '').toLowerCase().trim();
+  function by(f){ return w ? ALL_VOCAB.filter(function(v){ return String(v[f] || '').toLowerCase().trim() === w; })[0] : null; }
+  return by('en') || by('headword') || ALL_VOCAB[0]; }
 function stListen1(ctl){
   var L = D.listening || {};
   var sec = 0, target = L.targetSeconds || 90;
@@ -1602,7 +1610,7 @@ function stListen1(ctl){
       h('p', { html:arHTML(L.intro || 'استمع أولًا للفكرة العامة في صفحة المصدر بدون قراءة النص المكتوب.') }),
       h('div', { class:'wbtns', style:'margin-top:4px' },
         L.url ? h('a', { class:'btn sm', href:L.url, target:'_blank', rel:'noopener noreferrer' }, biBtn('Open Audio Clip in Source Page ↗', 'افتح المقطع في صفحة المصدر ↗')) : null,
-        h('button', { class:'btn out sm', type:'button', on:{ click:function(){ AUDIO.play(ALL_VOCAB[0]); } } }, ico('speaker'), biBtn('Key Phrase Audio', 'سماع نطق الكلمات المفتاحية')))),
+        h('button', { class:'btn out sm', type:'button', on:{ click:function(){ AUDIO.play(keyPhraseOf(L)); } } }, ico('speaker'), biBtn('Key Phrase Audio', 'سماع نطق الكلمات المفتاحية')))),
     gistBox
   ];
 }
@@ -1716,7 +1724,7 @@ function renderErrorAnalysis(quizWrongs){
     else if (it.type === 'rtf') right = x.a ? 'True' : 'False';
     else if (it.type === 'typing' || it.type === 'recall') right = x.ans[0];
     else if (it.type === 'builder') right = x.ans;
-    addErr(it.errCat || 'tense', itemText(it), right, x.whyEn || x.spellNoteEn, x.why || x.spellNote);
+    addErr(it.errCat || 'tense', itemText(it), right, x.whyEn || x.spellNoteEn, x.why || x.spellNote || x.spellNoteAr);
   });
   var cats = Object.keys(grouped);
   if (!cats.length) {
@@ -1882,10 +1890,11 @@ function stWriting(ctl){
       modelLegend ? h('p', { class:'fine' }, modelLegend) : null)
   ];
 }
-/* شرح ألوان النموذج من الدرس (legendEn / legendAr)، وإلا سطر عام، ولا سطر لنموذج بلا تلوين. */
+/* شرح ألوان النموذج من الدرس (legendEn / legendAr)، وإلا سطر عام إن كان في النموذج تلوين (<<s: أو <<c:)،
+   ولا سطر لنموذج بلا ألوان (u0l4). */
 function writingModelLegend(W, src){
   if (W.legendEn || W.legendAr) return [W.legendEn, W.legendAr].filter(Boolean).join(' · ');
-  return /<<[sct]:|\{[^}]+\}/.test(src || '') ? 'Highlighted words show today\'s grammar and lesson words · المظلَّل يبيّن قاعدة اليوم وكلماته' : '';
+  return /<<[sc]:/.test(src || '') ? 'Highlighted words show today\'s grammar and lesson words · المظلَّل يبيّن قاعدة اليوم وكلماته' : '';
 }
 function paintFeedback(box, fb){
   var gMist = Array.isArray(fb.grammarMistakes) ? fb.grammarMistakes : (Array.isArray(fb.mistakes) ? fb.mistakes.filter(function(m){ return m.kind !== 'spelling'; }) : []);
@@ -2216,7 +2225,7 @@ function stUnitApplied(st, ctl){
   var ut = unitTestOf(st.unit) || unitTestOf(1), task = ut.appliedTask || {};
   var minS = task.minSentences || 3;
   /* مثال الوحدة 1 القديم يبقى لها، ولغيرها مثال الدرس (placeholder) أو أرقام الجمل فقط. */
-  var ph = task.placeholder || (st.unit === 1 ? '1. I usually ...\n2. This week, I am ...\n3. Before starting a job, we sign a contract.' : '1. …\n2. …\n3. …');
+  var ph = task.placeholder || (st.unit === 1 ? '1. I usually ...\n2. This week, I am ...\n3. Before starting a job, we sign a contract.' : Array.apply(null, Array(minS)).map(function(_, i){ return (i + 1) + '. …'; }).join('\n'));
   var ta = h('textarea', { class:'wt', rows:'5', placeholder:ph, autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', 'aria-label':'Short Applied Task · المهمة التطبيقية القصيرة' });
   ta.value = (UT_STATE && UT_STATE.applied) || '';
   var cnt = h('p', { class:'wcount' });

@@ -71,7 +71,7 @@ var DATA = window.DATA = {
   ],
 
   unit0Lessons: [
-    { id: "u0l1", n: 1, en: "First Day at the Law Office", subEn: "Be (am / is / are) vs. Do (do / does)", ar: "الفرق بين be و do في الإثبات والنفي والسؤال", shortAr: "الفرق بين be و do", icon: "book", open: true },
+    { id: "u0l1", n: 1, en: "First Week at the Law Office", subEn: "Be (am / is / are) vs. Do (do / does)", ar: "الفرق بين be و do في الإثبات والنفي والسؤال", shortAr: "الفرق بين be و do", icon: "book", open: true },
     { id: "u0l2", n: 2, en: "Two Cases in Court", subEn: "Singular & Plural Agreement (Is there / Are there)", ar: "المطابقة مع المفرد والجمع و There is / There are", shortAr: "المطابقة مع المفرد والجمع", icon: "globe", open: true },
     { id: "u0l3", n: 3, en: "Where Were You Yesterday?", subEn: "Past of Be: Was & Were", ar: "الماضي بـ was و were في الإثبات والنفي والسؤال", shortAr: "الماضي بـ was و were", icon: "clock", open: true },
     { id: "u0l4", n: 4, en: "Four Clear Sentences", subEn: "Capital Letters, Periods & Word Order", ar: "الحرف الكبير والنقطة وفصل الجمل وترتيبها", shortAr: "الحرف الكبير والنقطة", icon: "pen", open: true },
@@ -417,7 +417,8 @@ var DATA = window.DATA = {
       ],
       appliedTask: {
         promptEn: "Short Applied Task: Write at least 4 separate sentences about your week. Use 1) am / is / are and do / does (or don't / doesn't), 2) There is or There are, 3) was or were, and 4) correct capital letters (I, names, cities, days). Finish each sentence with a period (.).",
-        promptAr: "مهمة تطبيقية قصيرة: اكتب 4 جمل منفصلة على الأقل عن أسبوعك، واستعمل فيها: ١) am / is / are وdo / does (أو don't / doesn't)، ٢) There is أو There are، ٣) was أو were، ٤) الحروف الكبيرة الصحيحة (I والأسماء والمدن والأيام)، وأنهِ كل جملة بنقطة."
+        promptAr: "مهمة تطبيقية قصيرة: اكتب 4 جمل منفصلة على الأقل عن أسبوعك، واستعمل فيها: ١) am / is / are وdo / does (أو don't / doesn't)، ٢) There is أو There are، ٣) was أو were، ٤) الحروف الكبيرة الصحيحة (I والأسماء والمدن والأيام)، وأنهِ كل جملة بنقطة.",
+        minSentences: 4
       }
     },
     1: {

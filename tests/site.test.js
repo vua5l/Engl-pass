@@ -113,7 +113,7 @@ function fakeGitHub(token) {
     await page.click('.wel-cta .btn'); await sleep(250);
     ok(!(await page.locator('#gh-fab').count()) && !(await page.locator('body').innerText()).includes('مزامنة GitHub'), 'no floating sync button anywhere');
     await page.click('[aria-label="Open Lesson · افتح درس اليوم"]'); await sleep(250);
-    ok((await text(page)).includes('First Day at the Law Office'), "today's lesson on a fresh start is Foundation lesson 1 (u0l1)");
+    ok((await text(page)).includes('First Week at the Law Office'), "today's lesson on a fresh start is Foundation lesson 1 (u0l1)");
     const g0 = await getJSON(page, 'ep4.course');
     ok(g0 && g0.ui.welcomed === true && g0.startedAt > 0 && g0.cur === 'u0l1', 'course state saved with welcome flag, start date and current lesson');
 
@@ -361,17 +361,23 @@ function fakeGitHub(token) {
     await page.locator('.nav-it').nth(0).click(); await sleep(200);
     const u0btn = page.locator('button.u0-test');
     const u0open = (await u0btn.count()) === 1;
-    let u0result = false;
+    let u0result = false, u0min = null;
     if (u0open) {
       await u0btn.click(); await sleep(250);
       await cta(page); // الركن القانوني ← السؤال الأول
       for (let i = 0; i < 60; i++) { const opt = page.locator('.opt:enabled'); if (!(await opt.count())) break; await opt.first().click(); await sleep(60); await cta(page); }
-      if (await page.locator('textarea.wt').count()) { await page.fill('textarea.wt', 'I am a law student in Riyadh. My classes are on Sunday. I was at the library yesterday. I do not work on Fridays.'); await cta(page); }
+      if (await page.locator('textarea.wt').count()) {
+        // المهمة التطبيقية تطلب minSentences جملة: ثلاث جمل لا تكفي حين تطلب المهمة أربعًا
+        const need = await page.evaluate(() => (DATA.unitTests[0].appliedTask || {}).minSentences || 3);
+        if (need > 3) { await page.fill('textarea.wt', 'I am a law student in Riyadh. My classes are on Sunday. I was at the library yesterday.'); await cta(page); u0min = (await page.locator('textarea.wt').count()) === 1 && /\/ 4\b/.test(await page.locator('.wcount').innerText()); }
+        await page.fill('textarea.wt', 'I am a law student in Riyadh. My classes are on Sunday. I was at the library yesterday. I do not work on Fridays.'); await cta(page);
+      }
       u0result = (await page.locator('.result .ring-w').count()) === 1;
       await cta(page); // رجوع للدروس
     }
     const gu = await getJSON(page, 'ep4.course');
     ok(u0open && u0result && gu.unitTests && gu.unitTests[0] && gu.unitTests[0].attempts === 1 && typeof gu.unitTests[0].last === 'number' && !gu.unitTests[1] && !(await page.locator('.pl').count()), 'unit test result is saved in the course state: the Foundation Week test opens after the five lessons, can be finished, and is saved in G.unitTests[0]');
+    ok(u0min === true, 'the Foundation Week applied task keeps its minSentences: 3 sentences are refused when it asks for 4');
 
     // اختبار الوحدة 1 يبقى مقفلًا: دروسها 2–6 لم تُبنَ بعد، وإن اكتمل درسها الأول
     await page.locator('.nav-it').nth(0).click(); await sleep(200);
@@ -397,13 +403,16 @@ function fakeGitHub(token) {
       await page.locator('#nbHero .btn').click(); await sleep(250);
       if (!(await page.locator('.gap-in:enabled').count())) return { bad: 0, good: 0, fb: '' };
       await page.locator('.gap-in:enabled').fill(v); await page.locator('.gap-in').press('Enter'); await sleep(150);
-      const r = { bad: await page.locator('.gap-in.bad').count(), good: await page.locator('.gap-in.ok').count(), fb: (await page.locator('.fb').count()) ? await page.locator('.fb').first().innerText() : '' };
+      const r = { bad: await page.locator('.gap-in.bad').count(), good: await page.locator('.gap-in.ok').count(), fb: (await page.locator('.fb').count()) ? await page.locator('.fb').first().innerText() : '', label: await page.locator('.st-lbl').first().innerText().catch(() => '') };
       await page.click('[aria-label="Close · إغلاق"]'); await sleep(150);
       return r;
     }
     const exRes = [];
-    for (const ex of exList) { const low = await reviewTyped(ex, ex.ans.toLowerCase()), right = await reviewTyped(ex, ex.ans); exRes.push({ ex, ok: low.bad === 1 && low.fb.includes(ex.ans) && /capital/i.test(low.fb) && right.good === 1 }); }
+    for (const ex of exList) { const low = await reviewTyped(ex, ex.ans.toLowerCase()), right = await reviewTyped(ex, ex.ans); exRes.push({ ex, label: low.label, ok: low.bad === 1 && low.fb.includes(ex.ans) && /capital/i.test(low.fb) && right.good === 1 }); }
     ok(exRes.some(r => r.ex.id.startsWith('gC-')) && exRes.every(r => r.ok), 'typed items with exact: true (grammar typing and recall) reject the lowercase answer, show the correct form, and accept the capitalised one (' + (exRes.map(r => r.ex.lid + ' ' + r.ex.id + ' ' + r.ex.ans + (r.ok ? ' ok' : ' FAILED')).join(', ') || 'no exact item in the lessons yet') + ')');
+    // تمرين الحرف الكبير ليس فعلًا: عنوانه محايد لا «Write the verb…»
+    const gcRes = exRes.filter(r => r.ex.id.startsWith('gC-'))[0];
+    ok(!!gcRes && /Write the correct form/.test(gcRes.label) && !/Write the verb/.test(gcRes.label), 'a capitalisation typing item gets a neutral group label, not "Write the verb…" (' + (gcRes ? gcRes.label.split('\n')[0] : 'none') + ')');
 
     ok(page.errors.length === 0, 'no page errors while completing all lessons: ' + page.errors.join(' | '));
     await ctx.close();
