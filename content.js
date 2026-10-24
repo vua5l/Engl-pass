@@ -80,10 +80,10 @@ var DATA = window.DATA = {
 
   unit1Lessons: [
     { id: "u1l1", n: 1, en: "Hello from Antarctica", subEn: "Present Simple vs. Present Continuous", ar: "المضارع البسيط مقابل المستمر", shortAr: "المضارع البسيط والمستمر", icon: "penguin", open: true },
-    { id: "u1l2", n: 2, en: "What's a Typical Day for You?", subEn: "Questions & Short Answers", ar: "مقابلة مع معلمة عن يومها: الأسئلة والإجابات القصيرة", shortAr: "الأسئلة والإجابات القصيرة", icon: "book" },
-    { id: "u1l3", n: 3, en: "How Often Do You Cook?", subEn: "Adverbs of Frequency & Word Order", ar: "عادات الطبخ والأكل: كلمات التكرار وموقعها في الجملة", shortAr: "كلمات التكرار", icon: "clock" },
-    { id: "u1l4", n: 4, en: "Habits and Cultures", subEn: "Stative Verbs: know / want / need / prefer", ar: "أفعال الحالة: know / want / need / prefer", shortAr: "أفعال الحالة", icon: "globe" },
-    { id: "u1l5", n: 5, en: "Your First Work Email", subEn: "Writing: Short Work or Study Email", ar: "كتابة: إيميل مهني قصير عن عملك أو دراستك", shortAr: "إيميل مهني قصير", icon: "mail" },
+    { id: "u1l2", n: 2, en: "What's a Typical Day for You?", subEn: "Questions & Short Answers", ar: "مقابلة مع معلمة عن يومها: الأسئلة والإجابات القصيرة", shortAr: "الأسئلة والإجابات القصيرة", icon: "book", open: true },
+    { id: "u1l3", n: 3, en: "How Often Do You Cook?", subEn: "Adverbs of Frequency & Word Order", ar: "عادات الطبخ والأكل: كلمات التكرار وموقعها في الجملة", shortAr: "كلمات التكرار", icon: "clock", open: true },
+    { id: "u1l4", n: 4, en: "Habits and Cultures", subEn: "Stative Verbs: know / want / need / prefer", ar: "أفعال الحالة: know / want / need / prefer", shortAr: "أفعال الحالة", icon: "globe", open: true },
+    { id: "u1l5", n: 5, en: "Your First Work Email", subEn: "Writing: Short Work or Study Email", ar: "كتابة: إيميل مهني قصير عن عملك أو دراستك", shortAr: "إيميل مهني قصير", icon: "mail", open: true },
     { id: "u1l6", n: 6, en: "Unit Review & Test", subEn: "Unit 1 Review & Mastery Test", ar: "مراجعة الوحدة واختبارها", shortAr: "مراجعة الوحدة واختبارها", icon: "trophy", test: true }
   ],
 
