@@ -324,7 +324,7 @@ var DATA = window.DATA = {
       grammarEn: "1) Present Simple (habits & facts: I work / she works) vs. Present Continuous (now & this week: I'm working), 2) Questions & Short Answers (Do / Does + base verb? Am / Is / Are + -ing? Yes, I do. / No, she isn't.), 3) Frequency Words & Word Order (I often cook. / I'm never late. / How often…?), 4) Stative Verbs in Present Simple (know, need, want, prefer), 5) A Short Work Email (I'm writing to… / This week, I'm… / I need…).",
       phrases: ["miss my family", "sign a contract", "a typical day", "working hours", "eat out", "have people over", "break the law", "local customs", "against the law", "introduce myself", "meet a deadline", "sick leave"],
       questions: [
-        "Tell me about a typical day for you: what time do you usually wake up, and what are you working on this week?",
+        "How do you usually spend your weekends, and what are you studying at the moment?",
         "Which local customs do you love in Saudi Arabia, and which ones are changing these days?",
         "What are the normal working hours in your country, and is anyone in your family working long hours or taking sick leave this month?"
       ]
@@ -468,9 +468,9 @@ var DATA = window.DATA = {
         { s: "Our neighbour ___ a cake when she visits us.", opts: ["brings often", "often brings", "often bring"], a: 1, errCat: "word_order", lesson: "u1l3",
           whyEn: "A frequency word goes before the main verb: often brings. 'Our neighbour' is she, so the verb still needs -s after 'often'.",
           why: "كلمة التكرار تأتي قبل الفعل الأساسي: often brings، والفاعل Our neighbour مفرد غائب، فيبقى حرف s في الفعل بعد often." },
-        { s: "Fresh fish ___ cheap in our city, so we don't eat it every week.", opts: ["is rarely", "rarely is", "rarely"], a: 0, errCat: "word_order", lesson: "u1l3",
-          whyEn: "With am / is / are, the frequency word comes after the verb: is rarely cheap. Without 'is', the sentence has no verb.",
-          why: "مع am / is / are تأتي كلمة التكرار بعد الفعل: is rarely cheap، ومن دون is تبقى الجملة بلا فعل." },
+        { s: "Fresh fish ___ cheap in our city, so we don't eat it every week.", opts: ["is rarely", "rarely", "rarely be"], a: 0, errCat: "word_order", lesson: "u1l3",
+          whyEn: "With am / is / are, the frequency word comes after the verb: is rarely cheap. Without 'is', the sentence has no verb, and 'be' must change to 'is' with 'fresh fish'.",
+          why: "مع am / is / are تأتي كلمة التكرار بعد الفعل: is rarely cheap، ومن دون is تبقى الجملة بلا فعل، ولا يبقى be مجردًا بل يصير is مع fresh fish." },
         { s: "Sara ___ her phone at the dinner table; it's a family rule.", opts: ["doesn't never use", "never use", "never uses"], a: 2, errCat: "word_order", lesson: "u1l3",
           whyEn: "'never' is already negative, so we don't add 'doesn't'. It goes before the main verb, and 'Sara' is she, so the verb needs -s: never uses.",
           why: "never منفية بنفسها فلا نضيف doesn't، وتأتي قبل الفعل الأساسي، والفاعل Sara مفرد غائب فيأخذ الفعل s: never uses." },
@@ -492,15 +492,15 @@ var DATA = window.DATA = {
         { s: "Dear Mr Al-Ghamdi, ___ to thank you for your help last week.", opts: ["I'm writing", "I writing", "I am write"], a: 0, errCat: "be_verb", lesson: "u1l5",
           whyEn: "You are writing the email now, so we use Present Continuous: I'm writing (am + -ing). 'I writing' has no 'am', and 'I am write' puts 'am' before a base verb.",
           why: "أنت تكتب الإيميل الآن، فنستعمل المضارع المستمر: I'm writing (am مع ing)؛ أما I writing فينقصها am، وI am write تضع am قبل الفعل المجرد." },
-        { s: "My manager is on sick leave this week, so I ___ his phone calls.", opts: ["answer", "am answering", "answers"], a: 1, errCat: "tense", lesson: "u1l5",
-          whyEn: "'this week' and 'on sick leave' show a short, temporary situation, so we use Present Continuous: I am answering. 'I answer' is for a normal habit, and 'answers' is for he / she / it.",
-          why: "this week وon sick leave تدلان على وضع مؤقت قصير، فنستعمل المضارع المستمر: I am answering؛ أما I answer فللعادة المعتادة، وanswers مع المفرد الغائب." },
+        { s: "My colleague is on sick leave, so at the moment I ___ his report for tomorrow's meeting.", opts: ["finish", "am finishing", "finishes"], a: 1, errCat: "tense", lesson: "u1l5",
+          whyEn: "'at the moment' shows one action that is happening now, so we use Present Continuous: I am finishing. 'I finish' is for a habit, and 'finishes' is for he / she / it.",
+          why: "at the moment تدل على عمل واحد يجري الآن، فنستعمل المضارع المستمر: I am finishing؛ أما I finish فللعادة، وfinishes مع المفرد الغائب." },
         { s: "I ___ morning meetings because I have lectures in the afternoon.", opts: ["prefer", "am preferring", "prefers"], a: 0, errCat: "stative", lesson: "u1l5",
           whyEn: "'prefer' is a stative verb (a feeling), so it stays in Present Simple: I prefer. We don't use it with -ing, and 'prefers' is for he / she / it.",
           why: "prefer فعل حالة يدل على التفضيل، فيبقى في المضارع البسيط: I prefer، ولا يأخذ ing، وprefers مع المفرد الغائب." },
-        { s: "Can I ___ you to my colleague Hind? She works in our Jeddah office.", opts: ["greet", "introduce", "attach"], a: 1, errCat: "vocab", lesson: "u1l5",
-          whyEn: "We 'introduce' one person to another person: we tell them each other's names. 'greet' means say hello, and it doesn't take 'to' here; we 'attach' files, not people.",
-          why: "نقول introduce someone to someone أي نعرّف شخصًا بآخر؛ أما greet فتعني يحيّي ولا يأتي بعدها to هنا، وattach نرفق بها الملفات لا الأشخاص." }
+        { s: "Hind always sends her reports on time. She never misses a ___.", opts: ["schedule", "deadline", "colleague"], a: 1, errCat: "vocab", lesson: "u1l5",
+          whyEn: "A 'deadline' is the last day or time to finish a piece of work, and 'miss a deadline' means finish too late. Hind is always on time, so she never misses a deadline. We don't say 'miss a schedule', and a colleague is a person, not a time.",
+          why: "deadline آخر موعد لإنهاء العمل، وmiss a deadline تعني أن يتأخر عنه؛ وهند تسلّم تقاريرها في وقتها دائمًا، فلا يفوتها موعد نهائي أبدًا. ولا نقول miss a schedule، وcolleague زميل لا موعد." }
       ],
       appliedTask: {
         promptEn: "Short Applied Task: Write at least 4 separate sentences about your life these days. Use 1) a habit in the Present Simple, 2) something happening now or this week in the Present Continuous, 3) a frequency word in the right place (always, usually, never…), 4) a stative verb (know, need, want, prefer…), and 5) one legal phrase from this unit (sign a contract, working hours, break the law, against the law, sick leave). Finish each sentence with a period (.).",
