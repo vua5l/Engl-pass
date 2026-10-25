@@ -4,14 +4,48 @@
     NODE_PATH=/opt/npm-tools/node_modules node tests/site.test.js
   (أو بعد: npm i playwright)  ويمكن تحديد مسار Chrome بالمتغير CHROME_PATH.
   يشغّل الاختبار خادمًا محليًا للملفات، ويحاكي GitHub في الذاكرة، فلا يلمس أي مستودع حقيقي.
+  وقائمة الدروس لا تُكتب فيه باليد: تُؤخذ من قوائم content.js وملفات الدروس، ويُخدم index.html كما يولّده
+  tools/register-lessons.js في الذاكرة، فيُختبر درس جديد مذكور في content.js قبل أن يُكتب سطره في index.html.
+  ولتشغيل مراحل بعض الدروس وحدها (والفحوص العامة باقية): node tests/site.test.js --only u2l1,u2l2
 */
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
+const { generateIndexHtml, collectLessons } = require('../tools/register-lessons.js');
 const ROOT = path.resolve(__dirname, '..');
 const CHROME = process.env.CHROME_PATH || (fs.existsSync('/opt/google/chrome/chrome') ? '/opt/google/chrome/chrome' : undefined);
 
+/* index.html كما يكتبه tools/register-lessons.js، والدروس المفتوحة (open: true) التي لها ملف بترتيب الكورس:
+   { id, unit, row: موضعه في قائمة وحدته }. ونوع كل درس (قراءة أو استماع) يُقرأ من ملفه في الصفحة نفسها (القسم هـ). */
+let INDEX_HTML, COURSE;
+try {
+  INDEX_HTML = generateIndexHtml(ROOT);
+  const { DATA, lessons, warnings } = collectLessons(ROOT);
+  warnings.forEach(w => console.error('WARN  ' + w));
+  COURSE = lessons.filter(l => l.open).map(l => ({ id: l.id, unit: l.unit, row: DATA['unit' + l.unit + 'Lessons'].findIndex(x => x && x.id === l.id) }));
+} catch (e) { console.error('cannot build the lesson list: ' + e.message); process.exit(2); }
+/* GitHub Pages ينشر ملف القرص لا المولَّد، فملف قديم يُسقط الاختبار، إلا في فرع ليلي لا يمس index.html (ALLOW_STALE_INDEX=1). */
+const STALE_INDEX = INDEX_HTML !== fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+if (STALE_INDEX) console.log('note: index.html on disk is not up to date; the test serves the generated one (run node tools/register-lessons.js before publishing; a nightly branch sets ALLOW_STALE_INDEX=1)');
+/* --only u2l1,u2l2: مراحل هذه الدروس وحدها بترتيب الكورس، والفحوص التي لا تعتمد على قائمة الدروس تبقى كلها. */
+const ONLY = (() => {
+  const argv = process.argv.slice(2); let v = null;
+  for (let i = 0; i < argv.length; i++) {
+    if (argv[i] === '--only') v = argv[++i] || '';
+    else if (argv[i].startsWith('--only=')) v = argv[i].slice(7);
+    else { console.error('unknown argument ' + argv[i] + '\nusage: node tests/site.test.js [--only u2l1,u2l2]'); process.exit(2); }
+  }
+  if (v === null) return null;
+  const ids = v.split(',').map(s => s.trim()).filter(Boolean), bad = ids.filter(id => !COURSE.some(l => l.id === id));
+  if (!ids.length || bad.length) { console.error((ids.length ? 'not an open lesson with a file: ' + bad.join(', ') : '--only needs lesson ids, e.g. --only u2l1,u2l2') + '\nopen lessons: ' + COURSE.map(l => l.id).join(' ')); process.exit(2); }
+  return new Set(ids);
+})();
+const DRIVE = COURSE.filter(l => !ONLY || ONLY.has(l.id));
+if (!DRIVE.length) { console.error('content.js lists no open lesson with a file'); process.exit(2); }
+console.log('lessons' + (ONLY ? ' (--only)' : '') + ': ' + DRIVE.map(l => l.id).join(' '));
+
 const results = []; let fails = 0;
 function ok(cond, msg) { results.push((cond ? 'PASS ' : 'FAIL ') + msg); if (!cond) fails++; }
+ok(!STALE_INDEX || !!process.env.ALLOW_STALE_INDEX, 'index.html on disk is up to date (or ALLOW_STALE_INDEX=1 on a nightly branch)');
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 function serve() {
@@ -19,6 +53,7 @@ function serve() {
   return new Promise(res => {
     const srv = http.createServer((req, resp) => {
       let p = decodeURIComponent(req.url.split('?')[0]); if (p.endsWith('/')) p += 'index.html';
+      if (p === '/index.html') { resp.writeHead(200, { 'Content-Type': types['.html'] }); return resp.end(INDEX_HTML); } // المولَّد في الذاكرة، لا ملف القرص
       const f = path.join(ROOT, p);
       if (!f.startsWith(ROOT) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { resp.writeHead(404, { 'Content-Type': 'text/html' }); return resp.end('<!doctype html><title>404</title>'); }
       resp.writeHead(200, { 'Content-Type': types[path.extname(f)] || 'application/octet-stream' });
@@ -94,8 +129,21 @@ function fakeGitHub(token) {
   const cta = async page => { const b = page.locator('.pl-foot .btn:visible').last(); await b.click(); await sleep(120); };
   async function startApp(page) { await page.goto(URL0); await sleep(400); if (await page.locator('.wel-cta .btn').count()) { await page.click('.wel-cta .btn'); await sleep(250); } }
   async function openFoundation(page, i) { await page.locator('.u0-row').nth(i).click(); await sleep(250); }
-  // دروس الوحدة 1 من شاشة «الدروس» (الرئيسية تعرض أول ثلاثة منها فقط)
-  async function openUnit1(page, i) { await page.locator('.nav-it').nth(1).click(); await sleep(200); await page.locator('.unit-open button.uo-row').nth(i).click(); await sleep(250); }
+  // كتلة وحدة مفتوحة في شاشة «الدروس» برقمها، فلا تختلط سطور الوحدة 1 بسطور وحدة أخرى مفتوحة
+  const unitBlock = (page, u) => page.locator('.unit-open').filter({ has: page.locator('.uo-head .u-n', { hasText: new RegExp('^' + u + '$') }) });
+  // درس مفتوح بمعرّفه من سطره في قائمة وحدته: الأسبوع التأسيسي في الشاشة الحالية، وغيره في كتلة وحدته في شاشة «الدروس»
+  // (الرئيسية تعرض أول ثلاثة دروس من وحدة واحدة فقط). ويرجع false إن لم يجد السطر أو فتح السطر درسًا آخر.
+  async function openLesson(page, lid) {
+    const l = COURSE.find(x => x.id === lid);
+    if (l.unit === 0) await openFoundation(page, l.row);
+    else {
+      await page.locator('.nav-it').nth(1).click(); await sleep(200);
+      const row = unitBlock(page, l.unit).locator('.uo-list > li').nth(l.row).locator('button.uo-row');
+      if (!(await row.count())) return false;
+      await row.click(); await sleep(250);
+    }
+    return ((await getJSON(page, 'ep4.course')) || {}).cur === lid;
+  }
   async function backHome(page) { const b = page.locator('[aria-label="Back · رجوع"]'); if (await b.count()) { await b.click(); await sleep(200); } }
   async function doRecallStage(page, answerFn) {
     await page.locator('.ld .btn').filter({ hasText: /Start Lesson|Continue/ }).first().click(); await sleep(250);
@@ -249,12 +297,15 @@ function fakeGitHub(token) {
     await ctx.close();
   }
 
-  /* ---------------- هـ) إكمال كل الدروس العشرة بكل مراحلها دون أخطاء ---------------- */
+  /* ---------------- هـ) إكمال كل الدروس (أو دروس --only وحدها) بكل مراحلها دون أخطاء ---------------- */
   {
     const { ctx, page } = await newPage(null);
     await startApp(page);
     const norm = s => String(s || '').replace(/_{3}/g, '').replace(/\s+/g, '').toLowerCase();
-    const LISTEN_IDS = ['u0l2', 'u0l4', 'u1l2', 'u1l3']; // دروس المقاطع الحقيقية
+    // نوع كل درس من ملفه نفسه كما حمّلته الصفحة: الاستماع mode: 'listening'، والقراءة لها reading
+    const kinds = await page.evaluate(ids => ids.map(id => { const L = LESSONS[id] || {}; return [id, L.mode, !!L.reading]; }), DRIVE.map(l => l.id));
+    const LISTEN_IDS = kinds.filter(k => k[1] === 'listening').map(k => k[0]); // دروس المقاطع الحقيقية
+    const READ_IDS = kinds.filter(k => k[2]).map(k => k[0]);                   // دروس القراءة
     const seenListen = {};               // ما يظهر فيهما في مرحلتي الاستماع ١ و٣
     const seenRead = {};                 // رأس الإيميل ومؤقت القراءة الأولى وشارة عدد الكلمات في دروس القراءة
     async function drive(lid) {
@@ -301,18 +352,12 @@ function fakeGitHub(token) {
       }
       return false;
     }
-    // الرقم الموجب سطر الدرس في الأسبوع التأسيسي، والسالب موضع الدرس في قائمة الوحدة 1 (-1 الأول)
-    const lessons = [['u0l1', 0], ['u0l2', 1], ['u0l3', 2], ['u0l4', 3], ['u0l5', 4], ['u1l1', -1], ['u1l2', -2], ['u1l3', -3], ['u1l4', -4], ['u1l5', -5]];
-    for (const [lid, row] of lessons) {
-      if (row >= 0) await openFoundation(page, row); else await openUnit1(page, -row - 1);
-      await page.locator('.ld .btn').filter({ hasText: /Start Lesson|Continue/ }).first().click(); await sleep(200);
-      const finished = await drive(lid);
-      const st = await getJSON(page, 'ep4.lesson.' + lid);
-      const stamped = st && st.stamps ? ['recall', 'vocab', 'grammar', 'reading', 'writing', 'quiz'].filter(k => st.stamps[k]).length : 0;
-      ok(finished && stamped === 6, lid + ': all 6 stages can be completed (' + stamped + '/6)');
-      await backHome(page);
-      if (lid === 'u0l4') {
-        // أربعة دروس تأسيسية من خمسة: سطر اختبار الأسبوع مقفل في الرئيسية وفي شاشة الدروس
+    // الدروس بترتيب الكورس من content.js (DRIVE)، ويُفتح كل درس من سطره في قائمة وحدته
+    // فحص القفل قبل آخر درس تأسيسي في هذا التشغيل (بعد أربعة من خمسة في التشغيل الكامل)، أو قبل أول درس إن لم يكن فيه درس تأسيسي
+    const lockAt = DRIVE.filter(l => l.unit === 0).map(l => l.id).pop() || DRIVE[0].id;
+    for (const { id: lid } of DRIVE) {
+      if (lid === lockAt) {
+        // درس تأسيسي واحد على الأقل لم يكتمل بعد: سطر اختبار الأسبوع مقفل في الرئيسية وفي شاشة الدروس
         const lockedRow = async () => { const r = page.locator('.u0-test'); return (await r.count()) === 1 && (await r.evaluate(el => el.tagName)) === 'DIV' && (await r.locator('.u-lock').count()) === 1 && (await r.innerText()).includes('Opens after Foundation Week'); };
         const onHome = await lockedRow();
         if (await page.locator('.u0-test').count()) { await page.locator('.u0-test').click(); await sleep(150); }
@@ -323,6 +368,13 @@ function fakeGitHub(token) {
         await page.locator('.nav-it').nth(0).click(); await sleep(200);
         ok(onHome && noPlayer && onLessons, 'the Foundation Week test row is shown locked (Home and Lessons) while a foundation lesson is still incomplete');
       }
+      const opened = await openLesson(page, lid);
+      if (opened) { await page.locator('.ld .btn').filter({ hasText: /Start Lesson|Continue/ }).first().click(); await sleep(200); }
+      const finished = opened && await drive(lid);
+      const st = await getJSON(page, 'ep4.lesson.' + lid);
+      const stamped = st && st.stamps ? ['recall', 'vocab', 'grammar', 'reading', 'writing', 'quiz'].filter(k => st.stamps[k]).length : 0;
+      ok(finished && stamped === 6, lid + ': all 6 stages can be completed (' + stamped + '/6)' + (opened ? '' : ' · its row in the unit list did not open it'));
+      await backHome(page);
     }
     // المقاطع الحقيقية: لا يُنسخ نصها إلى الموقع، والمرحلة الثالثة تفتحه في صفحة المصدر، وشرح سؤال الفكرة العامة يظهر بعد الإجابة
     for (const lid of LISTEN_IDS) {
@@ -331,26 +383,30 @@ function fakeGitHub(token) {
       ok(!L.copied && !!s.s3 && s.s3.includes('Open Transcript & Clip') && s.s3html.includes(L.url) && !s.s3html.includes('mail-body'), lid + ': stage 3 opens the transcript on the source page (none copied into the site)');
       ok(!!s.s1 && !!L.why && s.s1.includes(L.why.slice(0, 40)), lid + ': the main-idea answer shows its explanation');
     }
+    // أخطاء كل الدروس التي أُكملت هنا في دفتر واحد (إجابات الاسترجاع 'x' الخاطئة تدخله من كل درس)
     const g = await getJSON(page, 'ep4.course');
-    ok(Object.keys(g.mistakes).some(k => k.startsWith('u0l2|')) && Object.keys(g.mistakes).some(k => k.startsWith('u1l1|')) && Object.keys(g.mistakes).some(k => k.startsWith('u1l5|')), 'mistakes from several lessons live together in one notebook');
+    ok(DRIVE.every(l => Object.keys(g.mistakes).some(k => k.startsWith(l.id + '|'))), 'mistakes from several lessons live together in one notebook (' + DRIVE.length + ' lessons)');
+    // دقائق اللوحة: 60 دقيقة لكل درس مكتمل (المراحل الست 5 + 8 + 12 + 17 + 10 + 8، أي 600 دقيقة لعشرة دروس)
+    const MIN_PER_LESSON = 60, wantMins = DRIVE.length * MIN_PER_LESSON;
     await page.locator('.nav-it').nth(0).click(); await sleep(200);
     await page.locator('.qtile').first().click(); await sleep(250);
     const dash = await page.innerText('#sheetBox');
-    ok(/600m/.test(dash), 'dashboard counts the 10 completed lessons as 600 minutes');
+    ok(new RegExp('(?:^|\\D)' + wantMins + 'm').test(dash), 'dashboard counts the ' + DRIVE.length + ' completed lessons as ' + wantMins + ' minutes');
     await page.click('#sheetBox .close'); await sleep(100);
 
-    // القراءة: صورة القارة القطبية وسطر «Research Station» في درس نور وحده، والمؤقت من targetSeconds، وعدد الكلمات من النص
-    const rInfo = await page.evaluate(() => Object.keys(LESSONS).filter(id => LESSONS[id].reading).map(id => ({ id, t: LESSONS[id].reading.targetSeconds })));
+    // القراءة في الدروس التي أُكملت هنا: رسم الرأس في الدرس الذي يضع reading.art وحده (صورة القارة القطبية في درس نور U1·L1)،
+    // وسطر FROM من الدرس نفسه («Research Station, Antarctica» في U1·L1 وحده)، والمؤقت من targetSeconds، وعدد الكلمات من النص
+    const rInfo = await page.evaluate(ids => ids.map(id => { const r = LESSONS[id].reading; return { id, t: r.targetSeconds, art: !!r.art, from: r.fromMeta || r.from || '' }; }), READ_IDS);
     const fmt = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
-    const readOK = rInfo.every(({ id, t }) => { const r = seenRead[id] || {}; return r.read1 && (!t || r.timer.endsWith('/ ' + fmt(t))) && (id === 'u1l1' ? (r.art === 1 && /Research Station, Antarctica/.test(r.from) && /~210 words/.test(r.tag || '')) : (r.art === 0 && !/Antarctica/.test(r.from) && /~\d+ words/.test(r.tag || ''))); });
-    ok(rInfo.length >= 2 && readOK, 'reading header art and "Research Station, Antarctica" appear only in U1·L1; timers use targetSeconds and the word tag is counted from each text: ' + JSON.stringify(seenRead).slice(0, 300));
+    const readOK = rInfo.every(({ id, t, art, from }) => { const r = seenRead[id] || {}; return r.read1 && (!t || r.timer.endsWith('/ ' + fmt(t))) && r.art === (art ? 1 : 0) && /Antarctica/.test(r.from) === /Antarctica/.test(from) && (id === 'u1l1' ? /Research Station, Antarctica/.test(r.from) && /~210 words/.test(r.tag || '') : /~\d+ words/.test(r.tag || '')); });
+    if (!ONLY || READ_IDS.length) ok((ONLY || rInfo.length >= 2) && readOK, 'reading header art and "Research Station, Antarctica" appear only in U1·L1 (art only where a lesson sets reading.art); timers use targetSeconds and the word tag is counted from each text: ' + JSON.stringify(seenRead).slice(0, 300));
 
     // الكتابة: فاصلة الآيفون العليا (’) تجتاز فحوص الكتابة نفسها، ومربع الكتابة بلا تصحيح تلقائي من iOS
     const wl = await page.evaluate(() => { for (const id of Object.keys(LESSONS)) { const w = LESSONS[id].writing; if (w && Array.isArray(w.checks) && /\b\w+'\w+\b/.test(w.model || '')) return { id, model: w.model }; } return null; });
     let wOK = false, wMsg = 'no lesson model with an apostrophe';
-    if (wl) {
-      const m = /^u0l(\d)$/.exec(wl.id), m1 = /^u1l(\d)$/.exec(wl.id);
-      if (m) await openFoundation(page, Number(m[1]) - 1); else await openUnit1(page, Number(m1 ? m1[1] : 1) - 1);
+    if (wl && !COURSE.some(l => l.id === wl.id)) wMsg = wl.id + ' is not an open lesson in content.js';
+    else if (wl && !(await openLesson(page, wl.id))) wMsg = wl.id + ': its row in the unit list did not open it';
+    else if (wl) {
       await page.locator('.pstep').nth(4).click(); await sleep(200); await cta(page);
       const ta = page.locator('textarea.wt');
       const attrs = await ta.evaluate(el => ['autocapitalize', 'autocorrect', 'spellcheck'].map(a => el.getAttribute(a)).join(','));
@@ -361,51 +417,59 @@ function fakeGitHub(token) {
     }
     ok(wOK, "iPhone apostrophes (’) pass the same writing checks as straight ones, and the writing box turns off iOS autocorrect (" + wMsg + ')');
 
-    // اختبار الأسبوع التأسيسي: يُفتح بعد الدروس الخمسة، ويكتمل، وتُحفظ نتيجته في G.unitTests[0]
-    await page.locator('.nav-it').nth(0).click(); await sleep(200);
-    const u0btn = page.locator('button.u0-test');
-    const u0open = (await u0btn.count()) === 1;
-    let u0result = false, u0min = null;
-    if (u0open) {
-      await u0btn.click(); await sleep(250);
-      await cta(page); // الركن القانوني ← السؤال الأول
-      for (let i = 0; i < 60; i++) { const opt = page.locator('.opt:enabled'); if (!(await opt.count())) break; await opt.first().click(); await sleep(60); await cta(page); }
-      if (await page.locator('textarea.wt').count()) {
-        // المهمة التطبيقية تطلب minSentences جملة: ثلاث جمل لا تكفي حين تطلب المهمة أربعًا
-        const need = await page.evaluate(() => (DATA.unitTests[0].appliedTask || {}).minSentences || 3);
-        if (need > 3) { await page.fill('textarea.wt', 'I am a law student in Riyadh. My classes are on Sunday. I was at the library yesterday.'); await cta(page); u0min = (await page.locator('textarea.wt').count()) === 1 && /\/ 4\b/.test(await page.locator('.wcount').innerText()); }
-        await page.fill('textarea.wt', 'I am a law student in Riyadh. My classes are on Sunday. I was at the library yesterday. I do not work on Fridays.'); await cta(page);
+    // اختبارا الوحدتين يحتاجان كل دروس الوحدة مكتملة: يجريان في التشغيل الكامل، ومع --only حين تُذكر دروس الوحدة كلها
+    const unitDriven = u => COURSE.some(l => l.unit === u) && COURSE.filter(l => l.unit === u).every(l => DRIVE.includes(l));
+    if (unitDriven(0)) {
+      // اختبار الأسبوع التأسيسي: يُفتح بعد الدروس الخمسة، ويكتمل، وتُحفظ نتيجته في G.unitTests[0]
+      await page.locator('.nav-it').nth(0).click(); await sleep(200);
+      const u0btn = page.locator('button.u0-test');
+      const u0open = (await u0btn.count()) === 1;
+      let u0result = false, u0min = null;
+      if (u0open) {
+        await u0btn.click(); await sleep(250);
+        await cta(page); // الركن القانوني ← السؤال الأول
+        for (let i = 0; i < 60; i++) { const opt = page.locator('.opt:enabled'); if (!(await opt.count())) break; await opt.first().click(); await sleep(60); await cta(page); }
+        if (await page.locator('textarea.wt').count()) {
+          // المهمة التطبيقية تطلب minSentences جملة: ثلاث جمل لا تكفي حين تطلب المهمة أربعًا
+          const need = await page.evaluate(() => (DATA.unitTests[0].appliedTask || {}).minSentences || 3);
+          if (need > 3) { await page.fill('textarea.wt', 'I am a law student in Riyadh. My classes are on Sunday. I was at the library yesterday.'); await cta(page); u0min = (await page.locator('textarea.wt').count()) === 1 && /\/ 4\b/.test(await page.locator('.wcount').innerText()); }
+          await page.fill('textarea.wt', 'I am a law student in Riyadh. My classes are on Sunday. I was at the library yesterday. I do not work on Fridays.'); await cta(page);
+        }
+        u0result = (await page.locator('.result .ring-w').count()) === 1;
+        await cta(page); // رجوع للدروس
       }
-      u0result = (await page.locator('.result .ring-w').count()) === 1;
-      await cta(page); // رجوع للدروس
+      const gu = await getJSON(page, 'ep4.course');
+      ok(u0open && u0result && gu.unitTests && gu.unitTests[0] && gu.unitTests[0].attempts === 1 && typeof gu.unitTests[0].last === 'number' && !gu.unitTests[1] && !(await page.locator('.pl').count()), 'unit test result is saved in the course state: the Foundation Week test opens after the five lessons, can be finished, and is saved in G.unitTests[0]');
+      ok(u0min === true, 'the Foundation Week applied task keeps its minSentences: 3 sentences are refused when it asks for 4');
     }
-    const gu = await getJSON(page, 'ep4.course');
-    ok(u0open && u0result && gu.unitTests && gu.unitTests[0] && gu.unitTests[0].attempts === 1 && typeof gu.unitTests[0].last === 'number' && !gu.unitTests[1] && !(await page.locator('.pl').count()), 'unit test result is saved in the course state: the Foundation Week test opens after the five lessons, can be finished, and is saved in G.unitTests[0]');
-    ok(u0min === true, 'the Foundation Week applied task keeps its minSentences: 3 sentences are refused when it asks for 4');
 
-    // اختبار الوحدة 1: يُفتح بعد دروسها الخمسة، ويكتمل، وتُحفظ نتيجته في G.unitTests[1]، ومهمته تطلب minSentences جملة
-    await page.locator('.nav-it').nth(0).click(); await sleep(200);
-    const t1 = page.locator('.qtile', { hasText: 'Unit 1 Test' });
-    const t1Tag = await t1.evaluate(el => el.tagName);
-    let t1Result = false, t1Min = null;
-    if (t1Tag === 'BUTTON') {
-      await t1.click(); await sleep(250);
-      await cta(page); // الركن القانوني ← السؤال الأول
-      for (let i = 0; i < 60; i++) { const opt = page.locator('.opt:enabled'); if (!(await opt.count())) break; await opt.first().click(); await sleep(60); await cta(page); }
-      if (await page.locator('textarea.wt').count()) {
-        const need = await page.evaluate(() => (DATA.unitTests[1].appliedTask || {}).minSentences || 3);
-        if (need > 3) { await page.fill('textarea.wt', 'I usually study law in the morning. This week I am working on a project. I never break the law.'); await cta(page); t1Min = (await page.locator('textarea.wt').count()) === 1 && /\/ 4\b/.test(await page.locator('.wcount').innerText()); }
-        await page.fill('textarea.wt', 'I usually study law in the morning. This week I am working on a project. I never break the law. I prefer short emails.'); await cta(page);
+    if (unitDriven(1)) {
+      // اختبار الوحدة 1: يُفتح بعد دروسها الخمسة، ويكتمل، وتُحفظ نتيجته في G.unitTests[1]، ومهمته تطلب minSentences جملة
+      // بلاطة الرئيسية تتبع وحدة الدرس الحالي، فتُفحص حين يكون عنوانها Unit 1 وحده، وإلا فُتح الاختبار من سطره في كتلة الوحدة 1 في «الدروس»
+      await page.locator('.nav-it').nth(0).click(); await sleep(200);
+      const t1 = page.locator('.qtile', { hasText: /\bUnit 1 Test\b/ });
+      const t1Home = (await t1.count()) === 1, t1Tag = t1Home ? await t1.evaluate(el => el.tagName) : null;
+      let t1Result = false, t1Min = null, t1Btn = t1Tag === 'BUTTON' ? t1 : null;
+      if (!t1Home) { await page.locator('.nav-it').nth(1).click(); await sleep(200); const row = unitBlock(page, 1).locator('button.u-test'); if ((await row.count()) === 1) t1Btn = row; }
+      if (t1Btn) {
+        await t1Btn.click(); await sleep(250);
+        await cta(page); // الركن القانوني ← السؤال الأول
+        for (let i = 0; i < 60; i++) { const opt = page.locator('.opt:enabled'); if (!(await opt.count())) break; await opt.first().click(); await sleep(60); await cta(page); }
+        if (await page.locator('textarea.wt').count()) {
+          const need = await page.evaluate(() => (DATA.unitTests[1].appliedTask || {}).minSentences || 3);
+          if (need > 3) { await page.fill('textarea.wt', 'I usually study law in the morning. This week I am working on a project. I never break the law.'); await cta(page); t1Min = (await page.locator('textarea.wt').count()) === 1 && /\/ 4\b/.test(await page.locator('.wcount').innerText()); }
+          await page.fill('textarea.wt', 'I usually study law in the morning. This week I am working on a project. I never break the law. I prefer short emails.'); await cta(page);
+        }
+        t1Result = (await page.locator('.result .ring-w').count()) === 1;
+        await cta(page); // رجوع
       }
-      t1Result = (await page.locator('.result .ring-w').count()) === 1;
-      await cta(page); // رجوع
+      await page.locator('.nav-it').nth(1).click(); await sleep(200);
+      const r1 = unitBlock(page, 1).locator('.u-test');
+      const r1Open = (await r1.count()) === 1 && (await r1.evaluate(el => el.tagName)) === 'BUTTON';
+      const g1 = await getJSON(page, 'ep4.course');
+      ok((t1Home ? t1Tag === 'BUTTON' : !!t1Btn) && t1Result && r1Open && g1.unitTests && g1.unitTests[1] && g1.unitTests[1].attempts === 1, 'the Unit 1 test opens on ' + (t1Home ? 'Home and Lessons' : 'Lessons (the Home tile shows another unit)') + ' once its five lessons are complete, can be finished, and is saved in G.unitTests[1]');
+      ok(t1Min === true, 'the Unit 1 applied task keeps its minSentences: 3 sentences are refused when it asks for 4');
     }
-    await page.locator('.nav-it').nth(1).click(); await sleep(200);
-    const r1 = page.locator('.u-test');
-    const r1Open = (await r1.count()) === 1 && (await r1.evaluate(el => el.tagName)) === 'BUTTON';
-    const g1 = await getJSON(page, 'ep4.course');
-    ok(t1Tag === 'BUTTON' && t1Result && r1Open && g1.unitTests && g1.unitTests[1] && g1.unitTests[1].attempts === 1, 'the Unit 1 test opens on Home and Lessons once its five lessons are complete, can be finished, and is saved in G.unitTests[1]');
-    ok(t1Min === true, 'the Unit 1 applied task keeps its minSentences: 3 sentences are refused when it asks for 4');
 
     // كتابة حساسة لحالة الحرف (exact: true): يُرفض riyadh وتظهر الصيغة الصحيحة، ويُقبل Riyadh
     // عنصر واحد من كل نوع (تمرين كتابة القواعد gC، وسؤال الاسترجاع rc) إن وُجد، ويُفضَّل جواب من أكثر من حرف

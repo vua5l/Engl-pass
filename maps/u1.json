@@ -1,0 +1,82 @@
+{
+  "unit": 1,
+  "title": "الحياة والعمل حول العالم",
+  "grammar": "المضارع البسيط مقابل المستمر (Present Simple vs Present Continuous): العادة والحقيقة مقابل الآن والمؤقت",
+  "lessons": [
+    {
+      "id": "u1l1",
+      "title": "Hello from Antarctica",
+      "mode": "reading",
+      "clip": null,
+      "text": "إيميل نور من محطة أبحاث في القارة القطبية (النص كما هو)",
+      "vocab": ["scientist", "research (do research)", "data (collect / check the data)", "measure (measure the temperature)", "safe", "strange", "miss (miss my family)"],
+      "legalPhrase": "sign a contract",
+      "grammarFocus": "المضارع البسيط مقابل المستمر: العادة والحقيقة مقابل الآن والمؤقت، وإملاء s وing، وكلمات الزمن",
+      "recall": { "from": "u0l5", "items": ["careful", "useful", "check", "أنماط ing وful", "official document (القانونية)"] },
+      "recycled": ["busy (u0)", "late (u0)", "helpful (u0)", "check (u0)"],
+      "topics": ["علوم", "طقس", "أسرة", "جامعة", "تقنية"]
+    },
+    {
+      "id": "u1l2",
+      "title": "What's a Typical Day for You?",
+      "mode": "listening",
+      "clip": {
+        "url": "https://elllo.org/english/1551/1554-Nat-Verbs-Schedule.htm",
+        "title": "ELLLO Views #1554 «My Day»",
+        "about": "تود يسأل ناتالي (إنجلترا)، وهي معلمة، عن يومها. A2، نحو 4:10",
+        "targetSeconds": 250
+      },
+      "text": null,
+      "vocab": ["typical (a typical day)", "wake up", "get out of bed", "canteen", "last (each class lasts an hour)", "get changed"],
+      "legalPhrase": "working hours",
+      "grammarFocus": "الأسئلة والإجابات القصيرة في المضارع البسيط والمستمر: Do / Does + الفعل المجرد، وIs / Are + ing، وأسئلة What time / Where / How many، وYes, I do / No, she isn't",
+      "recall": { "from": "u1l1", "items": ["scientist", "do research", "measure", "safe أو strange", "sign a contract (القانونية)"] },
+      "recycled": ["safe (u1l1)", "strange (u1l1)", "miss (u1l1)", "busy (u0)", "late (u0)", "helpful (u0)"],
+      "topics": ["الوظائف وأماكن العمل", "جداول الجامعة والمدرسة", "روتين الأسرة", "المواصلات"]
+    },
+    {
+      "id": "u1l3",
+      "title": "How Often Do You Cook?",
+      "mode": "listening",
+      "clip": {
+        "url": "https://elllo.org/english/1551/1555-DanielHana-YNQs-Cooking.htm",
+        "title": "ELLLO Views #1555 «Eating Habits»",
+        "about": "هنا (المملكة المتحدة) ودانيال (تشيلي) يتحدثان عن الطبخ والأكل خارج البيت. A2، 2:44",
+        "targetSeconds": 164
+      },
+      "text": null,
+      "vocab": ["eat out", "takeaway", "on the way home", "invite (invite my friends over)", "have people over (for dinner)", "roommate"],
+      "legalPhrase": "break the law",
+      "grammarFocus": "كلمات التكرار وموقعها: always / usually / often / sometimes / rarely / never، قبل الفعل الأساسي وبعد am / is / are، وHow often…? والجواب every day / once a week في آخر الجملة، وDo you ever…? (يُبنى على ما علّمه u1l1 من موقع usually)",
+      "recall": { "from": "u1l2", "items": ["typical", "wake up", "get out of bed", "canteen", "last", "working hours (القانونية)"] },
+      "recycled": ["typical (u1l2)", "canteen (u1l2)", "get home (u1l2)", "strange (u1l1)", "busy (u0)", "late (u0)"],
+      "topics": ["الطعام", "الطبخ", "المطاعم", "زيارات الأصدقاء", "التسوق", "الرياضة"]
+    },
+    {
+      "id": "u1l4",
+      "title": "Habits and Cultures",
+      "mode": "reading",
+      "clip": null,
+      "text": "إيميل من طالب سعودي يدرس في اليابان إلى أخيه عن عادات الناس هناك وما يعرفه ويحتاجه ويفضّله، 150–230 كلمة",
+      "vocab": ["culture", "custom", "local", "greet", "foreign", "gift"],
+      "legalPhrase": "against the law",
+      "grammarFocus": "أفعال الحالة: know / understand / want / need / prefer / like / love / believe / think (رأيًا) تبقى في المضارع البسيط، مقابل أفعال الحدث في المستمر (I'm cooking / I like cooking)، وthink وhave بمعنييهما",
+      "recall": { "from": "u1l3", "items": ["eat out", "takeaway", "on the way home", "invite", "have people over", "break the law (القانونية)"] },
+      "recycled": ["eat out (u1l3)", "invite (u1l3)", "takeaway (u1l3)", "miss (u1l1)", "strange (u1l1)", "polite (u0)", "helpful (u0)"],
+      "topics": ["السفر", "البلدان", "العادات", "اللغات", "الأعياد", "التحية", "الهدايا"]
+    },
+    {
+      "id": "u1l5",
+      "title": "Your First Work Email",
+      "mode": "reading",
+      "clip": null,
+      "text": "إيميل متدرّب جديد في شركة إلى مديرته في أسبوعه الأول: يعرّف بنفسه، وروتينه، وما يعمل عليه هذا الأسبوع، وسؤال، ومرفق، 150–230 كلمة. وهو نموذج لكتابة المتعلم",
+      "vocab": ["colleague", "schedule", "attach", "reply", "deadline", "introduce (introduce myself)"],
+      "legalPhrase": "sick leave",
+      "grammarFocus": "المضارع البسيط والمستمر في إيميل العمل (مراجعة الوحدة): I'm writing to + فعل، والعادة مقابل هذا الأسبوع، وأفعال الحالة في الطلب (I need / I want to know)، وكلمات التكرار؛ مع أجزاء الإيميل: التحية والغرض والتفاصيل والختام",
+      "recall": { "from": "u1l4", "items": ["culture", "custom", "local", "greet", "foreign أو gift", "against the law (القانونية)"] },
+      "recycled": ["culture (u1l4)", "local (u1l4)", "working hours (u1l2)", "typical (u1l2)", "invite (u1l3)", "polite (u0)", "draft (u0)", "check (u0)", "explain (u0)"],
+      "topics": ["إيميلات العمل والجامعة", "الاجتماعات", "المشاريع", "المحاضرات", "المواعيد"]
+    }
+  ]
+}

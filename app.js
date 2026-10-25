@@ -559,8 +559,9 @@ function journeyCard(){ var pr = lessonProgress(), d = courseDay(), week = Math.
 }
 var LESSON_ICON = ['', 'moon', 'clock', 'globe', 'mail', 'trophy'];
 var LESSON_SHORT = ['المضارع البسيط والمستمر', 'الأسئلة والإجابات القصيرة', 'كلمات التكرار', 'أفعال الحالة', 'إيميل مهني قصير', 'مراجعة الوحدة واختبارها'];
+/* LESSON_SHORT عناوين قصيرة لدروس الوحدة 1 بترتيبها (بديل قديم حين يغيب shortAr)، فلا تُعرض لدرس من وحدة أخرى. */
 function lessonCard(l, i){
-  var shortAr = l.shortAr || LESSON_SHORT[i] || l.ar;
+  var shortAr = l.shortAr || (unitOfLesson(l.id) === 1 && LESSON_SHORT[i]) || l.ar;
   if (l.open) { var pr = lessonProgressOf(l.id);
     var thumbNode = (!l.icon || l.icon === 'penguin') ? penguin(54, 76) : ico(l.icon || LESSON_ICON[i] || 'book');
     var thumbStyle = (!l.icon || l.icon === 'penguin') ? '' : 'align-items:center;color:var(--dark)';
@@ -634,7 +635,18 @@ function unitTestRow(u, l){
     st.miniQuizDue ? h('button', { class:'btn sm out', type:'button', style:'margin:4px 10px 6px;width:calc(100% - 20px)', on:{ click:function(){ openSession('unitMini:' + u); } } },
       ico('review'), biBtn('Next-Week Mini Follow-Up Quiz (80–89% Errors)', 'الاختبار المصغر لأخطاء الوحدة (لرفع الإتقان إلى ٩٠٪)')) : null);
 }
+/* الوحدة الحالية في الرئيسية (عنوان دروسها وبطاقاتها وبلاطة اختبارها): وحدة درس اليوم (G.cur) إن كانت وحدة مرقّمة
+   (1 فأكثر) لها قائمة دروس، وإلا (كدرس من الأسبوع التأسيسي) أول وحدة مفتوحة في D.units لها قائمة ولم تكتمل دروسها،
+   وإلا الوحدة 1. فتظهر الوحدة 2 وما بعدها حين تُضاف قائمة دروسها إلى content.js، بلا تعديل هنا. */
+function unitHasList(u){ var list = D['unit' + u + 'Lessons']; return Array.isArray(list) && list.length > 0; }
+function currentUnit(){
+  var u = unitOfLesson(G.cur || curLessonId);
+  if (u >= 1 && unitHasList(u)) return u;
+  var next = (D.units || []).filter(function(x){ return x && x.open && x.n >= 1 && unitHasList(x.n) && !unitLessonsDone(x.n); })[0];
+  return next ? next.n : 1;
+}
 function vHome(){
+  var cu = currentUnit();
   return h('section', { class:'scr gut' }, header(),
     h('h1', { class:'h1 bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Your Journey'), h('small', {}, 'رحلتك')),
     journeyCard(),
@@ -642,20 +654,21 @@ function vHome(){
     stage4ToolsRow(),
     foundationWeekBox(),
     h('div', { class:'sec-h' },
-      h('h2', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Unit 1 Lessons'), h('small', {}, 'دروس الوحدة 1')),
+      h('h2', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, 'Unit ' + cu + ' Lessons'), h('small', {}, 'دروس الوحدة ' + cu)),
       h('button', { class:'link', type:'button', on:{ click:function(){ go('lessons'); } } }, 'See all · عرض الكل')),
-    h('div', { class:'lcards' }, D.unit1Lessons.slice(0, 3).map(lessonCard)));
+    h('div', { class:'lcards' }, (D['unit' + cu + 'Lessons'] || []).slice(0, 3).map(lessonCard)));
 }
 function stage4ToolsRow(){
-  var ut = (G.unitTests && G.unitTests[1]) || {}, t1 = unitTestOf(1), open1 = !!t1 && unitLessonsDone(1);
-  var N1 = (t1 && t1.questions && t1.questions.length) || 20, m1 = (t1 && t1.masteryPct) || 90, p1 = (t1 && t1.passPct) || 80;
-  var utBadge = ut.best != null ? (Math.round(ut.best / N1 * 100) + '% · ' + (ut.status === 'mastered' ? 'Mastered' : ut.status === 'passed' ? 'Passed' : 'Retry')) : N1 + ' Qs · ' + m1 + '% / ' + p1 + '%';
+  var u = currentUnit();
+  var ut = (G.unitTests && G.unitTests[u]) || {}, tu = unitTestOf(u), openU = !!tu && unitLessonsDone(u);
+  var Nu = (tu && tu.questions && tu.questions.length) || 20, mu = (tu && tu.masteryPct) || 90, pu = (tu && tu.passPct) || 80;
+  var utBadge = ut.best != null ? (Math.round(ut.best / Nu * 100) + '% · ' + (ut.status === 'mastered' ? 'Mastered' : ut.status === 'passed' ? 'Passed' : 'Retry')) : Nu + ' Qs · ' + mu + '% / ' + pu + '%';
   var cLogs = (G.camblyLogs || []).length;
   var cBadge = cLogs ? (cLogs + ' session(s)') : '1st: Speaking Check';
-  var utTitle = biNode('Unit 1 Test & Legal Corner', 'اختبار الوحدة ١ والركن القانوني');
-  /* اختبار الوحدة 1 مقفل حتى تُبنى دروسها كلها وتكتمل، فلا يُختبر المتعلم فيما لم يدرسه. */
-  var utTile = open1
-    ? h('button', { class:'qtile', type:'button', on:{ click:function(){ openSession('unitTest:1'); } } },
+  var utTitle = biNode('Unit ' + u + ' Test & Legal Corner', 'اختبار الوحدة ' + arDigits(u) + ' والركن القانوني');
+  /* اختبار الوحدة الحالية مقفل حتى تُبنى دروسها كلها وتكتمل، فلا يُختبر المتعلم فيما لم يدرسه. */
+  var utTile = openU
+    ? h('button', { class:'qtile', type:'button', on:{ click:function(){ openSession('unitTest:' + u); } } },
         h('div', { class:'qtile-top' },
           h('span', { class:'qtile-ic' }, ico('trophy')),
           h('span', { class:'qtile-badge' }, utBadge)),
@@ -665,7 +678,7 @@ function stage4ToolsRow(){
           h('span', { class:'qtile-ic', style:'background:var(--gray-3);color:var(--muted)' }, ico('lock')),
           h('span', { class:'qtile-badge' }, utBadge)),
         utTitle,
-        h('small', { class:'muted sm u-lock-t', html:arHTML(unitLockText(1)) }));
+        h('small', { class:'muted sm u-lock-t', html:arHTML(unitLockText(u)) }));
   return h('div', { class:'quick-grid' },
     h('button', { class:'qtile', type:'button', on:{ click:openCambly } },
       h('div', { class:'qtile-top' },
@@ -688,14 +701,15 @@ function vLessons(){
       h('span', { class:'muted sm' }, '1 Unit / Week · وحدة كل أسبوع')),
     foundationWeekBox(),
     h('div', { class:'units' }, D.units.map(function(u){
+      /* كل وحدة مفتوحة تعرض قائمتها هي (unit<n>Lessons) وسطر اختبارها، لا قائمة الوحدة 1. */
       if (u.open) return h('div', { class:'unit-open' },
         h('div', { class:'uo-head' }, h('span', { class:'u-n' }, String(u.n)),
           h('span', { class:'u-t' }, h('span', { class:'uo-en' }, u.en), h('b', { class:'u-ar' }, u.ar), h('span', { html:(u.gEn ? '<bdi class="en">' + esc(u.gEn) + '</bdi> · ' : '') + arHTML(u.g) }))),
-        h('ol', { class:'uo-list' }, D.unit1Lessons.map(function(l){
+        h('ol', { class:'uo-list' }, (D['unit' + u.n + 'Lessons'] || []).map(function(l){
           var k = l.test ? 'TEST' : ('L' + l.n);
           var pr = lessonProgressOf(l.id);
           if (l.open) return h('li', {}, h('button', { class:'uo-row', type:'button', on:{ click:function(){ if (l.id) selectLesson(l.id); go('lesson'); } } }, h('span', { class:'uo-k' }, k), h('span', { class:'uo-t' }, h('b', {}, l.en), h('span', { html:(l.subEn ? '<bdi class="en">' + esc(l.subEn) + '</bdi> · ' : '') + arHTML(l.ar) })), h('span', { class:'chip-now' }, pr.done === pr.total ? 'Done · مكتمل' : 'Now · الآن')));
-          if (l.test) return unitTestRow(1, l);
+          if (l.test) return unitTestRow(u.n, l);
           return h('li', {}, h('div', { class:'uo-row' }, h('span', { class:'uo-k' }, k), h('span', { class:'uo-t' }, h('b', {}, l.en), h('span', { html:(l.subEn ? '<bdi class="en">' + esc(l.subEn) + '</bdi> · ' : '') + arHTML(l.ar) })), h('span', { class:'u-lock', html:IC.lock })));
         })));
       var hasPre = !!(D.preTests && D.preTests[u.n]);
@@ -2766,6 +2780,8 @@ function correctWriting(ta, btn, box){
 
 var askTurns = [], askCtl = null, askBusy = false;
 var ASK_CHIPS = ['متى نستخدم am / is / are مع الفعل؟', 'ليش نقول He works وليس He work؟', 'ما الفرق بين usually و always؟', 'أعطني 3 جمل جديدة بالمضارع المستمر'];
+/* أسئلة «اسأل المعلم» المقترحة: من الدرس الحالي إن كتب askChips (حتى أربعة)، وإلا الأسئلة القديمة عن المضارع البسيط والمستمر. */
+function askChipsNow(){ var c = D && D.askChips; return Array.isArray(c) && c.length ? c.slice(0, 4) : ASK_CHIPS; }
 function stepName(){ if (G.ui.view === 'player' && P) { var p = partOf(P.part); return p ? p.fullAr : 'المراجعة'; } return 'صفحة الدرس'; }
 function RULES(){ return 'أنت معلم لغة إنجليزية صبور وخبير داخل كورس اسمه «جواز الإنجليزية».\n' +
   'المتعلم عربي، مستواه بداية A2، وهدفه الدراسة والعمل.\n' +
@@ -2791,7 +2807,7 @@ function openAsk(){ if (!SAMPLE) return;
   var send = h('button', { class:'btn', type:'submit' }, biBtn('Send', 'إرسال')), stop = h('button', { class:'btn out', type:'button', hidden:true }, biBtn('Stop', 'إيقاف'));
   var form = h('form', { class:'ask-form' }, input, h('div', { class:'row' }, send, stop));
   askTurns.forEach(function(t){ log.append(t.role === 'user' ? h('div', { class:'bub me', dir:'auto' }, t.content) : h('div', { class:'bub ai', html:mdLite(t.content) })); });
-  if (!askTurns.length) put(chips, ASK_CHIPS.map(function(c){ return h('button', { class:'ask-chip', type:'button', on:{ click:function(){ ask(c); } } }, c); }));
+  if (!askTurns.length) put(chips, askChipsNow().map(function(c){ return h('button', { class:'ask-chip', type:'button', on:{ click:function(){ ask(c); } } }, c); }));
   function ask(q){ if (!SAMPLE || askBusy || !q.trim()) return;
     askBusy = true; input.value = ''; send.disabled = true; stop.hidden = false; put(chips);
     log.append(h('div', { class:'bub me', dir:'auto' }, q)); var bub = h('div', { class:'bub ai' }, thinking('Teacher is thinking… · المعلم يفكر…')); log.append(bub);

@@ -6,7 +6,7 @@
  *   node content-check.js [siteRoot] [--unit N] [--quiet]
  *   node content-check.js [siteRoot] --map [--unit N]
  *
- *   siteRoot  folder that holds index.html (default: current directory)
+ *   siteRoot  folder that holds content.js, app.js and lessons/ (default: current directory)
  *   --unit N  check only unit N (0 = Foundation Week): its lessons, unit test and pre-test
  *   --quiet   hide INFO lines (counts and reports), print only ERROR / WARN and the summary
  *   --map     print ONE JSON object describing the course state for a dashboard (units, planned / built / open
@@ -15,28 +15,43 @@
  * Plain Node (22), no browser, no npm packages.
  *
  * How it works
- *   1. Reads index.html, runs content.js and the lesson files (in the listed order) in a vm
- *      sandbox with a few stub globals, and obtains the data object (DATA) and LESSONS.
- *   2. Cuts the site's own answer checker (fixQuotes, norm, exactNorm, typedLooseOK, typedExactOK,
- *      typedOK) out of the app.js source text and evaluates it in the same sandbox, so the checks
- *      always use the same logic as the live site.
+ *   1. Runs content.js in a vm sandbox with a few stub globals and obtains the data object (DATA). The lessons come
+ *      from its unit lists (unit0Lessons, unit1Lessons, ... in unit order, entries in list order, test entries skipped):
+ *      lesson id u<U>l<N> is the file lessons/u<U>/l<N>.js, run in the same sandbox when it exists (LESSONS).
+ *      index.html is not read (a separate tool keeps its script tags in step with these lists).
+ *   2. Cuts the site's own answer checker (fixQuotes, norm, exactNorm, typedLooseOK, typedExactOK, typedOK) and its
+ *      writing evaluation (analyze, the default CHECKS, buildIndex for the lesson words) out of the app.js source
+ *      text and evaluates them in the same sandbox, so the checks always use the same logic as the live site.
  *   3. Checks every lesson, every unit test and every pre-test, and prints one line per finding:
  *        ERROR|WARN|INFO  file | lesson id | field[item index] | message
  *      then a summary. Exit code 1 if there is at least one ERROR, otherwise 0.
  *
- * Checks (numbers follow the course checklist)
- *   1  required fields          2  vocab count 6-8          3  grammar count per group (16 = 4x4)
+ * Checks (numbers follow the course checklist). ERROR = a reason to fail the lesson ("high" in LESSON-BRIEF.md section 9).
+ *   1  required fields
+ *   2  new items (vocab + legal phrase) outside 6-8: ERROR
+ *   3  grammar cards other than 6, or any of gA, gB, gC, gD other than 4 exercises (16 in all): ERROR
  *   4  every accepted answer passes the site checker (bare, whole sentence, curly apostrophe)
  *   5  cue giveaway / two-option cue                        6  one string accepted for >= 50% of typed items
  *   7  MCQ answer index and unique options                  8  explanation examples reused in exercises
- *   9  legal-vocabulary share                               10 listening rules (url, no transcript, targetSeconds)
- *   11 writing requires >= 4 sentences                      12 quiz present (count reported)
- *   Unit tests: count, typed answers, MCQ validity, sentences reused from the unit's lessons.
+ *   9  legal-vocabulary share above 25%: WARN
+ *   10 listening rules (url, no transcript, targetSeconds); reading or listening questions other than 8: ERROR
+ *   11 writing, each an ERROR: checks that enforce fewer than 4 sentences or whose sentence rule cannot be found;
+ *      taskEn that does not state at least 4 sentences; a model with fewer sentences than required; checks (the
+ *      lesson's own, else the default CHECKS) that reject writing.model or an entry of the optional array
+ *      writing.acceptExamples, run through the engine's analyze() as the writing screen does, together with the
+ *      sentence rule of its "finish" button. "Task says N sentences but the checks enforce M" stays a WARN.
+ *   12 lesson quiz other than 10 questions: ERROR
+ *   Unit tests: numbered units other than 20 questions (ERROR), typed answers, MCQ validity, sentences reused from the
+ *   unit's lessons.
  *   Pre-tests: item count, typed share, checks 4-7, version field.
- *   Cross-lesson (course order, per unit): vocab introduced as new twice, exercise / quiz / test sentences repeated
- *   across lessons, and an INFO recycling report (vocab of earlier lessons of the unit and of the previous unit that
- *   reappears in the lesson). INFO lines never change the exit code.
- *   Extras: site wiring (index.html / unit lists), errCat names, hint-vs-answer, word-order chips, emoji.
+ *   Cross-lesson (course order): an item introduced as new that an earlier lesson of the course already introduced as
+ *   new (ERROR); exercise / quiz sentences repeated (Jaccard >= 0.8) from earlier lessons of the same unit or from any
+ *   lesson of the previous unit (WARN); INFO lines for near-overlaps with the same lessons (Jaccard 0.6 up to the
+ *   WARN threshold, at most 5 per lesson) for the reviewer to compare; and an INFO recycling report (vocab of earlier
+ *   lessons of the unit and of the previous unit that reappears in the lesson). INFO lines never change the exit code.
+ *   Wiring (content.js lists and lessons/): a lesson file that no unit list mentions (ERROR), an open:true entry whose
+ *   file or data is missing (ERROR), lesson data that is not open:true or not listed (WARN).
+ *   Extras: errCat names, hint-vs-answer, word-order chips, emoji.
  */
 const fs = require('fs');
 const path = require('path');
@@ -44,13 +59,17 @@ const vm = require('vm');
 
 // ------------------------------------------------------------------ settings
 const CFG = {
-  vocabMin: 6, vocabMax: 8,            // check 2
+  vocabMin: 6, vocabMax: 8,            // check 2: new items per lesson (vocab 5-7 + the legal phrase)
+  gCards: 6,                           // check 3: grammar cards (4 explanation cards, common mistakes, summary)
   grammarPerGroup: 4,                  // check 3 (course decision: 4 per group, 16 per lesson)
-  unitTestQuestions: 20,               // expected for numbered units (unit 0 is only reported)
+  comprehensionQuestions: 8,           // check 10: reading or listening questions per lesson
+  quizQuestions: 10,                   // check 12: lesson quiz (pass = 8 of 10)
+  unitTestQuestions: 20,               // numbered unit tests (the unit 0 test is only reported)
   preTestItems: 10, preTestTypedMin: 0.8,
   singleAnswerShare: 0.5,              // check 6
-  legalShareMax: 0.3,                  // check 9
-  jaccardWarn: 0.8, minTokens: 3,      // check 8 and the unit-test reuse rule
+  legalShareMax: 0.25,                 // check 9 (the brief: legal content a quarter or less)
+  jaccardWarn: 0.8, minTokens: 3,      // check 8, cross-lesson repeats and the unit-test reuse rule
+  jaccardNear: 0.5, nearMax: 5,        // cross-lesson near-overlap INFO lines (below jaccardWarn), at most nearMax per lesson
   minSentences: 4,                     // check 11
   audioHosts: /(^|\.)(britishcouncil\.org|elllo\.org|bbc\.co\.uk|bbc\.com)$/i,   // README: approved listening sources
 };
@@ -65,7 +84,7 @@ const EMOJI_RE = /\p{Emoji_Presentation}|\p{Extended_Pictographic}\uFE0F/u;
 // ------------------------------------------------------------------ CLI
 const USAGE = 'Usage: node content-check.js [siteRoot] [--unit N] [--quiet]\n' +
   '       node content-check.js [siteRoot] --map [--unit N]\n' +
-  '  siteRoot  folder with index.html (default: current directory)\n' +
+  '  siteRoot  folder with content.js, app.js and lessons/ (default: current directory)\n' +
   '  --unit N  check only unit N (0 = Foundation Week)\n' +
   '  --quiet   hide INFO lines\n' +
   '  --map     print one JSON object with the state of the course (for a dashboard)';
@@ -123,27 +142,48 @@ const pct = (a, b) => (b ? Math.round((100 * a) / b) : 0) + '%';
 const q = s => '"' + clip(s) + '"';
 
 // ------------------------------------------------------------------ loading the site (vm sandbox)
-/* Run content.js and the lesson scripts listed in index.html; return the sandbox and what it produced. */
+const LESSON_ID_RE = /^u(\d+)l(\d+)$/;                                   // lesson id u<U>l<N> = file lessons/u<U>/l<N>.js
+const LESSON_FILE_RE = /^lessons\/u(\d+)\/l(\d+)\.js$/;
+const unitOfListKey = k => Number(/^unit(\d+)Lessons$/.exec(k)[1]);
+/* Run content.js, then the lesson files named by its unit lists; return the sandbox and what it produced.
+   content.js is the single source of lessons: unit<N>Lessons in unit order (0, 1, 2, ...), entries in list order,
+   entries with test:true skipped. Every other entry is kept in site.listed (for the wiring checks), and its file
+   lessons/u<U>/l<N>.js is run when it exists. index.html is not read. */
 function loadSite(root) {
-  const indexPath = path.join(root, 'index.html');
-  if (!fs.existsSync(indexPath)) throw new Fatal(`index.html not found in ${root}`);
-  const html = fs.readFileSync(indexPath, 'utf8');
-  const scripts = [...html.matchAll(/<script\b[^>]*?\bsrc\s*=\s*["']([^"']+)["']/gi)]
-    .map(m => m[1].split(/[?#]/)[0]).filter(s => !/^(?:[a-z]+:)?\/\//i.test(s));   // local scripts only
-  const engine = scripts.find(s => /(^|\/)app\.js$/i.test(s)) || 'app.js';          // the engine is not data
+  const dataFile = 'content.js', engine = 'app.js';                       // the engine is not data
+  const dataPath = path.join(root, dataFile);
+  if (!fs.existsSync(dataPath)) throw new Fatal(`${dataFile} not found in ${root}`);
   const sandbox = { console: { log() {}, info() {}, warn() {}, error() {} }, document: {}, navigator: {} };
   sandbox.window = sandbox; sandbox.self = sandbox;                                  // minimal browser stubs
   vm.createContext(sandbox);
-  const site = { root, scripts, engine, ctx: sandbox, lessonFile: {}, dataFile: null };
-  const siteLog = logger('index.html', '');
-  for (const rel of scripts.filter(s => s !== engine)) {
-    const file = path.join(root, rel);
-    if (!fs.existsSync(file)) { siteLog.error(rel, 'script listed in index.html does not exist'); continue; }
-    const before = new Set(Object.keys(sandbox.LESSONS || {}));
-    try { vm.runInContext(fs.readFileSync(file, 'utf8'), sandbox, { filename: rel }); }
-    catch (e) { logger(rel, '').error('', 'script failed to run: ' + e.message); continue; }
-    for (const id of Object.keys(sandbox.LESSONS || {})) if (!before.has(id)) site.lessonFile[id] = rel;
-    if (!site.dataFile && sandbox.DATA) site.dataFile = rel;
+  const site = { root, engine, ctx: sandbox, lessonFile: {}, dataFile, listed: [], failed: new Set(), testIds: new Set() };
+  const dataLog = logger(dataFile, '');
+  const runFile = (rel, log) => {                                         // run one script; map new LESSONS keys to it
+    const before = Object.assign({}, sandbox.LESSONS || {});
+    try { vm.runInContext(fs.readFileSync(path.join(root, rel), 'utf8'), sandbox, { filename: rel }); }
+    catch (e) { log.error('', 'script failed to run: ' + e.message); site.failed.add(rel); return; }
+    for (const id of Object.keys(sandbox.LESSONS || {})) {
+      if (!(id in before)) site.lessonFile[id] = rel;
+      else if (sandbox.LESSONS[id] !== before[id]) log.warn('', `replaces LESSONS.${id}, which ${site.lessonFile[id] || 'an earlier file'} already defined (the site would show this file's version)`);
+    }
+  };
+  runFile(dataFile, dataLog);
+  site.DATA = sandbox.DATA && typeof sandbox.DATA === 'object' ? sandbox.DATA : null;
+  if (!site.DATA) dataLog.error('DATA', `no global DATA object after running ${dataFile} (expected "var DATA = window.DATA = {...}")`);
+  const keys = Object.keys(site.DATA || {}).filter(k => /^unit\d+Lessons$/.test(k)).sort((a, b) => unitOfListKey(a) - unitOfListKey(b));
+  const ran = new Set();
+  for (const key of keys) {
+    const unit = unitOfListKey(key), list = site.DATA[key];
+    if (!Array.isArray(list)) { logger(dataFile, '', unit).error(key, 'is not an array, so no lesson can be read from it'); continue; }
+    list.forEach((l, index) => {
+      if (l && typeof l === 'object' && l.test && typeof l.id === 'string') site.testIds.add(l.id);
+      if (!l || typeof l !== 'object' || l.test) return;
+      const m = LESSON_ID_RE.exec(typeof l.id === 'string' ? l.id : '');
+      const file = m ? `lessons/u${m[1]}/l${m[2]}.js` : null;
+      const exists = !!file && fs.existsSync(path.join(root, file)) && fs.statSync(path.join(root, file)).isFile();
+      site.listed.push({ id: l.id, key, index, unit, open: !!l.open, file, exists });
+      if (exists && !ran.has(file)) { ran.add(file); runFile(file, logger(file, l.id, unit)); }
+    });
   }
   site.LESSONS = {};                                                        // keep only entries that are real objects
   const rawLessons = sandbox.LESSONS && typeof sandbox.LESSONS === 'object' ? sandbox.LESSONS : {};
@@ -152,9 +192,6 @@ function loadSite(root) {
     if (L && typeof L === 'object' && !Array.isArray(L)) site.LESSONS[id] = L;
     else logger(site.lessonFile[id] || site.dataFile || '?', id).error('', 'LESSONS entry is not an object');
   }
-  site.DATA = sandbox.DATA && typeof sandbox.DATA === 'object' ? sandbox.DATA : null;
-  if (!site.DATA) siteLog.error('DATA', 'no global DATA object after loading the scripts (expected "var DATA = window.DATA = {...}" in content.js)');
-  site.dataFile = site.dataFile || 'content.js';
   const enginePath = path.join(root, engine);
   if (!fs.existsSync(enginePath)) throw new Fatal(`${engine} not found (needed for the site's answer checker)`);
   site.appSrc = fs.readFileSync(enginePath, 'utf8');
@@ -183,7 +220,9 @@ function extractDecl(src, name) {
 }
 /* Load the answer-checker functions (and any helper they need, e.g. APOS_RE) into the sandbox. */
 function loadChecker(site) {
-  const ctx = site.ctx, loaded = new Set();
+  // The engine helpers get their own context: a lesson's writing checks run in the lessons' context, as on the page,
+  // where app.js helpers such as fixQuotes are not visible to lesson code.
+  const ctx = site.engineCtx = vm.createContext({ console: { log() {}, info() {}, warn() {}, error() {} } }), loaded = new Set();
   const load = name => {
     if (loaded.has(name)) return true;
     const code = extractDecl(site.appSrc, name);
@@ -207,12 +246,81 @@ function loadChecker(site) {
   // Optional pieces: category names and the default writing checks (missing ones only disable the matching extra check).
   const opt = name => (load(name) ? vm.runInContext(name, ctx) : null);
   site.fx = fx;
+  site.load = load;
   site.errCats = (o => (o && typeof o === 'object' ? new Set(Object.keys(o)) : null))(opt('ERR_CATS'));
   site.defaultChecks = (c => (isArr(c) ? c : null))(opt('CHECKS'));
   // Can the engine show a typed question inside a unit test? (stUnitTestQ renders multiple choice only today.) null = unknown.
   const utq = extractDecl(site.appSrc, 'stUnitTestQ');
   site.unitTestTyping = utq == null ? null : /\bTyping\s*\(/.test(utq);
+  site.checkerNames = [...loaded];
+  loadWritingEngine(site);
+  site.writingNames = [...loaded].filter(n => !site.checkerNames.includes(n));
   return loaded;
+}
+/* Call fn(); while it fails with "X is not defined" and X can be cut out of app.js, load X and call fn again
+   (a helper that a function reaches only for some inputs is loaded the first time it is needed). */
+function engineCall(site, fn) {
+  for (let i = 0; ; i++) {
+    try { return fn(); }
+    catch (e) {
+      const m = /^([\w$]+) is not defined$/.exec((e && e.message) || '');
+      if (i >= 12 || !m || !site.load(m[1])) throw e;
+    }
+  }
+}
+/* The engine's evaluation of a writing answer (check 11): analyze(text), which counts sentences and finds the lesson
+   words in ALL_VOCAB, and buildIndex(lesson), which makes that word list for the lesson on screen. The page sets
+   ALL_VOCAB per lesson (rebuildLessonIndex); the checker does the same before each call. On failure site.writing
+   stays null and site.writingWhy says why (main() then prints one WARN and the model check is skipped). */
+function loadWritingEngine(site) {
+  const ctx = site.engineCtx;
+  site.writing = null; site.writingWhy = null;
+  try {
+    if (!site.load('analyze')) throw new Error('function "analyze" not found');
+    // ALL_VOCAB is the page's per-lesson word list; the checker declares it and sets it for each lesson, as the page does.
+    const setVocab = vm.runInContext('var ALL_VOCAB = []; (function (v) { ALL_VOCAB = v; })', ctx, { filename: 'content-check:ALL_VOCAB' });
+    const analyze = vm.runInContext('analyze', ctx);
+    setVocab([{ en: 'lawyer' }, { en: 'zz', headword: 'zz' }]);                       // smoke test over every branch
+    const a = engineCall(site, () => analyze("I'm working with a lawyer every day. She usually helps me in the morning. Is it hard?"));
+    if (!a || typeof a.sentences !== 'number' || !isArr(a.used)) throw new Error('analyze() did not return {sentences, used, ...}');
+    if (a.used.length !== 1) throw new Error(`analyze() does not read the lesson words from ALL_VOCAB (found ${a.used.length} of 1)`);
+    setVocab([]);
+    let buildIndex = site.load('buildIndex') ? vm.runInContext('buildIndex', ctx) : null;
+    const probe = { vocab: [{ en: 'a' }], legalPhrase: { en: 'b' }, recall: [{}], vocabGaps: [{}], gA: [{}], gB: [{}], gC: [{ verb: 'go' }], gD: [{}],
+      reading: { questions: [{}, { tf: true }] }, listening: { questions: [{}, { tf: true }] }, quiz: [{}], gCards: [] };   // every branch
+    try { if (buildIndex && !isArr(engineCall(site, () => buildIndex(probe).ALL_VOCAB))) buildIndex = null; }
+    catch (_) { buildIndex = null; }                                                 // the word list is then made as below
+    site.writing = { analyze, buildIndex, setVocab };
+  } catch (e) { site.writingWhy = e.message; }
+}
+/* The lesson words the writing screen gives analyze(): buildIndex(lessonData(id)).ALL_VOCAB, i.e. the vocab list and
+   the legal phrase (lessonData() in app.js lays the lesson over DATA). */
+function lessonVocab(S, L) {
+  if (S.writing.buildIndex) {
+    try { const v = engineCall(S, () => S.writing.buildIndex(Object.assign({}, S.DATA || {}, L)).ALL_VOCAB); if (isArr(v)) return v; }
+    catch (_) { /* malformed lesson: same rule below */ }
+  }
+  const v = (isArr(L.vocab) ? L.vocab : []).filter(x => x && typeof x === 'object');
+  if (L.legalPhrase && typeof L.legalPhrase === 'object') v.push(Object.assign({ isLegal: true }, L.legalPhrase));
+  return v;
+}
+/* Run the engine's evaluation of one writing answer exactly as the writing screen does: a = analyze(text) with the
+   lesson words, then c.ok(a, fixQuotes(text)) for every active check. Returns {a, bad}: bad has a label for each check
+   that rejects the text (or throws inside ok(), which would break the screen). Throws when analyze() cannot run. */
+function rejectingChecks(S, L, checks, text) {
+  S.writing.setVocab(lessonVocab(S, L));
+  let a;
+  try { a = engineCall(S, () => S.writing.analyze(text)); } finally { S.writing.setVocab([]); }
+  const t = fx.fixQuotes(text), bad = [];
+  if (!a || typeof a.sentences !== 'number') throw new Error('analyze() returned no sentence count');
+  [...checks].forEach((c, i) => {
+    const name = c && isStr(c.k) ? `"${c.k}"` : `checks[${i}]`;
+    if (!c || typeof c.ok !== 'function') { bad.push(`${name} (has no ok function)`); return; }
+    let ok;
+    try { ok = c.ok(a, t); } catch (e) { bad.push(`${name} (ok() throws: ${clip(e && e.message, 60)})`); return; }
+    if (!ok) bad.push(name + (isStr(c.tEn) ? ` (${clip(c.tEn, 56)})` : ''));
+  });
+  return { a, bad };
 }
 
 // ------------------------------------------------------------------ text helpers (sentence comparison)
@@ -253,7 +361,7 @@ function bestOverlap(text, pool) {
 const ABBR_RE = /\b(?:Mr|Mrs|Ms|Dr|Prof|St|vs|etc|e\.g|i\.e)\./g;
 function splitSentences(text) {
   return String(text).replace(ABBR_RE, m => m.replace(/\./g, '\u0001'))
-    .split(/(?<=[.!?])\s+(?=\S)|(?<=[.!?])(?=[A-Z])|\n+/).map(s => s.replace(/\u0001/g, '.').trim()).filter(Boolean);
+    .split(/(?<=[.!?]["'’”)\]]*)\s+(?=\S)|(?<=[.!?])(?=[A-Z])|\n+/).map(s => s.replace(/\u0001/g, '.').trim()).filter(Boolean);
 }
 function decodeEntities(s) {
   return s.replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'")
@@ -521,20 +629,33 @@ function legalShare(L) {
   }
   return { legal, total: items.length, share: items.length ? legal / items.length : 0 };
 }
-/* The sentence count the lesson's writing checks really enforce (probe the site's own ok() function). */
+/* The sentence count the lesson's writing checks really enforce (probe the site's own ok() function):
+   {n} or {n: null, why} when the rule cannot be found or read. The rule is the check with k:"sentences", else one whose
+   tEn speaks of "separate sentences" (a check such as "2 sentences with am / is / are" is not a count rule). */
 function enforcedSentences(checks) {
-  const c = checks.find(c => c && c.k === 'sentences') || checks.find(c => c && /sentence/i.test(c.tEn || ''));
-  if (!c || typeof c.ok !== 'function') return null;
+  const list = [...checks];
+  const c = list.find(c => c && c.k === 'sentences') || list.find(c => c && /\bseparate\s+sentences\b/i.test(c.tEn || ''));
+  if (!c) return { n: null, why: 'no check with k:"sentences" or a tEn about "separate sentences"' };
+  if (typeof c.ok !== 'function') return { n: null, why: 'the "sentences" check has no ok function' };
   for (let n = 0; n <= 12; n++) {
     const text = Array(n).fill('This is a short sample sentence.').join(' ');       // some checks also read the text itself
-    try { if (c.ok({ words: 6 * n, sentences: n, runOn: false, cont: 0, sig: 0, used: [] }, text)) return n; } catch (_) { return null; }
+    try { if (c.ok({ words: 6 * n, sentences: n, runOn: false, cont: 0, sig: 0, used: [] }, text)) return { n }; }
+    catch (e) { return { n: null, why: `the "sentences" check throws: ${clip(e && e.message, 60)}` }; }
   }
-  return null;
+  return { n: null, why: 'the "sentences" check accepts no count from 0 to 12' };
 }
 const NUMBER_WORDS = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8 };
+/* The number of sentences a task text asks for: the first "at least N sentences", else the largest "N sentences" it
+   states (the parts of a task, such as "2 sentences using am / is / are", are smaller than its total). null when it
+   states none. */
 function statedSentences(text) {
-  const m = /\b(\d+|one|two|three|four|five|six|seven|eight)\s+(?:separate\s+|short\s+|full\s+|clear\s+)?sentences\b/i.exec(text || '');
-  return m ? (NUMBER_WORDS[m[1].toLowerCase()] || Number(m[1])) : null;
+  let atLeast = null, largest = null;
+  for (const m of String(text || '').matchAll(/\b(at\s+least\s+)?(\d+|one|two|three|four|five|six|seven|eight)(\+|\s+or\s+more)?\s+(?:(?:separate|short|full|clear|complete|simple)\s+){0,2}sentences\b/gi)) {
+    const n = NUMBER_WORDS[m[2].toLowerCase()] || Number(m[2]);
+    if ((m[1] || m[3]) && atLeast == null) atLeast = n;
+    if (largest == null || n > largest) largest = n;
+  }
+  return atLeast != null ? atLeast : largest;
 }
 function checkWriting(log, L, S) {
   const W = L.writing;
@@ -543,18 +664,64 @@ function checkWriting(log, L, S) {
   if (!need(log, 'writing', W, 'model')) { /* reported */ }
   const own = isArr(W.checks);
   const checks = own ? W.checks : S.defaultChecks;
-  const enforced = checks ? enforcedSentences(checks) : null;
+  const probe = checks ? enforcedSentences(checks) : { n: null }, enforced = probe.n;
   const stated = statedSentences(W.taskEn);
-  if (enforced == null) log.warn('writing', checks ? 'the writing checks do not enforce a minimum number of sentences' : 'cannot tell how many sentences the writing task requires (no checks and no default CHECKS in app.js)');
-  else if (enforced < CFG.minSentences) log.warn('writing.checks', `the checks accept ${enforced} sentences; the course needs at least ${CFG.minSentences}`);
-  if (stated == null) log.warn('writing.taskEn', `the task text does not state a number of sentences (needs "at least ${CFG.minSentences}")`);
-  else if (stated < CFG.minSentences) log.warn('writing.taskEn', `the task asks for ${stated} sentences; the course needs at least ${CFG.minSentences}`);
+  if (W.checks != null && !own) log.warn('writing.checks', 'is not an array, so the engine ignores it and uses the default CHECKS');
+  if (enforced == null) log.error('writing', checks ? `cannot tell how many sentences the writing checks require (${probe.why}); they must enforce at least ${CFG.minSentences}` : 'cannot tell how many sentences the writing task requires (no checks and no default CHECKS in app.js)');
+  else if (enforced < CFG.minSentences) log.error('writing.checks', `the checks accept ${enforced} sentences; the course needs at least ${CFG.minSentences}`);
+  if (isStr(W.taskEn)) {                                                   // a missing taskEn is reported above
+    if (stated == null) log.error('writing.taskEn', `the task text does not state a number of sentences (needs "at least ${CFG.minSentences} separate sentences")`);
+    else if (stated < CFG.minSentences) log.error('writing.taskEn', `the task text asks for ${stated} sentences; it must ask for at least ${CFG.minSentences} separate sentences`);
+  }
   if (enforced != null && stated != null && enforced !== stated) log.warn('writing', `task text says ${stated} sentences but the checks enforce ${enforced}`);
   if (isStr(W.model)) {
-    const n = splitSentences(W.model).filter(s => (s.match(/[A-Za-z']+/g) || []).length >= 3).length;
-    if (n < Math.max(CFG.minSentences, enforced || 0)) log.warn('writing.model', `the model answer has only ${n} sentences`);
+    const n = splitSentences(W.model).filter(s => (s.match(/[A-Za-z']+/g) || []).length >= 3).length, required = Math.max(CFG.minSentences, enforced || 0);
+    if (n < required) log.error('writing.model', `the model answer has only ${n} sentences; at least ${required} are required`);
   }
+  checkWritingAnswers(log, L, S, checks, own);
   return { enforced, stated, own };
+}
+/* The fewest separate sentences (as analyze() counts them) the writing screen's finish button accepts: stWriting
+   shows a toast instead of finishing when a.sentences < N. null when that rule cannot be found in app.js. */
+function finishMinimum(S) {
+  if (S.finishMin === undefined) {
+    const src = extractDecl(S.appSrc, 'stWriting') || '', m = /\ba\.sentences\s*<\s*(\d+)/.exec(src);
+    S.finishMin = m ? Number(m[1]) : null;
+  }
+  return S.finishMin;
+}
+/* One site-level WARN when the engine's writing evaluation cannot be found or run (main() calls it once); the model
+   check is then skipped for every lesson. */
+function writingUnavailable(why) {
+  logger('', '').warn('', `writing.model and writing.acceptExamples could not be verified against the writing checks (${why}); compare them with the checks by hand`);
+}
+/* Check 11: the active writing checks (the lesson's own, else the default CHECKS) must accept writing.model and every
+   entry of the optional array writing.acceptExamples (more correct answers a reviewer may add), and so must the
+   finish button. Each answer is evaluated with the engine's own analyze() and ok(a, text), as the writing screen does. */
+function checkWritingAnswers(log, L, S, checks, own) {
+  const W = L.writing, answers = [];
+  if (isStr(W.model)) answers.push(['writing.model', W.model]);
+  if (W.acceptExamples != null) {
+    if (!isArr(W.acceptExamples)) log.error('writing.acceptExamples', 'must be an array of correct answers (strings)');
+    else [...W.acceptExamples].forEach((t, i) => {
+      if (isStr(t)) answers.push([`writing.acceptExamples[${i}]`, t]);
+      else log.error(`writing.acceptExamples[${i}]`, 'must be a non-empty string (a correct answer to the writing task)');
+    });
+  }
+  if (!answers.length || !checks || !S.writing) return;                    // no checks: reported above; no engine: one WARN
+  const min = finishMinimum(S), which = own ? "the lesson's writing.checks" : `the default CHECKS of ${S.engine}`;
+  for (const [field, text] of answers) {
+    let r;
+    try { r = rejectingChecks(S, L, checks, text); }
+    catch (e) {                                                            // the engine ran in the smoke test, so this is about this lesson
+      log.warn(field,`could not be verified against the writing checks: analyze() from ${S.engine} fails on it with this lesson's words (${clip(e && e.message, 80)})`);
+      continue;
+    }
+    const why = [];
+    if (r.bad.length) why.push(`rejected by ${which}: ${r.bad.join('; ')}`);
+    if (min != null && r.a.sentences < min) why.push(`the finish button of the writing screen needs ${min} separate sentences and analyze() counts ${r.a.sentences}`);
+    if (why.length) log.error(field, why.join('; also '));
+  }
 }
 function checkListening(log, L) {
   const A = L.listening;
@@ -577,7 +744,9 @@ function checkListening(log, L) {
 function checkComprehension(log, part, name) {                           // reading or listening questions + predict question
   if (!part) return;
   if (!isArr(part.questions) || !part.questions.length) log.error(`${name}.questions`, 'missing or empty');
-  else part.questions.forEach((x, i) => {
+  else if (part.questions.length !== CFG.comprehensionQuestions)
+    log.error(`${name}.questions`, `${part.questions.length} questions; the course needs ${CFG.comprehensionQuestions} ${name} questions`);
+  if (isArr(part.questions)) part.questions.forEach((x, i) => {
     const f = `${name}.questions[${i}]`;
     if (x.tf) {                                                          // true/false question: a is a boolean
       need(log, f, x, 'q');
@@ -628,7 +797,7 @@ function checkLesson(id, L, S) {
   // The plan counts the legal phrase inside the 6-8 new items (vocab 5-7 + legalPhrase).
   const nNew = A('vocab').length + (L.legalPhrase ? 1 : 0);
   if (A('vocab').length && (nNew < CFG.vocabMin || nNew > CFG.vocabMax))
-    log.warn('vocab', `${nNew} new items (${A('vocab').length} vocab + ${L.legalPhrase ? 1 : 0} legal phrase); the course uses ${CFG.vocabMin}-${CFG.vocabMax} in total`);
+    log.error('vocab', `${nNew} new items (${A('vocab').length} vocab + ${L.legalPhrase ? 1 : 0} legal phrase); the course needs ${CFG.vocabMin}-${CFG.vocabMax} in total`);
   if (L.legalPhrase) {
     for (const k of ['en', 'ar', 'ex']) need(log, 'legalPhrase', L.legalPhrase, k);
     for (const k of ['exAr', 'tipEn', 'tip']) need(log, 'legalPhrase', L.legalPhrase, k, 'warn');
@@ -641,6 +810,12 @@ function checkLesson(id, L, S) {
     if (!isStr(c.enHtml) && !isStr(c.html)) log.error(`gCards[${i}]`, 'missing "enHtml"');
     if (!c.bilingual && !isStr(c.arHtml)) log.warn(`gCards[${i}]`, 'no "arHtml" (and not marked bilingual)');
   });
+  if (A('gCards').length && A('gCards').length !== CFG.gCards)
+    log.error('gCards', `${A('gCards').length} grammar cards; the course needs ${CFG.gCards} (4 explanation cards, common mistakes, summary)`);
+  // Counts the brief fixes by convention (section 3): a departure is a WARN for the reviewer, not a reason to fail.
+  for (const [k, n] of [['recall', 5], ['vocabGaps', 8], ['goals', 4]]) if (A(k).length && A(k).length !== n) log.warn(k, `${A(k).length} items; the brief has ${n}`);
+  if (L.writing && isArr(L.writing.checks) && L.writing.checks.length !== 4)
+    log.warn('writing.checks', `${L.writing.checks.length} checks; the brief has 4 (the first "sentences", the last "vocab")`);
   A('gA').forEach((x, i) => { checkMcq(log, `gA[${i}]`, x); needWhy(log, `gA[${i}]`, x); checkErrCat(log, `gA[${i}]`, x, S); });
   A('gB').forEach((x, i) => {
     const f = `gB[${i}]`;
@@ -669,7 +844,10 @@ function checkLesson(id, L, S) {
     needWhy(log, f, x); checkErrCat(log, f, x, S);
   });
   const g = ['gA', 'gB', 'gC', 'gD'].map(k => A(k).length), gTotal = g.reduce((a, b) => a + b, 0);
-  if (g.some(n => n !== CFG.grammarPerGroup)) log.warn('grammar', `${gTotal} grammar exercises (gA=${g[0]} gB=${g[1]} gC=${g[2]} gD=${g[3]}); the course decision is ${CFG.grammarPerGroup * 4} (${CFG.grammarPerGroup} per group)`);
+  ['gA', 'gB', 'gC', 'gD'].forEach((k, i) => {                                // an empty group is already an ERROR above
+    if (g[i] && g[i] !== CFG.grammarPerGroup)
+      log.error(k, `${g[i]} exercises; the course needs ${CFG.grammarPerGroup} in each of gA, gB, gC, gD (${CFG.grammarPerGroup * 4} in all; now gA=${g[0]} gB=${g[1]} gC=${g[2]} gD=${g[3]})`);
+  });
 
   // reading / listening (check 10), writing (check 11), quiz (check 12)
   if (L.reading) {
@@ -681,12 +859,17 @@ function checkLesson(id, L, S) {
   checkComprehension(log, L.listening, 'listening');
   const w = checkWriting(log, L, S) || {};
   A('quiz').forEach((x, i) => { checkMcq(log, `quiz[${i}]`, x); needWhy(log, `quiz[${i}]`, x); checkErrCat(log, `quiz[${i}]`, x, S); });
+  if (A('quiz').length && A('quiz').length !== CFG.quizQuestions)
+    log.error('quiz', `${A('quiz').length} questions; the lesson quiz has exactly ${CFG.quizQuestions} (pass = ${Math.ceil(CFG.quizQuestions * 0.8)})`);
 
   // 8. explanation examples reused in exercises; 9. legal share
   checkExampleReuse(log, L);
   const recycling = checkAcrossLessons(log, id, S);                          // cross-lesson checks + recycling report
   const ls = legalShare(L);
-  if (ls.share > CFG.legalShareMax) log.warn('legal', `${ls.legal} of ${ls.total} exercise + quiz items (${pct(ls.legal, ls.total)}) use legal vocabulary; the limit is ${pct(CFG.legalShareMax * 100, 100)}`);
+  if (ls.share > CFG.legalShareMax) log.warn('legal', `${ls.legal} of ${ls.total} exercise + quiz items (${pct(ls.legal, ls.total)}) use legal vocabulary; the limit is ${pct(CFG.legalShareMax * 100, 100)} (a quarter)`);
+  // From unit 2 on a lesson brings its own "Ask the Teacher" suggestions; without them the engine shows unit 1's chips.
+  if (num(L.unit) >= 2 && !(isArr(L.askChips) && L.askChips.filter(isStr).length >= 4))
+    log.warn('askChips', 'lessons from unit 2 on need 4 "askChips" (short Arabic questions about this lesson\'s grammar); without them "Ask the Teacher" suggests unit 1 questions');
 
   log.head('counts', `mode=${L.mode} recall=${A('recall').length} vocab=${A('vocab').length} vocabGaps=${A('vocabGaps').length} gCards=${A('gCards').length} ` +
     `grammar=${gTotal} (gA=${g[0]} gB=${g[1]} gC=${g[2]} gD=${g[3]}) quiz=${A('quiz').length} | ` +
@@ -743,7 +926,7 @@ function exerciseEntriesOf(id, L) {
   for (const it of exerciseItems(L)) {
     const seen = new Set();
     for (const s of itemSentences(it.kind, it.x)) {
-      const e = entry(s, `${id} ${it.field}`, { field: it.field });
+      const e = entry(s, `${id} ${it.field}`, { field: it.field, lesson: id });
       if (e && !seen.has(e.key)) { seen.add(e.key); out.push(e); }
     }
   }
@@ -805,8 +988,23 @@ function recyclingReport(S, id) {
   if (unused.length) lines.push(['recycling', 'not used again: ' + clipList(unused.map(tag), 40)]);
   return lines;
 }
-/* WARNs: vocab introduced as new in two lessons; exercise / quiz sentences repeated across lessons of one unit.
-   Returns the recycling INFO lines (printed by checkLesson after the counts line). */
+/* Exercise / quiz sentences of the lessons in `pool` (entries) that come closest to `e` with CFG.jaccardNear <= Jaccard
+   < CFG.jaccardWarn (exact repeats and pairs at the WARN threshold are reported by bestOverlap instead). */
+function nearOverlaps(e, pool) {
+  const out = [];
+  for (const p of pool) {
+    if (p.key === e.key) continue;
+    const j = jaccard(e.set, p.set);
+    if (j >= CFG.jaccardNear && j < CFG.jaccardWarn) out.push({ e, p, jac: j });
+  }
+  return out;
+}
+/* ERROR: an item introduced as new that an earlier lesson of the course already introduced as new.
+   WARN: exercise / quiz sentences repeated from earlier lessons of the same unit or from any lesson of the previous unit.
+   INFO: near-overlaps with the same lessons, for the reviewer to compare (Jaccard from CFG.jaccardNear up to the WARN
+   threshold, at most CFG.nearMax per lesson, most similar first; LESSON-BRIEF.md section 10 notes that reviewers found
+   lightly edited sentences at 0.5-0.6).
+   Returns the recycling and near-overlap INFO lines (printed by checkLesson after the counts line). */
 function checkAcrossLessons(log, id, S) {
   const { order, info } = S.cross, L = S.LESSONS[id], me = info[id], pos = order.indexOf(id), u = num(L.unit);
   const seen = new Map();                                                    // vocab key -> first item that introduced it
@@ -814,18 +1012,28 @@ function checkAcrossLessons(log, id, S) {
   me.vocab.forEach(v => {
     const first = seen.get(v.key);
     if (!first) { seen.set(v.key, v); return; }
+    if (first.lesson === id) { log.warn(v.field, `${q(v.en)} is introduced as new twice in this lesson (also ${first.field})`); return; }
     const other = num(S.LESSONS[first.lesson].unit) !== u ? ` (unit ${S.LESSONS[first.lesson].unit})` : '';
-    log.warn(v.field, `${q(v.en)} is introduced as new here but was already introduced as new in ${first.lesson} ${first.field}${other}`);
+    log.error(v.field, `${q(v.en)} is introduced as new here but was already introduced as new in ${first.lesson} ${first.field}${other}; recycle it instead (a new item is new once in the course)`);
   });
-  const pool = order.slice(0, pos).filter(x => num(S.LESSONS[x].unit) === u).flatMap(x => info[x].entries);
-  const reported = new Set();
+  // Earlier lessons of the same unit, then every lesson of the previous unit (course order).
+  const poolIds = order.filter((x, i) => (num(S.LESSONS[x].unit) === u && i < pos) || num(S.LESSONS[x].unit) === u - 1);
+  const pool = poolIds.flatMap(x => info[x].entries);
+  const where = p => (num(S.LESSONS[p.lesson].unit) === u ? 'earlier lesson of the same unit' : 'lesson of the previous unit');
+  const reported = new Set(), near = [];
   for (const e of me.entries) {
+    near.push(...nearOverlaps(e, pool));
     const m = bestOverlap(e.text, pool);
     if (!m || reported.has(e.field + '|' + m.p.src)) continue;
     reported.add(e.field + '|' + m.p.src);
-    log.warn(e.field, `sentence ${q(e.text)} ${m.exact ? 'repeats' : `overlaps (Jaccard ${m.jac.toFixed(2)}) with`} ${q(m.p.text)} in ${m.p.src} (earlier lesson of the same unit)`);
+    log.warn(e.field, `sentence ${q(e.text)} ${m.exact ? 'repeats' : `overlaps (Jaccard ${m.jac.toFixed(2)}) with`} ${q(m.p.text)} in ${m.p.src} (${where(m.p)})`);
   }
-  return recyclingReport(S, id);
+  const pairs = new Set();
+  const nearLines = near.sort((a, b) => b.jac - a.jac || a.e.field.localeCompare(b.e.field) || a.p.src.localeCompare(b.p.src))
+    .filter(n => { const k = n.e.field + '|' + n.p.src; if (pairs.has(k)) return false; pairs.add(k); return true; })
+    .slice(0, CFG.nearMax)
+    .map(n => [n.e.field, `near-overlap for the reviewer to compare (Jaccard ${n.jac.toFixed(2)}): ${q(n.e.text)} and ${q(n.p.text)} in ${n.p.src} (${where(n.p)})`]);
+  return recyclingReport(S, id).concat(nearLines);
 }
 
 // ------------------------------------------------------------------ unit tests and pre-tests
@@ -874,7 +1082,7 @@ function checkUnitTest(S, u, ut) {
   const byLesson = {};
   qs.forEach(x => { byLesson[x.lesson || '?'] = (byLesson[x.lesson || '?'] || 0) + 1; });
   log.head('counts', `questions=${qs.length}, typed=${qs.filter(isTypedQ).length}, by lesson: ${Object.entries(byLesson).map(([k, n]) => `${k}=${n}`).join(' ')}`);
-  if (unit >= 1 && qs.length !== CFG.unitTestQuestions) log.warn('questions', `${qs.length} questions; numbered unit tests have ${CFG.unitTestQuestions}`);
+  if (unit >= 1 && qs.length !== CFG.unitTestQuestions) log.error('questions', `${qs.length} questions; numbered unit tests have exactly ${CFG.unitTestQuestions}`);
   const typedList = [];
   qs.forEach((x, i) => {
     const f = `questions[${i}]`;
@@ -936,27 +1144,46 @@ function checkPreTest(S, u, pt) {
   scanEmoji(log, pt, '');
 }
 
-// ------------------------------------------------------------------ site wiring (index.html, unit lists)
+// ------------------------------------------------------------------ site wiring (content.js unit lists, lessons/)
+/* The unit lists in content.js are the single source of lessons (see loadSite). Whether index.html loads the same
+   files is not checked here: a separate tool keeps its script tags in step with the lists. */
 function checkWiring(S) {
+  if (!S.DATA) return;                                                     // already an ERROR; every file would look unlisted
   let onDisk = [];
-  try { onDisk = fs.readdirSync(path.join(S.root, 'lessons'), { recursive: true }).filter(f => /\.js$/.test(f)).map(f => 'lessons/' + String(f).replace(/\\/g, '/')); } catch (_) { /* no lessons folder */ }
+  try { onDisk = fs.readdirSync(path.join(S.root, 'lessons'), { recursive: true }).map(f => String(f).replace(/\\/g, '/')).filter(f => /\.js$/.test(f)).map(f => 'lessons/' + f).sort(); } catch (_) { /* no lessons folder */ }
+  const named = new Set(S.listed.map(l => l.file).filter(Boolean));
   for (const f of onDisk) {
-    const m = /^lessons\/u(\d+)\//.exec(f);
-    if (!S.scripts.includes(f) && (!m || inScope(m[1]))) logger('index.html', '', m ? Number(m[1]) : null).warn(f, 'lesson file exists but index.html does not load it');
+    if (named.has(f)) continue;
+    const m = LESSON_FILE_RE.exec(f), u = /^lessons\/u(\d+)\//.exec(f);
+    if (u && !inScope(u[1])) continue;
+    const log = logger(f, '', u ? Number(u[1]) : null);
+    const id = m ? `u${m[1]}l${m[2]}` : null;
+    if (m) log.error('', S.testIds.has(id) ? `lesson file exists but ${id} is a test entry (test:true) in content.js, which has no lesson file, so it is never loaded or checked`
+      : `lesson file exists but no unit list in content.js names ${id}, so it is never loaded or checked`);
+    else log.warn('', 'file under lessons/ does not follow lessons/u<U>/l<N>.js, so no unit list in content.js can name it and it is never loaded or checked');
   }
-  const listed = new Set();
-  for (const key of Object.keys(S.DATA || {}).filter(k => /^unit\d+Lessons$/.test(k))) {
-    const un = Number(/^unit(\d+)Lessons$/.exec(key)[1]), log = logger('index.html', '', un);
-    for (const l of Array.isArray(S.DATA[key]) ? S.DATA[key] : []) {
-      if (!l || l.test) continue;
-      listed.add(l.id);
-      if (!inScope(un)) continue;
-      if (l.open && !S.LESSONS[l.id]) log.error(`content.js ${key}`, `${l.id} is open:true but no lesson data was loaded for it`);
-      if (!l.open && S.LESSONS[l.id]) log.warn(`content.js ${key}`, `${l.id} has lesson data but is not open:true in the list`);
-    }
+  const seen = new Map();
+  for (const l of S.listed) {
+    if (!inScope(l.unit)) continue;
+    const log = logger(S.dataFile, '', l.unit), field = `${l.key}[${l.index}]`;
+    if (!l.file) { log.warn(field, `lesson id ${q(l.id)} does not have the form u<U>l<N>, so no lesson file can be found for it`); }
+    if (seen.has(l.id)) log.warn(field, `${l.id} is listed twice (also ${seen.get(l.id)})`);
+    else seen.set(l.id, field);
+    const why = !l.file ? 'no lesson file for this id' : !l.exists ? `${l.file} does not exist` : S.failed.has(l.file) ? `${l.file} failed to run` : `${l.file} does not define LESSONS.${l.id}`;
+    if (l.open && !S.LESSONS[l.id]) log.error(field, `${l.id} is open:true but no lesson data was loaded for it (${why})`);
+    else if (!l.open && S.LESSONS[l.id]) log.warn(field, `${l.id} has lesson data but is not open:true in the list`);
+    else if (!l.open && l.exists && !S.failed.has(l.file)) log.warn(field, `${l.file} exists but does not define LESSONS.${l.id}`);
   }
+  // A unit with open lessons whose units[] entry is not open:true shows on Home but stays locked on the Lessons tab.
+  const unitsArr = Array.isArray(S.DATA.units) ? S.DATA.units : [];
+  for (const un of new Set(S.listed.filter(l => l.open && Number(l.unit) >= 1).map(l => Number(l.unit)))) {
+    if (!inScope(un)) continue;
+    const ent = unitsArr.find(x => x && x.n === un);
+    if (!ent || !ent.open) logger(S.dataFile, '', un).warn('units', `unit ${un} has open lessons in unit${un}Lessons but its units[] entry is not open:true, so the Lessons tab shows it locked`);
+  }
+  const listed = new Set(S.listed.map(l => l.id));
   for (const id of Object.keys(S.LESSONS))
-    if (!listed.has(id) && inScope(S.LESSONS[id].unit)) logger('index.html', '', S.LESSONS[id].unit).warn('content.js', `${id} has lesson data but is not in any unitNLessons list`);
+    if (!listed.has(id) && inScope(S.LESSONS[id].unit)) logger(S.lessonFile[id] || S.dataFile, '', S.LESSONS[id].unit).warn('', `${id} has lesson data but is not in any unitNLessons list of content.js`);
 }
 
 // ------------------------------------------------------------------ course map (--map)
@@ -1043,13 +1270,15 @@ function sanitizeItems(S) {
 // ------------------------------------------------------------------ main
 function main() {
   const S = loadSite(ROOT);
-  const loaded = loadChecker(S);
+  loadChecker(S);
   fx = S.fx;
   sanitizeItems(S);
   S.cross = buildCross(S);
   const head = logger('', '');
-  head.info('', `site ${ROOT}: ${Object.keys(S.LESSONS).length} lessons from ${new Set(Object.values(S.lessonFile)).size} files, data in ${S.dataFile}`);
-  head.info('', `answer checker taken from ${S.engine}: ${[...loaded].join(', ')}`);
+  head.info('', `site ${ROOT}: ${Object.keys(S.LESSONS).length} lessons from ${new Set(Object.values(S.lessonFile)).size} files (named by the unit lists in ${S.dataFile}), data in ${S.dataFile}`);
+  head.info('', `answer checker taken from ${S.engine}: ${S.checkerNames.join(', ')}` +
+    (S.writing ? `; writing evaluation: ${S.writingNames.join(', ')}` : ''));
+  if (!S.writing) writingUnavailable(`cannot use analyze() from ${S.engine}: ${S.writingWhy || 'unknown reason'}`);
   checkWiring(S);
   const ids = S.cross.order.filter(id => inScope(S.LESSONS[id].unit));
   ids.forEach(id => checkLesson(id, S.LESSONS[id], S));

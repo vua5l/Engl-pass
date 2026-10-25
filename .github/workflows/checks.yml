@@ -1,0 +1,131 @@
+# Free automatic checks for English Passport (GitHub Actions is free for public repositories).
+#
+#   content      every push (except the progress branch), PRs to main, manual runs and the weekly run:
+#                tests/content-check.js, tests/map-check.js when present, and on main and PRs to main
+#                tools/register-lessons.js --check when present.
+#   links        pushes to main and to claude/* branches, PRs to main, manual runs and the weekly run (links rot):
+#                tests/link-check.js (lesson clips, links in the data, Wikimedia pronunciation audio).
+#   night-guard  pushes to claude/night-* branches and PRs from them: nightly work may change only
+#                lessons/**, content.js and night-reports/** (tools/night-guard.js origin/main).
+#
+# GitHub Pages keeps deploying main by itself ("pages build and deployment"); these checks report, they do not
+# stop a deploy. Scheduled runs use the workflow file on main. A push or PR runs the branch's own copy of this
+# file, so a nightly branch could remove the night-guard job: the coordinator runs main's guard locally before
+# merging any nightly branch (CLAUDE.md).
+name: Checks
+
+on:
+  push:
+    branches:
+      - '**'
+      - '!progress'          # written by the site's progress sync every few minutes; it is not site code
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '23 4 * * 1'     # every Monday 04:23 UTC (07:23 in Riyadh)
+
+permissions:
+  contents: read
+
+# One run per event and ref: a newer push cancels the older run of the same branch. The event is part of the
+# group so that the weekly run and a push to main do not cancel each other.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  content:
+    name: Content check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out (full history)
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          package-manager-cache: false   # nothing is installed (no npm packages)
+
+      - name: Content check (tests/content-check.js)
+        run: node tests/content-check.js
+
+      - name: Unit map check (tests/map-check.js)
+        run: |
+          if [ -f tests/map-check.js ]; then
+            node tests/map-check.js
+          else
+            echo "tests/map-check.js is not in this commit; skipped."
+          fi
+
+      - name: Lesson registration check (tools/register-lessons.js --check)
+        if: >-
+          (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+          (github.event_name == 'pull_request' && github.base_ref == 'main' && !startsWith(github.head_ref, 'claude/night-'))
+        # A nightly branch never touches index.html (the coordinator registers its lessons at publish time), so its PR skips this check.
+        run: |
+          if [ -f tools/register-lessons.js ]; then
+            node tools/register-lessons.js --check
+          else
+            echo "tools/register-lessons.js is not in this commit; skipped."
+          fi
+
+  links:
+    name: Links and audio
+    if: >-
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' && github.base_ref == 'main') ||
+      (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/claude/')))
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out
+        uses: actions/checkout@v7
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          package-manager-cache: false   # nothing is installed (no npm packages)
+
+      - name: Link check (tests/link-check.js)
+        run: node tests/link-check.js
+
+  night-guard:
+    name: Night guard
+    if: >-
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/claude/night-')) ||
+      (github.event_name == 'pull_request' && startsWith(github.head_ref, 'claude/night-'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out the branch itself (full history)
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Fetch the newest main
+        run: git fetch --no-tags origin '+refs/heads/main:refs/remotes/origin/main'
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          package-manager-cache: false   # nothing is installed (no npm packages)
+
+      - name: Night guard (tools/night-guard.js origin/main)
+        run: |
+          # The guard is run as it is on main, so a nightly branch cannot weaken it by editing tools/night-guard.js.
+          if git cat-file -e origin/main:tools/night-guard.js 2>/dev/null; then
+            git show origin/main:tools/night-guard.js > "$RUNNER_TEMP/night-guard.js"
+            node "$RUNNER_TEMP/night-guard.js" origin/main
+          else
+            echo "tools/night-guard.js is not on main yet; running this branch's copy."
+            node tools/night-guard.js origin/main
+          fi
