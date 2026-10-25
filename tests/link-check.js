@@ -645,6 +645,12 @@ async function main() {
     `${run.notChecked ? `, ${run.notChecked} of them not tried` : ''}; ` +
     (run.lessons != null ? `content.js + ${plural(run.lessons, 'lesson', 'lessons')} in ${ROOT}` : `test list ${OPT.testUrls}`);
   console.log(`\nSUMMARY: ${counts.ERROR} ERROR, ${counts.WARN} WARN, ${counts.INFO} INFO (${scope})`);
+  // On GitHub each ERROR / WARN also becomes an annotation, readable on the run page and through the API.
+  if (process.env.GITHUB_ACTIONS === 'true') {
+    const esc = s => String(s).replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A');
+    for (const r of results) if (r.level !== 'INFO') console.log(`::${r.level === 'ERROR' ? 'error' : 'warning'} title=link-check::${esc(r.line.slice(6))}`);
+    console.log(`::notice title=link-check summary::${esc(`${counts.ERROR} ERROR, ${counts.WARN} WARN, ${counts.INFO} INFO (${scope})`)}`);
+  }
   if (counts.ERROR > 0 && !process.exitCode) process.exitCode = 1;
   setTimeout(() => process.exit(), 1000).unref();                  // idle keep-alive sockets must not hold the job open
 })();
