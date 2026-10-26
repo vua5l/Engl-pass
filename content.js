@@ -114,6 +114,15 @@ var DATA = window.DATA = {
     { id: "u4l6", n: 6, en: "Unit Review & Test", subEn: "Unit 4 Review & Mastery Test", ar: "مراجعة الوحدة واختبارها", shortAr: "مراجعة الوحدة واختبارها", icon: "trophy", test: true }
   ],
 
+  unit5Lessons: [
+    { id: "u5l1", n: 1, en: "A Saudi Breakfast", subEn: "Countable & Uncountable Nouns", ar: "فطور سعودي: المعدود وغير المعدود", shortAr: "المعدود وغير المعدود", icon: "book" },
+    { id: "u5l2", n: 2, en: "Fruit and Vegetables", subEn: "some / any · there is / there are", ar: "الفاكهة والخضار: some وany", shortAr: "some وany", icon: "speaker" },
+    { id: "u5l3", n: 3, en: "A Healthier Month", subEn: "much / many · how much / how many", ar: "شهر أكثر صحة: much وmany", shortAr: "much وmany", icon: "clock" },
+    { id: "u5l4", n: 4, en: "My Favourite Salad", subEn: "a few / a little · too much / too many", ar: "سلطتي المفضلة: a few وa little", shortAr: "a few وa little", icon: "speaker" },
+    { id: "u5l5", n: 5, en: "Iftar at Our Place", subEn: "Writing: Planning and Asking for Things", ar: "كتابة: إيميل يخطط لإفطار ويطلب أغراضًا", shortAr: "التخطيط والطلب في إيميل", icon: "mail" },
+    { id: "u5l6", n: 6, en: "Unit Review & Test", subEn: "Unit 5 Review & Mastery Test", ar: "مراجعة الوحدة واختبارها", shortAr: "مراجعة الوحدة واختبارها", icon: "trophy", test: true }
+  ],
+
   /* ---------- المرحلة 3: قائمة الـ 60 فعلًا شاذًا شائعًا (بأنماطها الصوتية للتكرار المتباعد) ---------- */
   irregularGroups: [
     { k: "all", en: "All (60)", ar: "الكل (60)" },

@@ -1,0 +1,82 @@
+{
+  "unit": 5,
+  "title": "الغذاء والصحة",
+  "grammar": "المعدود وغير المعدود (Countable & Uncountable): a / an وsome وany، وmuch وmany وa lot of، وa few وa little، وhow much / how many",
+  "lessons": [
+    {
+      "id": "u5l1",
+      "title": "A Saudi Breakfast",
+      "mode": "reading",
+      "clip": null,
+      "text": "إيميل من عبدالله، طالب في الرياض، إلى صديقه البريطاني بن عن فطور يوم الجمعة عند جدته في القصيم: فنجان قهوة عربية وتمر، وقطع من الخبز الساخن، وفول في صحن عميق، وشرائح جبن، وبيض، وعسل، وشاي بالنعناع، وما في الثلاجة؛ ويذكر أن الهيئة العامة للغذاء والدواء (SFDA) تراقب سلامة الغذاء (food safety) في المملكة. يكثر فيه المعدود وغير المعدود مع a / an وsome وأوعية العدّ (a cup of، a piece of، a slice of، a bowl of)، 150–230 كلمة",
+      "vocab": ["piece (a piece of bread)", "slice (a slice of cheese)", "bowl (a bowl of beans)", "bean (beans)", "fridge (in the fridge)", "plate (a plate of eggs)"],
+      "legalPhrase": "food safety",
+      "grammarFocus": "المعدود وغير المعدود من الصفر بخطوات صغيرة: المعدود يأتي مفردًا مع a / an وجمعًا بـ s أو es (an egg، two eggs، two tomatoes)، وغير المعدود لا يأتي مع a / an ولا يُجمع، وفعله مفرد (The bread is fresh، Milk is good for you)، وأشهره في الطعام: bread وrice وwater وmilk وmeat وcheese وcoffee وtea وhoney، ويصح a coffee وtwo teas بمعنى فنجان، وcheeses وbreads للأنواع، فلا يُبنى تمرين على coffee وtea وcheese مع a أو بالجمع، ويُصحَّح a bread وbreads في الأكل والعدّ وحدهما (I ate two breads → two pieces of bread)، وsome مع الجمع وغير المعدود في الإثبات (some eggs، some bread)، وعدّ غير المعدود بوعاء أو قطعة: a cup of وa glass of وa piece of وa slice of وa bowl of، والجمع على الوعاء لا على الاسم (two glasses of milk لا two glass of milks، وglasses بـ es)، وأخطاء العرب: a bread وinformations وadvices وluggages، وتصحيح The rice are",
+      "recall": { "from": "u4l5", "items": ["degree", "scholarship", "abroad", "accommodation أو public transport أو cost of living", "legal system (القانونية)"] },
+      "recycled": ["typical (u1l2)", "local (u1l4)", "custom (u1l4)", "fresh (u4l1)", "eat out (u1l3)", "have people over (u1l3)", "luggage (u2l3)"],
+      "topics": ["الفطور والأسرة", "الطعام السعودي", "التسوق", "المطبخ", "الضيافة"]
+    },
+    {
+      "id": "u5l2",
+      "title": "Fruit and Vegetables",
+      "mode": "listening",
+      "clip": {
+        "url": "https://elllo.org/english/1401/1445-MegTodd-Health-Fruits.htm",
+        "title": "ELLLO Views #1445 «Fruits and Veggies»",
+        "about": "تود يسأل ميغ (وكلاهما من الولايات المتحدة بعلم الصفحة) عن الفاكهة والخضار التي تأكلها: الموز في الفطور، والتوت الأزرق في الكعك وهو غالٍ، والكيوي الذي لا تحبه، والخيار مع الملح في الغداء، والبروكلي في الفرن، والجزر المسلوق، وتود يحب الجزر نيئًا. Beginner A2، 3:48 من ملف الصوت نفسه",
+        "targetSeconds": 228
+      },
+      "text": null,
+      "vocab": ["fruit (eat fruit)", "meal (with my meals)", "salt (some salt)", "spice (some spices)", "oven (in the oven)", "boil (boil vegetables)"],
+      "legalPhrase": "food label",
+      "grammarFocus": "some وany مع المعدود وغير المعدود: some في الإثبات (some salt، some vegetables)، وany في السؤال والنفي (Are there any markets near your home? We don't have any rice)، وsome في العرض والطلب (Would you like some tea?)، وthere is + المفرد وغير المعدود وthere are + الجمع، وIs there any …? مع غير المعدود وAre there any …? مع الجمع (تصحيح Is there any restaurants من أخطاء التشخيص)، وa lot of مع النوعين. وfruit غير معدود في الأغلب (I eat a lot of fruit)، ويُجمع fruits للأنواع كما في المقطع، فلا يُعدّ خطأً ولا يُبنى عليه تمرين",
+      "recall": { "from": "u5l1", "items": ["piece", "slice", "bowl", "bean أو fridge أو plate", "food safety (القانونية)"] },
+      "recycled": ["fresh (u4l1)", "cheap (u2l4)", "invite (u1l3)", "strange (u1l1)", "piece (u5l1)", "bowl (u5l1)", "eat out (u1l3)"],
+      "topics": ["الفاكهة والخضار", "الطبخ", "الوجبات", "الأسواق", "الأسعار"]
+    },
+    {
+      "id": "u5l3",
+      "title": "A Healthier Month",
+      "mode": "reading",
+      "clip": null,
+      "text": "إيميل من سارة، طالبة جامعية في جدة، إلى صديقتها الكندية إميلي عن تحدٍّ صحي لشهر مع زميلاتها: كم كوبًا من الماء تشرب، وكم ساعة تنام، وسكر أقل ووجبات سريعة أقل، ومشي ورياضة أكثر، وعادات جديدة، وطاقة أكبر؛ وتذكر أن أباها، الموظف في شركة خاصة، عنده تأمين صحي (health insurance) من شركته، لأن النظام في السعودية يُلزم الشركات الخاصة به. بلا أرقام وزن ولا سعرات ولا نصائح طبية، ولا عدد يوصى به من الأكواب أو الساعات (تذكر سارة ما تفعله هي)، وdiet بمعنى ما يأكله المرء عادةً، فلا go on a diet ولا lose weight، 150–230 كلمة",
+      "vocab": ["habit (a healthy habit)", "diet (a healthy diet)", "energy (more energy)", "sugar (How much sugar?)", "fast food", "exercise (do exercise)"],
+      "legalPhrase": "health insurance",
+      "grammarFocus": "much وmany وa lot of وhow much / how many: many مع الجمع المعدود وmuch مع غير المعدود في السؤال والنفي (How many cups of tea do you drink? I don't drink much water)، وa lot of / lots of مع النوعين في الإثبات، وهي الأشيع فيه (I drink a lot of water)، فلا يُبنى تمرين يُخطّأ فيه much في الإثبات، والسؤال How much + غير المعدود وHow many + الجمع، وHow much is it? للسعر، وتصحيح many water (بـ a lot of في الإثبات، وmuch في النفي والسؤال) وmuch people وHow many sugar",
+      "recall": { "from": "u5l2", "items": ["fruit", "meal", "salt", "spice أو oven أو boil", "food label (القانونية)"] },
+      "recycled": ["wake up (u1l2)", "get out of bed (u1l2)", "busy (u0l1)", "schedule (u1l5)", "takeaway (u1l3)", "fruit (u5l2)", "meal (u5l2)"],
+      "topics": ["العادات الصحية", "النوم والرياضة", "الحياة الجامعية", "السكر والمشروبات", "العمل والتأمين"]
+    },
+    {
+      "id": "u5l4",
+      "title": "My Favourite Salad",
+      "mode": "listening",
+      "clip": {
+        "url": "https://elllo.org/english/1401/1446-MegTodd-Health-Vegetables.htm",
+        "title": "ELLLO Views #1446 «Eating Healthy»",
+        "about": "ميغ تسأل تود (وكلاهما من الولايات المتحدة بعلم الصفحة) هل هو صحي: يأكل كثيرًا من الفاكهة والخضار، ويعترف بأنه يأكل junk food أيضًا (ولا تُقال fast food في المقطع)، ولا يحب الأناناس، ويأكل في الغالب تفاحة كل صباح، ويحب الموز والفراولة معًا، وسلطته الخاصة من الطماطم، والجزر والخيار مقطَّعين مربعات صغيرة، ويطبخ الهليون في المايكرويف، والباذنجان الذي لا تحبه ميغ. Beginner A2، 3:30 من ملف الصوت نفسه",
+        "targetSeconds": 210
+      },
+      "text": null,
+      "vocab": ["taste (I like the taste)", "flavour (a strange flavour)", "delicious", "mix (mix them together)", "share (share it with someone)", "salad (have a salad)"],
+      "legalPhrase": "sugar tax",
+      "grammarFocus": "a few وa little وtoo much / too many: a few + الجمع المعدود وa little + غير المعدود للقليل الكافي (a few tomatoes، a little salt)، وnot many / not much للقليل غير الكافي، وtoo much / too many لما زاد عن الحاجة (too much sugar، too many sweets)، ومراجعة lots of وsome، وتصحيح a few salt وa little vegetables وtoo much people، وtoo + الصفة بلا much (too salty لا too much salty). وفي المقطع flavor بالأمريكية، ويُعلَّم flavour بالبريطانية ويُذكر الآخر في tip",
+      "recall": { "from": "u5l3", "items": ["habit", "diet", "energy", "sugar أو fast food أو exercise", "health insurance (القانونية)"] },
+      "recycled": ["strange (u1l1)", "fruit (u5l2)", "salt (u5l2)", "oven (u5l2)", "habit (u5l3)", "sugar (u5l3)", "diet (u5l3)"],
+      "topics": ["الأكل المفضل", "الوجبات الخفيفة", "الطبخ في البيت", "الأسرة والضيوف", "الأكل الصحي"]
+    },
+    {
+      "id": "u5l5",
+      "title": "Iftar at Our Place",
+      "mode": "reading",
+      "clip": null,
+      "text": "إيميل من فهد، طالب قانون في الرياض، إلى زميله في السكن جيمس، طالب بريطاني يدرس العربية، يخطط لإفطار في رمضان لعشرة من أصدقائهما: كم من الأرز، وكم تمرة، وبعض العصير، وقليل من السكر، وزجاجات ماء، وكثير من الفاكهة، وقليل من المقلي لأنه غير صحي، ووصفة جدته للسمبوسة، ويطلب منه شراء أغراض من قائمة، ويذكّره، لأنه طالب قانون، بأن يحتفظ بالإيصال، فحقوق المستهلك (consumer rights) تحمي المشتري، دون أحكام نظامية مفصّلة. وهو نموذج لكتابة المتعلم، 150–230 كلمة",
+      "vocab": ["guest (ten guests)", "bottle (a bottle of water)", "recipe (my grandmother's recipe)", "plenty (plenty of food)", "oil (less oil)", "list (a shopping list)"],
+      "legalPhrase": "consumer rights",
+      "grammarFocus": "مراجعة الوحدة في إيميل يخطط لإفطار ويطلب أغراضًا: المعدود وغير المعدود، وsome وany، وhow much / how many، وa lot of وa few وa little، وأوعية العدّ (two bottles of water، a kilo of rice)، والطلب Could you buy some …?، وأجزاء الإيميل: التحية والغرض والتفاصيل والختام، وتصحيح أخطاء الوحدة (a bread، informations، many water، a few sugar، Is there any onions)",
+      "recall": { "from": "u5l4", "items": ["taste", "flavour (ويُقبل flavor)", "delicious", "mix أو share أو salad", "sugar tax (القانونية)"] },
+      "recycled": ["invite (u1l3)", "have people over (u1l3)", "roommate (u1l3)", "fruit (u5l2)", "plate (u5l1)", "fast food (u5l3)", "delicious (u5l4)", "taste (u5l4)"],
+      "topics": ["رمضان والإفطار", "قوائم التسوق", "الضيوف", "الوصفات", "الميزانية"]
+    }
+  ]
+}
