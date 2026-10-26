@@ -1801,11 +1801,29 @@ function stQuizResult(ctl){ if (!Q) { var b = S.quiz.last; if (b == null) { setT
 
 /* ---------- Stage 5: Writing (4 Separate Sentences + Spelling Separated from Grammar) ---------- */
 var VRE = { scientist:/\bscientists?\b/i, research:/\bresearch(es|ed|er|ers|ing)?\b/i, team:/\bteams?\b/i, lab:/\blabs?\b|\blaborator(y|ies)\b/i, data:/\bdata\b/i, measure:/\bmeasur(e|es|ed|ing|ement|ements)\b/i, temperature:/\btemperatures?\b/i, safe:/\bsafe(ly|r|st)?\b/i, strange:/\bstrange(ly|r|st)?\b/i, health:/\bhealth(y|ier)?\b/i, culture:/\bcultur(e|es|al)\b/i, miss:/\bmiss(es|ed|ing)?\b/i, 'sign a contract':/\bsign(s|ed|ing)?\s+(a|the|my|our)?\s*contracts?\b/i, lawyer:/\blawyers?\b/i, client:/\bclients?\b/i, office:/\boffices?\b/i, court:/\bcourts?\b/i, busy:/\bbus(y|ier|iest)\b/i, helpful:/\bhelpful\b/i, prepare:/\bprepar(e|es|ed|ing)\b/i, 'give legal advice':/\bgiv(e|es|ing)\s+(?:legal\s+)?advice\b|\blegal\s+advice\b/i, case:/\bcases?\b/i, judge:/\bjudges?\b/i, witness:/\bwitness(es)?\b/i, folder:/\bfolders?\b/i, seat:/\bseats?\b/i, mistake:/\bmistakes?\b/i, ready:/\bready\b/i, 'go to court':/\bgo(es|ing)?\s+to\s+court\b|\bin\s+court\b/i, yesterday:/\byesterday\b/i, hearing:/\bhearings?\b/i, absent:/\babsent\b/i, late:/\blate(r|st)?\b/i, traffic:/\btraffic\b/i, calm:/\bcalm(ly)?\b/i, clear:/\bclear(ly)?\b/i, 'hire a lawyer':/\bhir(e|es|ed|ing)\s+(a|the|our)?\s*lawyers?\b/i, sentence:/\bsentences?\b/i, capital:/\bcapitals?\b/i, period:/\bperiods?\b/i, draft:/\bdrafts?\b/i, polite:/\bpolite(ly)?\b/i, short:/\bshort(er|est)?\b/i, explain:/\bexplain(s|ed|ing)?\b/i, 'legal right':/\blegal\s+rights?\b/i, careful:/\bcareful(ly)?\b/i, useful:/\buseful\b/i, beautiful:/\bbeautiful(ly)?\b/i, study:/\bstud(y|ies|ied|ying)\b/i, write:/\bwrit(e|es|ing)|wrote|written\b/i, rain:/\brain(s|ed|ing|y)?\b/i, check:/\bcheck(s|ed|ing)?\b/i, 'official document':/\bofficial\s+documents?\b/i };
+/* أشكال الكلمة التي تُعدّ استعمالًا لها في الكتابة: s وes وed وing، وd وing بعد e، وies وied بعد حرف ساكن وy،
+   ومضاعفة الحرف الأخير (planned)، وصيغ الشاذ من قائمة irregularVerbs في content.js (went, had). وفي العبارة تتصرّف كلمتها الأولى:
+   went on holiday، paid a fine. وVRE يبقى مقدَّمًا لكلماته. */
+var IRR_EXTRA = { get: ['got', 'gotten'] };
+function wordForms(w){
+  w = String(w || '').toLowerCase();
+  var f = [w, w + 's', w + 'es', w + 'ed', w + 'ing'];
+  if (/e$/.test(w)) f.push(w + 'd', w.slice(0, -1) + 'ing');
+  if (/[^aeiou]y$/.test(w)) f.push(w.slice(0, -1) + 'ies', w.slice(0, -1) + 'ied');
+  if (/[^aeiou][aeiou][bdgklmnprt]$/.test(w)) f.push(w + w.slice(-1) + 'ed', w + w.slice(-1) + 'ing');
+  var iv = (typeof DATA !== 'undefined' && DATA && DATA.irregularVerbs) || [];
+  iv.forEach(function(x){ if (x && x.base === w) String(x.past || '').split('/').concat([x.pp]).forEach(function(p){ p = String(p || '').trim(); if (p) f.push(p); }); });
+  (IRR_EXTRA[w] || []).forEach(function(p){ f.push(p); });
+  return f;
+}
 function matchVocabInText(v, text){
   if (VRE[v.en]) return VRE[v.en].test(text);
   var hw = (v.headword || v.en || '').trim();
   if (!hw) return false;
-  var re = new RegExp('\\b' + hw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(s|es|ed|ing)?\\b', 'i');
+  var esc = function(x){ return x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); };
+  var parts = hw.split(/\s+/), head = '(?:' + wordForms(parts[0]).map(esc).join('|') + ')';
+  var re = parts.length === 1 ? new RegExp('\\b' + head + '\\b', 'i')
+    : new RegExp('\\b' + head + '\\s+' + parts.slice(1).map(esc).join('\\s+') + '(?:s|es)?\\b', 'i');
   return re.test(text);
 }
 var SIG_RE = /\b(usually|always|often|sometimes|never|every\s+(?:day|morning|afternoon|evening|night|week|weekend|month|year|friday|saturday|sunday|monday|tuesday|wednesday|thursday)|on\s+(?:fridays|saturdays|sundays|mondays|tuesdays|wednesdays|thursdays|weekends))\b/gi;

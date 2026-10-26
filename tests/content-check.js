@@ -275,6 +275,7 @@ function engineCall(site, fn) {
 function loadWritingEngine(site) {
   const ctx = site.engineCtx;
   site.writing = null; site.writingWhy = null;
+  if (site.DATA) ctx.DATA = site.DATA;   // as on the page: analyze() reads the irregular verbs from DATA (went on holiday counts)
   try {
     if (!site.load('analyze')) throw new Error('function "analyze" not found');
     // ALL_VOCAB is the page's per-lesson word list; the checker declares it and sets it for each lesson, as the page does.
