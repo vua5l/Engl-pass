@@ -972,7 +972,7 @@ function readingTarget(r){ var t = Number(r && r.targetSeconds); return t > 0 ? 
 function arMinutes(n){ return n === 1 ? 'دقيقة' : n === 2 ? 'دقيقتين' : arDigits(n) + (n <= 10 ? ' دقائق' : ' دقيقة'); }
 var dictT;
 function showWord(el){ var en, ar, tag = '', v = null;
-  if (el.classList.contains('core')) { v = ALL_VOCAB.filter(function(x){ return x.en === el.getAttribute('data-k'); })[0]; en = v ? v.en : el.textContent; ar = v ? v.ar : ''; tag = v ? ('Lesson word · من كلمات الدرس · ' + (POS_AR[v.pos] || v.pos)) : ''; }
+  if (el.classList.contains('core')) { v = ALL_VOCAB.filter(function(x){ return String(x.en || '').toLowerCase() === el.getAttribute('data-k'); })[0]; en = v ? v.en : el.textContent; ar = v ? v.ar : ''; tag = v ? ('Lesson word · من كلمات الدرس · ' + (POS_AR[v.pos] || v.pos)) : ''; }
   else { en = el.getAttribute('data-en') || el.textContent; ar = el.getAttribute('data-ar') || ''; }
   $('#dEn').textContent = en; $('#dAr').textContent = ar; $('#dTag').textContent = tag; $('#dTag').hidden = !tag;
   var dOx = $('#dOx'); if (dOx) dOx.href = oxUrl(v || en);
