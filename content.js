@@ -88,9 +88,9 @@ var DATA = window.DATA = {
   ],
 
   unit2Lessons: [
-    { id: "u2l1", n: 1, en: "The Traveller from Tangier", subEn: "Past Simple: Regular Verbs (-ed)", ar: "رحلة ابن بطوطة: الماضي البسيط للأفعال المنتظمة", shortAr: "الأفعال المنتظمة في الماضي", icon: "globe" },
-    { id: "u2l2", n: 2, en: "How Was Your Holiday?", subEn: "Past Simple: Irregular Verbs", ar: "عطلة عائلية في اليونان: الأفعال الشاذة في الماضي", shortAr: "الأفعال الشاذة في الماضي", icon: "speaker" },
-    { id: "u2l3", n: 3, en: "The Trip That Went Wrong", subEn: "Past Simple: Negatives (didn't / wasn't)", ar: "رحلة لم تسر كما أردنا: النفي في الماضي", shortAr: "النفي في الماضي", icon: "clock" },
+    { id: "u2l1", n: 1, en: "The Traveller from Tangier", subEn: "Past Simple: Regular Verbs (-ed)", ar: "رحلة ابن بطوطة: الماضي البسيط للأفعال المنتظمة", shortAr: "الأفعال المنتظمة في الماضي", icon: "globe", open: true },
+    { id: "u2l2", n: 2, en: "How Was Your Holiday?", subEn: "Past Simple: Irregular Verbs", ar: "عطلة عائلية في اليونان: الأفعال الشاذة في الماضي", shortAr: "الأفعال الشاذة في الماضي", icon: "speaker", open: true },
+    { id: "u2l3", n: 3, en: "The Trip That Went Wrong", subEn: "Past Simple: Negatives (didn't / wasn't)", ar: "رحلة لم تسر كما أردنا: النفي في الماضي", shortAr: "النفي في الماضي", icon: "clock", open: true },
     { id: "u2l4", n: 4, en: "Where Did You Go?", subEn: "Past Simple: Questions & Short Answers", ar: "رحلة إلى تايوان: الأسئلة والإجابات القصيرة في الماضي", shortAr: "الأسئلة في الماضي", icon: "dots" },
     { id: "u2l5", n: 5, en: "A Weekend in AlUla", subEn: "Writing: Telling a Story in the Past", ar: "كتابة: إيميل تسرد فيه رحلة", shortAr: "سرد رحلة في الماضي", icon: "mail" }
   ],
