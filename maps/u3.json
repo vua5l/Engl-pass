@@ -1,0 +1,87 @@
+{
+  "unit": 3,
+  "title": "لحظات لا تُنسى",
+  "grammar": "الماضي المستمر (Past Continuous): الإثبات والنفي والسؤال، ومع when وwhile، ومقابل الماضي البسيط",
+  "lessons": [
+    {
+      "id": "u3l1",
+      "title": "A Night to Remember",
+      "mode": "reading",
+      "clip": null,
+      "text": "إيميل من لمى، طالبة قانون في الرياض، إلى صديقتها البريطانية صوفي عن ليلة إطلاق رحلة Axiom Mission 2 في مايو 2023: انطلق الصاروخ من فلوريدا وكان الوقت في الرياض بعد منتصف الليل، فتصف ما كانت أسرتها تفعله في تلك اللحظة أمام الشاشة (الجلوس والوقوف وإمساك الهاتف وصبّ القهوة ولبس الثوب)، وأن ريانة برناوي، العالمة التي تبحث في الخلايا الجذعية للسرطان، صارت أول امرأة سعودية في الفضاء ومعها علي القرني، وبقيا في محطة الفضاء الدولية نحو ثمانية أيام يجريان تجارب علمية، وأن الأمير سلطان بن سلمان كان أول عربي في الفضاء سنة 1985، وما تعلمته لمى في كلية القانون: القانون الدولي لا يسمح لأي دولة أن تملك القمر. ولا يُقال إن ريانة وعليًّا أول سعوديين في الفضاء، فقد سبقهما الأمير سلطان، ولا إن أحدًا لا يملك القمر: المعاهدة تمنع الدول، وملكية الأفراد محل خلاف. لا أرقام فيه إلا 2023 و1985 ونحو ثمانية أيام، وwhen فيه مرة أو مرتين للعرض فقط، 150–230 كلمة",
+      "vocab": ["space (go into space)", "experiment (do an experiment)", "moment (at that moment)", "proud (proud of)", "screen (in front of the screen)", "make history"],
+      "legalPhrase": "international law (under international law)",
+      "grammarFocus": "الماضي المستمر في الإثبات من الصفر بخطوات صغيرة: الصيغة was / were + الفعل مع ing (I / he / she / it was، وyou / we / they were)، وإملاء ing مراجعةً لـ u0l5 وu1l1 (making، sitting، lying)، والاستعمال الأول: حدث كان جاريًا في لحظة محددة من الماضي (At midnight, we were sitting… / At that moment…)، والثاني: وصف المشهد في القصة، ومقابلته بالماضي البسيط للحدث المكتمل (I watched the launch مقابل I was watching the launch at midnight)، وأفعال الحالة لا تأخذ ing في الماضي أيضًا (I knew لا I was knowing، مراجعة u1l4)، وخطأ العرب الشائع: «كنتُ أفعل» للعادة في الماضي تأتي بالماضي البسيط لا بالمستمر (When I was a child, I played football every day لا I was playing football every day)، ويُؤطَّر التمرين بزمن طويل كهذا، لأن المستمر يصح لعادة مؤقتة، وكلمات الزمن: at midnight، at that moment، this time last year مع حدث جارٍ في السياق، وall night تصلح للزمنين فلا تكون وحدها دليل الجواب",
+      "irregularVerbs": ["sit", "stand", "hold", "wear", "drink", "read"],
+      "recall": { "from": "u2l5", "items": ["tour guide", "view", "ancient", "souvenir", "apply for a visa (القانونية)"] },
+      "recycled": ["scientist (u1l1)", "research (u1l1)", "journey (u2l1)", "stay (u2l1)", "return (u2l1)", "flight (u2l3)", "amazing (u2l5)", "take photos (u2l5)"],
+      "topics": ["الفضاء والعلوم", "سهرات الأسرة", "التلفاز والأخبار", "الدراسة في الجامعة", "إنجازات وطنية"]
+    },
+    {
+      "id": "u3l2",
+      "title": "Accidents Happen",
+      "mode": "listening",
+      "clip": {
+        "url": "https://elllo.org/english/Mixer076/T078-Accident.htm",
+        "title": "ELLLO Mixer #78 «Vehicle Accidents»",
+        "about": "ستة متحدثين يحكي كل منهم حادثًا مرّ به في نحو نصف دقيقة: هيلين وشاليني (كندا)، وأمير (إيران)، وليندسي (الولايات المتحدة)، وبول وماثيو (إنجلترا): سيارة تصدم سيارة هيلين في موقف سيارات، وأمير يقود سيارة أمه وعمره تسع سنين، ودراجة نارية مستأجرة تنزلق ببول وصديقته في جزيرة بتايلند، وماثيو يكسر ذراعه على دراجته الهوائية، وليندسي تقول إن الخطأ كله خطؤها، وشاليني تقول إنه عُدّ خطأها وإن لم توافق، ودفعت هي، فلا يُسأل عن رأيها في الخطأ. ويصل المتحدثون الحدث الطويل بالقصير بـ and أو so أو بلا رابط، ولا تأتي when في المقطع إلا للزمن (When I was sixteen عند ماثيو)، فلا يُنسب إلى متحدث أنه قال when للحدث القصير. Intermediate B1 (المستوى 4 في ELLLO)، 3:34 من ملف الصوت نفسه",
+        "targetSeconds": 214
+      },
+      "text": null,
+      "vocab": ["accident (have an accident)", "injured (be injured)", "serious (a serious accident)", "rent (rent a motorbike)", "fall off (fall off a bike)", "control (control the bike)"],
+      "legalPhrase": "driving licence (get a driving licence)",
+      "grammarFocus": "الماضي المستمر مع الماضي البسيط: حدث طويل جارٍ (الخلفية) يقطعه حدث قصير (I was driving when a car hit me)، وwhen + الماضي البسيط للحدث القصير، والفاصلة إذا بدأت الجملة بـ when (When the car hit me, I was turning left)، وأي الحدثين طويل وأيهما قصير، وwhen I was sixteen للزمن، وتصحيح I driving وI was drive، والمستمر للحدث القصير (a car was hitting me). ويصح when مع الحدث الطويل أيضًا (When I was running for the bus, I fell)، فلا يُعدّ خطأً، وتفصيله في u3l4",
+      "irregularVerbs": ["hit", "break", "fall", "hurt", "run", "cut"],
+      "recall": { "from": "u3l1", "items": ["space", "experiment", "moment", "proud أو screen", "international law (القانونية)"] },
+      "recycled": ["safe (u1l1)", "careful (u0l5)", "busy (u0l1)", "dangerous (u2l1)", "decide (u2l1)", "traffic (u0l3)", "on the way home (u1l3)", "island (u2l4)"],
+      "topics": ["الطرق والقيادة", "الدراجات الهوائية والنارية", "الإجازات في الخارج", "السلامة", "الطريق إلى الجامعة"]
+    },
+    {
+      "id": "u3l3",
+      "title": "Happy Accidents",
+      "mode": "reading",
+      "clip": null,
+      "text": "إيميل من عمر، طالب صيدلة في جدة، إلى صديقه البريطاني جاك بعد محاضرة عن اكتشافات جاءت بالصدفة: ألكسندر فليمنغ سنة 1928 كان يدرس البكتيريا، فترك أطباقها في مختبره وسافر في إجازة الصيف، فنما عفن في أحدها، ولما رجع لاحظ أن البكتيريا لا تنمو حول العفن، ولم يكن يبحث عن البنسلين، فاكتشفه بالصدفة وفاز بجائزة نوبل سنة 1945 مع فلوري وتشين؛ وبيرسي سبنسر كان يعمل يومًا قرب جهاز رادار في مختبر شركة Raytheon حين لاحظ أن الشوكولاتة في جيبه تذوب، ولم يكن يطبخ، فاخترع فرن المايكرويف، وحصلت شركته على براءة الاختراع سنة 1950. ويسأل جاك عما كان يفعله حين جاءته أحسن فكرة. يكثر فيه النفي wasn't / weren't + ing والسؤال بـ Was / Were وWhat was he doing when…، ولا يُنسب إلى فليمنغ موقف من براءة البنسلين، ولا تُذكر مدة إجازته ولا سنة يوم سبنسر، فالمصادر تختلف فيهما، ولا أرقام فيه إلا 1928 و1945 و1950، 150–230 كلمة",
+      "vocab": ["discover (discover penicillin)", "invent (invent the microwave oven)", "by accident", "notice (notice something strange)", "melt (the chocolate was melting)", "lab (in the lab)"],
+      "legalPhrase": "get a patent",
+      "grammarFocus": "النفي والسؤال في الماضي المستمر: wasn't / weren't + ing (He wasn't cooking)، وWas / Were + الفاعل + ing؟ والإجابات القصيرة Yes, I was / No, they weren't (لا Yes, I did)، وأسئلة What / Where / Why + was / were + ing، ومنها What were you doing when…? مع when + الماضي البسيط من u3l2، ومقابلة Did you see…? بـ Were you watching…?، وتصحيح Did you was working وWere you work وI didn't was sleeping، وunderstand فعل حالة يأتي understood ولا يأتي was understanding",
+      "irregularVerbs": ["understand", "forget", "keep", "put", "win", "teach"],
+      "recall": { "from": "u3l2", "items": ["accident", "injured", "serious", "rent أو fall off أو control", "driving licence (القانونية)"] },
+      "recycled": ["scientist (u1l1)", "research (u1l1)", "strange (u1l1)", "go on holiday (u2l2)", "return (u2l1)", "experiment (u3l1)", "moment (u3l1)", "serious (u3l2)"],
+      "topics": ["العلوم والاختراعات", "المختبرات والبحث", "الطب والصحة", "المطبخ والطبخ", "الأفكار الكبيرة"]
+    },
+    {
+      "id": "u3l4",
+      "title": "Caught in a Storm",
+      "mode": "listening",
+      "clip": {
+        "url": "https://elllo.org/english/Mixer076/T097-Disaster.htm",
+        "title": "ELLLO Mixer #97 «Natural Disaster»",
+        "about": "ستة متحدثين يجيبون: هل مررت بكارثة طبيعية؟ توم وجيس ودورون (المملكة المتحدة)، وجورج (الولايات المتحدة)، وPernais (جامايكا، بهذا الرسم في الصفحة، ولا يُذكر له ضمير)، ومايك (سنغافورة): إعصار في هونغ كونغ يختبئ منه توم في كابينة هاتف، وإعصار في هاواي، وحريق ودخان ورجل عجوز ينقذ Pernais، وانهيار أرضي رآه مايك وهو يقود، وعاصفة ثلجية في رحلة تخييم في النرويج؛ وتذكر جيس قنبلة في مانشستر لا كارثة طبيعية. Intermediate B1 (المستوى 4 في ELLLO)، 2:44 من ملف الصوت نفسه",
+        "targetSeconds": 164
+      },
+      "text": null,
+      "vocab": ["natural disaster", "flood (the street flooded)", "smoke", "heavy (heavy rain / heavy snow)", "rescue (rescue someone)", "frightening"],
+      "legalPhrase": "state of emergency (declare a state of emergency)",
+      "grammarFocus": "while مع الماضي المستمر: حدثان طويلان في الوقت نفسه (While I was cooking, my brother was studying)، وwhile + الحدث الطويل مع حدث قصير في الماضي البسيط (While we were having dinner, the lights went out)، والفرق بين when وwhile: الحدث القصير والزمن بعد when وحدها (when the phone rang، when I was sixteen)، والحدث الطويل بعد while أو when (While / When I was walking home, it started to rain)، فلا يُبنى تمرين يصح فيه الاثنان، والفاصلة، ومطابقة was / were مع الفاعل الجمع (we were camping لا we was camping)، وتصحيح while للحدث القصير (while the phone rang). وwhile مع الماضي البسيط لحدث طويل صحيح، كجملة توم، فلا يُعدّ خطأً ولا يُبنى عليه سؤال، وcost فعل حالة: cost لا was costing",
+      "irregularVerbs": ["shut", "catch", "build", "cost", "let"],
+      "recall": { "from": "u3l3", "items": ["discover", "invent", "by accident", "notice أو melt أو lab", "get a patent (القانونية)"] },
+      "recycled": ["dangerous (u2l1)", "nature (u2l4)", "safe (u1l1)", "injured (u3l2)", "serious (u3l2)", "notice (u3l3)", "moment (u3l1)"],
+      "topics": ["الطقس والفصول", "العواصف والسيول", "التخييم والسفر", "الطوارئ ومساعدة الناس", "الأخبار"]
+    },
+    {
+      "id": "u3l5",
+      "title": "I Saw It Happen",
+      "mode": "reading",
+      "clip": null,
+      "text": "إيميل من تركي، طالب قانون في جامعة الملك سعود، إلى صديقه البريطاني أوليفر عن حادث رآه مساء أمس في الرياض: كان واقفًا عند موقف الحافلة على زاوية شارع قرب الجامعة، والمطر غزير والناس يركضون، وكانت سيارة تسير بسرعة حين صدمت دراجة توصيل، ولم يُصب أحد إصابة خطيرة، وجاءت سيارة الإسعاف والشرطة، وطلب منه الشرطي إفادة شاهد، فكتب ما رآه بالترتيب (First / Then / After that / Finally)، وفي آخره ما تعلّمه: الشاهد يصف ما رآه بالضبط لا ما يظنه. وهو نموذج لكتابة المتعلم، 150–230 كلمة",
+      "vocab": ["suddenly", "police officer", "describe (describe what happened)", "exactly", "ambulance", "corner (on the corner)"],
+      "legalPhrase": "witness statement (give a witness statement)",
+      "grammarFocus": "مراجعة الوحدة في سرد ما رآه الشاهد: الخلفية بالماضي المستمر (It was raining. People were running)، والأحداث بالماضي البسيط بترتيبها (First / Then / After that / Finally من u2l5)، وwhen وwhile في موضعيهما، والزمن والمكان في أول الإفادة (At about 6 pm, on the corner of…)، والفرق بين ما رآه الشاهد وما يظنه (I saw… مقابل I think…)، مع أجزاء الإيميل: التحية والغرض والتفاصيل والختام، وmean فعل حالة بمعنى «يعني»: meant لا was meaning",
+      "irregularVerbs": ["set", "sell", "lend", "mean"],
+      "recall": { "from": "u3l4", "items": ["natural disaster", "flood", "smoke", "heavy أو rescue أو frightening", "state of emergency (القانونية)"] },
+      "recycled": ["witness (u0l2)", "traffic (u0l3)", "accident (u3l2)", "injured (u3l2)", "driving licence (u3l2)", "notice (u3l3)", "moment (u3l1)", "heavy (u3l4)"],
+      "topics": ["السلامة على الطريق", "الشرطة والقانون", "الحياة الجامعية", "الإيميلات إلى الأصدقاء", "مساعدة الآخرين"]
+    }
+  ]
+}

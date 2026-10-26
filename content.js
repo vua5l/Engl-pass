@@ -58,7 +58,7 @@ var DATA = window.DATA = {
   units: [
     { n: 1, en: "Life & Work Around the World", ar: "الحياة والعمل حول العالم", gEn: "Present Simple & Continuous", g: "المضارع البسيط والمضارع المستمر", open: true },
     { n: 2, en: "Great Journeys", ar: "رحلات عظيمة", gEn: "Past Simple (Regular & Irregular)", g: "الماضي البسيط (المنتظم والشاذ)", open: true },
-    { n: 3, en: "Moments in Science", ar: "لحظات في تاريخ العلم", gEn: "Past Continuous with when & while", g: "الماضي المستمر مع when و while" },
+    { n: 3, en: "Moments to Remember", ar: "لحظات لا تُنسى", gEn: "Past Continuous with when & while", g: "الماضي المستمر مع when و while" },
     { n: 4, en: "Cities of the World", ar: "مدن العالم", gEn: "Comparatives & Superlatives", g: "المقارنة والتفضيل" },
     { n: 5, en: "Food & Health", ar: "الغذاء والصحة", gEn: "Countable & Uncountable · much / many / a few", g: "المعدود وغير المعدود، و much / many / a few" },
     { n: 6, en: "Plans & Trips", ar: "خطط ورحلات", gEn: "Future: going to & will", g: "المستقبل: going to و will" },
@@ -94,6 +94,15 @@ var DATA = window.DATA = {
     { id: "u2l4", n: 4, en: "Where Did You Go?", subEn: "Past Simple: Questions & Short Answers", ar: "رحلة إلى تايوان: الأسئلة والإجابات القصيرة في الماضي", shortAr: "الأسئلة في الماضي", icon: "dots", open: true },
     { id: "u2l5", n: 5, en: "A Weekend in AlUla", subEn: "Writing: Telling a Story in the Past", ar: "كتابة: إيميل تسرد فيه رحلة", shortAr: "سرد رحلة في الماضي", icon: "mail", open: true },
     { id: "u2l6", n: 6, en: "Unit Review & Test", subEn: "Unit 2 Review & Mastery Test", ar: "مراجعة الوحدة واختبارها", shortAr: "مراجعة الوحدة واختبارها", icon: "trophy", test: true }
+  ],
+
+  unit3Lessons: [
+    { id: "u3l1", n: 1, en: "A Night to Remember", subEn: "Past Continuous: was / were + -ing", ar: "ليلة الإطلاق إلى الفضاء: الماضي المستمر في الإثبات", shortAr: "الماضي المستمر في الإثبات", icon: "globe" },
+    { id: "u3l2", n: 2, en: "Accidents Happen", subEn: "Past Continuous & Past Simple with when", ar: "حوادث على الطريق: الحدث الطويل يقطعه حدث قصير", shortAr: "الحدث الطويل والقصير مع when", icon: "speaker" },
+    { id: "u3l3", n: 3, en: "Happy Accidents", subEn: "Past Continuous: Negatives & Questions", ar: "اكتشافات بالصدفة: النفي والسؤال في الماضي المستمر", shortAr: "النفي والسؤال في الماضي المستمر", icon: "dots" },
+    { id: "u3l4", n: 4, en: "Caught in a Storm", subEn: "Past Continuous with while", ar: "قصص العواصف والكوارث: while مع الماضي المستمر", shortAr: "while مع الماضي المستمر", icon: "clock" },
+    { id: "u3l5", n: 5, en: "I Saw It Happen", subEn: "Writing: A Witness Statement", ar: "كتابة: إفادة شاهد في إيميل", shortAr: "سرد ما رأيته", icon: "mail" },
+    { id: "u3l6", n: 6, en: "Unit Review & Test", subEn: "Unit 3 Review & Mastery Test", ar: "مراجعة الوحدة واختبارها", shortAr: "مراجعة الوحدة واختبارها", icon: "trophy", test: true }
   ],
 
   /* ---------- المرحلة 3: قائمة الـ 60 فعلًا شاذًا شائعًا (بأنماطها الصوتية للتكرار المتباعد) ---------- */
