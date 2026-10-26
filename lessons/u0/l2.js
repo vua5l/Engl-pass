@@ -163,8 +163,8 @@ LESSONS.u0l2 = {
     tip: "متلازمة قانونية شائعة: نقول go to court (بدون the) عندما نقصد الذهاب للترافع أو حضور جلسة قضائية.",
     legal: true,
     oxfordSlug: "court_1",
-    wikiFiles: ["En-us-go.ogg", "En-us-to.ogg", "En-us-court.ogg"],
-    wikiCredit: "File:En-us-go.ogg, File:En-us-to.ogg & File:En-us-court.ogg · Wikimedia Commons (CC BY-SA 3.0)"
+    wikiFiles: ["En-us-go.ogg", "En-us-court.ogg"],
+    wikiCredit: "File:En-us-go.ogg & File:En-us-court.ogg · Wikimedia Commons (CC BY-SA 3.0)"
   },
 
   vocab: [

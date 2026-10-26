@@ -174,8 +174,8 @@ LESSONS.u1l1 = {
     tip: "متلازمة قانونية أساسية: sign a contract (يوقّع عقدًا)، ومع he / she / it تصبح signs a contract، وحرف g في sign صامت لا يُنطق.",
     legal: true,
     oxfordSlug: "contract_1",
-    wikiFiles: ["En-us-sign.ogg", "En-us-contract.ogg"],
-    wikiCredit: "File:En-us-sign.ogg & File:En-us-contract.ogg · Wikimedia Commons (CC BY-SA 3.0)"
+    wikiFiles: ["En-us-sign.ogg", "En-uk-contract (noun).ogg"],
+    wikiCredit: "File:En-us-sign.ogg & File:En-uk-contract (noun).ogg · Wikimedia Commons"
   },
 
   /* ---------- المفردات (7 كلمات + العبارة القانونية = 8 عبارات، والمتلازمات في tipEn / tip) ---------- */
@@ -185,8 +185,8 @@ LESSONS.u1l1 = {
       tipEn: "Use 'a' before a job: She is a scientist (not 'She is scientist'). Word family: science (noun), scientific (adjective).",
       tip: "نضع a قبل المهنة: She is a scientist، ولا نقول She is scientist. ومن العائلة نفسها: science (علم) وscientific (علمي).",
       oxfordSlug: "scientist",
-      wikiFile: "En-us-scientist.ogg",
-      wikiCredit: "File:En-us-scientist.ogg · Dvortygirl / Wikimedia Commons (CC BY-SA 3.0)" },
+      wikiFile: "LL-Q1860 (eng)-Vealhurl-scientist.wav",
+      wikiCredit: "File:LL-Q1860 (eng)-Vealhurl-scientist.wav · Vealhurl / Lingua Libre, Wikimedia Commons" },
     { en: "research", pos: "noun", ar: "بحث علمي / أبحاث", say: "رِسِيرْتش",
       ex: "Doctors do research to find new medicines.", exAr: "يُجري الأطباء أبحاثًا ليكتشفوا أدوية جديدة.",
       tipEn: "Collocation: do research (on something), not 'make research'. It is uncountable: say 'some research', not 'a research'.",
@@ -199,8 +199,8 @@ LESSONS.u1l1 = {
       tipEn: "Collocations: collect data (gather facts and numbers) and check the data (look at it carefully). It is usually uncountable: the data is ready.",
       tip: "متلازمتان: collect data (يجمع البيانات) وcheck the data (يراجع البيانات)، وهي غالبًا غير معدودة: the data is ready.",
       oxfordSlug: "data",
-      wikiFile: "En-us-data.ogg",
-      wikiCredit: "File:En-us-data.ogg · Wikimedia Commons (CC BY-SA 3.0)" },
+      wikiFile: "En-us-data1.ogg",
+      wikiCredit: "File:En-us-data1.ogg · Wikimedia Commons" },
     { en: "measure", pos: "verb", ar: "يقيس", say: "مِيجَر",
       ex: "This small machine measures the temperature in our garden every hour.", exAr: "يقيس هذا الجهاز الصغير درجة الحرارة في حديقتنا كل ساعة.",
       tipEn: "Collocation: measure the temperature (find how hot or cold something is). The 's' in measure sounds like the 's' in 'television'.",
