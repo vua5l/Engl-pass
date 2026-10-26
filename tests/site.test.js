@@ -335,7 +335,9 @@ function fakeGitHub(token) {
         const opt = page.locator('.opt:enabled');
         if (await opt.count()) {
           const q = norm(await page.locator('.q-en').first().innerText().catch(() => ''));
-          const hit = data.quiz.find(x => norm(x[0]) === q);
+          // Two quiz items may share a question ("Which sentence is correct?"): pick the one whose answer is on screen.
+          const optTexts = (await opt.allInnerTexts()).map(norm);
+          const hit = data.quiz.find(x => norm(x[0]) === q && optTexts.some(t => t.includes(norm(x[1]))));
           if (hit) await page.locator('.opt:enabled', { hasText: hit[1] }).first().click(); else await opt.first().click();
           await sleep(60);
           if (LISTEN_IDS.includes(lid)) { const scr = await page.innerText('#screen').catch(() => ''); if (/Stage 1 of 3/.test(scr)) seenListen[lid] = Object.assign(seenListen[lid] || {}, { s1: scr }); }
