@@ -57,7 +57,7 @@ var DATA = window.DATA = {
 
   units: [
     { n: 1, en: "Life & Work Around the World", ar: "الحياة والعمل حول العالم", gEn: "Present Simple & Continuous", g: "المضارع البسيط والمضارع المستمر", open: true },
-    { n: 2, en: "Great Journeys", ar: "رحلات عظيمة", gEn: "Past Simple (Regular & Irregular)", g: "الماضي البسيط (المنتظم والشاذ)" },
+    { n: 2, en: "Great Journeys", ar: "رحلات عظيمة", gEn: "Past Simple (Regular & Irregular)", g: "الماضي البسيط (المنتظم والشاذ)", open: true },
     { n: 3, en: "Moments in Science", ar: "لحظات في تاريخ العلم", gEn: "Past Continuous with when & while", g: "الماضي المستمر مع when و while" },
     { n: 4, en: "Cities of the World", ar: "مدن العالم", gEn: "Comparatives & Superlatives", g: "المقارنة والتفضيل" },
     { n: 5, en: "Food & Health", ar: "الغذاء والصحة", gEn: "Countable & Uncountable · much / many / a few", g: "المعدود وغير المعدود، و much / many / a few" },
@@ -85,6 +85,14 @@ var DATA = window.DATA = {
     { id: "u1l4", n: 4, en: "Habits and Cultures", subEn: "Stative Verbs: know / want / need / prefer", ar: "أفعال الحالة: know / want / need / prefer", shortAr: "أفعال الحالة", icon: "globe", open: true },
     { id: "u1l5", n: 5, en: "Your First Work Email", subEn: "Writing: Short Work or Study Email", ar: "كتابة: إيميل مهني قصير عن عملك أو دراستك", shortAr: "إيميل مهني قصير", icon: "mail", open: true },
     { id: "u1l6", n: 6, en: "Unit Review & Test", subEn: "Unit 1 Review & Mastery Test", ar: "مراجعة الوحدة واختبارها", shortAr: "مراجعة الوحدة واختبارها", icon: "trophy", test: true }
+  ],
+
+  unit2Lessons: [
+    { id: "u2l1", n: 1, en: "The Traveller from Tangier", subEn: "Past Simple: Regular Verbs (-ed)", ar: "رحلة ابن بطوطة: الماضي البسيط للأفعال المنتظمة", shortAr: "الأفعال المنتظمة في الماضي", icon: "globe" },
+    { id: "u2l2", n: 2, en: "How Was Your Holiday?", subEn: "Past Simple: Irregular Verbs", ar: "عطلة عائلية في اليونان: الأفعال الشاذة في الماضي", shortAr: "الأفعال الشاذة في الماضي", icon: "speaker" },
+    { id: "u2l3", n: 3, en: "The Trip That Went Wrong", subEn: "Past Simple: Negatives (didn't / wasn't)", ar: "رحلة لم تسر كما أردنا: النفي في الماضي", shortAr: "النفي في الماضي", icon: "clock" },
+    { id: "u2l4", n: 4, en: "Where Did You Go?", subEn: "Past Simple: Questions & Short Answers", ar: "رحلة إلى تايوان: الأسئلة والإجابات القصيرة في الماضي", shortAr: "الأسئلة في الماضي", icon: "dots" },
+    { id: "u2l5", n: 5, en: "A Weekend in AlUla", subEn: "Writing: Telling a Story in the Past", ar: "كتابة: إيميل تسرد فيه رحلة", shortAr: "سرد رحلة في الماضي", icon: "mail" }
   ],
 
   /* ---------- المرحلة 3: قائمة الـ 60 فعلًا شاذًا شائعًا (بأنماطها الصوتية للتكرار المتباعد) ---------- */

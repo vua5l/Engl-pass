@@ -1,0 +1,87 @@
+{
+  "unit": 2,
+  "title": "رحلات عظيمة",
+  "grammar": "الماضي البسيط (Past Simple): المنتظم والشاذ، في الإثبات والنفي والسؤال",
+  "lessons": [
+    {
+      "id": "u2l1",
+      "title": "The Traveller from Tangier",
+      "mode": "reading",
+      "clip": null,
+      "text": "إيميل من يوسف، طالب في طنجة، إلى صديقه السعودي فهد، يحكي قصة ابن بطوطة ابن مدينته: بدأ رحلته سنة 1325 للحج وعمره 21 سنة، وعبر الصحراء، ووصل إلى مكة، ثم سافر نحو 30 سنة ونحو 120,000 كيلومتر، ودرس الفقه الإسلامي وعمل قاضيًا في دلهي وفي جزر المالديف، ثم رجع إلى المغرب وأملى قصة رحلته على كاتب. بالأفعال المنتظمة وwas / were، وما لا بد منه من الشاذ يُشرح بـ [[ ]] ولا يُدرَّب، ولا أرقام فيه إلا هذه، 150–230 كلمة",
+      "vocab": ["journey (a long journey)", "decide (decide to travel)", "arrive (arrive in Cairo)", "cross (cross the desert)", "dangerous", "stay (stay for two years)", "return (return home)"],
+      "legalPhrase": "Islamic law",
+      "grammarFocus": "الماضي البسيط للأفعال المنتظمة في الإثبات: إضافة ed وإملاؤها (ed، وd بعد e، وy إلى ied بعد حرف ساكن، ومضاعفة الحرف الأخير: stopped وplanned وtravelled بالبريطانية)، ونطقها /t/ و/d/ و/ɪd/ (و/ɪd/ بعد t وd وحدهما)، والفعل واحد مع كل الضمائر، ومراجعة was وwere، وكلمات الزمن: in 1325, ago, for 30 years, then",
+      "irregularVerbs": ["be"],
+      "recall": { "from": "u1l5", "items": ["colleague", "schedule", "attach", "reply أو deadline", "sick leave (القانونية)"] },
+      "recycled": ["judge (u0)", "foreign (u1l4)", "local (u1l4)", "custom / customs (u1l4)", "miss (u1l1)", "strange (u1l1)"],
+      "topics": ["السفر والرحلات", "التاريخ", "الحج والعمرة", "المدن والبلدان", "الدراسة"]
+    },
+    {
+      "id": "u2l2",
+      "title": "How Was Your Holiday?",
+      "mode": "listening",
+      "clip": {
+        "url": "https://elllo.org/english/1251/1258-Hana_Daniel-Holidays.htm",
+        "title": "ELLLO Views #1258 «Greek Holiday»",
+        "about": "هنا (المملكة المتحدة) تحكي لدانيال (تشيلي) عن عطلة أسرتها في اليونان: المسبح والشاطئ والتسوق مع أمها، وبطولة كرة قدم ورقص كل ليلة. A2، نحو 1:50 (تقدير من طول النص)",
+        "targetSeconds": 110
+      },
+      "text": null,
+      "vocab": ["go on holiday", "swimming pool", "relax", "go shopping", "have fun", "watch a match"],
+      "legalPhrase": "annual leave",
+      "grammarFocus": "الأفعال الشاذة في الماضي البسيط في الإثبات: صيغة ثانية تُحفظ بلا ed (went, had, said, bought, ate, saw, took, came) بأنماطها الصوتية، والفعل واحد مع كل الضمائر، وwent لا was went ولا goed، وwas مع الصفة والمكان (It was perfect)، ومقابلتها بالمنتظم (relaxed)",
+      "irregularVerbs": ["go", "have", "say", "buy", "eat", "see", "take", "come"],
+      "recall": { "from": "u2l1", "items": ["journey", "decide", "arrive", "cross أو dangerous", "Islamic law (القانونية)"] },
+      "recycled": ["journey (u2l1)", "arrive (u2l1)", "stay (u2l1)", "return (u2l1)", "eat out (u1l3)", "local (u1l4)"],
+      "topics": ["العطلات", "الشاطئ والسباحة", "التسوق", "الرياضة والمباريات", "الأسرة"]
+    },
+    {
+      "id": "u2l3",
+      "title": "The Trip That Went Wrong",
+      "mode": "reading",
+      "clip": null,
+      "text": "إيميل من فيصل، طالب سعودي، إلى صديقه عن رحلة نهاية أسبوع إلى إدنبرة مع زميله: تأخرت الطائرة، ولم تصل الحقيبة، وضلّا الطريق، ولم يشتريا تذكرة الترام قبل الركوب فدفعا غرامة، ولم يكن الفندق كما في الصور؛ ثم ما جرى حسنًا في آخر الرحلة. يكثر فيه النفي didn't + الفعل المجرد وwasn't / weren't مقابل الإثبات، 150–230 كلمة",
+      "vocab": ["flight", "luggage", "delayed (the flight was delayed)", "get lost", "on time", "book (book a room)"],
+      "legalPhrase": "pay a fine",
+      "grammarFocus": "النفي في الماضي البسيط: didn't + الفعل المجرد مع الأفعال كلها، المنتظمة والشاذة (didn't go لا didn't went ولا didn't goed)، وwasn't / weren't مع be (لا didn't be)، والجمع بين الإثبات والنفي بـ but، وتصحيح I was go وI didn't went",
+      "irregularVerbs": ["lose", "find", "know", "think", "pay", "sleep", "leave", "make"],
+      "recall": { "from": "u2l2", "items": ["go on holiday", "swimming pool", "relax", "have fun أو watch a match", "annual leave (القانونية)"] },
+      "recycled": ["journey (u2l1)", "arrive (u2l1)", "decide (u2l1)", "go on holiday (u2l2)", "relax (u2l2)", "strange (u1l1)", "late (u0)"],
+      "topics": ["الطيران والقطارات", "الفنادق والحجز", "التأخير والمواعيد", "الجامعة", "العمل"]
+    },
+    {
+      "id": "u2l4",
+      "title": "Where Did You Go?",
+      "mode": "listening",
+      "clip": {
+        "url": "https://elllo.org/english/1251/1257-Daniel_Hana-Vacations.htm",
+        "title": "ELLLO Views #1257 «Traveling to Taiwan»",
+        "about": "هنا (المملكة المتحدة) تسأل دانيال (تشيلي) عن رحلته ثمانية أيام في تايوان من الشمال إلى الجنوب: الطبيعة والطعام والأسعار، ولماذا اختار آسيا. A2، نحو 2:05 (تقدير من طول النص)، ووصف الصفحة يخطئ فيجعل هنا هي المسافرة",
+        "targetSeconds": 125
+      },
+      "text": null,
+      "vocab": ["island", "nature", "cheap", "choose (choose a place)", "hear about", "vacation (= holiday)"],
+      "legalPhrase": "report a crime",
+      "grammarFocus": "السؤال في الماضي البسيط: Did + الفاعل + الفعل المجرد (Did you go…? لا Did you went…?)، والإجابات القصيرة Yes, I did / No, I didn't، وأسئلة Where / What / Who / Why / How long + did، وأسئلة was / were (How was the food? Where were you?)",
+      "irregularVerbs": ["do", "hear", "choose", "spend", "fly", "drive", "meet", "speak"],
+      "recall": { "from": "u2l3", "items": ["flight", "luggage", "delayed", "get lost أو on time", "pay a fine (القانونية)"] },
+      "recycled": ["go on holiday (u2l2)", "have fun (u2l2)", "flight (u2l3)", "book (u2l3)", "stay (u2l1)", "culture (u1l4)", "local (u1l4)"],
+      "topics": ["الرحلات والبلدان", "الطعام", "الطبيعة", "الأسعار والتسوق", "الأصدقاء"]
+    },
+    {
+      "id": "u2l5",
+      "title": "A Weekend in AlUla",
+      "mode": "reading",
+      "clip": null,
+      "text": "إيميل من نورة إلى صديقتها البريطانية إيما عن رحلة نهاية أسبوع إلى العُلا مع أسرتها، بالترتيب: First ثم Then وAfter that وFinally، وما فعلوه (الحِجر وجبل الفيل ومرايا) وما لم يفعلوه، وسؤالان لإيما بـ Did you…?، ودعوتها إلى زيارة السعودية بعد أن تقدّم على التأشيرة. نموذج لكتابة المتعلم، 150–230 كلمة",
+      "vocab": ["tour guide", "view (the view was amazing)", "ancient", "amazing", "souvenir", "take photos"],
+      "legalPhrase": "apply for a visa",
+      "grammarFocus": "مراجعة الوحدة في سرد رحلة: كلمات الترتيب First / Then / After that / Finally، وكلمات الزمن last weekend / two days ago، والجمع بين المنتظم والشاذ والنفي والسؤال في إيميل، مع أجزائه: التحية والغرض والتفاصيل والختام",
+      "irregularVerbs": ["write", "send", "tell", "feel", "give", "bring", "begin", "become"],
+      "recall": { "from": "u2l4", "items": ["island", "nature", "cheap", "choose أو hear about", "report a crime (القانونية)"] },
+      "recycled": ["journey (u2l1)", "decide (u2l1)", "flight (u2l3)", "on time (u2l3)", "have fun (u2l2)", "nature (u2l4)", "attach (u1l5)", "reply (u1l5)"],
+      "topics": ["السياحة الداخلية", "المواقع الأثرية", "الصور والذكريات", "الضيافة", "الإيميلات"]
+    }
+  ]
+}
