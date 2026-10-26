@@ -32,6 +32,7 @@ maps/u1.json        خريطة الوحدة 1 بصيغة يقرؤها الفاح
 lessons/u2/l1.js    الوحدة 2، الدرس 1 (إلى l5.js): l1 وl3 وl5 قراءة، وl2 وl4 استماع
 maps/u2.json        خريطة الوحدة 2، وفيها الأفعال الشاذة لكل درس (irregularVerbs)
 maps/u3.json        خريطة الوحدة 3 (الماضي المستمر)، وبها تكتمل الأفعال الشاذة الستون
+maps/u4.json        خريطة الوحدة 4 (المقارنة والتفضيل)
 tools/register-lessons.js   يكتب سطور الدروس وأرقام الإصدار في index.html من content.js
 tools/night-guard.js        حارس العمل الليلي: يرفض أي تغيير خارج lessons/ وcontent.js وnight-reports/
 tests/content-check.js      فاحص آلي لمحتوى الدروس والاختبارات بـ Node وحده، في أقل من ثانية

@@ -1,0 +1,82 @@
+{
+  "unit": 4,
+  "title": "مدن العالم",
+  "grammar": "المقارنة والتفضيل (Comparatives & Superlatives): الصفات القصيرة والطويلة والشاذة، وthan وthe وin / of، وnot as … as",
+  "lessons": [
+    {
+      "id": "u4l1",
+      "title": "Riyadh or Abha?",
+      "mode": "reading",
+      "clip": null,
+      "text": "إيميل من سلطان، طالب انتقل من الرياض إلى أبها ليدرس في جامعة الملك خالد، إلى صديقه البريطاني هاري، يقارن بين المدينتين: أبها أصغر وأهدأ وأبرد وأعلى (أكثر من 2,200 متر فوق سطح البحر) وأخضر وأكثر مطرًا، والرياض أكبر وأحرّ (فوق 40 درجة كثيرًا في الصيف) وأكثر ازدحامًا وضجيجًا، وما يحبه في كل منهما، ويذكر أن عمه عضو في المجلس البلدي (city council، واسمه الرسمي بالإنجليزية municipal council، ولا يُذكر شيء عن انتخاباته)، ويدعو هاري إلى زيارة أبها في الصيف. يكثر فيه المقارنة بالصفات القصيرة مع er وthan، والطويلة فيه مرة أو مرتين للعرض فقط وتُدرَّب في u4l2، وdegrees للحرارة تُشرح بـ [[ ]] لأن degree تُقدَّم جديدةً في u4l5، ولا أرقام فيه إلا أكثر من 2,200 متر و40 درجة، 150–230 كلمة",
+      "vocab": ["population (a small population)", "climate (a cool climate)", "temperature (high temperatures)", "noisy (a noisy street)", "fresh (fresh air)", "dry (a dry summer)"],
+      "legalPhrase": "city council (a member of the city council)",
+      "grammarFocus": "المقارنة بالصفات القصيرة من الصفر بخطوات صغيرة، والقصيرة مقطع واحد أو مقطعان آخرهما y: الصفة + er + than (Riyadh is hotter than Abha)، وإملاؤها: er، وr وحدها بعد e (nicer)، وy إلى ier بعد حرف ساكن (noisier، busier، drier، ويصح dryer فيُقبل)، ومضاعفة الحرف الأخير في الصفة ذات المقطع الواحد المنتهية بحرف علة واحد ثم ساكن (bigger، hotter، thinner) إلا w وy (newer، slower)، وthan لا from ولا of (خطأ العرب: bigger from)، ولا more مع er (more bigger) ولا مع القصيرة (more hot) إلا fun (more fun)، وis لا تُحذف (Riyadh is hotter لا Riyadh hotter)، والسؤال عن اثنين بـ Which (Which city is cooler?)، والضمير بعد than (taller than me أو than I am)، ولا يقابَل than me بـ than I في تمرين. ويصح الوجهان في friendly وquiet وpolite وsimple وclever (quieter / more quiet، the friendliest / the most friendly)، فيُقبلان ولا يُبنى تمرين يفرق بينهما",
+      "recall": { "from": "u3l5", "items": ["suddenly", "police officer", "describe", "exactly أو ambulance أو corner", "witness statement (القانونية)"] },
+      "recycled": ["traffic (u0l3)", "busy (u0l1)", "local (u1l4)", "typical (u1l2)", "nature (u2l4)", "view (u2l5)", "heavy (u3l4)", "moment (u3l1)"],
+      "topics": ["المدن السعودية", "الطقس والفصول", "الانتقال والأسرة", "الحياة الجامعية", "المواصلات"]
+    },
+    {
+      "id": "u4l2",
+      "title": "Which City Is Better?",
+      "mode": "listening",
+      "clip": {
+        "url": "https://elllo.org/english/grammar/A2-09-Comparatives.htm",
+        "title": "ELLLO Grammar Talks A2-09 «Comparing Cities»",
+        "about": "آيمي (اسكتلندا: علم الصفحة، وتقول في ELLLO #1551 إنها من غلاسكو) تسأل تود (الولايات المتحدة)، وأبوه من سان فرانسيسكو وأمه من لوس أنجلوس، وفي أوله خلط بين الأم والأب يصححه تود، أي المدينتين أحسن: الحجم وعدد السكان، والغلاء وسببه الشركات الكبرى وضيق المساحة، والطقس، والجمال، والناس، وما في كل مدينة من متعة وطبيعة، ثم تختار آيمي. والأعداد فيه تقدير تود، فلا تُقدَّم حقائق. Beginner A2، 4:22 من ملف الصوت نفسه، فوق حد الأربع دقائق باثنتين وعشرين ثانية، فيكون الترديد في المرحلة الثالثة لجزء منه نحو 90 ثانية لا للمقطع كله. ولا يُبنى سؤال على هفوات الكلام (prefer to go San Francisco، more easy going)، ولا يُسأل عن مدينة آيمي، فلا تُذكر في المقطع",
+        "targetSeconds": 262
+      },
+      "text": null,
+      "vocab": ["huge (LA is huge)", "tiny (a tiny city)", "cloud (no clouds)", "friendly (friendly people)", "disagree (I disagree)", "exciting (an exciting city)"],
+      "legalPhrase": "minimum wage (the minimum wage)",
+      "grammarFocus": "المقارنة بالصفات الطويلة والشاذة، والطويلة مقطعان فأكثر لا تنتهي بـ y: more + الصفة + than (more expensive than)، والشاذ good → better وbad → worse وfar → further أو farther، وmuch / a bit / a lot قبل المقارنة (much bigger)، والسؤال Is LA bigger than San Francisco? وWhich city is better?، وnot as + الصفة + as (not as friendly as)، وتصحيح more cheaper وmore better وgooder وvery bigger وnot as bigger as. ويصح الوجهان في friendly وquiet وpolite وsimple وclever (friendlier / more friendly)، وفي further / farther، فيُقبلان في ans ولا يُبنى تمرين يفرق بينهما",
+      "recall": { "from": "u4l1", "items": ["population", "climate", "temperature", "noisy أو fresh أو dry", "city council (القانونية)"] },
+      "recycled": ["cheap (u2l4)", "nature (u2l4)", "culture (u1l4)", "local (u1l4)", "traffic (u0l3)", "population (u4l1)", "climate (u4l1)"],
+      "topics": ["المدن والبلدان", "الطقس", "الوظائف والشركات", "الأسعار", "الناس والطباع"]
+    },
+    {
+      "id": "u4l3",
+      "title": "The Biggest and the Tallest",
+      "mode": "reading",
+      "clip": null,
+      "text": "إيميل من ريم، طالبة في جدة، إلى صديقتها الأسترالية كلوي التي تزور السعودية أول مرة، عن أرقام قياسية في بلدها: الرياض أكبر مدنها، والربع الخالي أكبر صحراء رملية متصلة في العالم وأكثره في السعودية، وأعلى جبالها في منطقة عسير (ولا يُسمّى أعلى جبل، فالقياس مختلف فيه)، ونافورة الملك فهد في جدة على ساحل البحر الأحمر أطول نافورة في العالم ولها رقم قياسي، والمسجد الحرام في مكة أكبر مسجد في العالم ويستقبل ملايين الزوار، ولا تُدعى كلوي إلى مكة لأن دخولها للمسلمين وحدهم، والمحكمة العليا في الرياض أعلى محكمة في القضاء العام (وللقضاء الإداري في ديوان المظالم المحكمة الإدارية العليا). يكثر فيه التفضيل بالصفات القصيرة (the + est) مع in، والطويلة فيه مرة أو مرتين للعرض فقط وتُدرَّب في u4l4، ولا أرقام فيه، 150–230 كلمة",
+      "vocab": ["desert (a sand desert)", "sand", "coast (the Red Sea coast)", "record (a world record)", "visitor (millions of visitors)", "height (at that height)"],
+      "legalPhrase": "the highest court (the highest court in the country)",
+      "grammarFocus": "التفضيل بالصفات القصيرة: the + الصفة + est (the biggest city)، وإملاؤه كإملاء المقارنة (largest، hottest، driest، ويصح dryest فيُقبل)، وthe قبله (لا Riyadh is biggest city) إلا بعد الملكية (Saudi Arabia's biggest city، my best friend)، ويجوز حذفها في الخبر بلا اسم (Which city is best for me?)، وin بعده للمكان والمجموعة المفردة (the largest sand desert in the world، the tallest in my class، لا of the world)، وof مع الجمع والمدة (the oldest of the three، the hottest month of the year)، وخطأ العرب في «أكبر» للمقارنة والتفضيل معًا (the bigger city in the world)، ومتى نقارن بين اثنين (bigger than) ومتى نفضّل واحدًا من ثلاثة فأكثر (the biggest)، وtall للناس والمباني والأشجار وhigh للجبال والمحكمة، ويصح الاثنان مع الجبل والنافورة فلا يُختبران، وتصحيح the most biggest",
+      "recall": { "from": "u4l2", "items": ["huge", "tiny", "cloud", "friendly أو disagree أو exciting", "minimum wage (القانونية)"] },
+      "recycled": ["cross (u2l1)", "journey (u2l1)", "tour guide (u2l5)", "ancient (u2l5)", "amazing (u2l5)", "population (u4l1)", "huge (u4l2)", "proud (u3l1)"],
+      "topics": ["الجغرافيا", "معالم السعودية", "السياحة", "الحج والعمرة", "الأرقام القياسية"]
+    },
+    {
+      "id": "u4l4",
+      "title": "The Best Time to Visit",
+      "mode": "listening",
+      "clip": {
+        "url": "https://elllo.org/english/grammar/A2-10-Superlatives.htm",
+        "title": "ELLLO Grammar Talks A2-10 «City Superlatives»",
+        "about": "سارة (الولايات المتحدة: علم الصفحة وصورتها، ونص بديل العلم «England» خطأ في الصفحة) تسأل تود عن أفضل ما في مدينته سان فرانسيسكو وأسوئه: أكثر مبانيها تميزًا (مبنى Transamerica على هيئة هرم)، وأغلى أحيائها على أعلى تلة، وغابة Muir Woods خارج المدينة بأشجارها العالية القديمة، وأرخص حي على المحيط، وأحسن وقت للزيارة وأسوؤه. وفي كلام تود عن الأشجار خطأ (انظر القرارات)، ولا يُبنى سؤال على هفوات الكلام (it has nicest view). Beginner A2، 2:27 من ملف الصوت نفسه",
+        "targetSeconds": 147
+      },
+      "text": null,
+      "vocab": ["architecture (interesting architecture)", "hill (the highest hill)", "ocean (a view of the ocean)", "area (an expensive area)", "probably", "wet (the wettest month)"],
+      "legalPhrase": "protected by law",
+      "grammarFocus": "التفضيل بالصفات الطويلة والشاذة: the most + الصفة (the most expensive area)، والشاذ the best / the worst، ومراجعة the + est (the tallest، the wettest)، وأسئلة What is the most …? وWhen is the best time to …?، وone of the + التفضيل + جمع (one of the oldest cities لا one of the oldest city)، والفعل بعد one of the مفرد (One of the oldest trees is…)، وتصحيح the most cheapest، وحذف the قبل most + الصفة + الاسم (It is most expensive area)، ولا يُعدّ most بمعنى «أكثر» خطأً (Most students take the bus). ويصح الوجهان في friendly وquiet وpolite وsimple وclever (quieter / more quiet، the friendliest / the most friendly)، فيُقبلان ولا يُبنى تمرين يفرق بينهما",
+      "recall": { "from": "u4l3", "items": ["desert", "coast", "record", "visitor أو height أو sand", "the highest court (القانونية)"] },
+      "recycled": ["view (u2l5)", "cheap (u2l4)", "nature (u2l4)", "take photos (u2l5)", "climate (u4l1)", "visitor (u4l3)", "huge (u4l2)"],
+      "topics": ["المباني والعمارة", "الأحياء والسكن", "الطبيعة والحدائق", "الفصول والسفر", "الأسعار والتسوق"]
+    },
+    {
+      "id": "u4l5",
+      "title": "Where Should I Study Law?",
+      "mode": "reading",
+      "clip": null,
+      "text": "إيميل من نواف، خريج قانون من جامعة الملك سعود يريد الماجستير في القانون في بريطانيا ببعثة دراسية، إلى معلمته البريطانية السابقة السيدة كلارك، يقارن بين لندن ومانشستر وإدنبرة: لندن أكبرها وأغلاها، والمواصلات العامة فيها أحسن، ومانشستر أرخص من لندن وأصغر، وإدنبرة أهدأ من لندن وأبرد منها وأجمل الثلاث في رأيه، وفي اسكتلندا نظام قانوني يختلف عن نظام إنجلترا. ويسألها: أيها أحسن لطالب قانون مثله؟ وهو نموذج لكتابة المتعلم. ولا تُذكر ترتيبات الجامعات ولا أرقام الرسوم، وفي tip أن study abroad بلا in ولا to، وأن accommodation غير معدود في البريطانية، 150–230 كلمة",
+      "vocab": ["degree (a master's degree)", "scholarship (study on a scholarship)", "abroad (study abroad)", "accommodation (student accommodation)", "public transport", "cost of living (the cost of living)"],
+      "legalPhrase": "legal system (a different legal system)",
+      "grammarFocus": "مراجعة الوحدة في إيميل يقارن بين ثلاث مدن ويطلب النصيحة: المقارنة بين اثنين (cheaper than) والتفضيل بين الثلاث (the most expensive)، وnot as … as، وmuch + المقارنة، وأجزاء الإيميل: التحية والغرض والتفاصيل والختام، وتصحيح أخطاء الوحدة (bigger from، more cheaper، the most biggest، one of the best city). ويصح الوجهان في friendly وquiet وpolite وsimple وclever (quieter / more quiet، the friendliest / the most friendly)، فيُقبلان ولا يُبنى تمرين يفرق بينهما",
+      "recall": { "from": "u4l4", "items": ["architecture", "hill", "ocean", "area أو probably أو wet", "protected by law (القانونية)"] },
+      "recycled": ["safe (u1l1)", "culture (u1l4)", "choose (u2l4)", "apply for a visa (u2l5)", "research (u1l1)", "friendly (u4l2)", "noisy (u4l1)", "area (u4l4)", "rent (u3l2)"],
+      "topics": ["الدراسة في الخارج", "الجامعات", "التكاليف والميزانية", "المواصلات", "الإيميلات والنصيحة"]
+    }
+  ]
+}

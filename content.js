@@ -105,6 +105,15 @@ var DATA = window.DATA = {
     { id: "u3l6", n: 6, en: "Unit Review & Test", subEn: "Unit 3 Review & Mastery Test", ar: "مراجعة الوحدة واختبارها", shortAr: "مراجعة الوحدة واختبارها", icon: "trophy", test: true }
   ],
 
+  unit4Lessons: [
+    { id: "u4l1", n: 1, en: "Riyadh or Abha?", subEn: "Comparatives: Short Adjectives (-er than)", ar: "الرياض أم أبها؟ المقارنة بالصفات القصيرة", shortAr: "المقارنة بالصفات القصيرة", icon: "globe" },
+    { id: "u4l2", n: 2, en: "Which City Is Better?", subEn: "Comparatives: Long & Irregular Adjectives", ar: "لوس أنجلوس وسان فرانسيسكو: المقارنة بالصفات الطويلة والشاذة", shortAr: "المقارنة بالصفات الطويلة والشاذة", icon: "speaker" },
+    { id: "u4l3", n: 3, en: "The Biggest and the Tallest", subEn: "Superlatives: Short Adjectives (the -est)", ar: "أرقام قياسية في السعودية: التفضيل بالصفات القصيرة", shortAr: "التفضيل بالصفات القصيرة", icon: "dots" },
+    { id: "u4l4", n: 4, en: "The Best Time to Visit", subEn: "Superlatives: Long & Irregular Adjectives", ar: "أفضل ما في سان فرانسيسكو: التفضيل بالصفات الطويلة والشاذة", shortAr: "التفضيل بالصفات الطويلة والشاذة", icon: "speaker" },
+    { id: "u4l5", n: 5, en: "Where Should I Study Law?", subEn: "Writing: Comparing Places in an Email", ar: "كتابة: إيميل يقارن بين ثلاث مدن", shortAr: "المقارنة بين مدن في إيميل", icon: "mail" },
+    { id: "u4l6", n: 6, en: "Unit Review & Test", subEn: "Unit 4 Review & Mastery Test", ar: "مراجعة الوحدة واختبارها", shortAr: "مراجعة الوحدة واختبارها", icon: "trophy", test: true }
+  ],
+
   /* ---------- المرحلة 3: قائمة الـ 60 فعلًا شاذًا شائعًا (بأنماطها الصوتية للتكرار المتباعد) ---------- */
   irregularGroups: [
     { k: "all", en: "All (60)", ar: "الكل (60)" },
