@@ -91,8 +91,9 @@ var DATA = window.DATA = {
     { id: "u2l1", n: 1, en: "The Traveller from Tangier", subEn: "Past Simple: Regular Verbs (-ed)", ar: "رحلة ابن بطوطة: الماضي البسيط للأفعال المنتظمة", shortAr: "الأفعال المنتظمة في الماضي", icon: "globe", open: true },
     { id: "u2l2", n: 2, en: "How Was Your Holiday?", subEn: "Past Simple: Irregular Verbs", ar: "عطلة عائلية في اليونان: الأفعال الشاذة في الماضي", shortAr: "الأفعال الشاذة في الماضي", icon: "speaker", open: true },
     { id: "u2l3", n: 3, en: "The Trip That Went Wrong", subEn: "Past Simple: Negatives (didn't / wasn't)", ar: "رحلة لم تسر كما أردنا: النفي في الماضي", shortAr: "النفي في الماضي", icon: "clock", open: true },
-    { id: "u2l4", n: 4, en: "Where Did You Go?", subEn: "Past Simple: Questions & Short Answers", ar: "رحلة إلى تايوان: الأسئلة والإجابات القصيرة في الماضي", shortAr: "الأسئلة في الماضي", icon: "dots" },
-    { id: "u2l5", n: 5, en: "A Weekend in AlUla", subEn: "Writing: Telling a Story in the Past", ar: "كتابة: إيميل تسرد فيه رحلة", shortAr: "سرد رحلة في الماضي", icon: "mail" }
+    { id: "u2l4", n: 4, en: "Where Did You Go?", subEn: "Past Simple: Questions & Short Answers", ar: "رحلة إلى تايوان: الأسئلة والإجابات القصيرة في الماضي", shortAr: "الأسئلة في الماضي", icon: "dots", open: true },
+    { id: "u2l5", n: 5, en: "A Weekend in AlUla", subEn: "Writing: Telling a Story in the Past", ar: "كتابة: إيميل تسرد فيه رحلة", shortAr: "سرد رحلة في الماضي", icon: "mail", open: true },
+    { id: "u2l6", n: 6, en: "Unit Review & Test", subEn: "Unit 2 Review & Mastery Test", ar: "مراجعة الوحدة واختبارها", shortAr: "مراجعة الوحدة واختبارها", icon: "trophy", test: true }
   ],
 
   /* ---------- المرحلة 3: قائمة الـ 60 فعلًا شاذًا شائعًا (بأنماطها الصوتية للتكرار المتباعد) ---------- */
@@ -336,6 +337,18 @@ var DATA = window.DATA = {
         "Which local customs do you love in Saudi Arabia, and which ones are changing these days?",
         "What are the normal working hours in your country, and is anyone in your family working long hours or taking sick leave this month?"
       ]
+    },
+    2: {
+      unit: 2,
+      titleEn: "Unit 2 · Great Journeys (Past Simple: Regular & Irregular Verbs)",
+      titleAr: "الوحدة 2 · رحلات عظيمة (الماضي البسيط: المنتظم والشاذ)",
+      grammarEn: "1) Past Simple of regular verbs (visited, stayed, studied, stopped; -ed sounds like /t/, /d/ or /ɪd/), 2) Irregular past forms (went, had, saw, bought, took, came: no -ed and no 'was went'), 3) Negatives (didn't + base verb: I didn't go. / wasn't / weren't: The hotel wasn't cheap.), 4) Questions & Short Answers (Did you fly…? Where did you stay? How was the food? Yes, I did. / No, it wasn't.), 5) Telling a Trip Story in Order (First, Then, After that, Finally · last weekend, two days ago).",
+      phrases: ["a long journey", "Islamic law", "go on holiday", "have fun", "annual leave", "get lost", "the flight was delayed", "pay a fine", "hear about", "report a crime", "take photos", "apply for a visa"],
+      questions: [
+        "Think of Ibn Battuta and his great journey. Now tell me about a long journey in your life: where did you go, how did you travel, and what did you see there?",
+        "Tell me about a trip that went wrong: what happened, and what didn't go as you planned? Did you get lost, was your flight delayed, or did you pay a fine?",
+        "Let's interview each other about our last holiday: where did you spend it, what did you eat, how was the weather, and did you take photos or buy any souvenirs?"
+      ]
     }
   },
 
@@ -514,6 +527,94 @@ var DATA = window.DATA = {
         promptEn: "Short Applied Task: Write at least 4 separate sentences about your life these days. Use 1) a habit in the Present Simple, 2) something happening now or this week in the Present Continuous, 3) a frequency word in the right place (always, usually, never…), 4) a stative verb (know, need, want, prefer…), and 5) one legal phrase from this unit (sign a contract, working hours, break the law, against the law, sick leave). Finish each sentence with a period (.).",
         promptAr: "مهمة تطبيقية قصيرة: اكتب 4 جمل منفصلة على الأقل عن حياتك هذه الأيام، واستعمل فيها: ١) عادة بالمضارع البسيط، ٢) شيئًا يحدث الآن أو هذا الأسبوع بالمضارع المستمر، ٣) كلمة تكرار في موضعها الصحيح مثل usually، ٤) فعل حالة مثل need أو prefer، ٥) عبارة قانونية واحدة من العبارات الخمس في الوحدة، وأنهِ كل جملة بنقطة.",
         placeholder: "1. I usually …\n2. This week, I'm …\n3. I always … / I'm never …\n4. I need … / I prefer …\n5. … (a legal phrase from Unit 1)",
+        minSentences: 4
+      }
+    },
+    2: {
+      unit: 2,
+      titleEn: "Unit 2 Review, Legal Corner & Mastery Test",
+      titleAr: "مراجعة الوحدة 2 والركن القانوني واختبار الإتقان",
+      masteryPct: 90,
+      passPct: 80,
+      legalCorner: {
+        titleEn: "Weekly Legal Corner (10 min) · The Five Unit 2 Legal Phrases",
+        titleAr: "الركن القانوني الأسبوعي (10 دقائق) · العبارات القانونية الخمس في الوحدة 2",
+        introEn: "Review the five legal phrases of Unit 2 in new everyday sentences, all in the past, before you start the Unit 2 Mastery Test:",
+        introAr: "راجع العبارات القانونية الخمس في الوحدة 2 في جمل يومية جديدة كلها بالماضي البسيط، قبل أن تبدأ اختبار إتقان الوحدة 2:",
+        terms: [
+          { en: "Islamic law", ar: "الفقه الإسلامي / الشريعة الإسلامية", ex: "In my first year at the College of Law, Islamic law was my favourite subject.", exAr: "في سنتي الأولى في كلية الحقوق كان الفقه الإسلامي مادتي المفضلة." },
+          { en: "annual leave", ar: "إجازة سنوية (مدفوعة الأجر)", ex: "My brother asked his manager for annual leave in May, and he spent three weeks with our grandparents in Abha.", exAr: "طلب أخي إجازته السنوية من مديره في مايو، وقضى ثلاثة أسابيع عند جدّينا في أبها." },
+          { en: "pay a fine", ar: "يدفع غرامة (عقوبة مالية على مخالفة)", ex: "My cousin drove too fast on the way to Dammam, so he paid a fine.", exAr: "قاد ابن عمي سيارته بسرعة زائدة في طريقه إلى الدمام، فدفع غرامة." },
+          { en: "report a crime", ar: "يبلّغ عن جريمة (للشرطة)", ex: "When my uncle's car disappeared from the street, he reported the crime to the police, and they found it two days later.", exAr: "حين اختفت سيارة عمي من الشارع، بلّغ الشرطة عن الجريمة، فوجدوها بعد يومين." },
+          { en: "apply for a visa", ar: "يتقدّم بطلب تأشيرة", ex: "My neighbour applied for a visa too late, so he didn't fly to Boston for his son's graduation.", exAr: "تقدّم جاري بطلب التأشيرة متأخرًا، فلم يسافر إلى بوسطن ليحضر حفل تخرج ابنه." }
+        ]
+      },
+      questions: [
+        { s: "In which sentence are the two past verbs spelled correctly?", opts: ["We shoped at the mall, and my dad carried the bags.", "We shopped at the mall, and my dad carryed the bags.", "We shopped at the mall, and my dad carried the bags."], a: 2, errCat: "spelling", lesson: "u2l1",
+          whyEn: "'shop' is a short verb that ends in one vowel + one consonant (o + p), so we double the p: shopped. 'carry' ends in a consonant + y (r + y), so the y changes to -ied: carried. The first sentence forgets the double p, and the second one keeps the y.",
+          why: "shop فعل قصير ينتهي بحرف علة واحد ثم حرف ساكن (o ثم p)، فنضاعف p: shopped، وcarry تنتهي بحرف ساكن ثم y (r ثم y)، فتتحول y إلى ied: carried؛ أما الجملة الأولى فلم تضاعف p، والثانية أبقت y." },
+        { s: "Say these past verbs aloud. Which one has only one syllable?", opts: ["jumped", "painted", "ended"], a: 0, errCat: "spelling", lesson: "u2l1",
+          whyEn: "-ed is an extra syllable, /ɪd/, only after a t or d sound: paint → paint-ed, end → end-ed. 'jump' ends in a p sound, so its -ed sounds like /t/, and 'jumped' has one syllable: 'jumpt'.",
+          why: "تُنطق ed مقطعًا زائدًا /ɪd/ بعد صوت t أو d وحدهما: paint-ed وend-ed، أما jump فآخرها صوت p، فتُنطق ed فيها /t/، وتبقى jumped مقطعًا واحدًا: «جَمْبْت»." },
+        { s: "Last Ramadan, my brothers ___ iftar for the whole family.", opts: ["were cook", "cooked", "cook"], a: 1, errCat: "be_verb", lesson: "u2l1",
+          whyEn: "'Last Ramadan' is a finished time, so we use the Past Simple: cook + -ed = cooked, the same for every subject. We never put 'were' before a base verb, and 'cook' is the present form.",
+          why: "Last Ramadan زمن انتهى، فنستعمل الماضي البسيط: cook مع ed فتصير cooked، وهي واحدة مع كل الضمائر، ولا نضع were قبل الفعل المجرد أبدًا، أما cook فصيغة المضارع." },
+        { s: "The old man waited for the green light, and then he ___ the street.", opts: ["arrived", "returned", "crossed"], a: 2, errCat: "vocab", lesson: "u2l1",
+          whyEn: "We 'cross' a street, a road or a desert: we go from one side to the other, and people do this at a green light. We 'arrive in' or 'arrive at' a place, so 'arrived the street' is wrong, and 'return' means go back.",
+          why: "نقول cross the street أي يعبر الشارع من جانب إلى آخر، وهذا ما يفعله الناس عند الإشارة الخضراء؛ أما arrive فتحتاج in أو at، فلا نقول arrived the street، وreturn تعني يعود." },
+        { s: "Last night, my colleagues and I ___ dinner at a Turkish restaurant.", opts: ["ate", "were ate", "eated"], a: 0, errCat: "be_verb", lesson: "u2l2",
+          whyEn: "'eat' is irregular: its past form is 'ate'. 'ate' is already past, so we don't put 'were' before it, and irregular verbs never take -ed, so 'eated' is not a word.",
+          why: "eat فعل شاذ ماضيه ate، وهو ماضٍ بنفسه فلا نضع قبله were، والأفعال الشاذة لا تأخذ ed أبدًا، فليست eated كلمة." },
+        { s: "Last Monday, my sister ___ her driving test, and she passed.", opts: ["taked", "took", "tooks"], a: 1, errCat: "tense", lesson: "u2l2",
+          whyEn: "'Last Monday' shows the past. 'take' is irregular: its past is 'took'. A past form is the same for every subject, so we never add -s to it, even with she ('tooks'), and 'taked' is not a word.",
+          why: "Last Monday تدل على الماضي، وtake فعل شاذ ماضيه took، وصيغة الماضي واحدة مع كل الضمائر، فلا نضيف إليها s حتى مع she (tooks)، وليست taked كلمة." },
+        { s: "My brother and I ___ very tired after a day at the beach, so we slept in the car.", opts: ["were", "was", "did"], a: 0, errCat: "agreement", lesson: "u2l2",
+          whyEn: "'My brother and I' is two people (we), and 'tired' is an adjective, so we use were. Don't choose was because the subject ends with 'I', and 'did' can't come before an adjective.",
+          why: "My brother and I شخصان بمعنى we، وtired صفة، فنستعمل were، ولا تختر was لأن الفاعل ينتهي بـ I، ولا تأتي did قبل الصفة." },
+        { s: "We ___ great fun at Ahmed's graduation party last week.", opts: ["made", "did", "had"], a: 2, errCat: "vocab", lesson: "u2l2",
+          whyEn: "The phrase is 'have fun', so its past is 'had fun' (had great fun, had a lot of fun). We don't use make here: 'make fun of someone' means laugh at them. And we never say 'do fun'.",
+          why: "العبارة have fun، فماضيها had fun (وhad great fun)، ولا نستعمل make هنا، فـ make fun of تعني يسخر من شخص، ولا نقول do fun أبدًا." },
+        { s: "Faris was ill, so he ___ to his classes yesterday.", opts: ["didn't went", "didn't go", "wasn't go"], a: 1, errCat: "tense", lesson: "u2l3",
+          whyEn: "After didn't, every verb goes back to the base form, even an irregular verb: didn't go, not didn't went. 'wasn't go' is wrong, because we never put wasn't before a base verb.",
+          why: "بعد didn't يعود كل فعل إلى صورته المجردة حتى الشاذ: didn't go لا didn't went، وwasn't go خطأ، لأننا لا نضع wasn't قبل الفعل المجرد أبدًا." },
+        { s: "My grandparents ___ at home when we visited them, so we left the gift with the neighbours.", opts: ["didn't", "wasn't", "weren't"], a: 2, errCat: "be_verb", lesson: "u2l3",
+          whyEn: "There is no main verb here, only a place (at home), so we use the past of be, not didn't. 'My grandparents' is plural (they), so the negative is weren't. 'wasn't' is for I, he, she and it.",
+          why: "ليس في الجملة فعل أساسي، بل مكان (at home)، فننفي بماضي be لا بـ didn't، والفاعل My grandparents جمع (they)، فنقول weren't، أما wasn't فمع I وhe وshe وit." },
+        { s: "Yesterday, I ___ the lecture because the professor spoke very fast.", opts: ["didn't understand", "don't understand", "didn't understood"], a: 0, errCat: "tense", lesson: "u2l3",
+          whyEn: "'Yesterday' shows the past, so the negative is didn't, not don't. After didn't, the verb stays in the base form: understand, not understood.",
+          why: "Yesterday تدل على الماضي، فننفي بـ didn't لا don't، ويبقى الفعل بعدها مجردًا: understand لا understood." },
+        { s: "My little brother ___ at the mall, so we looked for him for an hour.", opts: ["lost", "got lost", "booked"], a: 1, errCat: "vocab", lesson: "u2l3",
+          whyEn: "'get lost' means not know where you are, and its past is 'got lost'. 'lost' alone needs an object (I lost my keys = I can't find my keys), and 'booked' means asked for a room or a ticket for later.",
+          why: "get lost تعني أن يضلّ المرء طريقه، وماضيها got lost، أما lost وحدها فتحتاج مفعولًا (I lost my keys أي أضعت مفاتيحي)، وbooked تعني حجز غرفة أو تذكرة." },
+        { s: "Which question about the past is correct?", opts: ["Did you went home after your last class?", "Were you go home after your last class?", "Did you go home after your last class?"], a: 2, errCat: "tense", lesson: "u2l4",
+          whyEn: "Did already shows the past, so the verb after it is the base form: Did you go…?, not Did you went…? 'Were you go' is wrong, because Were never comes before a base verb.",
+          why: "Did تدل على الماضي بنفسها، فيأتي بعدها الفعل المجرد: Did you go لا Did you went، وWere you go خطأ، لأن Were لا تأتي قبل فعل مجرد." },
+        { s: "Were you nervous before your job interview? — No, I ___. I felt calm and ready.", opts: ["didn't", "wasn't", "weren't"], a: 1, errCat: "agreement", lesson: "u2l4",
+          whyEn: "The question has no main verb, only an adjective (nervous), so it starts with Were, and the short answer uses be, not did. The answer is about 'I', and I takes was: No, I wasn't. 'weren't' is for you, we and they.",
+          why: "ليس في السؤال فعل أساسي، بل صفة (nervous)، فيبدأ بـ Were، وتكون الإجابة القصيرة بـ be لا بـ did، والجواب عن المتكلم I، وI يأخذ was: No, I wasn't، أما weren't فمع you وwe وthey." },
+        { s: "When ___ for your student visa?", opts: ["did you apply", "you applied", "did you applied"], a: 0, errCat: "word_order", lesson: "u2l4",
+          whyEn: "A Wh- question in the past needs did after the question word, then the subject and the base verb: When did you apply…? We can't drop did, and after did the verb has no -ed (not 'applied').",
+          why: "سؤال الاستفهام في الماضي يحتاج did بعد كلمة الاستفهام، ثم الفاعل، ثم الفعل المجرد: When did you apply…؟ فلا نحذف did، ولا يأخذ الفعل بعدها ed (لا applied)." },
+        { s: "Reem chose to study biology because she loves ___ and animals.", opts: ["the nature", "a nature", "nature"], a: 2, errCat: "articles_prep", lesson: "u2l4",
+          whyEn: "When we mean nature in general (plants, animals, mountains), we use no article: she loves nature. 'the nature' is a common mistake for Arabic speakers, and we never say 'a nature'.",
+          why: "إذا قصدنا الطبيعة عمومًا (النباتات والحيوانات والجبال) لم نضع قبلها أداة: she loves nature، وthe nature خطأ شائع عند العرب لأننا نقول «الطبيعة» بأل، ولا نقول a nature أبدًا." },
+        { s: "Which text from a trip email is written correctly?", opts: ["first we visited Masmak Fort then we had lunch in Diriyah", "First, we visited Masmak Fort. Then we had lunch in Diriyah.", "First, we visited Masmak Fort. then we had lunch in Diriyah."], a: 1, errCat: "word_order", lesson: "u2l5",
+          whyEn: "Each sentence starts with a capital letter and ends with a period, and First has a comma after it. The first option is one long sentence with no capital letters or periods, and the third one starts its second sentence with a small t.",
+          why: "تبدأ كل جملة بحرف كبير وتنتهي بنقطة، وتأتي بعد First فاصلة؛ أما الخيار الأول فجملة واحدة طويلة بلا حروف كبيرة ولا نقاط، والثالث يبدأ جملته الثانية بحرف t صغير." },
+        { s: "My cousin got married ___, and the party was amazing.", opts: ["last weekend", "the last weekend", "in last weekend"], a: 0, errCat: "articles_prep", lesson: "u2l5",
+          whyEn: "We say last weekend with no 'the' and no 'in' before it, like last Friday and last year. 'the last weekend' and 'in last weekend' are common mistakes.",
+          why: "نقول last weekend بلا the ولا in قبلها، كما نقول last Friday وlast year، أما the last weekend وin last weekend فخطآن شائعان." },
+        { s: "My uncle ___ his little son to my birthday party.", opts: ["bringed", "bought", "brought"], a: 2, errCat: "tense", lesson: "u2l5",
+          whyEn: "'bring' is irregular: its past is 'brought' (with an r; it sounds like 'thought'), so 'bringed' is wrong. 'bought' is the past of 'buy' (pay money for something), and it doesn't fit 'his little son'.",
+          why: "bring فعل شاذ ماضيه brought (بحرف r، ويُنطق على وزن thought)، فـ bringed خطأ، أما bought فماضي buy أي اشترى، ولا تناسب his little son." },
+        { s: "In Istanbul, my aunt ___ of all the cats in the streets.", opts: ["made photos", "took photos", "did photos"], a: 1, errCat: "vocab", lesson: "u2l5",
+          whyEn: "In English, we take photos (not make or do photos), and the past is took photos: she took photos of the cats.",
+          why: "نقول في الإنجليزية take photos لا make photos ولا do photos، وماضيها took photos: she took photos of the cats." }
+      ],
+      appliedTask: {
+        promptEn: "Short Applied Task: Write at least 4 separate sentences about the best trip of your life. Use 1) regular and irregular past verbs (visited, went, bought …), 2) a negative (didn't + base verb, or wasn't / weren't), 3) order words (First, Then, After that, Finally), 4) a question with Did …? (for example: Did you …?), and 5) one legal phrase from this unit (Islamic law, annual leave, pay a fine, report a crime, apply for a visa). Finish each sentence with a period (.) or a question mark (?).",
+        promptAr: "مهمة تطبيقية قصيرة: اكتب 4 جمل منفصلة على الأقل عن أجمل رحلة قمت بها في حياتك، واستعمل فيها: ١) أفعالًا ماضية منتظمة وشاذة (visited وwent وbought …)، ٢) جملة منفية (didn't مع الفعل المجرد، أو wasn't / weren't)، ٣) كلمات الترتيب (First وThen وAfter that وFinally)، ٤) سؤالًا يبدأ بـ Did (مثل Did you …?)، ٥) عبارة قانونية واحدة من العبارات الخمس في الوحدة، وأنهِ كل جملة بنقطة أو بعلامة استفهام.",
+        placeholder: "1. Last summer, I went to …\n2. First, we … Then we …\n3. We didn't … / It wasn't …\n4. Did you …?\n5. … (a legal phrase from Unit 2)",
         minSentences: 4
       }
     }
