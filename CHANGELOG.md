@@ -2,6 +2,24 @@
 
 كل تعديل أو إضافة يُكتب هنا مع نشره: التاريخ، ومن عدّل، وماذا تغيّر، ولماذا، والملفات. الأحدث في الأعلى.
 
+## 2026-10-26 · Claude · إصلاح أزرار النطق (منشور)
+
+### لماذا
+أول فحص للروابط في GitHub بعد مرحلة «التجهيز» وجد ستة أزرار نطق صامتة، لأن ملفاتها غير موجودة في Wikimedia Commons. والأسماء الخمسة الأولى ليست في بيانات Wiktionary أيضًا، فالأرجح أنها كُتبت على نمط `En-us-<word>.ogg` الذي يخمّنه المحرك ولم توجد قط. وتسجيل to المنفرد مشدد، فيبدو غريبًا داخل العبارة.
+
+### ماذا تغيّر
+- u1l1: scientist ← `LL-Q1860 (eng)-Vealhurl-scientist.wav` (Lingua Libre)، وdata ← `En-us-data1.ogg`، وcontract في sign a contract ← `En-uk-contract (noun).ogg` (نطق الاسم، بريطاني).
+- u0l4: draft ← `EN-AU ck1 draught.ogg` (أسترالي، وdraught تُنطق مثل draft، ولا تسجيل بريطانيًا في Wiktionary)، وpolite ← `En-polite.ogg`.
+- u0l2: حُذف زر to من go to court، فتُسمع go ثم court، ويبقى رابط Oxford.
+- `wikiCredit` للملفات الجديدة تذكر الملف وCommons، ولا تذكر رخصة لم يُتحقق منها. و`index.html` بأرقام إصدار جديدة للدروس الثلاثة.
+- `README.md`: سطر ملفات النطق.
+
+### التحقق
+فحص الروابط في GitHub (تشغيل يدوي على الفرع `fix/audio-files`): 0 ERROR، و86 ملف نطق تفتح كلها، والتنبيه الوحيد صفحة LearnEnglish لمقطع u0l4 التي تحظر GitHub وتفتح للمتعلم. والفاحص بلا ERROR، والاختبار الشامل 99/99.
+
+### الملفات
+`lessons/u0/l2.js`، `lessons/u0/l4.js`، `lessons/u1/l1.js`، `index.html`، `README.md`، `CHANGELOG.md`.
+
 ## 2026-10-25 · Claude · مرحلة «التجهيز» (منشورة)
 
 ### لماذا
