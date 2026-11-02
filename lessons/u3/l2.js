@@ -460,7 +460,7 @@ LESSONS.u3l2 = {
       { k: "form", tEn: "was / were before verb-ing, no 'was drive', and a comma when a sentence starts with When", t: "was / were قبل الفعل بـ ing، ولا was drive، وفاصلة إذا بدأت الجملة بـ When", ex: "I was driving (not: I driving, was drive) · When the car stopped, I was …",
         ok: function(a, text){
           var s = ' ' + String(text || '').replace(/[‘’]/g, "'") + ' ';
-          if (/\b(?:I|you|he|she|we|they)\s+(?:driving|riding|walking|running|going|crossing|turning|sitting|waiting|working)\b/i.test(s)) return false;
+          if (/\b(?:I|you|he|she|we|they)\s+(?:driving|riding|walking|running|going|crossing|turning|sitting|waiting|working)\b/i.test(s.replace(/\b(?:was|were)\s+(?:I|you|he|she|we|they)\b/gi, ' '))) return false;
           if (/\b(?:was|were)\s+(?:drive|ride|walk|go|cross|turn|sit|wait|work|fall|break)\b/i.test(s)) return false;
           return !s.split(/[.!?]+/).some(function(x){ return /^\s*when\b/i.test(x) && !/^\s*when\s+(?:did|do|does)\b/i.test(x) && x.indexOf(',') < 0; }); } },
       { k: "vocab", tEn: "At least 2 words or phrases from today's lesson", t: "كلمتان أو عبارتان على الأقل من درس اليوم", ex: "accident · injured · serious · rent · fall off · control · driving licence",
