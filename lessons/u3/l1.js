@@ -38,7 +38,7 @@ LESSONS.u3l1 = {
   en: "A Night to Remember",
   ar: "ليلة الإطلاق إلى الفضاء: الماضي المستمر في الإثبات",
   subEn: "Past Continuous: was / were + -ing",
-  canDoEn: "I can say what people were doing at an exact time in the past, and tell the scene of a short story with was / were + -ing.",
+  canDoEn: "I can say what people were doing at an exact time in the past, and use was / were + -ing for the scene in a short story.",
   canDoAr: "أقدر أن أقول ما كان الناس يفعلونه في وقت محدد من الماضي، وأصف المشهد في قصة قصيرة بـ was / were مع ing.",
   descEn: "I can read an email about the night of a Saudi space flight, and use the Past Continuous for actions in progress at a past moment.",
   descAr: "أقدر أن أقرأ إيميلًا عن ليلة رحلة فضاء سعودية، وأستعمل الماضي المستمر لأحداث كانت جارية في لحظة من الماضي.",
@@ -252,7 +252,7 @@ LESSONS.u3l1 = {
     { s: "The scientists repeated the ___ three times and got the same result.", opts: ["experiment", "space", "screen"], a: 0,
       whyEn: "Scientists do an 'experiment', and they can repeat it to check the result. You can't repeat a 'space' or a 'screen'.",
       why: "يجري العلماء تجربة experiment ويعيدونها للتحقق من نتيجتها، ولا يُعاد space ولا screen.", errCat: "vocab" },
-    { s: "Two countries can't agree about a small island, so their lawyers are checking ___.", opts: ["law international", "international law", "the international law"], a: 1,
+    { s: "Two countries can't agree about a small island, so their lawyers are reading about ___.", opts: ["law international", "international law", "the international law"], a: 1,
       whyEn: "The adjective comes before the noun, and there is no 'the': international law. It is the law between countries, so it fits a problem between two countries.",
       why: "تأتي الصفة قبل الاسم، ولا نضع the: international law، وهو القانون بين الدول فيناسب خلافًا بين دولتين.", errCat: "vocab" }
   ],
@@ -328,12 +328,12 @@ LESSONS.u3l1 = {
         '<p class="en-p" dir="ltr">The first sentence tells the <b>whole action</b>, from start to end. The second puts you <b>in the middle</b> of it.</p>' +
         '<h3 class="bi-h"><span class="en" dir="ltr">Six new irregular verbs</span><small>ستة أفعال شاذة جديدة</small></h3>' +
         '<div class="tbl"><table><thead><tr><th>Verb</th><th>Past Simple</th><th>Past Continuous</th></tr></thead><tbody>' +
-        '<tr><td>sit</td><td><span class="hc">sat</span></td><td>was sitting</td></tr>' +
-        '<tr><td>stand</td><td><span class="hc">stood</span></td><td>was standing</td></tr>' +
-        '<tr><td>hold</td><td><span class="hc">held</span></td><td>was holding</td></tr>' +
-        '<tr><td>wear</td><td><span class="hc">wore</span></td><td>was wearing</td></tr>' +
-        '<tr><td>drink</td><td><span class="hc">drank</span></td><td>was drinking</td></tr>' +
-        '<tr><td>read</td><td><span class="hc">read</span> (say: red)</td><td>was reading</td></tr></tbody></table></div>' +
+        '<tr><td>sit</td><td><span class="hs">sat</span></td><td>was sitting</td></tr>' +
+        '<tr><td>stand</td><td><span class="hs">stood</span></td><td>was standing</td></tr>' +
+        '<tr><td>hold</td><td><span class="hs">held</span></td><td>was holding</td></tr>' +
+        '<tr><td>wear</td><td><span class="hs">wore</span></td><td>was wearing</td></tr>' +
+        '<tr><td>drink</td><td><span class="hs">drank</span></td><td>was drinking</td></tr>' +
+        '<tr><td>read</td><td><span class="hs">read</span> (say: red)</td><td>was reading</td></tr></tbody></table></div>' +
         '<div class="tip" dir="ltr"><p><b>State verbs don\'t take -ing · أفعال الحالة لا تأخذ ing:</b> know, want, like, need. It is the same in the past as in the present.</p><div class="pairs"><span class="yes">She knew my name.</span><span class="no">She was knowing my name.</span></div></div>',
       arHtml:
         '<p>نقول <bdi class="en">I watched the match</bdi> إذا أخبرنا عن <b>الحدث كله</b> من أوله إلى آخره، ونقول <bdi class="en">I was watching the match at seven</bdi> إذا وضعنا السامع <b>في وسط الحدث</b> وهو جارٍ.</p>' +
@@ -452,7 +452,7 @@ LESSONS.u3l1 = {
       ex1: "we were sitting · my father was standing · My mother was pouring coffee · I was reading the news",
       l2En: "For finished actions in her story, she uses the Past Simple:",
       ex2: "my mother held my hand · we all stood up · They stayed · I read the news again",
-      arHtml: '<p>لاحظ أن لمى رسمت المشهد بالماضي المستمر <b style="color:var(--dark)">was / were + ing</b>، فذكرت ما كان كل فرد من أسرتها يفعله في تلك اللحظة (<bdi class="en">were sitting, was standing, was pouring, was reading</bdi>)، ثم انتقلت إلى الماضي البسيط <b style="color:var(--accent-ink)">للأحداث المكتملة</b> (<bdi class="en">held, stood, stayed</bdi>). وقارن بين <bdi class="en">I was reading the news</bdi> و<bdi class="en">I read the news again</bdi>: الأولى حدث جارٍ في تلك اللحظة، والثانية حدث مكتمل.</p>'
+      arHtml: '<p>لاحظ أن لمى رسمت المشهد بالماضي المستمر <b style="color:var(--accent-ink)">was / were + ing</b>، فذكرت ما كان كل فرد من أسرتها يفعله في تلك اللحظة (<bdi class="en">were sitting, was standing, was pouring, was reading</bdi>)، ثم انتقلت إلى الماضي البسيط <b style="color:var(--dark)">للأحداث المكتملة</b> (<bdi class="en">held, stood, stayed</bdi>). وقارن بين <bdi class="en">I was reading the news</bdi> و<bdi class="en">I read the news again</bdi>: الأولى حدث جارٍ في تلك اللحظة، والثانية حدث مكتمل.</p>'
     },
     introEn: "Lama is a law student in Riyadh. She is writing to her British friend Sophie about a special night.",
     intro: "لمى طالبة قانون في الرياض، وتكتب إلى صديقتها البريطانية صوفي عن ليلة لا تُنسى.",
