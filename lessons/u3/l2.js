@@ -38,7 +38,7 @@ LESSONS.u3l2 = {
       ]
     },
     grammar: {
-      dEn: "Why is 'a car was hitting me' wrong? Learn how a short action stops a long action, with when and 6 irregular verbs.",
+      dEn: "Why is 'a car was hitting me' wrong? Learn how a short action happens in the middle of a long action, with when and 6 irregular verbs.",
       d: "لماذا تُعد جملة a car was hitting me خاطئة؟ تعلّم كيف يقطع الحدث القصير الحدث الطويل، مع when وستة أفعال شاذة.",
       items: [
         ["book", "6 grammar cards (English first, Arabic on tap)", "6 بطاقات شرح (الإنجليزي أولًا، والعربي عند الطلب)"],
@@ -76,8 +76,8 @@ LESSONS.u3l2 = {
       id: "rc-0",
       promptAr: "اسم من الدرس الأول: الفضاء، أي ما وراء الأرض حيث النجوم والكواكب",
       promptEn: "Noun from Lesson 1: the place outside the Earth, where the stars and planets are",
-      sentPre: "My little brother loves rockets and wants to go into",
-      sentPost: "one day.",
+      sentPre: "The new rocket can carry four people into",
+      sentPost: "and bring them back to Earth.",
       ans: ["space"],
       hint: "s _ _ _ e (5 letters)",
       spellNoteEn: "Spelled s-p-a-c-e: the 's' sound at the end is written -ce. Say go into space, with no 'the'.",
@@ -88,8 +88,8 @@ LESSONS.u3l2 = {
       id: "rc-1",
       promptAr: "اسم من الدرس الأول: تجربة علمية يجريها الباحث ليعرف شيئًا جديدًا",
       promptEn: "Noun from Lesson 1: a test that a scientist does to learn something new",
-      sentPre: "In our science class today, we did an",
-      sentPost: "with salt and warm water.",
+      sentPre: "My cousin's teacher asked her to do an",
+      sentPost: "at home with an egg and a glass of water.",
       ans: ["experiment"],
       hint: "e _ _ _ _ _ _ _ _ t (10 letters)",
       spellNoteEn: "Spelled e-x-p-e-r-i-m-e-n-t, with the ending -ment. We say do an experiment, not make an experiment.",
@@ -112,20 +112,20 @@ LESSONS.u3l2 = {
       id: "rc-3",
       promptAr: "صفة من الدرس الأول: فخور، أي سعيد بما أنجزه هو أو أنجزه من يحب",
       promptEn: "Adjective from Lesson 1: happy about something that you or a person you love did well",
-      sentPre: "My parents were very",
-      sentPost: "of me on the day of my graduation.",
+      sentPre: "Our teacher was",
+      sentPost: "of the class when all the students passed the exam.",
       ans: ["proud"],
       hint: "p _ _ _ d (5 letters)",
-      spellNoteEn: "Spelled p-r-o-u-d, and it takes of: proud of me, not proud from me.",
-      spellNote: "تُكتب p-r-o-u-d، وتأتي بعدها of: proud of me لا proud from me.",
+      spellNoteEn: "Spelled p-r-o-u-d, and it takes of: proud of the class, not proud from the class.",
+      spellNote: "تُكتب p-r-o-u-d، وتأتي بعدها of: proud of the class لا proud from the class.",
       errCat: "spelling"
     },
     {
       id: "rc-4",
       promptAr: "العبارة القانونية من الدرس الأول: القانون الدولي، أي القواعد التي تنظّم العلاقات بين الدول (كلمتان)",
       promptEn: "Legal phrase from Lesson 1: the rules between countries (two words)",
-      sentPre: "My sister wants to work for the United Nations, so she is studying",
-      sentPost: "at university.",
+      sentPre: "My brother is a lawyer in Geneva, and his job is about",
+      sentPost: "and the rights of countries.",
       ans: ["international law"],
       isLegal: true,
       hint: "i _ _ _ _ _ _ _ _ _ _ _ _ _ _ w (16 letters, 2 words)",
@@ -143,8 +143,8 @@ LESSONS.u3l2 = {
     say: "دْرَايْفِنْق لَايْسَنْس",
     ex: "My sister got her driving licence last year, and now she drives to work every day.",
     exAr: "حصلت أختي على رخصة القيادة في العام الماضي، وهي الآن تذهب إلى عملها بسيارتها كل يوم.",
-    tipEn: "Legal collocation: get a driving licence / have a driving licence. A licence is an official document that gives you the right to do something. British English writes the noun with c: licence. In the USA and Canada, people say driver's license, with s, and you will hear this in the clip.",
-    tip: "متلازمة قانونية: get a driving licence يحصل على رخصة قيادة، وhave a driving licence يحمل رخصة قيادة، وlicence وثيقة رسمية تمنحك حق القيام بأمر ما. وتُكتب في البريطانية بحرف c، أما في أمريكا وكندا فيقال driver's license بحرف s، وستسمعها في المقطع.",
+    tipEn: "Legal collocation: get a driving licence / have a driving licence. A licence is an official document that gives you the right to do something. British English writes the noun with c: licence. North Americans say driver's, not driving, and you will hear this in the clip. In the USA, the noun is written with s: driver's license.",
+    tip: "متلازمة قانونية: get a driving licence يحصل على رخصة قيادة، وhave a driving licence يحمل رخصة قيادة، وlicence وثيقة رسمية تمنحك حق القيام بأمر ما. وتُكتب في البريطانية بحرف c. ويقول أهل أمريكا الشمالية driver's بدل driving، وستسمعها في المقطع، وتُكتب في الولايات المتحدة بحرف s: driver's license.",
     legal: true,
     oxfordSlug: "driving-licence",
     wikiFiles: ["En-us-driving.ogg", "LL-Q1860 (eng)-Vealhurl-licence.wav"],
@@ -153,14 +153,14 @@ LESSONS.u3l2 = {
 
   vocab: [
     { en: "accident", pos: "noun", ar: "حادث", say: "أَكْسِيدَنْت",
-      ex: "My uncle had a small accident on the road to Taif, but his car is fine now.", exAr: "وقع لعمي حادث صغير على طريق الطائف، لكن سيارته بخير الآن.",
+      ex: "My cousin had his first accident on the road to Taif, and now he drives slowly.", exAr: "وقع لابن عمي أول حادث له على طريق الطائف، وهو يقود الآن ببطء.",
       tipEn: "Say have an accident or be in an accident, not make an accident or do an accident. A car accident is an accident with a car. Spelling: a-c-c-i-d-e-n-t, with a double c.",
       tip: "نقول have an accident أو be in an accident، ولا نقول make an accident ولا do an accident، وa car accident حادث سيارة. وتُكتب a-c-c-i-d-e-n-t بحرف c مضاعف.",
       oxfordSlug: "accident",
       wikiFile: "En-us-accident.ogg",
       wikiCredit: "File:En-us-accident.ogg · Wikimedia Commons" },
     { en: "injured", pos: "adjective", ar: "مصاب / مجروح", say: "إِنْجَرْد",
-      ex: "Two players were injured in the match, and they cannot play this month.", exAr: "أُصيب لاعبان في المباراة، ولا يستطيعان اللعب هذا الشهر.",
+      ex: "My neighbour was injured at work, so he is staying at home this month.", exAr: "أُصيب جاري في عمله، فهو باقٍ في البيت هذا الشهر.",
       tipEn: "Use be with this word: be injured, badly injured. We use it for people and animals, not for things: an injured man, but a broken phone.",
       tip: "نستعملها مع be: be injured، وbadly injured أي مصاب إصابة بالغة، وهي للناس والحيوان لا للأشياء: an injured man، أما الهاتف فنقول a broken phone.",
       oxfordSlug: "injured",
@@ -169,7 +169,7 @@ LESSONS.u3l2 = {
     { en: "serious", pos: "adjective", ar: "خطير / بالغ / جادّ", say: "سِيرِيَس",
       ex: "My grandmother had a serious illness last year, but she is well now.", exAr: "أصيبت جدتي بمرض خطير في العام الماضي، لكنها بخير الآن.",
       tipEn: "A serious accident, problem or illness is a bad and worrying one. For a person, serious means not joking: a serious student.",
-      tip: "a serious accident حادث بالغ، ومثلها a serious problem وa serious illness، أي أمر سيئ مقلق. وإذا وُصف بها الإنسان فمعناها جادّ: a serious student أي طالب جادّ.",
+      tip: "a serious accident حادث خطير، ومثلها a serious problem وa serious illness، أي أمر سيئ مقلق. وإذا وُصف بها الإنسان فمعناها جادّ: a serious student أي طالب جادّ.",
       oxfordSlug: "serious",
       wikiFile: "En-us-serious.ogg",
       wikiCredit: "File:En-us-serious.ogg · Wikimedia Commons" },
@@ -184,7 +184,7 @@ LESSONS.u3l2 = {
       ex: "The little boy fell off his chair at lunch, and everyone laughed.", exAr: "وقع الولد الصغير من فوق كرسيه وقت الغداء، فضحك الجميع.",
       tipEn: "fall off + a thing: fall off a bike, fall off a horse, fall off a chair. You were on it, and then you came down fast. The past of fall is irregular: fell off.",
       tip: "fall off يتبعها الشيء الذي كنت فوقه: fall off a bike وfall off a horse وfall off a chair، وfall فعل شاذ، فماضيها fell off.",
-      oxfordSlug: "fall-off",
+      oxfordSlug: "fall_1",
       wikiFiles: ["En-us-fall.ogg", "En-us-off.ogg"],
       wikiCredit: "File:En-us-fall.ogg & File:En-us-off.ogg · Wikimedia Commons" },
     { en: "control", pos: "verb", ar: "يتحكّم في / يسيطر على", say: "كَنْتْرُول",
@@ -200,12 +200,12 @@ LESSONS.u3l2 = {
     { s: "This road is not safe at night. There was a bad ___ here last week.", opts: ["accident", "control", "driving licence"], a: 0,
       whyEn: "An 'accident' is a bad event on the road, and the sentence says the road is not safe. 'control' and 'driving licence' cannot happen on a road.",
       why: "accident حادث يقع على الطريق، والجملة تقول إن الطريق غير آمن، أما control وdriving licence فلا يقعان على الطريق.", errCat: "vocab" },
-    { s: "The driver was badly ___ in the crash, so his family took him to hospital.", opts: ["rented", "serious", "injured"], a: 2,
+    { s: "The driver was badly ___ in the accident, so his family took him to hospital.", opts: ["rented", "serious", "injured"], a: 2,
       whyEn: "'injured' means hurt in the body, and that is why he went to hospital. We say 'badly injured', not 'badly serious'.",
       why: "injured تعني أن جسمه أصيب، ولهذا ذهب إلى المستشفى، ونقول badly injured لا badly serious.", errCat: "vocab" },
     { s: "We need to see a doctor today, because this is a ___ problem.", opts: ["serious", "injured", "busy"], a: 0,
       whyEn: "A 'serious' problem is a bad and worrying one, so you need a doctor. 'injured' is for people and animals, not for a problem.",
-      why: "a serious problem مشكلة بالغة مقلقة، فيلزم الذهاب إلى الطبيب، أما injured فللناس والحيوان لا للمشكلة.", errCat: "vocab" },
+      why: "a serious problem مشكلة خطيرة مقلقة، فيلزم الذهاب إلى الطبيب، أما injured فللناس والحيوان لا للمشكلة.", errCat: "vocab" },
     { s: "We decided to ___ a car at the airport, because we have no car in Baku.", opts: ["fall off", "rent", "control"], a: 1,
       whyEn: "'rent' means pay to use something for a time. Visitors with no car often pay to use one for a few days.",
       why: "rent تعني أن تدفع لتنتفع بشيء مدة من الزمن، والزائر الذي لا سيارة له يستأجر سيارة أيامًا.", errCat: "vocab" },
@@ -218,7 +218,7 @@ LESSONS.u3l2 = {
     { s: "My brother passed his test yesterday, so now he can get a ___.", opts: ["driving licence", "accident", "serious"], a: 0,
       whyEn: "After you pass a driving test, you can get a 'driving licence', the official document that lets you drive.",
       why: "بعد اجتياز اختبار القيادة تحصل على driving licence، وهي الوثيقة الرسمية التي تجيز لك القيادة.", errCat: "vocab" },
-    { s: "My father ___ a small boat for the day, and we went fishing.", opts: ["fell off", "rented", "controlled"], a: 1,
+    { s: "My father ___ a small boat for the day, and we went fishing.", opts: ["fell off", "rented", "injured"], a: 1,
       whyEn: "'rented' means he paid to use the boat for one day. It is the past of 'rent', a regular verb.",
       why: "rented تعني أنه دفع لينتفع بالقارب يومًا واحدًا، وهي ماضي الفعل المنتظم rent.", errCat: "vocab" }
   ],
@@ -280,16 +280,16 @@ LESSONS.u3l2 = {
       enHtml:
         '<h2 class="bi-h"><span class="en" dir="ltr">Long or Short?</span><small>كيف تعرف كلًّا منهما؟ وwhen للزمن</small></h2>' +
         '<div class="sigs">' +
-          '<div class="sig c"><h3 dir="ltr">Went on for a time<small class="sig-ar">جارٍ مدة من الزمن</small></h3><ul><li>was reading</li><li>were sitting</li><li>was walking</li></ul></div>' +
+          '<div class="sig c"><h3 dir="ltr">Already going on<small class="sig-ar">كان جاريًا حين وقع الآخر</small></h3><ul><li>was reading</li><li>were sitting</li><li>was walking</li></ul></div>' +
           '<div class="sig s"><h3 dir="ltr">Happened in one moment<small class="sig-ar">وقع في لحظة</small></h3><ul><li>hit</li><li>fell</li><li>broke</li></ul></div>' +
         '</div>' +
         '<p class="en-p" dir="ltr">The background can also be a state, like <b>be</b> or <b>know</b>. These verbs take no -ing: When the taxi came, I was ready.</p>' +
-        '<p class="en-p" dir="ltr"><b>when + was / were</b> can also tell the time in your life. This is not a long action: When I was fifteen, I lived in Abha.</p>' +
+        '<p class="en-p" dir="ltr"><b>when + was / were</b> can also tell the time in your life. Here one action does not happen in the middle of another, so the past simple is fine for both verbs: When I was fifteen, I lived in Abha.</p>' +
         '<div class="tip" dir="ltr"><p><b>Also correct · يصح أيضًا:</b> when can go with the long action: When I was running for the bus, I fell. You will learn more in Lesson 4.</p></div>',
       arHtml:
-        '<p>اسأل نفسك: هل جرى الحدث مدة من الزمن؟ فهو طويل، ويأتي بالماضي المستمر. أم وقع في لحظة؟ فهو قصير، ويأتي بالماضي البسيط.</p>' +
+        '<p>اسأل نفسك: أيّ الحدثين كان جاريًا حين وقع الآخر؟ فهو الطويل، ويأتي بالماضي المستمر. وأيهما وقع في لحظة؟ فهو القصير، ويأتي بالماضي البسيط.</p>' +
         '<p>وقد تكون الخلفية حالة لا حدثًا، كما في <bdi class="en">be</bdi> و<bdi class="en">know</bdi>، وهذه لا تأخذ <bdi class="en">ing</bdi>: <bdi class="en">When the taxi came, I was ready.</bdi></p>' +
-        '<p>وتأتي <bdi class="en">when</bdi> مع <bdi class="en">was / were</bdi> لتحديد الزمن من العمر أو الحياة، فلا تدل على حدث طويل: <bdi class="en">When I was fifteen, I lived in Abha.</bdi></p>' +
+        '<p>وتأتي <bdi class="en">when</bdi> مع <bdi class="en">was / were</bdi> لتحديد الزمن من العمر أو الحياة، فلا يقع هنا حدث في أثناء حدث، فيصح الماضي البسيط في الفعلين: <bdi class="en">When I was fifteen, I lived in Abha.</bdi></p>' +
         '<p>ويصح أن تأتي <bdi class="en">when</bdi> مع الحدث الطويل نفسه، وليس ذلك خطأً: <bdi class="en">When I was running for the bus, I fell.</bdi> وتفصيله في الدرس الرابع.</p>'
     },
     {
@@ -322,7 +322,7 @@ LESSONS.u3l2 = {
   ],
 
   gA: [
-    { s: "On the way home, I ___ to the radio when the car in front of me stopped suddenly.", opts: ["listening", "was listening"], a: 1,
+    { s: "On the way home, I ___ to the radio when the car in front of me stopped.", opts: ["listening", "was listening"], a: 1,
       whyEn: "The long action needs 'was' before verb-ing. 'I listening' has no 'be' verb, so it is not a full sentence.",
       why: "الحدث الطويل تأتي فيه was قبل الفعل المنتهي بـ ing، وI listening بلا فعل be فليست جملة تامة.", errCat: "be_verb" },
     { s: "We were sitting in heavy traffic when a truck ___ the car behind us.", opts: ["hit", "was hitting"], a: 0,
@@ -352,18 +352,18 @@ LESSONS.u3l2 = {
   ],
 
   gC: [
-    { pre: "At ten last night, my father", verb: "drive", post: "to Riyadh when he saw a big fire near the road.", ans: ["was driving"],
-      whyEn: "Driving is the long action, and 'saw' is the short action in the middle of it. 'My father' is singular, so we use 'was'.",
-      why: "القيادة هي الحدث الطويل، وsaw هو الحدث القصير الواقع في أثنائها، وMy father مفرد فنستعمل was.", errCat: "tense" },
+    { pre: "My father", verb: "sleep", post: "in the back of the car when we had an accident.", ans: ["was sleeping"],
+      whyEn: "Sleeping is the long action, and 'had an accident' is the short action in the middle of it. 'My father' is singular, so we use 'was'.",
+      why: "النوم هو الحدث الطويل، وhad an accident هو الحدث القصير الواقع في أثنائه، وMy father مفرد فنستعمل was.", errCat: "tense" },
     { pre: "The children were playing on the stairs when Ali", verb: "fall", post: "and hurt his knee.", ans: ["fell"],
       whyEn: "Playing is the long action, so the short action takes the past simple. 'fall' is irregular: fell.",
       why: "اللعب هو الحدث الطويل، فيأتي الحدث القصير بالماضي البسيط، وfall فعل شاذ ماضيه fell.", errCat: "tense" },
     { pre: "When the glass", verb: "break", post: ", my mother was washing the dishes.", ans: ["broke"],
       whyEn: "After 'when', the short action takes the past simple. 'break' is irregular: broke, not breaked.",
       why: "بعد when يأتي الحدث القصير بالماضي البسيط، وbreak فعل شاذ ماضيه broke لا breaked.", errCat: "tense" },
-    { pre: "My sisters", verb: "cross", post: "the road when a bus came around the corner and almost hit them.", ans: ["were crossing"],
-      whyEn: "Crossing is the long action, and 'came' is the short action. 'My sisters' is plural, so we use 'were', not 'was'.",
-      why: "عبور الطريق هو الحدث الطويل، وcame هو الحدث القصير، وMy sisters جمع فنستعمل were لا was.", errCat: "agreement" }
+    { pre: "My sisters", verb: "wait", post: "at the side of the road when a bus came very close and almost hit them.", ans: ["were waiting"],
+      whyEn: "Waiting is the long action, and 'came' is the short action. 'My sisters' is plural, so we use 'were', not 'was'.",
+      why: "الانتظار هو الحدث الطويل، وcame هو الحدث القصير، وMy sisters جمع فنستعمل were لا was.", errCat: "agreement" }
   ],
 
   gD: [
@@ -413,17 +413,17 @@ LESSONS.u3l2 = {
       titleEn: "One Story, Told with when",
       titleAr: "القصة نفسها تُحكى بـ when",
       l1En: "In the clip, people join the long action and the short action with and, with so, or with no word at all. That is normal in speech. Here is the same kind of story with when, in our own sentences:",
-      ex1: "Helen was driving in a parking lot when another car hit her car. · Matthew was riding home from work when another bicycle came in front of him. · Shalini was going onto a busy street when a car hit her.",
+      ex1: "Helen was crossing a parking lot when another car hit her car. · Matthew was riding home from work when another bicycle came in front of him. · Shalini was going onto a busy street when a car hit her.",
       l2En: "Start with when, and put a comma after the short action:",
       ex2: "When another bicycle came in front of him, Matthew was riding home from work. · When the motorbike started to slide, Paul and his girlfriend were riding across the island.",
       arHtml: "<p><b>انتبه:</b> يصل المتحدثون في المقطع الحدث الطويل بالقصير بـ and أو so أو بلا رابط، ولا يقول أحد منهم when للحدث القصير، وهذا طبيعي في الكلام.</p><p>أما when في المقطع فتأتي للزمن وحده، كأن يذكر المتحدث سنّه أو البلد الذي كان فيه: When I was sixteen.</p><p>وهذه جمل أمثلة كتبناها عن المقطع، وليست كلام المتحدثين بنصه، وهي تبيّن كيف تُحكى القصة نفسها بـ when.</p>"
     },
     questions: [
       { tf: true, q: "Helen had her accident many years after she got her licence.", a: false,
-        whyEn: "False. At the start, Helen says her accident came a short time after she got her licence. She uses the Canadian words driver's license.",
-        why: "خطأ؛ في أول المقطع تقول هيلين إن الحادث وقع بعد وقت قصير من حصولها على رخصة القيادة، وتقولها بالصيغة الكندية driver's license.", errCat: "reading" },
+        whyEn: "False. At the start, Helen says her accident came a short time after she got her licence. She says driver's license, the North American name for it.",
+        why: "خطأ؛ في أول المقطع تقول هيلين إن الحادث وقع بعد وقت قصير من حصولها على رخصة القيادة، وتسميها driver's license كما يقال في أمريكا الشمالية.", errCat: "reading" },
       { q: "Where did Helen's accident happen?", opts: ["Outside her school", "On a long road between two cities", "In a parking lot (a car park)"], a: 2,
-        whyEn: "At the start, Helen says she was driving in a parking lot. British people call this place a car park.",
+        whyEn: "At the start, Helen says that the accident happened in a parking lot. British people call this place a car park.",
         why: "في أول المقطع تقول هيلين إنها كانت تقود في موقف سيارات، ويسميه البريطانيون car park.", errCat: "reading" },
       { q: "How old was Amir when he had his accident?", opts: ["Nine", "Sixteen", "Nineteen"], a: 0,
         whyEn: "Near the start, in the second story, Amir says he had his accident at the age of nine.",
@@ -431,13 +431,13 @@ LESSONS.u3l2 = {
       { q: "What did Lindsay decide after her accident?", opts: ["To sell her car and take the bus", "To drive carefully from then on", "To wait a year before she drove again"], a: 1,
         whyEn: "In the middle, at the end of the third story, Lindsay says she decided to be very careful when she drives.",
         why: "في وسط المقطع، في آخر القصة الثالثة، تقول ليندسي إنها قررت أن تكون حذرة جدًا في قيادتها.", errCat: "reading" },
-      { q: "Why did Paul and his girlfriend rent a motorbike?", opts: ["To go diving on the other side of the island", "To visit a friend in the capital", "To take photos of the mountains"], a: 0,
-        whyEn: "In the middle, in the fourth story, Paul says they wanted to go to the other side of the island in Thailand and do some diving.",
+      { q: "Why did Paul and his girlfriend rent a motorbike?", opts: ["To go diving in another part of the island", "To visit a friend in the capital", "To take photos of the mountains"], a: 0,
+        whyEn: "In the middle, in the fourth story, Paul says they wanted to ride across the island in Thailand and go diving there.",
         why: "في وسط المقطع، في القصة الرابعة، يقول بول إنهما أرادا الذهاب إلى الجهة الأخرى من الجزيرة في تايلند ليمارسا الغوص.", errCat: "reading" },
       { q: "What does Paul say about the roads there?", opts: ["They were very busy.", "They were new and wide.", "They were a bit dangerous."], a: 2,
         whyEn: "In the middle, in the fourth story, Paul says the roads there were not very safe.",
         why: "في وسط المقطع، في القصة الرابعة، يقول بول إن الطرق هناك لم تكن آمنة كثيرًا.", errCat: "reading" },
-      { q: "Matthew was riding his bicycle home from work. What did he break?", opts: ["His leg", "His arm", "His front wheel"], a: 1,
+      { q: "Matthew had his accident on his bicycle, on the way home. What did he break?", opts: ["His leg", "His arm", "His front wheel"], a: 1,
         whyEn: "Near the end, in the fifth story, Matthew says that he broke his arm. He was sixteen at the time.",
         why: "قرب آخر المقطع، في القصة الخامسة، يقول ماثيو إن ذراعه انكسرت، وكان في السادسة عشرة.", errCat: "reading" },
       { q: "What was the street like in Shalini's story?", opts: ["It was busy.", "It was quiet.", "It was closed."], a: 0,
@@ -447,8 +447,8 @@ LESSONS.u3l2 = {
   },
 
   writing: {
-    taskEn: "Write at least 4 separate sentences about a small accident or a bad moment on the road. It can be true, or you can make it up. In at least 2 sentences, use a long action and a short action with when (I was driving when a dog ran in front of me. When the police came, I was sitting in my car.). Use at least 2 words from today's lesson (for example: accident, injured, serious). Write 'I' with a capital letter.",
-    task: "اكتب 4 جمل منفصلة على الأقل عن حادث صغير أو موقف سيئ على الطريق، حقيقيًا كان أو من خيالك. استعمل في جملتين على الأقل حدثًا طويلًا وحدثًا قصيرًا مع when (I was driving when a dog ran in front of me. When the police came, I was sitting in my car.)، واستعمل كلمتين على الأقل من كلمات الدرس (مثل accident وinjured وserious)، واكتب الضمير I بحرف كبير.",
+    taskEn: "Write at least 4 separate sentences about a small accident or a bad moment on the road. It can be true, or you can make it up. In at least 2 sentences, use a long action and a short action with when (I was driving when a dog ran in front of me. When my brother came, I was sitting in my car.). Use at least 2 words from today's lesson (for example: accident, injured, serious). Write 'I' with a capital letter.",
+    task: "اكتب 4 جمل منفصلة على الأقل عن حادث صغير أو موقف سيئ على الطريق، حقيقيًا كان أو من خيالك. استعمل في جملتين على الأقل حدثًا طويلًا وحدثًا قصيرًا مع when (I was driving when a dog ran in front of me. When my brother came, I was sitting in my car.)، واستعمل كلمتين على الأقل من كلمات الدرس (مثل accident وinjured وserious)، واكتب الضمير I بحرف كبير.",
     placeholder: "I was driving … when …\nWhen …, I was …",
     checks: [
       { k: "sentences", tEn: "At least 4 separate sentences (end each with a period .), and 'I' is always a capital", t: "4 جمل منفصلة على الأقل (بنقطة في نهاية كل جملة)، والضمير I بحرف كبير دائمًا",
@@ -456,13 +456,13 @@ LESSONS.u3l2 = {
       { k: "when", tEn: "At least 2 sentences with was / were + verb-ing and when", t: "جملتان على الأقل فيهما was / were مع فعل بـ ing، وwhen", ex: "I was driving when a dog ran in front of me.",
         ok: function(a, text){
           return String(text || '').split(/[.!?]+/).filter(function(x){
-            return /\bwhen\b/i.test(x) && /\b(?:was|were)\s+[a-z]+ing\b/i.test(x); }).length >= 2; } },
+            return /\bwhen\b/i.test(x) && /\b(?:was|were)\s+(?!(?:morning|evening|nothing|something|anything|everything)\b)[a-z]+ing\b/i.test(x); }).length >= 2; } },
       { k: "form", tEn: "was / were before verb-ing, no 'was drive', and a comma when a sentence starts with When", t: "was / were قبل الفعل بـ ing، ولا was drive، وفاصلة إذا بدأت الجملة بـ When", ex: "I was driving (not: I driving, was drive) · When the car stopped, I was …",
         ok: function(a, text){
           var s = ' ' + String(text || '').replace(/[‘’]/g, "'") + ' ';
           if (/\b(?:I|you|he|she|we|they)\s+(?:driving|riding|walking|running|going|crossing|turning|sitting|waiting|working)\b/i.test(s)) return false;
           if (/\b(?:was|were)\s+(?:drive|ride|walk|go|cross|turn|sit|wait|work|fall|break)\b/i.test(s)) return false;
-          return !s.split(/[.!?]+/).some(function(x){ return /^\s*when\b/i.test(x) && x.indexOf(',') < 0; }); } },
+          return !s.split(/[.!?]+/).some(function(x){ return /^\s*when\b/i.test(x) && !/^\s*when\s+(?:did|do|does)\b/i.test(x) && x.indexOf(',') < 0; }); } },
       { k: "vocab", tEn: "At least 2 words or phrases from today's lesson", t: "كلمتان أو عبارتان على الأقل من درس اليوم", ex: "accident · injured · serious · rent · fall off · control · driving licence",
         ok: function(a, text){
           var s = String(text || '').replace(/[‘’]/g, "'");
@@ -478,7 +478,8 @@ LESSONS.u3l2 = {
     acceptExamples: [
       "Last summer, I rented a bike in Turkey. I was riding near the sea when a dog ran in front of me. I fell off the bike and hurt my hand. When my friend came, I was sitting on the road.",
       "I had a small accident yesterday. I was walking to the university when I fell. I cut my hand, but it wasn’t serious. When my brother called, I was waiting at the clinic.",
-      "We were driving to Abha when a big truck hit our car. It was a serious accident. When the police arrived, we were standing near the road. My father was injured, but he is fine now."
+      "We were driving to Abha when a big truck hit our car. It was a serious accident. When the police arrived, we were standing near the road. My father was injured, but he is fine now.",
+      "When I was riding to work, a car hit my bike. I fell off and broke my arm. I was waiting for my brother when the police came. It wasn’t a serious accident, but I was injured. When did it happen? It happened in May."
     ]
   },
 
@@ -493,7 +494,7 @@ LESSONS.u3l2 = {
     { s: "Which sentence is correct?", opts: ["I talking to my friend when the taxi stopped.", "I was talking to my friend when the taxi stopped.", "I was talk to my friend when the taxi stopped."], a: 1, tag: "Grammar · قواعد",
       whyEn: "The long action needs 'was' + verb-ing: was talking. 'I talking' has no 'was', and 'was talk' has no -ing.",
       why: "الحدث الطويل يأتي بـ was مع الفعل بـ ing: was talking، أما I talking فبلا was، وwas talk بلا ing.", errCat: "be_verb" },
-    { s: "My grandfather was washing the cups when he ___ one of them.", opts: ["broke", "breaked", "was breaking"], a: 0, tag: "Grammar · قواعد",
+    { s: "My grandfather was getting out of the car when he ___ his glasses.", opts: ["broke", "breaked", "was breaking"], a: 0, tag: "Grammar · قواعد",
       whyEn: "'was washing' is the long action, so the short action takes the past simple. The past of 'break' is 'broke'.",
       why: "was washing هو الحدث الطويل، فيأتي الحدث القصير بالماضي البسيط، وماضي break هو broke.", errCat: "tense" },
     { s: "We ___ in a small restaurant in Istanbul when a waiter fell with all the plates.", opts: ["was eating", "eat", "were eating"], a: 2, tag: "Grammar · قواعد",
@@ -502,18 +503,18 @@ LESSONS.u3l2 = {
     { s: "An old man was getting on the bus when he ___ and hurt his back.", opts: ["falled", "fell", "falling"], a: 1, tag: "Grammar · قواعد",
       whyEn: "This is the short action, so it takes the past simple. 'fall' is irregular: fell. 'falled' is not a word.",
       why: "هذا هو الحدث القصير، فيأتي بالماضي البسيط، وfall فعل شاذ ماضيه fell، أما falled فليست كلمة.", errCat: "tense" },
-    { s: "Which sentence is correct?", opts: ["When the police came we were standing near the car.", "When the police were come, we stood near the car.", "When the police came, we were standing near the car."], a: 2, tag: "Grammar · قواعد",
+    { s: "Which sentence is correct?", opts: ["When the teacher came we were standing near the window.", "When the teacher was come, we stood near the window.", "When the teacher came, we were standing near the window."], a: 2, tag: "Grammar · قواعد",
       whyEn: "When + short action in the past simple (came), then a comma, then the long action (were standing).",
       why: "When مع الحدث القصير بالماضي البسيط (came)، ثم فاصلة، ثم الحدث الطويل (were standing).", errCat: "word_order" },
-    { s: "A goat ___ across the road, and the driver stopped just in time.", opts: ["ran", "runned", "run"], a: 0, tag: "Grammar · قواعد",
+    { s: "A little boy ___ after his ball, and the driver stopped just in time.", opts: ["ran", "runned", "run"], a: 0, tag: "Grammar · قواعد",
       whyEn: "The story is in the past ('stopped'), and the past of 'run' is 'ran'. 'runned' is not a word, and 'run' here would be present.",
       why: "القصة في الماضي (stopped)، وماضي run هو ran، أما runned فليست كلمة، وrun هنا مضارع.", errCat: "tense" },
     { s: "When my father ___ young, he hurt his leg in a football match.", opts: ["were", "was being", "was"], a: 2, tag: "Grammar · قواعد",
       whyEn: "'When my father was young' tells the time in his life, so we use 'was'. 'my father' is singular, and 'be' takes no -ing here.",
       why: "When my father was young تحدد زمنًا من حياته، فنستعمل was، وmy father مفرد، وbe هنا لا تأخذ ing.", errCat: "be_verb" },
-    { s: "The police said that nobody was ___ in the crash, and everyone went home.", opts: ["rented", "injured", "serious"], a: 1, tag: "Vocabulary · مفردات",
-      whyEn: "'injured' means hurt in the body. The people went home because nobody was hurt. 'serious' describes the crash, not the people: a serious crash.",
-      why: "injured تعني أن جسمه أصيب، وقد عاد الجميع إلى بيوتهم لأنه لم يُصب أحد، أما serious فوصف للحادث لا للناس: a serious crash.", errCat: "vocab" },
+    { s: "The police said that nobody was ___ in the accident, and everyone went home.", opts: ["rented", "injured", "serious"], a: 1, tag: "Vocabulary · مفردات",
+      whyEn: "'injured' means hurt in the body. The people went home because nobody was hurt. 'serious' describes the accident here, not the people: a serious accident.",
+      why: "injured تعني أن جسمه أصيب، وقد عاد الجميع إلى بيوتهم لأنه لم يُصب أحد، أما serious فوصف للحادث هنا لا للناس: a serious accident.", errCat: "vocab" },
     { s: "The island is big, so we want to ___ a car for a week and see all of it.", opts: ["rent", "control", "fall off"], a: 0, tag: "Vocabulary · مفردات",
       whyEn: "'rent' means pay to use something for a time, like a car for one week.",
       why: "rent تعني أن تدفع لتنتفع بشيء مدة من الزمن، كسيارة لأسبوع واحد.", errCat: "vocab" },

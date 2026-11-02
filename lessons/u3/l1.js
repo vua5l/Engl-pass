@@ -4,9 +4,9 @@
 var TL_SVG = '<svg class="tl" viewBox="0 0 340 132" role="img" aria-label="Timeline: the Past Continuous is a long action in progress at a point in the past · الماضي المستمر حدث طويل كان جاريًا عند نقطة في الماضي" direction="ltr">' +
   '<line x1="92" y1="18" x2="92" y2="100" stroke="#1E2A33" stroke-width="1.2" stroke-dasharray="3 3"/><text x="92" y="12" text-anchor="middle" font-family="Quicksand, sans-serif" font-weight="700" font-size="10.5" fill="#1E2A33" letter-spacing="1.5">NOW</text>' +
   '<line x1="30" y1="62" x2="326" y2="62" stroke="#5A6B7C" stroke-width="1.5"/><path d="M22 62l10-5v10z" fill="#5A6B7C"/>' +
-  '<rect x="160" y="54" width="146" height="16" rx="8" fill="#2C4A6E" opacity="0.28"/>' +
-  '<circle cx="233" cy="62" r="7" fill="#2C4A6E"/>' +
-  '<text x="233" y="42" text-anchor="middle" font-family="Quicksand, Readex Pro, sans-serif" font-size="12" font-weight="700" fill="#2C4A6E">was cooking · in progress</text>' +
+  '<rect x="160" y="54" width="146" height="16" rx="8" fill="#B94A33" opacity="0.28"/>' +
+  '<circle cx="233" cy="62" r="7" fill="#B94A33"/>' +
+  '<text x="233" y="42" text-anchor="middle" font-family="Quicksand, Readex Pro, sans-serif" font-size="12" font-weight="700" fill="#A8432E">was cooking · in progress</text>' +
   '<text x="233" y="88" text-anchor="middle" font-family="Quicksand, Readex Pro, sans-serif" font-size="11.5" fill="#5A6B7C">at eight · في الثامنة</text>' +
   '<text x="326" y="124" text-anchor="end" font-family="Quicksand, Readex Pro, sans-serif" font-size="11.5" fill="#5A6B7C">Past · الماضي</text><text x="30" y="124" text-anchor="start" font-family="Quicksand, Readex Pro, sans-serif" font-size="11.5" fill="#5A6B7C">Future · المستقبل</text></svg>';
 /* صورة رأس إيميل لمى (صاروخ في سماء الليل وهلال): خاصة بهذا الدرس، وتظهر عبر reading.art. */
@@ -21,12 +21,12 @@ var NIGHT_SVG = '<svg viewBox="0 0 320 96" role="img" aria-label="A rocket going
 /* فحوص الكتابة (writing.checks): صيغتان من الماضي المستمر، وكلمة زمن تحدد لحظة، وكلمتان من الدرس، بعد توحيد فاصلة الآيفون العليا ’.
    والكلمات المنتهية بـ ing بعد was / were وليست أفعالًا مستمرة (morning وbuilding وamazing وinteresting …) لا تُعد. */
 var W_ING_NOT = /^(?:morning|evening|nothing|something|anything|everything|thing|building|wedding|meeting|king|ring|spring|wing|sing|bring|sting|swing|amazing|interesting|exciting|boring|tiring|relaxing|surprising|shocking|charming|during|outstanding|ceiling|feeling|painting)$/i;
-var W_TIME = /\b(?:at\s+(?:that|this|the\s+same)\s+(?:moment|time)|at\s+(?:midnight|noon|sunset|sunrise|dawn|night)|at\s+(?:[0-9]{1,2}(?:[:.][0-9]{2})?|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\b|this\s+time\s+(?:last|yesterday)|(?:that|last)\s+(?:night|evening|morning|afternoon|day)|yesterday)\b/i;
+var W_TIME = /\b(?:at\s+(?:that|this|the\s+same)\s+(?:moment|time)|(?:at\s+(?:about\s+|around\s+)?|around\s+|about\s+|(?:just\s+)?(?:before|after)\s+)(?:midnight|noon|sunset|sunrise|dawn|night)|at\s+(?:about\s+|around\s+)?(?:[0-9]{1,2}(?:[:.][0-9]{2})?(?:\s*[ap]\.?m)?|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\b|this\s+time\s+(?:last|yesterday)|(?:that|last)\s+(?:night|evening|morning|afternoon|day)|yesterday)\b/i;
 var W_VOCAB = [/\bspace\b/i, /\bexperiments?\b/i, /\bmoments?\b/i, /\bproud\b/i, /\bscreens?\b/i, /\b(?:make|makes|made|making)\s+history\b/i, /\binternational\s+law\b/i];
 function wNorm(text){ return String(text || '').replace(/[’‘]/g, "'"); }
 function wPastCont(text){
-  var n = 0, m, re = /\b(?:was|were)\s+(?:[a-z]+\s+)?([a-z]{2,}ing)\b/gi, s = wNorm(text);
-  while ((m = re.exec(s))) { if (!W_ING_NOT.test(m[1])) n++; }
+  var n = 0, m, re = /\b(?:was|were)\s+([a-z]+\s+)?([a-z]{2,}ing)\b/gi, s = wNorm(text);
+  while ((m = re.exec(s))) { if (!W_ING_NOT.test(m[2]) || (!m[1] && /^(?:building|meeting|feeling|painting)$/i.test(m[2]))) n++; }
   return n;
 }
 
@@ -38,7 +38,7 @@ LESSONS.u3l1 = {
   en: "A Night to Remember",
   ar: "ليلة الإطلاق إلى الفضاء: الماضي المستمر في الإثبات",
   subEn: "Past Continuous: was / were + -ing",
-  canDoEn: "I can say what people were doing at an exact time in the past, and describe the scene in a short story with was / were + -ing.",
+  canDoEn: "I can say what people were doing at an exact time in the past, and tell the scene of a short story with was / were + -ing.",
   canDoAr: "أقدر أن أقول ما كان الناس يفعلونه في وقت محدد من الماضي، وأصف المشهد في قصة قصيرة بـ was / were مع ing.",
   descEn: "I can read an email about the night of a Saudi space flight, and use the Past Continuous for actions in progress at a past moment.",
   descAr: "أقدر أن أقرأ إيميلًا عن ليلة رحلة فضاء سعودية، وأستعمل الماضي المستمر لأحداث كانت جارية في لحظة من الماضي.",
@@ -55,7 +55,7 @@ LESSONS.u3l1 = {
       items: [
         ["review", "5 active recall items from Unit 2, Lesson 5", "5 عناصر استرجاع نشط من الدرس الخامس في الوحدة 2"],
         ["pen", "Type each word from memory to fix its spelling", "اكتب كل كلمة من ذاكرتك لتثبيت إملائها"],
-        ["spark", "Includes the legal phrase 'apply for a visa'", "تشمل العبارة القانونية apply for a visa"]
+        ["spark", "Includes the legal phrase of Unit 2, Lesson 5", "تشمل العبارة القانونية من الدرس الخامس في الوحدة 2"]
       ]
     },
     vocab: {
@@ -108,8 +108,8 @@ LESSONS.u3l1 = {
       id: "rc-0",
       promptAr: "مرشد سياحي: يرافق الزوار ويشرح لهم المكان (عبارة من كلمتين من الدرس الخامس في الوحدة 2)",
       promptEn: "A person whose job is to show visitors a place and explain it (2 words)",
-      sentPre: "Our",
-      sentPost: "told us many stories about the old town of Diriyah.",
+      sentPre: "In Diriyah, a friendly",
+      sentPost: "showed us the old town and told us many stories.",
       ans: ["tour guide", "guide"],
       hint: "t _ _ _ _ _ _ _ e (9 letters, 2 words)",
       spellNoteEn: "Two words: tour + guide. tour sounds like 'toor', and the u in guide is silent: g-u-i-d-e.",
@@ -120,8 +120,8 @@ LESSONS.u3l1 = {
       id: "rc-1",
       promptAr: "منظر: ما تراه أمامك من مكان ما (اسم)",
       promptEn: "What you can see from a place (noun)",
-      sentPre: "From the top of the hotel, we had a wonderful",
-      sentPost: "of the sea and the mountains.",
+      sentPre: "Our flat is nice, but it has no",
+      sentPost: "because the window is in front of a wall.",
       ans: ["view"],
       hint: "v _ _ w (4 letters)",
       spellNoteEn: "Spelled v-i-e-w: 'iew' sounds like 'you' (vyoo). We say 'a view of the sea'.",
@@ -187,14 +187,14 @@ LESSONS.u3l1 = {
   /* ---------- المفردات (6 كلمات + العبارة القانونية = 7 عبارات، والمتلازمات في tipEn / tip) ---------- */
   vocab: [
     { en: "space", pos: "noun", ar: "الفضاء", say: "سْبَيْس",
-      ex: "My little cousin wants to go into space one day.", exAr: "يريد ابن عمي الصغير أن يذهب إلى الفضاء يومًا ما.",
+      ex: "Not many people go into space, because the journey is very expensive.", exAr: "لا يذهب إلى الفضاء إلا قليل من الناس، لأن الرحلة غالية جدًّا.",
       tipEn: "Collocations: go into space, travel in space. With this meaning there is no 'the' before it: we say 'in space', not 'in the space'. space has another meaning too: an empty place, as in 'a parking space'.",
       tip: "متلازمات: go into space (يذهب إلى الفضاء) وtravel in space (يسافر في الفضاء). ولا نضع قبلها the بهذا المعنى، فنقول in space لا in the space. ولها معنى آخر هو المكان الفارغ، كما في a parking space (موقف سيارة).",
       oxfordSlug: "space_1",
       wikiFile: "En-us-space.ogg",
       wikiCredit: "File:En-us-space.ogg · Wikimedia Commons" },
     { en: "experiment", pos: "noun", ar: "تجربة علمية", say: "إِكْسْبِيرِمَنْت",
-      ex: "Our chemistry teacher did an experiment with salt and ice.", exAr: "أجرى معلم الكيمياء تجربة بالملح والثلج.",
+      ex: "Our chemistry teacher did an experiment in front of the whole class.", exAr: "أجرى معلم الكيمياء تجربة أمام الصف كله.",
       tipEn: "Collocation: do an experiment (not 'make an experiment'). Use it for a test in science. For your own life, say 'experience': a good experience. The two words look alike, but their meanings are different.",
       tip: "متلازمة: do an experiment (يجري تجربة)، ولا نقول make an experiment. وتُستعمل للتجربة العلمية، أما تجربة الحياة فهي experience: a good experience. والكلمتان متشابهتان في الشكل مختلفتان في المعنى.",
       oxfordSlug: "experiment_1",
@@ -202,7 +202,7 @@ LESSONS.u3l1 = {
       wikiCredit: "File:En-us-experiment.ogg · Wikimedia Commons" },
     { en: "moment", pos: "noun", ar: "لحظة", say: "مُومَنْت",
       ex: "At that moment, my friends were waiting for me at the gate.", exAr: "في تلك اللحظة كان أصدقائي ينتظرونني عند البوابة.",
-      tipEn: "'at that moment' means exactly then, in a past story. Be careful: 'at the moment' means now. Also useful: Just a moment, please. The o sounds like the 'o' in 'go'.",
+      tipEn: "'at that moment' means just then, in a past story. Be careful: 'at the moment' means now. Also useful: Just a moment, please. The o sounds like the 'o' in 'go'.",
       tip: "at that moment تعني «في تلك اللحظة» من قصة ماضية. وانتبه: at the moment تعني «الآن». ومن العبارات النافعة Just a moment, please (لحظة من فضلك). وحرف o فيها يُنطق كصوته في go.",
       oxfordSlug: "moment",
       wikiFile: "En-us-moment.ogg",
@@ -234,27 +234,27 @@ LESSONS.u3l1 = {
     { s: "One day, I want to travel into ___ and see the Earth from far away.", opts: ["space", "screen", "experiment"], a: 0,
       whyEn: "We see the Earth from far away only from space, and 'travel into space' has no 'the'. A 'screen' is part of a TV or a phone, and an 'experiment' is a test in science.",
       why: "لا تُرى الأرض من بعيد إلا من الفضاء، ونقول travel into space بلا the؛ أما screen فجزء من التلفاز أو الهاتف، وexperiment تجربة علمية.", errCat: "vocab" },
-    { s: "In our chemistry class today, we did a small ___ with water and sugar.", opts: ["moment", "experiment", "history"], a: 1,
-      whyEn: "We 'do an experiment' in a science class to test something. 'a moment' is a short time, and 'history' has no 'a' before it.",
-      why: "نقول do an experiment في درس العلوم لاختبار شيء؛ أما moment فمدة قصيرة، وhistory لا يسبقها a.", errCat: "vocab" },
+    { s: "My brother did a simple ___ with two plants: one in the sun and one in the dark.", opts: ["moment", "experiment", "history"], a: 1,
+      whyEn: "We 'do an experiment' to test something, and here he tests two plants. 'a moment' is a short time, and 'history' is about the past.",
+      why: "نقول do an experiment لاختبار شيء، وهو هنا يختبر نبتتين؛ أما moment فمدة قصيرة، وhistory عن الماضي.", errCat: "vocab" },
     { s: "It was nine o'clock, and at that ___ my family was having dinner.", opts: ["screen", "space", "moment"], a: 2,
-      whyEn: "'at that moment' means exactly then, and it points to 'nine o'clock' in the story. We can't say 'at that screen' or 'at that space' for a time.",
+      whyEn: "'at that moment' means just then, and it points to 'nine o'clock' in the story. We can't say 'at that screen' or 'at that space' for a time.",
       why: "at that moment تعني «في تلك اللحظة» بعينها، وتشير إلى الساعة التاسعة في الجملة، ولا تدل screen ولا space على زمن.", errCat: "vocab" },
     { s: "I got the highest mark in my class, and my mother was very ___ of me.", opts: ["international", "proud", "ancient"], a: 1,
       whyEn: "'proud of me' means happy because of what I did. 'international' means between countries, and 'ancient' means very old.",
       why: "proud of me تعني مسرورة بما فعلتُ؛ أما international فتعني ما بين الدول، وancient تعني قديمًا جدًّا.", errCat: "vocab" },
-    { s: "Please don't sit too close to the TV ___: it is bad for your eyes.", opts: ["screen", "moment", "experiment"], a: 0,
-      whyEn: "A TV has a 'screen', and we look at it with our eyes. A 'moment' is a short time, and an 'experiment' is a test in science.",
-      why: "للتلفاز شاشة screen ننظر إليها بأعيننا؛ أما moment فمدة قصيرة، وexperiment تجربة علمية.", errCat: "vocab" },
-    { s: "She was the first woman from her town to fly a plane, so she really ___.", opts: ["did an experiment", "took photos", "made history"], a: 2,
-      whyEn: "To be 'the first' to do something important is to 'make history'. Nothing in the sentence is about science or photos.",
+    { s: "Please don't stand in front of the TV ___: I can't see the match.", opts: ["screen", "moment", "experiment"], a: 0,
+      whyEn: "A TV has a 'screen', and we look at it to see the match. A 'moment' is a short time, and an 'experiment' is a test in science.",
+      why: "للتلفاز شاشة screen ننظر إليها لنشاهد المباراة؛ أما moment فمدة قصيرة، وexperiment تجربة علمية.", errCat: "vocab" },
+    { s: "Nobody did this before her, and now her name is in every school book, so she really ___.", opts: ["did an experiment", "took photos", "made history"], a: 2,
+      whyEn: "To do something important that nobody did before is to 'make history'. Nothing in the sentence is about science or photos.",
       why: "من يسبق غيره إلى أمر عظيم فقد صنع التاريخ made history، ولا شيء في الجملة عن العلوم أو الصور.", errCat: "vocab" },
     { s: "The scientists repeated the ___ three times and got the same result.", opts: ["experiment", "space", "screen"], a: 0,
       whyEn: "Scientists do an 'experiment', and they can repeat it to check the result. You can't repeat a 'space' or a 'screen'.",
       why: "يجري العلماء تجربة experiment ويعيدونها للتحقق من نتيجتها، ولا يُعاد space ولا screen.", errCat: "vocab" },
-    { s: "A student who wants to work for the United Nations should study ___.", opts: ["law international", "international law", "the international law"], a: 1,
-      whyEn: "The adjective comes before the noun, and there is no 'the': international law. It is the law between countries, so it fits work at the United Nations.",
-      why: "تأتي الصفة قبل الاسم، ولا نضع the: international law، وهو القانون بين الدول فيناسب العمل في الأمم المتحدة.", errCat: "vocab" }
+    { s: "Two countries can't agree about a small island, so their lawyers are checking ___.", opts: ["law international", "international law", "the international law"], a: 1,
+      whyEn: "The adjective comes before the noun, and there is no 'the': international law. It is the law between countries, so it fits a problem between two countries.",
+      why: "تأتي الصفة قبل الاسم، ولا نضع the: international law، وهو القانون بين الدول فيناسب خلافًا بين دولتين.", errCat: "vocab" }
   ],
 
   /* ---------- المرحلة 3: بطاقات الشرح (6 بطاقات: 4 شرح + الأخطاء + الخلاصة) ---------- */
@@ -311,20 +311,20 @@ LESSONS.u3l1 = {
         '</ol>' +
         '<h3 class="bi-h"><span class="en" dir="ltr">Time words</span><small>كلمات الزمن</small></h3>' +
         '<ul class="vlist"><li>at midnight <small>عند منتصف الليل</small></li><li>at ten o\'clock <small>في الساعة العاشرة</small></li><li>at that moment <small>في تلك اللحظة</small></li><li>this time last year <small>في مثل هذا الوقت من السنة الماضية</small></li></ul>' +
-        '<div class="tip" dir="ltr"><p>A time word alone is not always enough. <b>all night</b> goes with both tenses, so read the whole sentence:</p><div class="pairs"><span class="yes">We drove all night and reached Taif at dawn.</span><span class="yes">The rain was falling all night, so the road was wet.</span></div></div>',
+        '<div class="tip" dir="ltr"><p>A time word alone is not always enough. These words go with the Past Continuous only when the action is in progress: a finished action takes the Past Simple (The train left at ten o\'clock). And <b>all night</b> goes with both tenses, so read the whole sentence:</p><div class="pairs"><span class="yes">We drove all night and reached Taif at dawn.</span><span class="yes">The rain was falling all night, so the road was wet.</span></div></div>',
       arHtml:
         '<p>نستعمل الماضي المستمر في أمرين:</p>' +
         '<p>١) حدث كان <b>جاريًا في وقت محدد</b> من الماضي: <bdi class="en">At noon yesterday, I was walking to the bank</bdi>، أي كنت أمشي في ذلك الوقت.</p>' +
         '<p>٢) <b>وصف المشهد</b> في القصة، أي ما كان يجري حولك: <bdi class="en">The sun was shining</bdi>، أي كانت الشمس مشرقة.</p>' +
-        '<p>ومن كلمات الزمن معه <bdi class="en">at midnight</bdi> و<bdi class="en">at that moment</bdi> و<bdi class="en">this time last year</bdi> إذا كان في السياق حدث جارٍ. أما <bdi class="en">all night</bdi> فتصلح للزمنين، فلا تكفي وحدها دليلًا، واقرأ الجملة كلها.</p>'
+        '<p>ومن كلمات الزمن معه <bdi class="en">at midnight</bdi> و<bdi class="en">at that moment</bdi> و<bdi class="en">this time last year</bdi> إذا كان في السياق حدث جارٍ، أما الحدث المكتمل فبالماضي البسيط (<bdi class="en">The train left at ten o\'clock</bdi>). و<bdi class="en">all night</bdi> تصلح للزمنين، فلا تكفي وحدها دليلًا، واقرأ الجملة كلها.</p>'
     },
     {
       tEn: "Step 4: Continuous or Simple?",
       t: "الخطوة 4: المستمر أم البسيط؟",
       enHtml:
         '<h2 class="bi-h"><span class="en" dir="ltr">Step 4: Continuous or Simple?</span><small>الماضي المستمر والماضي البسيط</small></h2>' +
-        '<div class="xbox"><span class="xtag c" dir="ltr">Finished · Past Simple · حدث مكتمل</span><p class="xen">I watched the match.</p></div>' +
-        '<div class="xbox"><span class="xtag s" dir="ltr">In progress · Past Continuous · حدث جارٍ</span><p class="xen">I was watching the match at nine.</p></div>' +
+        '<div class="xbox"><span class="xtag s" dir="ltr">Finished · Past Simple · حدث مكتمل</span><p class="xen">I watched the match.</p></div>' +
+        '<div class="xbox"><span class="xtag c" dir="ltr">In progress · Past Continuous · حدث جارٍ</span><p class="xen">I was watching the match at seven.</p></div>' +
         '<p class="en-p" dir="ltr">The first sentence tells the <b>whole action</b>, from start to end. The second puts you <b>in the middle</b> of it.</p>' +
         '<h3 class="bi-h"><span class="en" dir="ltr">Six new irregular verbs</span><small>ستة أفعال شاذة جديدة</small></h3>' +
         '<div class="tbl"><table><thead><tr><th>Verb</th><th>Past Simple</th><th>Past Continuous</th></tr></thead><tbody>' +
@@ -336,7 +336,7 @@ LESSONS.u3l1 = {
         '<tr><td>read</td><td><span class="hc">read</span> (say: red)</td><td>was reading</td></tr></tbody></table></div>' +
         '<div class="tip" dir="ltr"><p><b>State verbs don\'t take -ing · أفعال الحالة لا تأخذ ing:</b> know, want, like, need. It is the same in the past as in the present.</p><div class="pairs"><span class="yes">She knew my name.</span><span class="no">She was knowing my name.</span></div></div>',
       arHtml:
-        '<p>نقول <bdi class="en">I watched the match</bdi> إذا أخبرنا عن <b>الحدث كله</b> من أوله إلى آخره، ونقول <bdi class="en">I was watching the match at nine</bdi> إذا وضعنا السامع <b>في وسط الحدث</b> وهو جارٍ.</p>' +
+        '<p>نقول <bdi class="en">I watched the match</bdi> إذا أخبرنا عن <b>الحدث كله</b> من أوله إلى آخره، ونقول <bdi class="en">I was watching the match at seven</bdi> إذا وضعنا السامع <b>في وسط الحدث</b> وهو جارٍ.</p>' +
         '<p>ولهذه الأفعال الستة صيغة ماضٍ شاذة: <bdi class="en">sat</bdi> و<bdi class="en">stood</bdi> و<bdi class="en">held</bdi> و<bdi class="en">wore</bdi> و<bdi class="en">drank</bdi> و<bdi class="en">read</bdi>، وتُكتب الأخيرة كمضارعها وتُنطق «رِد». أما في الماضي المستمر فلا شذوذ: <bdi class="en">was / were</bdi> مع <bdi class="en">ing</bdi>.</p>' +
         '<p>وأفعال الحالة مثل <bdi class="en">know</bdi> و<bdi class="en">want</bdi> و<bdi class="en">like</bdi> و<bdi class="en">need</bdi> لا تأخذ <bdi class="en">ing</bdi> في الماضي، كما لا تأخذها في المضارع: نقول <bdi class="en">She knew my name</bdi> ولا نقول <bdi class="en">She was knowing my name</bdi>.</p>'
     },
@@ -390,9 +390,9 @@ LESSONS.u3l1 = {
   ],
 
   gB: [
-    { s: "At nine last night, I was watch the news with my father.", ok: false, fix: "At nine last night, I was watching the news with my father.",
-      whyEn: "After 'was', the verb needs -ing: was watching. 'was watch' is the same mistake as 'I am work'.",
-      why: "بعد was يأخذ الفعل ing: was watching، وwas watch من جنس الخطأ I am work.", errCat: "be_verb" },
+    { s: "At ten last night, I was call my brother in Jeddah.", ok: false, fix: "At ten last night, I was calling my brother in Jeddah.",
+      whyEn: "After 'was', the verb needs -ing: was calling. 'was call' is the same mistake as 'I am work'.",
+      why: "بعد was يأخذ الفعل ing: was calling، وwas call من جنس الخطأ I am work.", errCat: "be_verb" },
     { s: "At that moment, the nurses was helping an old man at the door.", ok: false, fix: "At that moment, the nurses were helping an old man at the door.",
       whyEn: "'the nurses' is plural, so we use 'were', not 'was'.",
       why: "the nurses جمع، فنستعمل were لا was.", errCat: "agreement" },
@@ -405,9 +405,9 @@ LESSONS.u3l1 = {
   ],
 
   gC: [
-    { pre: "At six this morning, my father", verb: "drive · Past Continuous", post: "to the airport to meet my uncle.", ans: ["was driving"],
-      whyEn: "'my father' is one person, so we use 'was'. drive ends in -e, so we drop the e before -ing: driving.",
-      why: "my father شخص واحد فنستعمل was، وتنتهي drive بحرف e فنحذفه قبل ing: driving.", errCat: "spelling" },
+    { pre: "At six this morning, my uncle", verb: "drive · Past Continuous", post: "through the quiet streets to the airport.", ans: ["was driving"],
+      whyEn: "'my uncle' is one person, so we use 'was'. drive ends in -e, so we drop the e before -ing: driving.",
+      why: "my uncle شخص واحد فنستعمل was، وتنتهي drive بحرف e فنحذفه قبل ing: driving.", errCat: "spelling" },
     { pre: "This time last week, we", verb: "sit · Past Continuous", post: "in a waiting room at the hospital.", ans: ["were sitting"],
       whyEn: "'we' takes 'were'. sit is a short verb with one vowel + one consonant, so we double the t: sitting.",
       why: "نستعمل were مع we، وsit فعل قصير فيه حرف علة واحد ثم حرف ساكن، فنضاعف t: sitting.", errCat: "spelling" },
@@ -420,9 +420,9 @@ LESSONS.u3l1 = {
   ],
 
   gD: [
-    { chips: ["were waiting", "at that moment.", "The passengers", "outside the gate"], ans: "The passengers were waiting outside the gate at that moment.",
-      whyEn: "Subject (The passengers) + were + verb-ing + place (outside the gate) + time (at that moment) at the end.",
-      why: "الفاعل The passengers ثم were مع الفعل وing ثم المكان outside the gate ثم الزمن at that moment في الآخر.", errCat: "word_order" },
+    { chips: ["were sleeping", "at that moment.", "The passengers", "on the plane"], ans: "The passengers were sleeping on the plane at that moment.",
+      whyEn: "Subject (The passengers) + were + verb-ing + place (on the plane) + time (at that moment) at the end.",
+      why: "الفاعل The passengers ثم were مع الفعل وing ثم المكان on the plane ثم الزمن at that moment في الآخر.", errCat: "word_order" },
     { chips: ["was reading", "at ten o'clock.", "My grandmother", "the Quran"], ans: "My grandmother was reading the Quran at ten o'clock.",
       whyEn: "Subject (My grandmother) + was reading + object (the Quran) + time at the end. The object comes straight after the verb.",
       why: "الفاعل My grandmother ثم was reading ثم المفعول the Quran ثم الزمن في الآخر، ويلي المفعول الفعل مباشرة.", errCat: "word_order" },
@@ -441,8 +441,8 @@ LESSONS.u3l1 = {
     art: NIGHT_SVG,
     targetSeconds: 135,
     // أسماء ألوان التظليل في القراءة الثانية
-    lg1: "Past Continuous: was / were + -ing · الماضي المستمر",
-    lg2: "Past Simple: finished actions · الماضي البسيط",
+    lg1: "Past Simple: finished actions · الماضي البسيط",
+    lg2: "Past Continuous: was / were + -ing · الماضي المستمر",
     lg3: "Time words · كلمات الزمن",
     hlLabel: "Highlight the past · إظهار الماضي",
     insight: {
@@ -456,15 +456,15 @@ LESSONS.u3l1 = {
     },
     introEn: "Lama is a law student in Riyadh. She is writing to her British friend Sophie about a special night.",
     intro: "لمى طالبة قانون في الرياض، وتكتب إلى صديقتها البريطانية صوفي عن ليلة لا تُنسى.",
-    // <<s:..>> الماضي المستمر · <<c:..>> الماضي البسيط · <<t:..>> كلمة زمن
+    // <<c:..>> الماضي المستمر · <<s:..>> الماضي البسيط · <<t:..>> كلمة زمن
     // {word|key} كلمة من مفردات الدرس السبع وحدها · [[text|معنى]] كلمة مساعدة
     paras: [
       "Hi Sophie,",
-      "You <<c:asked>> me about the best night of my life. It was a night <<t:in May 2023>>.",
-      "The {flight} of Axiom Mission 2 <<c:started>> in Florida, and in Riyadh it was after midnight. <<t:Just after midnight>>, we <<s:were sitting>> in front of the big {screen} in our living room. <<t:At that {moment}>>, my father <<s:was standing>> near the door and <<s:holding>> his phone. My mother <<s:was [[pouring|تصبّ]]>> coffee, and my grandmother <<s:was drinking>> tea. My little brother <<s:was wearing>> his best [[thobe|ثوب]], my sister <<s:was taking>> photos of the screen, and I <<s:was reading>> the news.",
-      "When the [[rocket|الصاروخ]] <<c:[[went up|انطلق صاعدًا]]>>, my mother <<c:held>> my hand, and we all <<c:stood up>>. Rayyanah Barnawi was on it. She is a scientist, and she does research on [[cancer stem cells|الخلايا الجذعية للسرطان]]. She <<c:became>> the first Saudi woman in {space}, and Ali AlQarni was with her. They <<c:stayed>> on the [[International Space Station|محطة الفضاء الدولية]] <<t:for about eight days>>, <<c:did>> science {experiments|experiment} and then <<c:returned>> to Earth.",
-      "<<t:In 1985>>, Prince Sultan bin Salman was the first Arab to go into space, and now Rayyanah <<c:{made history|make history}>> too. <<t:The next morning>>, I <<c:read>> the news again. It was an amazing journey, and I <<c:felt>> very {proud} of my country.",
-      "<<t:Later>>, at law college, I <<c:learned>> something interesting: under {international law}, no country can [[own|يملك]] the moon!",
+      "You <<s:asked>> me about the best night of my life. It was a night <<t:in May 2023>>.",
+      "The [[flight|رحلة]] of Axiom Mission 2 <<s:started>> in Florida, and in Riyadh it was after midnight. <<t:Just after midnight>>, we <<c:were sitting>> in front of the big {screen} in our living room. <<t:At that {moment}>>, my father <<c:was standing>> near the door and <<c:holding>> his phone. My mother <<c:was [[pouring|تصبّ]]>> coffee, and my grandmother <<c:was drinking>> tea. My little brother <<c:was wearing>> his best [[thobe|ثوب]], my sister <<c:was taking>> photos of the screen, and I <<c:was reading>> the news.",
+      "When the [[rocket|الصاروخ]] <<s:[[went up|انطلق صاعدًا]]>>, my mother <<s:held>> my hand, and we all <<s:stood up>>. Rayyanah Barnawi was on it. She is a scientist, and she does research on [[cancer stem cells|الخلايا الجذعية للسرطان]]. She <<s:became>> the first Saudi woman in {space}, and Ali AlQarni was with her. They <<s:stayed>> on the [[International Space Station|محطة الفضاء الدولية]] <<t:for about eight days>>, <<s:did>> science {experiments|experiment} and then <<s:returned>> to Earth.",
+      "<<t:In 1985>>, Prince Sultan bin Salman was the first Arab to go into space, and <<t:that night>> Rayyanah <<s:{made history|make history}>> too. <<t:The next morning>>, I <<s:read>> the news again. It was an amazing journey, and I <<s:felt>> very {proud} of my country.",
+      "<<t:Later>>, at law college, I <<s:learned>> something interesting: under {international law}, no country can [[own|يملك]] the moon!",
       "Now tell me about yours.",
       "Best wishes,<br>Lama"
     ],
@@ -495,14 +495,14 @@ LESSONS.u3l1 = {
         why: "تكتب لمى أنها does research on cancer stem cells، أما القانون الدولي والقمر فجاءا فيما تعلمته لمى في كليتها.", errCat: "reading" },
       { q: "Rayyanah Barnawi was the first …", opts: ["Saudi in space", "Saudi woman in space", "Arab in space"], a: 1,
         ev: "She became the first Saudi woman in space, and Ali AlQarni was with her.",
-        whyEn: "Lama writes 'the first Saudi woman in space'. The word 'woman' is important: Prince Sultan bin Salman, a Saudi, was the first Arab in space in 1985.",
-        why: "تكتب لمى the first Saudi woman in space، وكلمة woman هنا مهمة، فقد سبقها الأمير سلطان بن سلمان السعودي، وهو أول عربي في الفضاء سنة 1985.", errCat: "reading" },
+        whyEn: "Lama writes 'the first Saudi woman in space', so the word 'woman' is important. She doesn't write 'the first Saudi' or 'the first Arab' about her.",
+        why: "تكتب لمى the first Saudi woman in space، فكلمة woman هنا مهمة، ولم تكتب عنها the first Saudi ولا the first Arab.", errCat: "reading" },
       { q: "How long did Rayyanah and Ali stay on the space station?", opts: ["About eight days", "About eight weeks", "About eight months"], a: 0,
         ev: "They stayed on the International Space Station for about eight days, did science experiments and then returned to Earth.",
         whyEn: "Lama writes 'for about eight days'. 'for' tells us how long, and the word is 'days', not weeks or months.",
         why: "تكتب لمى for about eight days، وكلمة for تبيّن المدة، والمذكور أيام لا أسابيع ولا شهور.", errCat: "reading" },
       { tf: true, q: "Prince Sultan bin Salman went into space before Rayyanah.", a: true,
-        ev: "In 1985, Prince Sultan bin Salman was the first Arab to go into space, and now Rayyanah made history too.",
+        ev: "In 1985, Prince Sultan bin Salman was the first Arab to go into space, and that night Rayyanah made history too.",
         whyEn: "True: he went into space in 1985, and Rayyanah's flight was in 2023.",
         why: "صحيح؛ فقد ذهب إلى الفضاء سنة 1985، وكانت رحلة ريانة سنة 2023.", errCat: "reading" },
       { q: "What did Lama learn at law college?", opts: ["Only rich countries can own the moon.", "No country can own the moon.", "Every country can own a part of the moon."], a: 1,
@@ -527,15 +527,15 @@ LESSONS.u3l1 = {
       { k: "vocab", tEn: "At least 2 words/phrases from today's lesson", t: "كلمتان أو عبارتان على الأقل من درس اليوم", ex: "space · experiment · moment · proud · screen · make history · international law",
         ok: function(a, text){ var s = wNorm(text); return W_VOCAB.filter(function(re){ return re.test(s); }).length >= 2; } }
     ],
-    modelMarked: "My favourite {moment} last year was the night before Eid. <<t:At nine o'clock>>, my whole family <<s:was sitting>> in my grandmother's house. My aunts <<s:were making>> sweets in the kitchen, and my cousins <<s:were playing>> in the garden. My uncle <<s:was holding>> his phone and showing us family photos on the {screen}. My grandfather <<s:was drinking>> coffee and telling old stories. I <<c:felt>> very {proud} of my family that night. In the morning, we <<c:wore>> our new clothes and <<c:went>> to the Eid prayer.",
+    modelMarked: "My favourite {moment} last year was the night before Eid. <<t:At nine o'clock>>, my whole family <<c:was sitting>> in my grandmother's house. My aunts <<c:were making>> sweets in the kitchen, and my cousins <<c:were playing>> in the garden. My uncle <<c:was holding>> his phone and <<c:showing>> us family photos on the {screen}. My grandfather <<c:was drinking>> coffee and <<c:telling>> old stories. I <<s:felt>> very {proud} of my family that night. In the morning, we <<s:wore>> our new clothes and <<s:went>> to the Eid prayer.",
     model: "My favourite moment last year was the night before Eid. At nine o'clock, my whole family was sitting in my grandmother's house. My aunts were making sweets in the kitchen, and my cousins were playing in the garden. My uncle was holding his phone and showing us family photos on the screen. My grandfather was drinking coffee and telling old stories. I felt very proud of my family that night. In the morning, we wore our new clothes and went to the Eid prayer.",
-    legendEn: "Light blue = Past Continuous · Terracotta = Past Simple · Dashed = time phrases",
-    legendAr: "الأزرق الفاتح للماضي المستمر، والطوبي للماضي البسيط، والإطار المنقّط لعبارات الزمن.",
+    legendEn: "Light blue = Past Simple · Terracotta = Past Continuous · Dashed = time phrases",
+    legendAr: "الأزرق الفاتح للماضي البسيط، والطوبي للماضي المستمر، والإطار المنقّط لعبارات الزمن.",
     acceptExamples: [
-      "Last Ramadan, my family had a special night. At nine o'clock, we were eating dinner at my uncle's house. My cousins were watching a match on the big screen. I was very proud of my team.",
+      "Last Ramadan, my family had a special night. Just after midnight, we were eating at my uncle's house. My cousins were watching a match on the big screen. I was very proud of my team.",
       "I remember a special moment from last year. At that moment, I was standing in front of the class. My friends were sitting behind me. I felt proud because I didn’t make a mistake.",
       "This time last year, I was traveling in Turkey with my brother. We were taking photos of the sea at sunset. It’s my favorite moment from that trip. I felt proud of my brother.",
-      "It was a cold night in January. At midnight, my brothers and I were all sitting in front of the screen. We were watching the final match. That was a great moment for us."
+      "It was a cold night in January. At 9pm, my brothers and I were all sitting in front of the screen. We were feeling very proud of our team. That was a great moment for us."
     ]
   },
 
@@ -565,18 +565,18 @@ LESSONS.u3l1 = {
       whyEn: "know is a state verb, so it doesn't take -ing: knew. We don't say 'was knowing'.",
       why: "know فعل حالة فلا يأخذ ing: knew، ولا نقول was knowing.", errCat: "stative" },
     { s: "Which sentence tells us that the action was in progress at 9 p.m.?", opts: ["I study in my room at 9 p.m.", "I studied in my room last year.", "At 9 p.m., I was studying in my room."], a: 2, tag: "Grammar · قواعد",
-      whyEn: "was + -ing shows an action in progress at an exact past time. The first sentence is a present habit, and the second is a finished past action with no exact time.",
-      why: "تدل was مع ing على حدث جارٍ في وقت محدد من الماضي؛ أما الأولى فعادة في الحاضر، والثانية حدث ماضٍ مكتمل بلا وقت محدد.", errCat: "tense" },
+      whyEn: "was + -ing shows an action in progress at an exact past time. 'I study' is a present habit, and 'I studied … last year' is a finished past action with no exact time.",
+      why: "تدل was مع ing على حدث جارٍ في وقت محدد من الماضي؛ أما I study فعادة في الحاضر، وI studied … last year حدث ماضٍ مكتمل بلا وقت محدد.", errCat: "tense" },
     { s: "Which sentence has the correct past forms?", opts: ["We sitted near the door, and my brother stood behind us.", "We sat near the door, and my brother stood behind us.", "We sat near the door, and my brother standed behind us."], a: 1, tag: "Grammar · قواعد",
       whyEn: "sit and stand are irregular: sit → sat and stand → stood. They don't take -ed.",
       why: "sit وstand فعلان شاذان: sit ماضيها sat، وstand ماضيها stood، فلا يأخذان ed.", errCat: "tense" },
-    { s: "My parents were very ___ of my brother at his graduation.", opts: ["amazing", "international", "proud"], a: 2, tag: "Vocabulary · مفردات",
-      whyEn: "'proud of' someone means happy because of what they did. 'amazing' and 'international' don't go with 'of my brother'.",
-      why: "proud of تعني مسرورًا بما فعله غيره، أما amazing وinternational فلا تأتيان مع of my brother.", errCat: "vocab" },
+    { s: "The coach was very ___ of his young players after the final match.", opts: ["amazing", "international", "proud"], a: 2, tag: "Vocabulary · مفردات",
+      whyEn: "'proud of' someone means happy because of what they did. 'amazing' and 'international' don't go with 'of his young players'.",
+      why: "proud of تعني مسرورًا بما فعله غيره، أما amazing وinternational فلا تأتيان مع of his young players.", errCat: "vocab" },
     { s: "With her new medicine, the young doctor ___ history.", opts: ["did", "made", "took"], a: 1, tag: "Vocabulary · مفردات",
       whyEn: "The phrase is 'make history', and its past is made. We don't say 'do history' or 'take history' with this meaning.",
       why: "العبارة make history وماضيها made، ولا نقول بهذا المعنى do history ولا take history.", errCat: "vocab" },
-    { s: "Under ___, every country must respect the borders of other countries.", opts: ["the international law", "law international", "international law"], a: 2, tag: "Legal Track · المسار القانوني",
+    { s: "Under ___, a country can't use war to take land from another country.", opts: ["the international law", "law international", "international law"], a: 2, tag: "Legal Track · المسار القانوني",
       whyEn: "The phrase is 'under international law': there is no 'the', and the adjective comes before the noun.",
       why: "العبارة under international law بلا the، وتأتي الصفة قبل الاسم.", errCat: "vocab" }
   ]
