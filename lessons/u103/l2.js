@@ -1,7 +1,9 @@
 /* ===== أسبوع التثبيت · الدرس 2: How Was Your Weekend? — مراجعة الماضي البسيط (6 مراحل · درس استماع) ===== */
 (function(){
-/* صيغ الماضي الشاذة لفحصي الكتابة: ثواني irregularVerbs الستين عدا ما يطابق أصله (cut put set let cost hit hurt shut read)، ومعها got */
-var IRR = 'went|bought|ate|drank|took|saw|had|came|became|ran|made|said|paid|told|sold|found|thought|brought|taught|caught|felt|kept|slept|left|met|meant|sent|spent|built|lent|lost|won|sat|stood|understood|heard|held|gave|knew|wrote|spoke|broke|chose|forgot|drove|fell|began|flew|wore|got';
+/* صيغ الماضي الشاذة لفحصي الكتابة: ثواني irregularVerbs الستين عدا ما يطابق أصله (cut put set let cost hit hurt shut read) وdid، ومعها got وwoke وrode وswam.
+   وما يطابق أصله وdid وcould في SAME، يعدّها فحص past وحده، لأن didn't read وdidn't cut صحيحتان في فحص form */
+var IRR = 'went|bought|ate|drank|took|saw|had|came|became|ran|made|said|paid|told|sold|found|thought|brought|taught|caught|felt|kept|slept|left|met|meant|sent|spent|built|lent|lost|won|sat|stood|understood|heard|held|gave|knew|wrote|spoke|broke|chose|forgot|drove|fell|began|flew|wore|got|woke|rode|swam';
+var SAME = 'did|could|read|cut|put|set|let|cost|hit|hurt|shut';
 var NOT_PAST = /\b(?:need|bed|red|speed|feed|seed|hundred|indeed|weed|shed|breed|bleed|succeed|exceed|proceed|embed)\b/gi;
 function plain(text){ return String(text || '').replace(/[‘’]/g, "'"); }
 
@@ -30,7 +32,7 @@ LESSONS.u103l2 = {
       items: [
         ["review", "5 active recall items from Unit 2", "5 عناصر استرجاع نشط من الوحدة الثانية"],
         ["pen", "Type from memory to lock in spelling", "كتابة من الذاكرة لتثبيت الإملاء"],
-        ["spark", "Includes the legal phrase 'report a crime'", "تشمل العبارة القانونية report a crime"]
+        ["spark", "Includes a legal phrase from Unit 2", "تشمل عبارة قانونية من الوحدة الثانية"]
       ]
     },
     vocab: {
@@ -106,8 +108,8 @@ LESSONS.u103l2 = {
       id: "rc-2",
       promptAr: "صفة من الوحدة الثانية: متأخر عن موعده بسبب مشكلة",
       promptEn: "Adjective from Unit 2: later than planned because of a problem",
-      sentPre: "Our bus to Dammam was",
-      sentPost: "by two hours because of a problem with the engine.",
+      sentPre: "We got to Dammam two hours late. Our bus was",
+      sentPost: "because of a problem with the engine.",
       ans: ["delayed"],
       hint: "d _ _ _ _ _ d (7 letters)",
       spellNoteEn: "Spelled d-e-l-a-y-e-d. Keep the y before -ed, because a vowel comes before it.",
@@ -130,8 +132,8 @@ LESSONS.u103l2 = {
       id: "rc-4",
       promptAr: "العبارة القانونية من الوحدة الثانية: يبلّغ الشرطة عن جريمة (ثلاث كلمات)",
       promptEn: "Legal phrase from Unit 2: to tell the police about something against the law (three words)",
-      sentPre: "Our neighbour's car was not outside his house, so he called the police to",
-      sentPost: "this morning.",
+      sentPre: "A man took my phone at the bus station and ran away. I need to",
+      sentPost: "now.",
       ans: ["report a crime", "report the crime"],
       isLegal: true,
       hint: "r _ _ _ _ _ _ _ _ _ _ e (12 letters, 3 words)",
@@ -147,8 +149,8 @@ LESSONS.u103l2 = {
     pos: "legal phrase",
     ar: "إجازة سنوية (مدفوعة الأجر)",
     say: "أَنْيُوَل لِيف",
-    ex: "My sister used her annual leave in July and visited our grandparents in Abha.",
-    exAr: "استعملت أختي إجازتها السنوية في يوليو وزارت جدّينا في أبها.",
+    ex: "My sister used her annual leave in July and visited our cousins in Yanbu.",
+    exAr: "استعملت أختي إجازتها السنوية في يوليو وزارت أبناء عمّنا في ينبع.",
     tipEn: "This phrase comes back from Unit 2. We take annual leave, or we are on annual leave. In the past: She took her annual leave in July, and she was on annual leave for two weeks. 'Annual' means every year, and the leave is paid. Under Saudi labour law, it is at least 21 days a year.",
     tip: "تعود هذه العبارة من الوحدة الثانية. نقول take annual leave أي يأخذ إجازته السنوية، وbe on annual leave أي يكون في إجازته. وفي الماضي: She took her annual leave in July وshe was on annual leave. وannual تعني سنوي، والإجازة مدفوعة الأجر، ولا تقل في نظام العمل السعودي عن 21 يومًا في السنة.",
     legal: true,
@@ -208,18 +210,18 @@ LESSONS.u103l2 = {
     { s: "The sky over the sea was pink and gold. It was a ___ evening.", opts: ["cheap", "beautiful", "annual leave"], a: 1,
       whyEn: "A pink and gold sky is lovely to look at, so the evening was 'beautiful'. 'cheap' is about a low price, and 'annual leave' is about work.",
       why: "السماء الوردية والذهبية جميلة المنظر، فالمساء beautiful، أما cheap فعن الثمن القليل، وannual leave عن العمل.", errCat: "vocab" },
-    { s: "The view from the top of the hill was amazing, so we stopped and ___.", opts: ["took photos", "went shopping", "cheap"], a: 0,
-      whyEn: "People stop at an amazing view to 'take photos'. There are no shops in the view, and 'cheap' is an adjective.",
-      why: "يتوقف الناس عند المنظر الرائع ليلتقطوا صورًا took photos، ولا متاجر هناك، وcheap صفة.", errCat: "vocab" },
+    { s: "We saw an amazing old bridge on the road to Abha, so we stopped and ___.", opts: ["took photos", "went shopping", "cheap"], a: 0,
+      whyEn: "People stop at something amazing to 'take photos'. There are no shops at a bridge, and 'cheap' is an adjective.",
+      why: "يتوقف الناس عند ما يبهرهم ليلتقطوا صورًا took photos، ولا متاجر عند الجسر، وcheap صفة.", errCat: "vocab" },
     { s: "Our neighbour is a nurse, and this year she took her ___ in August.", opts: ["cheap", "beautiful", "annual leave"], a: 2,
       whyEn: "Workers 'take annual leave', their paid holiday from work. The other two are adjectives, and 'her' needs a noun here.",
       why: "يأخذ العامل annual leave، وهي إجازته المدفوعة من العمل، والخياران الآخران صفتان، وبعد her يلزم هنا اسم.", errCat: "vocab" },
-    { s: "Under Saudi labour law, workers get at least 21 days of paid ___ every year.", opts: ["go shopping", "annual leave", "relax"], a: 1,
-      whyEn: "'annual leave' is the paid holiday that a worker gets every year. After 'days of paid', we need a noun, and the other two are verbs.",
-      why: "annual leave هي الإجازة المدفوعة التي يأخذها العامل كل سنة، وبعد days of paid يلزم اسم، والخياران الآخران فعلان.", errCat: "vocab" },
     { s: "Did you ___ of the sea in Jeddah? I want to see them.", opts: ["relax", "go shopping", "take photos"], a: 2,
       whyEn: "'of the sea' and 'see them' show that the speaker means pictures, so the answer is 'take photos'.",
-      why: "of the sea وsee them تدلان على أن المقصود صور، فالجواب take photos.", errCat: "vocab" }
+      why: "of the sea وsee them تدلان على أن المقصود صور، فالجواب take photos.", errCat: "vocab" },
+    { s: "My brother's company gives him 25 days of paid ___ every year.", opts: ["go shopping", "annual leave", "relax"], a: 1,
+      whyEn: "'annual leave' is the paid holiday that a worker gets every year. After 'days of paid', we need a noun, and the other two are verbs.",
+      why: "annual leave هي الإجازة المدفوعة التي يأخذها العامل كل سنة، وبعد days of paid يلزم اسم، والخياران الآخران فعلان.", errCat: "vocab" }
   ],
 
   gCards: [
@@ -233,7 +235,7 @@ LESSONS.u103l2 = {
           '<li><b>Most verbs: add -ed</b><span class="s-en">visit → visited · watch → watched</span></li>' +
           '<li><b>Ends in e: add -d</b><span class="s-en">arrive → arrived · like → liked</span></li>' +
           '<li><b>Consonant + y: change y to -ied</b><span class="s-en">study → studied · carry → carried</span></li>' +
-          '<li><b>Short vowel + one consonant: double it</b><span class="s-en">stop → stopped · plan → planned</span></li>' +
+          '<li><b>Short verb, one vowel + one consonant: double it</b><span class="s-en">stop → stopped · plan → planned · but longer verbs don\'t: visit → visited</span></li>' +
         '</ul>' +
         '<p class="en-p" dir="ltr">Irregular verbs have their own past forms. Today, we practise these eight:</p>' +
         '<ul class="spell" dir="ltr">' +
@@ -243,7 +245,7 @@ LESSONS.u103l2 = {
         '<div class="tip" dir="ltr"><p><b>read · انتبه:</b> the past looks the same, but it sounds like the colour red.</p></div>',
       arHtml:
         '<p>هذه مراجعة للوحدة الثانية، وليس فيها جديد. نستعمل الماضي البسيط لما <b>انتهى</b> في الماضي.</p>' +
-        '<p>الأفعال المنتظمة تنتهي بـ <bdi class="en">ed</bdi>، ولإملائها أربعة أنماط: أكثر الأفعال تأخذ <bdi class="en">ed</bdi> (<bdi class="en">visited</bdi>)، وما ينتهي بـ <bdi class="en">e</bdi> يأخذ <bdi class="en">d</bdi> (<bdi class="en">arrived</bdi>)، وما ينتهي بحرف ساكن ثم <bdi class="en">y</bdi> تتحول فيه إلى <bdi class="en">ied</bdi> (<bdi class="en">studied</bdi>)، وما فيه حرف علة قصير بعده ساكن واحد يُضاعف ساكنه (<bdi class="en">stopped</bdi>).</p>' +
+        '<p>الأفعال المنتظمة تنتهي بـ <bdi class="en">ed</bdi>، ولإملائها أربعة أنماط: أكثر الأفعال تأخذ <bdi class="en">ed</bdi> (<bdi class="en">visited</bdi>)، وما ينتهي بـ <bdi class="en">e</bdi> يأخذ <bdi class="en">d</bdi> (<bdi class="en">arrived</bdi>)، وما ينتهي بحرف ساكن ثم <bdi class="en">y</bdi> تتحول فيه إلى <bdi class="en">ied</bdi> (<bdi class="en">studied</bdi>)، والفعل القصير الذي فيه حرف علة واحد بعده ساكن واحد يُضاعف ساكنه (<bdi class="en">stopped</bdi>)، ولا يُضاعف في الأفعال الأطول (<bdi class="en">visited</bdi>).</p>' +
         '<p>أما الأفعال الشاذة فلها صيغ خاصة، ونتدرب اليوم على ثمانية: <bdi class="en">go → went</bdi> و<bdi class="en">have → had</bdi> و<bdi class="en">read → read</bdi> و<bdi class="en">buy → bought</bdi> و<bdi class="en">eat → ate</bdi> و<bdi class="en">drink → drank</bdi> و<bdi class="en">take → took</bdi> و<bdi class="en">see → saw</bdi>.</p>' +
         '<p>وماضي <bdi class="en">read</bdi> يُكتب كأصله، لكنه يُنطق كنطق كلمة <bdi class="en">red</bdi>.</p>'
     },
@@ -254,13 +256,13 @@ LESSONS.u103l2 = {
         '<h2 class="bi-h"><span class="en" dir="ltr">didn\'t and Did</span><small>يعود الفعل إلى أصله</small></h2>' +
         '<p class="en-p" dir="ltr">In a negative or a question, <b>did</b> shows the past. So the main verb goes back to its <b>base form</b>. We don\'t put the past on both did and the main verb.</p>' +
         '<div class="formula"><b>didn\'t</b> + base verb · <b>Did</b> + subject + base verb? · <b>What did</b> + subject + base verb?</div>' +
-        '<div class="xbox"><span class="xtag s" dir="ltr">Negative · النفي</span><p class="xen">My brother didn\'t finish his tea.</p><span class="xtag s" dir="ltr">Yes / No question · سؤال بنعم أو لا</span><p class="xen">Did you see the new bridge?</p><span class="xtag s" dir="ltr">Question with a word · سؤال بأداة</span><p class="xen">Where did they eat on Thursday?</p></div>' +
+        '<div class="xbox"><span class="xtag s" dir="ltr">Negative · النفي</span><p class="xen">My brother didn\'t finish his tea.</p><span class="xtag s" dir="ltr">Yes / No question · سؤال بنعم أو لا</span><p class="xen">Did you see the new bridge?</p><span class="xtag s" dir="ltr">Question with a word · سؤال بأداة</span><p class="xen">Where did they have lunch on Thursday?</p></div>' +
         '<div class="tip" dir="ltr"><p><b>Compare · قارن:</b> They saw a film. · They didn\'t see a film. · Did they see a film?</p></div>',
       arHtml:
         '<p>في النفي والسؤال تدل <bdi class="en">did</bdi> على الماضي، فيعود الفعل الأساسي إلى <b>أصله</b>، ولا نجمع بين <bdi class="en">did</bdi> وصيغة الماضي في الفعل نفسه.</p>' +
         '<p>النفي: <bdi class="en">My brother didn\'t finish his tea.</bdi></p>' +
         '<p>السؤال بنعم أو لا: <bdi class="en">Did you see the new bridge?</bdi></p>' +
-        '<p>السؤال بأداة: <bdi class="en">Where did they eat on Thursday?</bdi></p>' +
+        '<p>السؤال بأداة: <bdi class="en">Where did they have lunch on Thursday?</bdi></p>' +
         '<p>وقارن: <bdi class="en">They saw a film.</bdi> ثم <bdi class="en">They didn\'t see a film.</bdi> ثم <bdi class="en">Did they see a film?</bdi></p>'
     },
     {
@@ -314,10 +316,10 @@ LESSONS.u103l2 = {
       enHtml:
         '<h2 class="bi-h"><span class="en" dir="ltr">Common Arab Mistakes</span><small>أخطاء يقع فيها كثير من العرب</small></h2>' +
         '<ul class="mist">' +
-          '<li><span class="no">We didn\'t went to the beach last Friday.</span><span class="yes">We didn\'t go to the beach last Friday.</span><p class="en-m" dir="ltr">After <b>didn\'t</b>, use the base verb: go, not went.</p><p>بعد <bdi class="en">didn\'t</bdi> يأتي الفعل في أصله: <bdi class="en">go</bdi> لا <bdi class="en">went</bdi>.</p></li>' +
+          '<li><span class="no">My cousins didn\'t went to the farm last Friday.</span><span class="yes">My cousins didn\'t go to the farm last Friday.</span><p class="en-m" dir="ltr">After <b>didn\'t</b>, use the base verb: go, not went.</p><p>بعد <bdi class="en">didn\'t</bdi> يأتي الفعل في أصله: <bdi class="en">go</bdi> لا <bdi class="en">went</bdi>.</p></li>' +
           '<li><span class="no">Did your sister bought the tickets?</span><span class="yes">Did your sister buy the tickets?</span><p class="en-m" dir="ltr"><b>Did</b> already shows the past, so the main verb stays in its base form.</p><p><bdi class="en">Did</bdi> تدل على الماضي، فيبقى الفعل الأساسي في أصله.</p></li>' +
           '<li><span class="no">This morning I was go to the post office and sent the letters.</span><span class="yes">This morning I went to the post office and sent the letters.</span><p class="en-m" dir="ltr">Both actions are finished, like <b>sent</b>, so we use the past form alone: went.</p><p>الحدثان منتهيان مثل <bdi class="en">sent</bdi>، فنستعمل صيغة الماضي وحدها: <bdi class="en">went</bdi>.</p></li>' +
-          '<li><span class="no">My mother buyed a new carpet yesterday.</span><span class="yes">My mother bought a new carpet yesterday.</span><p class="en-m" dir="ltr"><b>buy</b> is irregular: bought, not buyed.</p><p><bdi class="en">buy</bdi> فعل شاذ ماضيه <bdi class="en">bought</bdi> لا <bdi class="en">buyed</bdi>.</p></li>' +
+          '<li><span class="no">My aunt buyed a new carpet yesterday.</span><span class="yes">My aunt bought a new carpet yesterday.</span><p class="en-m" dir="ltr"><b>buy</b> is irregular: bought, not buyed.</p><p><bdi class="en">buy</bdi> فعل شاذ ماضيه <bdi class="en">bought</bdi> لا <bdi class="en">buyed</bdi>.</p></li>' +
         '</ul>'
     },
     {
@@ -339,15 +341,15 @@ LESSONS.u103l2 = {
   ],
 
   gA: [
-    { s: "We didn't ___ a hotel before the trip, so we slept at my uncle's house.", opts: ["booked", "book"], a: 1,
+    { s: "We didn't ___ a hotel before the trip, and all the rooms were full.", opts: ["booked", "book"], a: 1,
       whyEn: "'didn't' already shows the past, so the verb stays in its base form: didn't book.",
       why: "didn't تدل على الماضي، فيبقى الفعل في أصله: didn't book.", errCat: "tense" },
     { s: "___ the tickets cheap for your trip to Abha?", opts: ["Were", "Did"], a: 0,
       whyEn: "'cheap' is an adjective, so the verb is be, and we don't use 'did' with be. 'the tickets' is plural, so we use 'Were'.",
       why: "cheap صفة، فالفعل be، ولا نستعمل did معه، وthe tickets جمع فنقول Were.", errCat: "be_verb" },
-    { s: "Look out of the window! It ___, so let's stay at home today.", opts: ["is raining", "rains"], a: 0,
-      whyEn: "'Look out of the window!' shows that it is happening at this moment, so we use the present continuous. 'It rains' is for a fact or a habit, and it can't describe what you see now.",
-      why: "Look out of the window! تدل على أن المطر يجري في هذه اللحظة، فنستعمل المضارع المستمر، أما It rains فللحقيقة أو العادة، ولا تصف ما تراه الآن.", errCat: "tense" },
+    { s: "We can't go to the park now. It ___ outside.", opts: ["is raining", "rains"], a: 0,
+      whyEn: "'We can't go ... now' and 'outside' show that it is happening at this moment, so we use the present continuous. 'It rains' is for a fact or a habit, and it can't describe what is going on now.",
+      why: "We can't go … now وoutside تدلان على أن المطر يجري في هذه اللحظة، فنستعمل المضارع المستمر، أما It rains فللحقيقة أو العادة، ولا تصف ما يجري الآن.", errCat: "tense" },
     { s: "We stayed in ___ old hotel near the sea in Yanbu.", opts: ["a", "an"], a: 1,
       whyEn: "'old' starts with a vowel sound, so we use 'an', not 'a'.",
       why: "تبدأ old بصوت علة، فنستعمل an لا a.", errCat: "articles_prep" }
@@ -360,9 +362,9 @@ LESSONS.u103l2 = {
     { s: "My sister doesn't drink coffee, but yesterday she drank two cups at the wedding.", ok: true,
       whyEn: "Correct. 'doesn't drink' is her habit, in the present. 'yesterday' is a past time word, so the second verb is past: drank.",
       why: "صحيحة: doesn't drink عادتها في الحاضر، وyesterday كلمة وقت ماضية، فجاء الفعل الثاني ماضيًا: drank.", errCat: "tense" },
-    { s: "Last night I was go to the pharmacy and bought some medicine.", ok: false, fix: "Last night I went to the pharmacy and bought some medicine.",
-      whyEn: "'bought' shows that the actions are finished, so we use the past form alone: went. 'was' does not make 'go' past.",
-      why: "bought تدل على أن الحدثين منتهيان، فنستعمل صيغة الماضي وحدها: went، وwas لا تجعل go ماضيًا.", errCat: "be_verb" },
+    { s: "Last week I was go to the pharmacy twice.", ok: false, fix: "Last week I went to the pharmacy twice.",
+      whyEn: "'twice' shows two finished visits, so we use the past form alone: went. 'was' does not make 'go' past.",
+      why: "twice تدل على زيارتين منتهيتين، فنستعمل صيغة الماضي وحدها: went، وwas لا تجعل go ماضيًا.", errCat: "be_verb" },
     { s: "Last Tuesday I don't understand the new rule, so my friend helped me.", ok: false, fix: "Last Tuesday I didn't understand the new rule, so my friend helped me.",
       whyEn: "'Last Tuesday' is a past time word, so the verb must be past: didn't understand. 'don't understand' is for now.",
       why: "Last Tuesday كلمة وقت ماضية، فيلزم فعل ماضٍ: didn't understand، أما don't understand فللحاضر.", errCat: "tense" }
@@ -370,8 +372,8 @@ LESSONS.u103l2 = {
 
   gC: [
     { pre: "On the way to Riyadh, the bus", verb: "stop · Past Simple", post: "at a small town, and we bought some water.", ans: ["stopped"],
-      whyEn: "'bought' shows the story is in the past. 'stop' has one short vowel and one consonant at the end, so we double the p: stopped.",
-      why: "bought تدل على أن القصة في الماضي، وفي stop حرف علة قصير بعده ساكن واحد، فنضاعف p: stopped.", errCat: "spelling" },
+      whyEn: "'bought' shows the story is in the past. 'stop' is a short verb with one vowel + one consonant (o + p), so we double the p: stopped.",
+      why: "bought تدل على أن القصة في الماضي، وstop فعل قصير فيه حرف علة واحد بعده ساكن واحد (o ثم p)، فنضاعف p: stopped.", errCat: "spelling" },
     { pre: "My brother", verb: "not / eat · Past Simple", post: "any lunch yesterday because he felt sick.", ans: ["didn't eat", "did not eat"],
       whyEn: "'yesterday' is a past time word. The negative is didn't + base verb, so we write eat, not ate.",
       why: "yesterday كلمة وقت ماضية، والنفي didn't مع أصل الفعل، فنكتب eat لا ate.", errCat: "tense" },
@@ -385,10 +387,10 @@ LESSONS.u103l2 = {
   ],
 
   gD: [
-    { chips: ["you buy", "What did", "market?", "at the"], ans: "What did you buy at the market?",
-      whyEn: "What did + subject + base verb. 'did' shows the past, so the verb is buy, not bought.",
-      why: "What did ثم الفاعل ثم أصل الفعل، وdid تدل على الماضي، فالفعل buy لا bought.", errCat: "word_order" },
-    { chips: ["last night.", "We didn't", "at the wedding", "take any photos"], ans: "We didn't take any photos at the wedding last night.",
+    { chips: ["you see", "What did", "museum?", "at the"], ans: "What did you see at the museum?",
+      whyEn: "What did + subject + base verb. 'did' shows the past, so the verb is see, not saw.",
+      why: "What did ثم الفاعل ثم أصل الفعل، وdid تدل على الماضي، فالفعل see لا saw.", errCat: "word_order" },
+    { chips: ["last night.", "We didn't", "to the airport", "take the bus"], ans: "We didn't take the bus to the airport last night.",
       whyEn: "Subject + didn't + base verb, then the place, then the time. Only 'last night.' has a period, so it comes last.",
       why: "الفاعل ثم didn't مع أصل الفعل، ثم المكان ثم الوقت، والنقطة في last night. تدل على أنها آخر الجملة.", errCat: "word_order" },
     { chips: ["arrive", "Did", "on time?", "your flight"], ans: "Did your flight arrive on time?",
@@ -443,16 +445,16 @@ LESSONS.u103l2 = {
       { tf: true, q: "Katie ate with people from her job on Saturday evening.", a: true,
         whyEn: "True. Near the start, Katie talks about a restaurant and her co-workers. Co-workers are the people who work with you.",
         why: "صحيح؛ قرب أول المقطع تذكر كاتي مطعمًا وزملاءها في العمل، وco-workers هم الذين يعملون معك.", errCat: "reading" },
-      { q: "What happened when Todd ate at that restaurant?", opts: ["He waited a long time for his food.", "He paid too much.", "The food was too strong for his mouth."], a: 2,
+      { q: "What happened when Todd ate at the chicken restaurant?", opts: ["He waited a long time for his food.", "He paid too much.", "The food was too strong for his mouth."], a: 2,
         whyEn: "Near the start, Todd talks about the chicken. It was too spicy, which means very hot in the mouth, like hot pepper, and it hurt.",
-        why: "قرب أول المقطع يتحدث تود عن الدجاج، فقد كان شديد الحرارة (spicy) حتى آلم فمه.", errCat: "reading" },
+        why: "قرب أول المقطع يتحدث تود عن الدجاج، فقد كان لاذعًا كالفلفل الحار (spicy) حتى آلم فمه.", errCat: "reading" },
       { q: "What did Katie buy on Sunday?", opts: ["A bag and a dress", "Shoes and a dress", "Shoes and a bag"], a: 1,
         whyEn: "Before the middle, Katie names the two things that she bought: new shoes and a new dress.",
         why: "قبل وسط المقطع تذكر كاتي ما اشترته: حذاء جديدًا وفستانًا جديدًا.", errCat: "reading" },
       { q: "Why did Katie buy the dress?", opts: ["She needed it for a party.", "A friend gave her the idea.", "The price was low."], a: 2,
         whyEn: "Before the middle, Todd asks about this, and Katie talks about the price. The dress was on sale, which means it cost less than usual. She had no party or special plan.",
         why: "قبل وسط المقطع يسألها تود عن ذلك، فتذكر الثمن: كان الفستان عليه تخفيض (on sale)، أي بأقل من ثمنه المعتاد، ولم يكن عندها حفل ولا مناسبة.", errCat: "reading" },
-      { q: "Why does Todd like to go to the cinema alone?", opts: ["He goes only for the film, not to talk with people.", "His friends don't like films.", "Tickets for one person are cheaper."], a: 0,
+      { q: "Why does Todd like to go to the cinema alone?", opts: ["He goes only for the film.", "His friends don't like films.", "Tickets for one person are cheaper."], a: 0,
         whyEn: "After the middle, Todd explains this: he doesn't see many films, so when he goes, the film is the only thing that he wants.",
         why: "بعد وسط المقطع يشرح تود ذلك: فهو قليلًا ما يشاهد الأفلام، فإذا ذهب لم يرد إلا الفيلم نفسه.", errCat: "reading" },
       { q: "What did Todd do at the park on Sunday?", opts: ["He played football and then had lunch.", "He ran and took pictures.", "He sat and read a book."], a: 1,
@@ -474,11 +476,11 @@ LESSONS.u103l2 = {
         ok: function(a, text){ return a.sentences >= 5 && !/\bi\b/.test(String(text || '')); } },
       { k: "past", tEn: "At least 3 sentences in the past", t: "3 جمل على الأقل في الماضي", ex: "I went · We relaxed · It was cheap · We didn't stay",
         ok: function(a, text){
-          var re = new RegExp("\\b(?:did(?:n't|\\s+not)|was(?:n't)?|were(?:n't)?|" + IRR + "|[a-z]+ed)\\b", 'i');
+          var re = new RegExp("\\b(?:didn't|couldn't|did\\s+not|was(?:n't)?|were(?:n't)?|" + SAME + "|" + IRR + "|[a-z]+ed)\\b", 'i');
           return plain(text).replace(NOT_PAST, ' ').split(/[.!?]+/).filter(function(x){ return re.test(x); }).length >= 3; } },
       { k: "form", tEn: "Correct past forms: didn't + base verb, Did you + base verb?, and no was before a base verb", t: "صيغ الماضي صحيحة: didn't مع أصل الفعل، وDid you مع أصل الفعل، ولا تأتي was قبل أصل الفعل", ex: "I didn't go (not: didn't went) · Did you buy? (not: Did you bought?) · I went (not: I was go) · bought (not: buyed)",
         ok: function(a, text){
-          var s = plain(text).replace(NOT_PAST, ' ').replace(/\bdo\s+was\b/gi, ' ');
+          var s = plain(text).replace(NOT_PAST, ' ').replace(/\b(?:do|did)\s+was\b/gi, ' ');
           var past = "(?:" + IRR + "|[a-z]+ed)";
           if (new RegExp("\\bdid(?:n't|\\s+not)\\s+(?:(?:really|even|just|also)\\s+)?" + past + "\\b", 'i').test(s)) return false;
           if (new RegExp("\\bdid(?:n't)?\\s+(?:you|he|she|it|we|they|i|(?:my|your|his|her|our|their|the)\\s+[a-z]+)\\s+" + past + "\\b", 'i').test(s)) return false;
@@ -488,12 +490,12 @@ LESSONS.u103l2 = {
         ok: function(a, text){
           var s = plain(text);
           var found = [/\brelax(?:es|ed|ing)?\b/i, /\b(?:go|goes|went|going|gone)\s+shopping\b/i, /\bbeautiful\b/i, /\bcheap\b/i,
-            /\b(?:take|takes|took|taking|taken)\s+(?:(?:a\s+lot\s+of|lots\s+of|many|some|a\s+few|any|good|nice|beautiful)\s+)?(?:photos|pictures)\b/i, /\bannual\s+leave\b/i]
+            /\b(?:take|takes|took|taking|taken)\s+(?:[a-z]+\s+){0,3}(?:photos?|pictures?)\b/i, /\bannual\s+leave\b/i]
             .filter(function(r){ return r.test(s); }).length;
           return found >= 2 || ((a && a.used) || []).length >= 2; } }
     ],
-    modelMarked: "I usually <<s:stay>> at home at the weekend, but last weekend <<s:was>> different. I <<s:went>> to Jeddah with my two cousins. On Friday morning, we <<s:{relaxed|relax}>> on the beach and <<s:{took photos|take photos}>> of the sea. In the afternoon, we <<s:{went shopping|go shopping}>> in the old market, and I <<s:bought>> some {cheap} dates for my mother. We <<s:didn't eat>> at the hotel. We <<s:had>> dinner at a small fish restaurant, and the food <<s:was>> very good.",
-    model: "I usually stay at home at the weekend, but last weekend was different. I went to Jeddah with my two cousins. On Friday morning, we relaxed on the beach and took photos of the sea. In the afternoon, we went shopping in the old market, and I bought some cheap dates for my mother. We didn't eat at the hotel. We had dinner at a small fish restaurant, and the food was very good.",
+    modelMarked: "I usually <<s:stay>> at home at the weekend, but last weekend <<s:was>> different. I <<s:went>> to Jeddah with my two cousins. On Friday morning, we <<s:{relaxed|relax}>> on the beach and <<s:{took photos|take photos}>> of the sea. In the afternoon, we <<s:{went shopping|go shopping}>> near the hotel, and I <<s:bought>> some {cheap} dates for my mother. We <<s:didn't eat>> at the hotel. We <<s:had>> dinner at a small fish restaurant, and the food <<s:was>> very good.",
+    model: "I usually stay at home at the weekend, but last weekend was different. I went to Jeddah with my two cousins. On Friday morning, we relaxed on the beach and took photos of the sea. In the afternoon, we went shopping near the hotel, and I bought some cheap dates for my mother. We didn't eat at the hotel. We had dinner at a small fish restaurant, and the food was very good.",
     legendEn: "Light blue = simple tenses (present simple and past simple)",
     legendAr: "الأزرق الفاتح للزمن البسيط (المضارع البسيط والماضي البسيط).",
     acceptExamples: [
@@ -501,7 +503,9 @@ LESSONS.u103l2 = {
       "I didn't go shopping last weekend. My mother went shopping, and she bought a cheap bag. Did you see my new phone? We ate at home on Saturday. I read a book, and I relaxed in my room.",
       "What did you do last weekend? I stayed at home on Friday, and it was boring. On Saturday, we drove to the farm. It was a beautiful day. My cousins took a lot of photos. We had fun.",
       "At 9pm, we arrived at the hotel. It wasn’t cheap, but it was beautiful. All we could do was go to bed. Were you tired? I usually wake up early, but I didn't need a clock that day.",
-      "Just after midnight, we were driving home. Our flight was delayed, and we didn’t sleep. Where were you going? The tickets were cheap, and the hotel was beautiful. We need a holiday now."
+      "Just after midnight, we were driving home. Our flight was delayed, and we didn’t sleep. Where were you going? The tickets were cheap, and the hotel was beautiful. We need a holiday now.",
+      "I woke up late on Friday. I did my homework after lunch. I read a book in the garden. Then I took a photo of my cat. It was a beautiful day.",
+      "All we did was relax. We swam in the sea, and my brother rode a horse. I took some nice photos. The hotel was cheap. We could see the sea from our room."
     ]
   },
 
@@ -516,7 +520,7 @@ LESSONS.u103l2 = {
     { s: "Which sentence is correct?", opts: ["My friends didn't went to the mall on Thursday.", "My friends don't went to the mall on Thursday.", "My friends didn't go to the mall on Thursday."], a: 2, tag: "Grammar · قواعد",
       whyEn: "After 'didn't', we use the base verb: didn't go. 'went' is a past form, so it can't follow didn't or don't.",
       why: "بعد didn't يأتي أصل الفعل: didn't go، أما went فصيغة ماضٍ، فلا تأتي بعد didn't ولا don't.", errCat: "tense" },
-    { s: "___ you have fun at the swimming pool yesterday?", opts: ["Did", "Were", "Do"], a: 0, tag: "Grammar · قواعد",
+    { s: "___ the children have fun at the swimming pool yesterday?", opts: ["Did", "Were", "Do"], a: 0, tag: "Grammar · قواعد",
       whyEn: "'yesterday' is a past time word, and 'have' is a base verb, so we need 'Did'. 'Were' can't come before a base verb, and 'Do' is for the present.",
       why: "yesterday كلمة وقت ماضية، وhave أصل الفعل، فيلزم Did، ولا تأتي Were قبل أصل الفعل، وDo للحاضر.", errCat: "tense" },
     { s: "My cousin ___ a new camera last month.", opts: ["buyed", "bought", "buys"], a: 1, tag: "Grammar · قواعد",
@@ -528,18 +532,18 @@ LESSONS.u103l2 = {
     { s: "Last night, I ___ two stories from my new book.", opts: ["read", "readed", "reading"], a: 0, tag: "Grammar · قواعد",
       whyEn: "'Last night' is a past time word. 'read' is irregular: the past looks the same as the base form, and it sounds like red. 'readed' is not a word.",
       why: "Last night كلمة وقت ماضية، وread فعل شاذ يُكتب ماضيه كأصله ويُنطق كـ red، أما readed فليست كلمة.", errCat: "tense" },
-    { s: "My father drinks coffee every morning, but yesterday he ___ tea at a café.", opts: ["drinks", "drink", "drank"], a: 2, tag: "Grammar · قواعد",
-      whyEn: "'yesterday' is a past time word, so we need the past form: drank. 'every morning' goes with 'drinks' in the first part only.",
-      why: "yesterday كلمة وقت ماضية، فتلزم صيغة الماضي drank، أما every morning فتخص drinks في الجزء الأول وحده.", errCat: "tense" },
+    { s: "My uncle usually sees his friends on Fridays, but last Friday he ___ his doctor.", opts: ["sees", "see", "saw"], a: 2, tag: "Grammar · قواعد",
+      whyEn: "'last Friday' is a past time word, so we need the past form: saw. 'on Fridays' goes with 'sees' in the first part only.",
+      why: "last Friday كلمة وقت ماضية، فتلزم صيغة الماضي saw، أما on Fridays فتخص sees في الجزء الأول وحده.", errCat: "tense" },
     { s: "My sister ___ to choose a new car this year, but she can't decide.", opts: ["is want", "wants", "wanting"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'want' is a state verb, so it stays in the present simple, and 'she' needs -s: wants. 'is want' mixes be with a base verb, and 'wanting' has no 'be' verb.",
       why: "want فعل حالة يبقى في المضارع البسيط، وتحتاج she إلى s: wants، أما is want فتجمع be مع أصل الفعل، وwanting بلا فعل be.", errCat: "stative" },
     { s: "On Thursday, we ___ for new shoes at the big mall near our house.", opts: ["took photos", "relaxed", "went shopping"], a: 2, tag: "Vocabulary · مفردات",
       whyEn: "New shoes are something you buy, so they 'went shopping'. 'for new shoes' goes with shopping, not with the other two.",
       why: "الحذاء الجديد مما يُشترى، فالمناسب went shopping، وfor new shoes تناسب التسوق لا الخيارين الآخرين.", errCat: "vocab" },
-    { s: "Only 30 riyals for these shoes? They are really ___!", opts: ["cheap", "relaxed", "annual leave"], a: 0, tag: "Vocabulary · مفردات",
-      whyEn: "'Only 30 riyals' is a low price, so the shoes are 'cheap'.",
-      why: "Only 30 riyals ثمن قليل، فالحذاء cheap أي رخيص.", errCat: "vocab" },
+    { s: "I didn't spend much on this bag. It was ___, but it looks good.", opts: ["cheap", "relaxed", "annual leave"], a: 0, tag: "Vocabulary · مفردات",
+      whyEn: "'I didn't spend much' tells us the price was low, so the bag was 'cheap'.",
+      why: "I didn't spend much تدل على أن الثمن قليل، فالحقيبة cheap أي رخيصة.", errCat: "vocab" },
     { s: "My uncle wasn't ill. He took two weeks of ___ and spent them with his family by the sea.", opts: ["sick leave", "annual leave", "driving licence"], a: 1, tag: "Legal Track · المسار القانوني",
       whyEn: "He wasn't ill, so this was not 'sick leave'. His paid holiday from work is 'annual leave'. A 'driving licence' is a document, not time away from work.",
       why: "لم يكن مريضًا، فليست sick leave، بل هي إجازته المدفوعة من العمل annual leave، أما driving licence فوثيقة لا إجازة.", errCat: "vocab" }
