@@ -59,7 +59,7 @@ var DATA = window.DATA = {
     { n: 1, en: "Life & Work Around the World", ar: "الحياة والعمل حول العالم", gEn: "Present Simple & Continuous", g: "المضارع البسيط والمضارع المستمر", open: true },
     { n: 2, en: "Great Journeys", ar: "رحلات عظيمة", gEn: "Past Simple (Regular & Irregular)", g: "الماضي البسيط (المنتظم والشاذ)", open: true },
     { n: 3, en: "Moments to Remember", ar: "لحظات لا تُنسى", gEn: "Past Continuous with when & while", g: "الماضي المستمر مع when و while", open: true },
-    { n: 103, en: "Consolidation Week", ar: "أسبوع التثبيت", gEn: "Units 1–3: Choosing the Right Tense", g: "الوحدات 1–3: اختيار الزمن الصحيح" },
+    { n: 103, en: "Consolidation Week", ar: "أسبوع التثبيت", gEn: "Units 1–3: Choosing the Right Tense", g: "الوحدات 1–3: اختيار الزمن الصحيح", open: true },
     { n: 4, en: "Cities of the World", ar: "مدن العالم", gEn: "Comparatives & Superlatives", g: "المقارنة والتفضيل" },
     { n: 5, en: "Food & Health", ar: "الغذاء والصحة", gEn: "Countable & Uncountable · much / many / a few", g: "المعدود وغير المعدود، و much / many / a few" },
     { n: 6, en: "Plans & Trips", ar: "خطط ورحلات", gEn: "Future: going to & will", g: "المستقبل: going to و will" },
@@ -110,11 +110,11 @@ var DATA = window.DATA = {
   ],
 
   unit103Lessons: [
-    { id: "u103l1", n: 1, en: "Back Home", subEn: "Review: Present Simple vs. Present Continuous", ar: "مراجعة المضارع البسيط والمستمر", shortAr: "مراجعة المضارع", icon: "penguin" },
-    { id: "u103l2", n: 2, en: "How Was Your Weekend?", subEn: "Review: Past Simple", ar: "مراجعة الماضي البسيط", shortAr: "مراجعة الماضي البسيط", icon: "speaker" },
-    { id: "u103l3", n: 3, en: "What Were You Doing?", subEn: "Review: Past Continuous vs. Past Simple", ar: "مراجعة الماضي المستمر والبسيط", shortAr: "مراجعة الماضي المستمر", icon: "clock" },
-    { id: "u103l4", n: 4, en: "Twenty Years Abroad", subEn: "Review: Choosing the Right Tense", ar: "اختيار الزمن الصحيح بين الأزمنة الأربعة", shortAr: "اختيار الزمن الصحيح", icon: "speaker" },
-    { id: "u103l5", n: 5, en: "This Is Me", subEn: "Writing: Your First Long Paragraph", ar: "كتابة: أول فقرة طويلة عن نفسك", shortAr: "فقرة طويلة عن نفسك", icon: "pen" },
+    { id: "u103l1", n: 1, en: "Back Home", subEn: "Review: Present Simple vs. Present Continuous", ar: "مراجعة المضارع البسيط والمستمر", shortAr: "مراجعة المضارع", icon: "penguin", open: true },
+    { id: "u103l2", n: 2, en: "How Was Your Weekend?", subEn: "Review: Past Simple", ar: "مراجعة الماضي البسيط", shortAr: "مراجعة الماضي البسيط", icon: "speaker", open: true },
+    { id: "u103l3", n: 3, en: "What Were You Doing?", subEn: "Review: Past Continuous vs. Past Simple", ar: "مراجعة الماضي المستمر والبسيط", shortAr: "مراجعة الماضي المستمر", icon: "clock", open: true },
+    { id: "u103l4", n: 4, en: "Twenty Years Abroad", subEn: "Review: Choosing the Right Tense", ar: "اختيار الزمن الصحيح بين الأزمنة الأربعة", shortAr: "اختيار الزمن الصحيح", icon: "speaker", open: true },
+    { id: "u103l5", n: 5, en: "This Is Me", subEn: "Writing: Your First Long Paragraph", ar: "كتابة: أول فقرة طويلة عن نفسك", shortAr: "فقرة طويلة عن نفسك", icon: "pen", open: true },
     { id: "u103l6", n: 6, en: "Week Review & Test", subEn: "Units 1–3 Mastery Test", ar: "مراجعة الأسبوع واختباره", shortAr: "مراجعة الأسبوع واختباره", icon: "trophy", test: true }
   ],
 
