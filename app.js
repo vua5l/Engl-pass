@@ -1463,14 +1463,12 @@ function stFluency(ctl){
       return;
     }
     running = false; clearReadTimer(); btn.textContent = 'Read again';
-    if (sec > 0) {
-      var wpm = Math.round(words / sec * 60);
-      /* أكثر من 400 كلمة في الدقيقة ليس قراءة، فلا يُحفظ رقمًا قياسيًا. */
-      if (wpm > 400) { line.textContent = 'That was too fast to be real reading. Read it again.'; return; }
-      var had = !!S.fluency;
-      if (!had || wpm > S.fluency.wpm) { S.fluency = { wpm:wpm, sec:sec }; touch(); }
-      line.textContent = 'This time: ' + wpm + ' words a minute (' + fmtSec(sec) + ').' + (had ? ' ' + bestLine() + '.' : '');
-    }
+    /* أكثر من 400 كلمة في الدقيقة ليس قراءة، فلا يُحفظ رقمًا قياسيًا. */
+    var wpm = sec > 0 ? Math.round(words / sec * 60) : Infinity;
+    if (wpm > 400) { line.textContent = 'That was too fast to be real reading. Read it again.'; return; }
+    var had = !!S.fluency;
+    if (!had || wpm > S.fluency.wpm) { S.fluency = { wpm:wpm, sec:sec }; touch(); }
+    line.textContent = 'This time: ' + wpm + ' words a minute (' + fmtSec(sec) + ').' + (had ? ' ' + bestLine() + '.' : '');
   });
   return [
     label('Warm-up · Fluency Reading', 'تمهيد · قراءة الطلاقة'),

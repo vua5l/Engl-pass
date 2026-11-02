@@ -322,7 +322,7 @@ function fakeGitHub(token) {
         if (LISTEN_IDS.includes(lid)) {
           const scr = await page.innerText('#screen').catch(() => '');
           if (/Stage 3 of 3/.test(scr) && /Listening/.test(scr)) seenListen[lid] = Object.assign(seenListen[lid] || {}, { s3: scr, s3html: await page.innerHTML('#screen') });
-        } else if (!(seenRead[lid] && seenRead[lid].read1) && await page.locator('.rtimer-t').count() && await page.locator('.mail-meta').count()) {
+        } else if (!(seenRead[lid] && seenRead[lid].read1) && await page.locator('.rtimer-t').count() && await page.locator('.mail-meta:visible').count()) {
           seenRead[lid] = Object.assign(seenRead[lid] || {}, { read1: true, art: await page.locator('.mail-art').count(), from: await page.locator('.mail-meta > div').first().innerText(), timer: await page.locator('.rtimer-t').innerText() });
         } else if (!(seenRead[lid] && seenRead[lid].tag) && await page.locator('#hlToggle').count()) {
           seenRead[lid] = Object.assign(seenRead[lid] || {}, { tag: await page.locator('.st-lbl .tag').first().innerText() });
@@ -726,9 +726,11 @@ function fakeGitHub(token) {
     await page.locator('button', { hasText: 'Finished' }).click(); await sleep(150);
     const tooFast = await text(page);
     const saved0 = ((await getJSON(page, 'ep4.lesson.u103l1')) || {}).fluency;
-    await page.locator('button', { hasText: 'Read again' }).click(); await sleep(2300);
+    await page.locator('button', { hasText: 'Read again' }).click(); await sleep(34000);
     await page.locator('button', { hasText: 'Finished' }).click(); await sleep(150);
+    const saved1 = ((await getJSON(page, 'ep4.lesson.u103l1')) || {}).fluency;
     ok(before.includes('Fluency Reading') && hiddenMail && shown === 1 && tooFast.includes('too fast') && !saved0, 'the fluency screen comes first, shows the old text only after Start, and does not save an impossible speed');
+    ok(!!saved1 && saved1.wpm > 300 && saved1.wpm <= 400 && (await text(page)).includes('words a minute'), 'a real reading saves its words a minute: ' + JSON.stringify(saved1));
     await ctx.close();
     const second = await newPage(null);
     await startApp(second.page);
