@@ -1778,7 +1778,7 @@ function localWritingCheck(text){
     gMist.push({ wrong:m1, right:m1.replace(/\b(He|She)\s+is\s+(\w+)/i, '$1 $2s').replace(/\b(am|is|are)\s+/i, ''), why:'Do not put am/is/are before a base verb in Present Simple.' });
   }
   // في السؤال يتقدم الفعل على الفاعل (Was he going?)، فليس بعد الضمير خطأ
-  var noInv = text.replace(/\b(?:am|is|are|was|were)(?:n't|n’t)?\s+(?:I|you|he|she|it|we|they)\b/gi, ' ');
+  var noInv = text.replace(/(?:\b(?:am|is|are|was|were)(?:n't|n’t)?|'s|'re|'m)\s+(?:I|you|he|she|it|we|they)\b/gi, ' ');
   if (/\b(?:I|He|She|We|They)\s+(?:working|studying|going|living|sleeping|sitting|writing|reading|learning)\b/i.test(noInv)) {
     var m2 = noInv.match(/\b(?:I|He|She|We|They)\s+(?:working|studying|going|living|sleeping|sitting|writing|reading|learning)\b/i)[0];
     gMist.push({ wrong:m2, right:m2.replace(/^(\w+)\s+/, '$1 am/is/are (past: was/were) '), why:'The continuous needs am / is / are before verb-ing, or was / were in the past.' });

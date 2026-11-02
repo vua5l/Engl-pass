@@ -428,9 +428,9 @@ LESSONS.u3l5 = {
     { s: "Nobody replied to Hind because nobody knew what her message ___.", opts: ["was meaning", "meant"], a: 1,
       whyEn: "Here 'mean' tells us what the message says, so it is a state verb. State verbs take no -ing, so we use the past form 'meant'.",
       why: "mean هنا تدل على ما تقوله الرسالة، فهي فعل حالة، وأفعال الحالة لا تأخذ ing، فنستعمل صيغة الماضي meant.", errCat: "stative" },
-    { s: "I didn't see the driver's face, so I wrote: '___ he was a young man.'", opts: ["I think", "I saw"], a: 0,
-      whyEn: "The writer didn't see the face, so this is only an idea in his head, and 'I think' shows that. 'I saw' is only for what a witness really saw.",
-      why: "لم ير الكاتب وجه السائق، فهذه فكرة في ذهنه فحسب، وتدل عليها I think. أما I saw فلما رآه الشاهد حقًّا.", errCat: "vocab" }
+    { s: "I didn't see the man's face, so I told my brother: '___ he was young.'", opts: ["I think", "I saw"], a: 0,
+      whyEn: "The speaker didn't see the face, so this is only an idea in his head, and 'I think' shows that. 'I saw' is only for what a witness really saw.",
+      why: "لم ير المتحدث وجه الرجل، فهذه فكرة في ذهنه فحسب، وتدل عليها I think. أما I saw فلما رآه الشاهد حقًّا.", errCat: "vocab" }
   ],
 
   gB: [
@@ -464,13 +464,13 @@ LESSONS.u3l5 = {
   ],
 
   gD: [
-    { chips: ["outside the hall.", "At about 4 pm,", "were standing", "the students"], ans: "At about 4 pm, the students were standing outside the hall.",
+    { chips: ["in the hall.", "At about 4 pm,", "were singing", "the students"], ans: "At about 4 pm, the students were singing in the hall.",
       whyEn: "The time comes first with a comma, then the subject (the students), were + verb-ing, and the place at the end.",
       why: "الزمن أولًا وبعده فاصلة، ثم الفاعل the students، ثم were مع الفعل وing، ثم المكان في آخر الجملة.", errCat: "word_order" },
     { chips: ["for 5 am.", "My father", "his alarm", "set"], ans: "My father set his alarm for 5 am.",
       whyEn: "Subject (My father) + past verb (set) + object (his alarm) + time. The past of set is set: no change, and no -s after 'My father' here because it is past.",
       why: "الفاعل My father ثم الفعل الماضي set ثم المفعول his alarm ثم الوقت. وماضي set هو set بلا تغيير، ولا نضيف s لأن الجملة في الماضي.", errCat: "word_order" },
-    { chips: ["Then he called the police.", "Finally, he went home.", "First, the driver got out.", "After that, he sat down."], ans: "First, the driver got out. Then he called the police. After that, he sat down. Finally, he went home.",
+    { chips: ["Then a woman got off.", "Finally, she went into the bank.", "First, the bus stopped.", "After that, she bought a coffee."], ans: "First, the bus stopped. Then a woman got off. After that, she bought a coffee. Finally, she went into the bank.",
       whyEn: "The order words tell the order of the events: First, then Then, then After that, and Finally for the last event.",
       why: "كلمات الترتيب تحدد ترتيب الأحداث: First ثم Then ثم After that، وFinally للحدث الأخير.", errCat: "word_order" },
     { chips: ["didn't see", "I saw the car,", "but I", "the driver."], ans: "I saw the car, but I didn't see the driver.",
@@ -575,8 +575,8 @@ LESSONS.u3l5 = {
       { k: "vocab", tEn: "At least 2 words or phrases from today's lesson", t: "كلمتان أو عبارتان على الأقل من درس اليوم", ex: "suddenly · police officer · describe · exactly · ambulance · corner · witness statement",
         ok: function(a, text){ var s = wNorm(text); return W_VOCAB.filter(function(re){ return re.test(s); }).length >= 2; } }
     ],
-    modelMarked: "Hi Majed,<br>I want to tell you what I <<s:saw>> <<t:last Thursday>>.<br><<t:At about 9 pm>>, I <<c:was sitting>> in a café on the {corner} of King Abdullah Road. It was very windy, and two boys <<c:were playing>> football outside. A man <<c:was parking>> his car <<t:when>> a ball {suddenly} <<s:broke>> his mirror. <<t:First>>, the boys <<s:stopped>> playing. <<t:Then>> the man <<s:got>> out, and they <<s:said>> sorry to him. <<t:After that>>, their father <<s:came>> and <<s:paid>> for the mirror. <<t:Finally>>, the man <<s:drove>> away. I <<s:didn't see>> {exactly} who <<s:kicked>> the ball. I think it was the taller boy.<br>How is your family?<br>Best wishes,<br>Saad",
-    model: "Hi Majed,\nI want to tell you what I saw last Thursday.\nAt about 9 pm, I was sitting in a café on the corner of King Abdullah Road. It was very windy, and two boys were playing football outside. A man was parking his car when a ball suddenly broke his mirror. First, the boys stopped playing. Then the man got out, and they said sorry to him. After that, their father came and paid for the mirror. Finally, the man drove away. I didn't see exactly who kicked the ball. I think it was the taller boy.\nHow is your family?\nBest wishes,\nSaad",
+    modelMarked: "Hi Majed,<br>I want to tell you what I <<s:saw>> <<t:last Thursday>>.<br><<t:At about 9 pm>>, I <<c:was sitting>> in a café on the {corner} of King Abdullah Road. It was very windy, and two boys <<c:were playing>> football outside. A man <<c:was parking>> his car <<t:when>> a ball {suddenly} <<s:broke>> his mirror. <<t:First>>, the boys <<s:stopped>> playing. <<t:Then>> the man <<s:got>> out, and they <<s:said>> sorry to him. <<t:After that>>, their father <<s:came>> and <<s:paid>> for the mirror. <<t:Finally>>, the man <<s:drove>> away. I <<s:didn't see>> {exactly} who <<s:kicked>> the ball.<br>How is your family?<br>Best wishes,<br>Saad",
+    model: "Hi Majed,\nI want to tell you what I saw last Thursday.\nAt about 9 pm, I was sitting in a café on the corner of King Abdullah Road. It was very windy, and two boys were playing football outside. A man was parking his car when a ball suddenly broke his mirror. First, the boys stopped playing. Then the man got out, and they said sorry to him. After that, their father came and paid for the mirror. Finally, the man drove away. I didn't see exactly who kicked the ball.\nHow is your family?\nBest wishes,\nSaad",
     legendEn: "Light blue = Past Simple: events · Terracotta = Past Continuous: background · Dashed = time and order words, when and while",
     legendAr: "الأزرق الفاتح للماضي البسيط (الأحداث)، والطوبي للماضي المستمر (الخلفية)، والإطار المنقّط لكلمات الزمن والترتيب وwhen وwhile.",
     acceptExamples: [
