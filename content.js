@@ -100,8 +100,8 @@ var DATA = window.DATA = {
     { id: "u3l1", n: 1, en: "A Night to Remember", subEn: "Past Continuous: was / were + -ing", ar: "ليلة الإطلاق إلى الفضاء: الماضي المستمر في الإثبات", shortAr: "الماضي المستمر في الإثبات", icon: "globe", open: true },
     { id: "u3l2", n: 2, en: "Accidents Happen", subEn: "Past Continuous & Past Simple with when", ar: "حوادث على الطريق: الحدث الطويل يقطعه حدث قصير", shortAr: "الحدث الطويل والقصير مع when", icon: "speaker", open: true },
     { id: "u3l3", n: 3, en: "Happy Accidents", subEn: "Past Continuous: Negatives & Questions", ar: "اكتشافات بالصدفة: النفي والسؤال في الماضي المستمر", shortAr: "النفي والسؤال في الماضي المستمر", icon: "dots", open: true },
-    { id: "u3l4", n: 4, en: "Caught in a Storm", subEn: "Past Continuous with while", ar: "قصص العواصف والكوارث: while مع الماضي المستمر", shortAr: "while مع الماضي المستمر", icon: "clock" },
-    { id: "u3l5", n: 5, en: "I Saw It Happen", subEn: "Writing: A Witness Statement", ar: "كتابة: إفادة شاهد في إيميل", shortAr: "سرد ما رأيته", icon: "mail" },
+    { id: "u3l4", n: 4, en: "Caught in a Storm", subEn: "Past Continuous with while", ar: "قصص العواصف والكوارث: while مع الماضي المستمر", shortAr: "while مع الماضي المستمر", icon: "clock", open: true },
+    { id: "u3l5", n: 5, en: "I Saw It Happen", subEn: "Writing: A Witness Statement", ar: "كتابة: إفادة شاهد في إيميل", shortAr: "سرد ما رأيته", icon: "mail", open: true },
     { id: "u3l6", n: 6, en: "Unit Review & Test", subEn: "Unit 3 Review & Mastery Test", ar: "مراجعة الوحدة واختبارها", shortAr: "مراجعة الوحدة واختبارها", icon: "trophy", test: true }
   ],
 
