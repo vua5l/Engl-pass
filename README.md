@@ -30,13 +30,14 @@ lessons/u0/l1.js    الأسبوع التأسيسي، الدرس 1 (إلى l5.js
 lessons/u1/l1.js    الوحدة 1، الدرس 1 (إلى l5.js): l1 وl4 وl5 قراءة، وl2 وl3 استماع
 maps/u1.json        خريطة الوحدة 1 بصيغة يقرؤها الفاحص (الصيغة في maps/README.md)
 lessons/u2/l1.js    الوحدة 2، الدرس 1 (إلى l5.js): l1 وl3 وl5 قراءة، وl2 وl4 استماع
-lessons/u3/l1.js    الوحدة 3، الدرس 1 (إلى l3.js حتى الآن): l1 وl3 قراءة، وl2 استماع
+lessons/u3/l1.js    الوحدة 3، الدرس 1 (إلى l5.js): l1 وl3 وl5 قراءة، وl2 وl4 استماع
 maps/u2.json        خريطة الوحدة 2، وفيها الأفعال الشاذة لكل درس (irregularVerbs)
 maps/u3.json        خريطة الوحدة 3 (الماضي المستمر)، وبها تكتمل الأفعال الشاذة الستون
 maps/u4.json        خريطة الوحدة 4 (المقارنة والتفضيل)
 maps/u5.json        خريطة الوحدة 5 (المعدود وغير المعدود)
 tools/register-lessons.js   يكتب سطور الدروس وأرقام الإصدار في index.html من content.js
 tools/night-guard.js        حارس العمل الليلي: يرفض أي تغيير خارج lessons/ وcontent.js وnight-reports/
+tools/hear.py               يحوّل صوت مقطع الاستماع إلى نص، ليطابق المراجع الأسئلة بما يُقال فعلًا (لا يُرفع ناتجه)
 tests/content-check.js      فاحص آلي لمحتوى الدروس والاختبارات بـ Node وحده، في أقل من ثانية
 tests/map-check.js          يطابق كل درس بخريطة وحدته
 tests/link-check.js         يتأكد أن روابط المقاطع وملفات النطق تفتح (يعمل في GitHub)
