@@ -406,8 +406,8 @@ var DATA = window.DATA = {
       unit: 103,
       titleEn: "Consolidation Week · Choosing the Right Tense (Present Simple, Present Continuous, Past Simple, Past Continuous)",
       titleAr: "أسبوع التثبيت · اختيار الزمن الصحيح (المضارع البسيط والمستمر، والماضي البسيط والمستمر)",
-      grammarEn: "1) Present Simple for habits and facts (I usually go to class at nine), 2) Present Continuous for actions in progress now or these days (This week, I am preparing for an exam), 3) Past Simple for finished events (Last month, I signed a contract · I didn't go · Did you go?), 4) Past Continuous for the background of a story (I was walking home when it started to rain · What were you doing when…?), 5) Stative verbs stay simple (I know, I need, I knew, I understood). Please help me ask myself two questions: Is this in the present or in the past? Was the action in progress at that moment? Also please check that I write and say separate sentences, not one long sentence.",
-      phrases: ["a typical day", "a busy schedule", "meet a deadline", "sign a contract", "annual leave", "at that moment", "witness statement", "a foreign country", "apply for a visa", "international law", "introduce myself", "my English journey"],
+      grammarEn: "1) Present Simple for habits and facts (I usually go to class at nine), 2) Present Continuous for actions in progress now or these days (This week, I am preparing for an exam), 3) Past Simple for finished events (Last month, I signed a contract · I didn't go · Did you go?), 4) Past Continuous for the background of a story (I was walking home when it started to rain · What were you doing when…?), 5) Stative verbs stay simple (I know, I need, I knew, I understood). Please help me ask myself two questions: Is it in the present or in the past? Is it going on now or these days? In the past: was it going on at that moment? Also please check that I write and say separate sentences, not one long sentence.",
+      phrases: ["a typical day", "go shopping", "meet a deadline", "sign a contract", "annual leave", "at that moment", "witness statement", "a foreign country", "apply for a visa", "international law", "introduce myself", "my English journey"],
       questions: [
         "I wrote a paragraph to introduce myself. First, I will read it to you. Then please correct my mistakes, especially my tenses, and help me say it again with the corrections.",
         "Tell me about a typical week in your life, and then tell me about this week: what do you usually do, and what are you doing differently these days?",
@@ -782,20 +782,20 @@ var DATA = window.DATA = {
         introEn: "Review five legal phrases from Units 1 to 3 in new everyday sentences with the four tenses of this week, before you start the Consolidation Week Mastery Test:",
         introAr: "راجع خمس عبارات قانونية من الوحدات 1 إلى 3 في جمل يومية جديدة بأزمنة هذا الأسبوع الأربعة، قبل أن تبدأ اختبار إتقان أسبوع التثبيت:",
         terms: [
-          { en: "break the law", ar: "يخالف القانون / يخرق النظام", ex: "A good driver doesn't break the law, even when the road is empty.", exAr: "السائق الجيد لا يخالف القانون، حتى حين يكون الطريق خاليًا." },
+          { en: "break the law", ar: "يخالف القانون / يخرق النظام", ex: "Some people break the law because they don't know the rules.", exAr: "يخالف بعض الناس القانون لأنهم لا يعرفون قواعده." },
           { en: "Islamic law", ar: "الفقه الإسلامي / الشريعة الإسلامية", ex: "My sister is preparing for her Islamic law exam this week, so the house is very quiet.", exAr: "تستعد أختي هذا الأسبوع لاختبار الفقه الإسلامي، فالبيت هادئ جدًا." },
-          { en: "pay a fine", ar: "يدفع غرامة (عقوبة مالية على مخالفة)", ex: "Last month, my brother parked in front of a hospital gate, so he paid a fine.", exAr: "أوقف أخي سيارته الشهر الماضي أمام بوابة مستشفى، فدفع غرامة." },
-          { en: "driving licence", ar: "رخصة قيادة", ex: "My sister was taking a photo of her new driving licence when our father came home.", exAr: "كانت أختي تلتقط صورة لرخصة قيادتها الجديدة حين عاد أبونا إلى البيت." },
-          { en: "state of emergency", ar: "حالة الطوارئ", ex: "The government declared a state of emergency because a big storm was moving towards the island.", exAr: "أعلنت الحكومة حالة الطوارئ لأن عاصفة كبيرة كانت تتجه نحو الجزيرة." }
+          { en: "pay a fine", ar: "يدفع غرامة (عقوبة مالية على مخالفة)", ex: "Last month, my brother paid a fine because he used his phone while he was driving.", exAr: "دفع أخي غرامة الشهر الماضي لأنه استعمل هاتفه وهو يقود سيارته." },
+          { en: "driving licence", ar: "رخصة قيادة", ex: "Our neighbour was driving to Abha when he remembered that his driving licence was at home.", exAr: "كان جارنا يقود سيارته إلى أبها حين تذكر أن رخصة قيادته في البيت." },
+          { en: "state of emergency", ar: "حالة الطوارئ", ex: "A big storm was coming, so the whole island was in a state of emergency.", exAr: "كانت عاصفة كبيرة تقترب، فكانت الجزيرة كلها في حالة الطوارئ." }
         ]
       },
       questions: [
         { s: "Can you open the door? I ___ four big bags, so I can't use my hands.", opts: ["carry", "am carrying", "am carry"], a: 1, errCat: "tense", lesson: "u103l1",
           whyEn: "The speaker needs help now and can't use both hands, so the action is in progress at this moment, and we use the Present Continuous: am carrying. 'I carry' is for a habit, not for this moment, and 'am carry' is wrong, because we never put am before a base verb.",
           why: "المتكلم يطلب العون الآن ويداه مشغولتان، فالفعل جارٍ في هذه اللحظة، فنستعمل المضارع المستمر: am carrying، أما I carry فللعادة لا لهذه اللحظة، وam carry خطأ، لأننا لا نضع am قبل الفعل المجرد أبدًا." },
-        { s: "My mother ___ two cups of coffee every morning.", opts: ["is drink", "drink", "drinks"], a: 2, errCat: "be_verb", lesson: "u103l1",
-          whyEn: "'every morning' shows a habit, so we use the Present Simple, and 'my mother' is she, so the verb takes s: drinks. 'is drink' is wrong, because we never put is before a base verb.",
-          why: "every morning تدل على عادة، فنستعمل المضارع البسيط، والفاعل my mother بمعنى she، فيأخذ الفعل s: drinks، أما is drink فخطأ، لأننا لا نضع is قبل الفعل المجرد أبدًا." },
+        { s: "My mother ___ a glass of milk every night.", opts: ["is drink", "drink", "drinks"], a: 2, errCat: "be_verb", lesson: "u103l1",
+          whyEn: "'every night' shows a habit, so we use the Present Simple, and 'my mother' is she, so the verb takes s: drinks. 'is drink' is wrong, because we never put is before a base verb.",
+          why: "every night تدل على عادة، فنستعمل المضارع البسيط، والفاعل my mother بمعنى she، فيأخذ الفعل s: drinks، أما is drink فخطأ، لأننا لا نضع is قبل الفعل المجرد أبدًا." },
         { s: "___ your brother need a new passport?", opts: ["Does", "Is", "Do"], a: 0, errCat: "be_verb", lesson: "u103l1",
           whyEn: "'need' is a main verb, so its question in the Present Simple takes do or does, not is. 'your brother' is he, so we say Does, and then the base verb: need.",
           why: "need فعل أساسي، فسؤاله في المضارع البسيط يكون بـ do أو does لا بـ is، والفاعل your brother بمعنى he، فنقول Does، ثم يأتي الفعل مجردًا: need." },
@@ -803,8 +803,8 @@ var DATA = window.DATA = {
           whyEn: "'prefer' is a state verb, so it stays in the Present Simple, even when we talk about now: we don't say 'am preferring'. With I, the verb has no s, so 'prefers' is wrong.",
           why: "prefer فعل حالة، فيبقى في المضارع البسيط ولو كان الكلام عن الآن، فلا نقول am preferring، والفعل مع I بلا s، فـ prefers خطأ." },
         { s: "Look at Omar in the corner. He ___ a letter to his grandmother.", opts: ["is writting", "is writeing", "is writing"], a: 2, errCat: "spelling", lesson: "u103l1",
-          whyEn: "'write' ends in e, so we drop the e and add -ing: writing. We double the last letter only in short verbs that end in one vowel + one consonant, like sit: sitting.",
-          why: "ينتهي write بحرف e، فنحذفه ونضيف ing: writing، ولا نضاعف الحرف الأخير إلا في الأفعال القصيرة المنتهية بحرف علة واحد ثم حرف ساكن، مثل sit: sitting." },
+          whyEn: "'write' ends in a silent e, so we drop the e and add -ing: writing. We double the last letter in short verbs like sit: sitting.",
+          why: "ينتهي write بحرف e صامت، فنحذفه ونضيف ing: writing. ونضاعف الحرف الأخير في أفعال قصيرة مثل sit: sitting." },
         { s: "Two days ago, my grandfather ___ us to the old market in Hofuf.", opts: ["took", "taked", "takes"], a: 0, errCat: "tense", lesson: "u103l2",
           whyEn: "'Two days ago' is a finished time, so we use the past, not the present 'takes'. 'take' is irregular: its past is 'took', so 'taked' is not a word.",
           why: "Two days ago وقت منتهٍ، فنستعمل الماضي لا المضارع takes، وtake فعل شاذ ماضيه took، فليست taked كلمة." },
@@ -847,7 +847,7 @@ var DATA = window.DATA = {
         { s: "In 2015, my neighbour ___ smoking, and now he feels much better.", opts: ["stops", "is stopping", "stopped"], a: 2, errCat: "tense", lesson: "u103l4",
           whyEn: "'In 2015' is a finished time, so we use the Past Simple: stopped. 'now' goes with the next part of the sentence: he feels better now because of something that happened in the past. Don't forget the double p in stopped.",
           why: "In 2015 وقت منتهٍ، فنستعمل الماضي البسيط: stopped، أما now فتتعلق ببقية الجملة: يشعر الآن بتحسن بسبب ما وقع في الماضي، ولا تنسَ مضاعفة p في stopped." },
-        { s: "Which text about Nasser has no mistakes?", opts: ["Last year, Nasser sells phones in a small shop. Now he had his own shop, and this week he is looking for a helper.", "Last year, Nasser sold phones in a small shop. Now he has his own shop, and this week he is looking for a helper.", "Last year, Nasser sold phones in a small shop. Now he is having his own shop, and this week he looks for a helper."], a: 1, errCat: "tense", lesson: "u103l4",
+        { s: "Which text about Nasser has no mistakes?", opts: ["Last year, Nasser sells phones in a small shop. Now he had his own shop, and this week he is looking for a helper.", "Last year, Nasser sold phones in a small shop. Now he has his own shop, and this week he is looking for a helper.", "Last year, Nasser sold phones in a small shop. Now he is having his own shop, and this week he is looking for a helper."], a: 1, errCat: "tense", lesson: "u103l4",
           whyEn: "'Last year' needs the past: sold, not 'sells'. 'Now' needs the present: has, not 'had'. 'have' here means own, a state verb, so it stays simple: we don't say 'is having his own shop'. 'this week' with 'is looking' shows an action in progress these days.",
           why: "Last year تحتاج إلى الماضي: sold لا sells، وNow تحتاج إلى المضارع: has لا had، وhave هنا بمعنى «يملك»، وهو فعل حالة، فيبقى بسيطًا، فلا نقول is having his own shop، وthis week مع is looking تدل على فعل جارٍ هذه الأيام." }
       ],
