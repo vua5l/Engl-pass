@@ -908,3 +908,5 @@ body{font-family:var(--f-en)}
 .td-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .pill-btn.sm{height:34px;padding:0 12px;font-size:12.5px}
 .pill-btn.sm .ico{width:15px;height:15px}
+/* علامة أسبوع التثبيت في خط الرحلة */
+.u-n .ico{width:20px;height:20px}

@@ -1448,7 +1448,7 @@ function fluencyText(){ var id = D.reading && D.reading.fluencyFrom, L = id && t
 function stFluency(ctl){
   var r = fluencyText(), words = readingWords(r), sec = 0;
   ctl.enable('التالي');
-  var mail = h('article', { class:'mail', hidden:true, 'aria-label':'Fluency Reading' }, mailHead(r),
+  var mail = h('article', { class:'mail', hidden:true, 'aria-label':'Fluency Reading' }, mailHead({ from:r.from, fromMeta:r.fromMeta, to:r.to, title:r.title }),
     h('div', { class:'mail-body mail-plain', dir:'ltr', html:r.paras.map(function(p){ return '<p>' + stripMarkup(p) + '</p>'; }).join('') }));
   var tSpan = h('span', { class:'rtimer-t' }, '00:00');
   function bestLine(){ var b = S.fluency; return b ? 'Your best: ' + b.wpm + ' words a minute (' + fmtSec(b.sec) + ')' : 'About ' + words + ' words'; }
@@ -1465,14 +1465,17 @@ function stFluency(ctl){
     running = false; clearReadTimer(); btn.textContent = 'Read again';
     if (sec > 0) {
       var wpm = Math.round(words / sec * 60);
-      if (!S.fluency || wpm > S.fluency.wpm) { S.fluency = { wpm:wpm, sec:sec }; touch(); }
-      line.textContent = 'This time: ' + wpm + ' words a minute. ' + bestLine() + '.';
+      /* أكثر من 400 كلمة في الدقيقة ليس قراءة، فلا يُحفظ رقمًا قياسيًا. */
+      if (wpm > 400) { line.textContent = 'That was too fast to be real reading. Read it again.'; return; }
+      var had = !!S.fluency;
+      if (!had || wpm > S.fluency.wpm) { S.fluency = { wpm:wpm, sec:sec }; touch(); }
+      line.textContent = 'This time: ' + wpm + ' words a minute (' + fmtSec(sec) + ').' + (had ? ' ' + bestLine() + '.' : '');
     }
   });
   return [
     label('Warm-up · Fluency Reading', 'تمهيد · قراءة الطلاقة'),
     instr('Read this old email again, a little faster than before. You know these words, so do not stop. Tap Finished at the end.', 'أعد قراءة هذا الإيميل القديم أسرع قليلًا من قبل. كلماته تعرفها فلا تتوقف، واضغط Finished في آخره.'),
-    h('div', { class:'rtimer' }, btn, tSpan),
+    h('div', { class:'rtimer', style:'position:sticky;top:8px;z-index:3' }, btn, tSpan),
     line, mail
   ];
 }
