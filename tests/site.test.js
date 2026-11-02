@@ -353,7 +353,10 @@ function fakeGitHub(token) {
         if (await inp.count()) { const c = await inp.count(); for (let i = 0; i < c; i++) await inp.nth(i).fill('x'); await inp.last().press('Enter'); await sleep(60); await cta(page); continue; }
         if (await page.locator('.b-pool .chip:enabled').count()) { while (await page.locator('.b-pool .chip:enabled').count()) await page.locator('.b-pool .chip:enabled').first().click(); await cta(page); continue; }
         const ta = page.locator('textarea.wt');
-        if (await ta.count() && !(await ta.inputValue())) { await ta.fill('I am a law student in Riyadh. My teachers are very helpful. I prepare my notes every morning. I do not study late on Friday nights.'); await sleep(200); await cta(page); continue; }
+        if (await ta.count() && !(await ta.inputValue())) {
+          // درس يطلب أكثر من أربع جمل (writing.minSentences) يُكتب فيه نموذجه
+          const longer = await page.evaluate(id => { const w = LESSONS[id].writing || {}; return w.minSentences > 4 ? w.model : ''; }, lid);
+          await ta.fill(longer || 'I am a law student in Riyadh. My teachers are very helpful. I prepare my notes every morning. I do not study late on Friday nights.'); await sleep(200); await cta(page); continue; }
         const b = page.locator('.pl-foot .btn:visible').last();
         if ((await b.count()) && await b.isEnabled()) { await b.click(); await sleep(80); continue; }
         return false;
@@ -500,7 +503,7 @@ function fakeGitHub(token) {
     ok(exRes.some(r => r.ex.id.startsWith('gC-')) && exRes.every(r => r.ok), 'typed items with exact: true (grammar typing and recall) reject the lowercase answer, show the correct form, and accept the capitalised one (' + (exRes.map(r => r.ex.lid + ' ' + r.ex.id + ' ' + r.ex.ans + (r.ok ? ' ok' : ' FAILED')).join(', ') || 'no exact item in the lessons yet') + ')');
     // تمرين الحرف الكبير ليس فعلًا: عنوانه محايد لا «Write the verb…»
     const gcRes = exRes.filter(r => r.ex.id.startsWith('gC-'))[0];
-    ok(!!gcRes && /Write the correct form/.test(gcRes.label) && !/Write the verb/.test(gcRes.label), 'a capitalisation typing item gets a neutral group label, not "Write the verb…" (' + (gcRes ? gcRes.label.split('\n')[0] : 'none') + ')');
+    ok(!!gcRes && /Write the correct form/.test(gcRes.label) && !/Write the verb/.test(gcRes.label), 'a capitalisation typing item gets a neutral group label, not "Write the verb…" (' + (gcRes ? String(gcRes.label || '').split('\n')[0] : 'none') + ')');
 
     ok(page.errors.length === 0, 'no page errors while completing all lessons: ' + page.errors.join(' | '));
     await ctx.close();
@@ -702,6 +705,43 @@ function fakeGitHub(token) {
     ok(w390.w >= 255 && w390.inside && w320.w <= w320.inner + 1 && w320.inside && w320.noHScroll, 'the wide pre-test input is wider than the normal one on a 390px phone and never overflows its card on a 320px phone: ' + JSON.stringify({ w390, w320 }));
     ok(page.errors.length === 0, 'no page errors (pre-tests): ' + page.errors.join(' | '));
     await ctx.close();
+  }
+
+  /* ---------------- ز) أسبوع التثبيت: مكانه، وقراءة الطلاقة، وحد الجمل، وتنبيه الأخطاء ---------------- */
+  if (COURSE.some(l => l.unit >= 100)) {
+    const { ctx, page } = await newPage(null);
+    await startApp(page);
+    await page.locator('.nav-it').nth(1).click(); await sleep(250);
+    const order = await page.evaluate(() => Array.from(document.querySelectorAll('#screen .tl > .tl-it > .u-n')).map(n => n.getAttribute('data-u')));
+    ok(order.indexOf('103') === order.indexOf('3') + 1 && order.indexOf('4') === order.indexOf('103') + 1, 'the Consolidation Week sits between Unit 3 and Unit 4 in Course: ' + order.join(','));
+    const opened = await openLesson(page, 'u103l1');
+    const today = await text(page);
+    ok(opened && today.includes('Consolidation Week') && today.includes('Words Coming Back') && !today.includes('New Phrases') && !/Unit 103/.test(today), 'a week lesson opens on Today under its own name, and its words stage is Words Coming Back');
+    ok(await page.locator('.tbanner', { hasText: 'Your top mistake' }).count() === 1, 'Today shows the top mistake pattern during the week');
+    await page.locator('.tp-btn.pstep', { hasText: 'Reading' }).click(); await sleep(300);
+    const before = await text(page);
+    const hiddenMail = !(await page.locator('.mail:visible').count());
+    await page.locator('button', { hasText: 'Start reading' }).click(); await sleep(150);
+    const shown = await page.locator('.mail:visible').count();
+    await page.locator('button', { hasText: 'Finished' }).click(); await sleep(150);
+    const tooFast = await text(page);
+    const saved0 = ((await getJSON(page, 'ep4.lesson.u103l1')) || {}).fluency;
+    await page.locator('button', { hasText: 'Read again' }).click(); await sleep(2300);
+    await page.locator('button', { hasText: 'Finished' }).click(); await sleep(150);
+    ok(before.includes('Fluency Reading') && hiddenMail && shown === 1 && tooFast.includes('too fast') && !saved0, 'the fluency screen comes first, shows the old text only after Start, and does not save an impossible speed');
+    await ctx.close();
+    const second = await newPage(null);
+    await startApp(second.page);
+    ok(await openLesson(second.page, 'u103l5'), 'the writing lesson of the week opens from its row');
+    await second.page.locator('.tp-btn.pstep', { hasText: 'Writing' }).click(); await sleep(300);
+    await second.page.locator('textarea.wt').fill('I am a student. I study law in Riyadh. I go to class every day. I like my college.'); await sleep(250);
+    const counter = await text(second.page);
+    await second.page.locator('.pl-foot .btn:visible').last().click(); await sleep(250);
+    const still = await second.page.locator('textarea.wt').count();
+    const st5 = (await getJSON(second.page, 'ep4.lesson.u103l5')) || {};
+    ok(counter.includes('/ 8') && still === 1 && !st5.writingDone, 'u103l5 counts sentences out of 8 and its finish button refuses 4 sentences');
+    ok(page.errors.length === 0 && second.page.errors.length === 0, 'no page errors (consolidation week): ' + page.errors.concat(second.page.errors).join(' | '));
+    await second.ctx.close();
   }
 
   await browser.close(); srv.close();
