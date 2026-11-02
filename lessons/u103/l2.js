@@ -3,7 +3,7 @@
 /* صيغ الماضي الشاذة لفحصي الكتابة: ثواني irregularVerbs الستين عدا ما يطابق أصله (cut put set let cost hit hurt shut read) وdid، ومعها got وwoke وrode وswam.
    وما يطابق أصله وdid وcould في SAME، يعدّها فحص past وحده، لأن didn't read وdidn't cut صحيحتان في فحص form */
 var IRR = 'went|bought|ate|drank|took|saw|had|came|became|ran|made|said|paid|told|sold|found|thought|brought|taught|caught|felt|kept|slept|left|met|meant|sent|spent|built|lent|lost|won|sat|stood|understood|heard|held|gave|knew|wrote|spoke|broke|chose|forgot|drove|fell|began|flew|wore|got|woke|rode|swam';
-var SAME = 'did|could|read|cut|put|set|let|cost|hit|hurt|shut';
+var SAME = 'did|could|read|cut|put|set|let(?!\')|cost|hit|hurt|shut';
 var NOT_PAST = /\b(?:need|bed|red|speed|feed|seed|hundred|indeed|weed|shed|breed|bleed|succeed|exceed|proceed|embed)\b/gi;
 function plain(text){ return String(text || '').replace(/[‘’]/g, "'"); }
 
@@ -235,7 +235,7 @@ LESSONS.u103l2 = {
           '<li><b>Most verbs: add -ed</b><span class="s-en">visit → visited · watch → watched</span></li>' +
           '<li><b>Ends in e: add -d</b><span class="s-en">arrive → arrived · like → liked</span></li>' +
           '<li><b>Consonant + y: change y to -ied</b><span class="s-en">study → studied · carry → carried</span></li>' +
-          '<li><b>Short verb, one vowel + one consonant: double it</b><span class="s-en">stop → stopped · plan → planned · but longer verbs don\'t: visit → visited</span></li>' +
+          '<li><b>Short verb, one vowel + one consonant: double it (not w, x or y)</b><span class="s-en">stop → stopped · plan → planned · but not in verbs like visit: visited</span></li>' +
         '</ul>' +
         '<p class="en-p" dir="ltr">Irregular verbs have their own past forms. Today, we practise these eight:</p>' +
         '<ul class="spell" dir="ltr">' +
@@ -245,7 +245,7 @@ LESSONS.u103l2 = {
         '<div class="tip" dir="ltr"><p><b>read · انتبه:</b> the past looks the same, but it sounds like the colour red.</p></div>',
       arHtml:
         '<p>هذه مراجعة للوحدة الثانية، وليس فيها جديد. نستعمل الماضي البسيط لما <b>انتهى</b> في الماضي.</p>' +
-        '<p>الأفعال المنتظمة تنتهي بـ <bdi class="en">ed</bdi>، ولإملائها أربعة أنماط: أكثر الأفعال تأخذ <bdi class="en">ed</bdi> (<bdi class="en">visited</bdi>)، وما ينتهي بـ <bdi class="en">e</bdi> يأخذ <bdi class="en">d</bdi> (<bdi class="en">arrived</bdi>)، وما ينتهي بحرف ساكن ثم <bdi class="en">y</bdi> تتحول فيه إلى <bdi class="en">ied</bdi> (<bdi class="en">studied</bdi>)، والفعل القصير الذي فيه حرف علة واحد بعده ساكن واحد يُضاعف ساكنه (<bdi class="en">stopped</bdi>)، ولا يُضاعف في الأفعال الأطول (<bdi class="en">visited</bdi>).</p>' +
+        '<p>الأفعال المنتظمة تنتهي بـ <bdi class="en">ed</bdi>، ولإملائها أربعة أنماط: أكثر الأفعال تأخذ <bdi class="en">ed</bdi> (<bdi class="en">visited</bdi>)، وما ينتهي بـ <bdi class="en">e</bdi> يأخذ <bdi class="en">d</bdi> (<bdi class="en">arrived</bdi>)، وما ينتهي بحرف ساكن ثم <bdi class="en">y</bdi> تتحول فيه إلى <bdi class="en">ied</bdi> (<bdi class="en">studied</bdi>)، والفعل القصير الذي فيه حرف علة واحد بعده ساكن واحد يُضاعف ساكنه (<bdi class="en">stopped</bdi>)، إلا <bdi class="en">w</bdi> و<bdi class="en">x</bdi> و<bdi class="en">y</bdi>، ولا يُضاعف في مثل <bdi class="en">visited</bdi>.</p>' +
         '<p>أما الأفعال الشاذة فلها صيغ خاصة، ونتدرب اليوم على ثمانية: <bdi class="en">go → went</bdi> و<bdi class="en">have → had</bdi> و<bdi class="en">read → read</bdi> و<bdi class="en">buy → bought</bdi> و<bdi class="en">eat → ate</bdi> و<bdi class="en">drink → drank</bdi> و<bdi class="en">take → took</bdi> و<bdi class="en">see → saw</bdi>.</p>' +
         '<p>وماضي <bdi class="en">read</bdi> يُكتب كأصله، لكنه يُنطق كنطق كلمة <bdi class="en">red</bdi>.</p>'
     },

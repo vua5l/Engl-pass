@@ -255,11 +255,11 @@ LESSONS.u103l3 = {
         '<div class="xbox"><span class="xtag c" dir="ltr">Long, then short · طويل ثم قصير</span><p class="xen">Huda was making tea when the cup fell on the floor.</p></div>' +
         '<p class="formula"><b>While</b> + was / were + verb-ing, + <b>Past Simple</b></p>' +
         '<div class="xbox"><span class="xtag c" dir="ltr">while + long action · while مع الطويل</span><p class="xen">While Khalid was opening the door, his key broke.</p></div>' +
-        '<p class="en-p" dir="ltr">The short part can be a state verb, too, and it takes the Past Simple: Fahad was reading the letter when he understood the problem. And <b>when</b> can also go with the long action: When Amal was driving home, her phone rang.</p>' +
+        '<p class="en-p" dir="ltr">The short part can be a state verb, too, and it takes the Past Simple: Fahad was reading the letter when he understood the problem. And <b>when</b> can also go with the long action: When Amal was leaving the bank, her phone rang.</p>' +
         '<div class="tip" dir="ltr"><p><b>while · مع الحدث الطويل:</b> don\'t put while before a short event.</p><div class="pairs"><span class="yes">The glass fell while Nawal was cleaning the table.</span><span class="no">Nawal was cleaning the table while the glass fell.</span></div></div>',
       arHtml:
         '<p>في القصة كثيرًا ما يكون حدث طويل جارٍ، ويقع في وسطه حدث قصير: فالطويل بالماضي المستمر، والقصير بالماضي البسيط، ومثاله <bdi class="en">Huda was making tea when the cup fell on the floor</bdi>.</p>' +
-        '<p>و<bdi class="en">while</bdi> تأتي مع الحدث الطويل، ومثالها <bdi class="en">While Khalid was opening the door, his key broke</bdi>، فلا نضعها قبل حدث قصير. والجزء القصير بالماضي البسيط وإن كان فعل حالة، مثل <bdi class="en">when he understood the problem</bdi>. وتأتي <bdi class="en">when</bdi> مع الحدث الطويل أيضًا: <bdi class="en">When Amal was driving home, her phone rang</bdi>.</p>'
+        '<p>و<bdi class="en">while</bdi> تأتي مع الحدث الطويل، ومثالها <bdi class="en">While Khalid was opening the door, his key broke</bdi>، فلا نضعها قبل حدث قصير. والجزء القصير بالماضي البسيط وإن كان فعل حالة، مثل <bdi class="en">when he understood the problem</bdi>. وتأتي <bdi class="en">when</bdi> مع الحدث الطويل أيضًا: <bdi class="en">When Amal was leaving the bank, her phone rang</bdi>.</p>'
     },
     {
       tEn: "was / were, Negatives and Questions",
@@ -331,9 +331,9 @@ LESSONS.u103l3 = {
     { s: "Two students ___ waiting for the bus when the rain started.", opts: ["were", "was"], a: 0,
       whyEn: "'Two students' is plural (they), so we use were. The verb is already in the -ing form, and was goes with I, he, she and it.",
       why: "Two students جمع (they)، فنقول were، والفعل جاء مع ing، أما was فمع I وhe وshe وit.", errCat: "agreement" },
-    { s: "My cousin was sitting on the old chair when it ___.", opts: ["was breaking", "broke"], a: 1,
-      whyEn: "'was sitting' is the long action, and the chair breaking is one short event in the middle of it. The short event takes the Past Simple: broke.",
-      why: "was sitting هو الحدث الطويل، وانكسار الكرسي واقعة قصيرة في وسطه، والحدث القصير بالماضي البسيط: broke.", errCat: "tense" },
+    { s: "My cousin was relaxing on the old chair when it ___.", opts: ["was breaking", "broke"], a: 1,
+      whyEn: "'was relaxing' is the long action, and the chair breaking is one short event in the middle of it. The short event takes the Past Simple: broke.",
+      why: "was relaxing هو الحدث الطويل، وانكسار الكرسي واقعة قصيرة في وسطه، والحدث القصير بالماضي البسيط: broke.", errCat: "tense" },
     { s: "We ___ the bus number, so we asked a police officer.", opts: ["weren't knowing", "didn't know"], a: 1,
       whyEn: "'know' is a state verb, so it takes no -ing in the past. The negative is didn't know.",
       why: "know فعل حالة، فلا يأتي مع ing في الماضي، ونفيه didn't know.", errCat: "stative" },
@@ -534,7 +534,7 @@ LESSONS.u103l3 = {
     { s: "Which sentence uses while correctly?", opts: ["Lama was getting off the bus while her bag fell.", "Lama's bag fell while she was getting off the bus.", "Lama's bag fell while she getting off the bus."], a: 1, tag: "Grammar · قواعد",
       whyEn: "while goes with the long action (was getting off), not with the short event (fell). The long action also needs was before verb-ing.",
       why: "while تأتي مع الحدث الطويل was getting off لا مع الحدث القصير fell، والحدث الطويل يحتاج إلى was قبل الفعل وing.", errCat: "tense" },
-    { s: "Last winter, I ___ to the university with my brother, but now I take the bus.", opts: ["drove", "drive", "drives"], a: 0, tag: "Grammar · قواعد",
+    { s: "Last winter, I ___ to the university with my brother every day, but now I take the bus.", opts: ["drove", "drive", "drives"], a: 0, tag: "Grammar · قواعد",
       whyEn: "'Last winter' is past, and 'but now' shows that the habit stopped, so we need a past form. drive is irregular: its past is drove.",
       why: "Last winter ماضٍ، وbut now تبيّن أن العادة انتهت، فنحتاج إلى صيغة ماضية، وdrive فعل شاذ ماضيه drove.", errCat: "tense" },
     { s: "The match stopped after ten minutes because of the ___ rain.", opts: ["big", "heavy", "long"], a: 1, tag: "Vocabulary · مفردات",
