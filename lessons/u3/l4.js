@@ -124,7 +124,7 @@ LESSONS.u3l4 = {
       id: "rc-4",
       promptAr: "العبارة القانونية من الدرس الثالث: يحصل على براءة اختراع، أي حق قانوني يحمي الاختراع (ثلاث كلمات)",
       promptEn: "Legal phrase from Lesson 3: to receive the legal right that protects an invention (three words)",
-      sentPre: "Before she sold her new machine, the engineer went to a lawyer to",
+      sentPre: "Before she showed her new machine to anyone, the engineer went to a lawyer to",
       sentPost: ", so that nobody could copy her idea.",
       ans: ["get a patent"],
       isLegal: true,
@@ -167,14 +167,14 @@ LESSONS.u3l4 = {
       wikiFile: "En-us-flood.ogg",
       wikiCredit: "File:En-us-flood.ogg · Wikimedia Commons" },
     { en: "smoke", pos: "noun", ar: "دخان", say: "سْمُوك",
-      ex: "Black smoke was coming out of the old bus, so the driver stopped it.", exAr: "كان دخان أسود يخرج من الحافلة القديمة، فأوقفها السائق.",
+      ex: "The smoke from the old bus filled the whole street.", exAr: "ملأ دخان الحافلة القديمة الشارع كله.",
       tipEn: "smoke is the grey or black cloud that comes from a fire. It is uncountable: some smoke, a lot of smoke, not a smoke or smokes.",
       tip: "smoke سحابة رمادية أو سوداء تخرج من النار، وهو اسم غير معدود: some smoke وa lot of smoke، فلا نقول a smoke ولا smokes.",
       oxfordSlug: "smoke_1",
       wikiFile: "En-us-smoke.ogg",
       wikiCredit: "File:En-us-smoke.ogg · Wikimedia Commons" },
     { en: "heavy", pos: "adjective", ar: "غزير / شديد (في الطقس)", say: "هِفِي",
-      ex: "The heavy rain stopped the football match after twenty minutes.", exAr: "أوقف المطر الغزير مباراة كرة القدم بعد عشرين دقيقة.",
+      ex: "We stayed at home all day because of the heavy rain.", exAr: "بقينا في البيت طوال اليوم بسبب المطر الغزير.",
       tipEn: "You know heavy for things that weigh a lot: a heavy bag. For weather, it means a lot of: heavy rain, heavy snow. We do not say big rain.",
       tip: "تعرف heavy للشيء الثقيل: a heavy bag. أما في الطقس فمعناها الغزير الكثير: heavy rain مطر غزير، وheavy snow ثلج كثيف، ولا نقول big rain.",
       oxfordSlug: "heavy_1",
@@ -182,7 +182,7 @@ LESSONS.u3l4 = {
       wikiCredit: "File:En-us-heavy.ogg · Wikimedia Commons" },
     { en: "rescue", pos: "verb", ar: "ينقذ", say: "رِسْكْيُو",
       ex: "The team rescued two children from the river.", exAr: "أنقذ الفريق طفلين من النهر.",
-      tipEn: "rescue someone from danger: rescue a child from the river. It is stronger than help, because the person is in danger. It is regular, and the e stays: rescue, rescued.",
+      tipEn: "rescue someone from danger: rescue a child from the river. It is stronger than help, because the person is in danger. It is regular: rescue, rescued.",
       tip: "rescue someone from تعني ينقذ شخصًا من خطر، وهي أقوى من help لأن المرء يكون في خطر، وهو فعل منتظم ماضيه rescued.",
       oxfordSlug: "rescue_1",
       wikiFile: "En-us-rescue.ogg",
@@ -241,21 +241,21 @@ LESSONS.u3l4 = {
         '<p>وإذا بدأت الجملة بـ <bdi class="en">While</bdi> وضعنا فاصلة بعد الجزء الأول، وإذا جاءت في وسطها فلا فاصلة.</p>'
     },
     {
-      tEn: "while with a Short Action",
-      t: "while مع حدث قصير",
+      tEn: "while: a Long and a Short Action",
+      t: "while: حدث طويل وحدث قصير",
       enHtml:
-        '<h2 class="bi-h"><span class="en" dir="ltr">while with a Short Action</span><small>حدث قصير يقع في أثناء حدث طويل</small></h2>' +
+        '<h2 class="bi-h"><span class="en" dir="ltr">while: a Long and a Short Action</span><small>حدث قصير يقع في أثناء حدث طويل</small></h2>' +
         '<p class="en-p" dir="ltr">The other part of the sentence can be a <b>short action</b> in the past simple. The part with <b>while</b> is the long action, and the short action happens in the middle of it.</p>' +
         '<div class="formula"><b>While</b> + was / were + verb-ing, + past simple</div>' +
         '<div class="tbl"><table><thead><tr><th>Pattern · النمط</th><th>Example · المثال</th></tr></thead><tbody>' +
           '<tr><td>While + long, + short</td><td>While we <span class="hc">were waiting</span> at the airport<b>,</b> my phone <span class="hs">rang</span>.</td></tr>' +
           '<tr><td>Short + while + long</td><td>My phone <span class="hs">rang</span> while we <span class="hc">were waiting</span> at the airport.</td></tr>' +
         '</tbody></table></div>' +
-        '<div class="tip" dir="ltr"><p><b>Remember · تذكّر:</b> while stays with the long action. The short action comes without while.</p></div>',
+        '<div class="tip" dir="ltr"><p><b>Remember · تذكّر:</b> while stays with the long action. The short action comes without while. (rang is the past of ring.)</p></div>',
       arHtml:
         '<p>وقد يكون الجزء الآخر من الجملة <b>حدثًا قصيرًا</b> بالماضي البسيط، فالجزء الذي فيه <bdi class="en">while</bdi> هو الحدث الطويل، والقصير يقع في أثنائه.</p>' +
         '<p>ويجوز أن يتبادل الجزآن موضعيهما والمعنى واحد: <bdi class="en">While we were waiting at the airport, my phone rang.</bdi> و<bdi class="en">My phone rang while we were waiting at the airport.</bdi></p>' +
-        '<p>فتبقى <bdi class="en">while</bdi> مع الحدث الطويل حيث كان موضعه، ويأتي الحدث القصير بغيرها.</p>'
+        '<p>فتبقى <bdi class="en">while</bdi> مع الحدث الطويل حيث كان موضعه، ويأتي الحدث القصير بغيرها. و<bdi class="en">rang</bdi> ماضي <bdi class="en">ring</bdi> أي رنّ.</p>'
     },
     {
       tEn: "when or while?",
@@ -286,14 +286,14 @@ LESSONS.u3l4 = {
           '<li><b>No change</b> in the past<span class="s-en">shut → shut · let → let · cost → cost</span></li>' +
           '<li><b>A new form</b> in the past<span class="s-en">catch → caught · build → built</span></li>' +
         '</ul>' +
-        '<p class="en-p" dir="ltr"><b>cost</b> is a state verb, so it takes no -ing: The new road cost a lot of money. Don\'t say was costing.</p>' +
+        '<p class="en-p" dir="ltr">For a price, <b>cost</b> is a state verb, so it takes no -ing: The new road cost a lot of money. Don\'t say was costing.</p>' +
         '<p class="en-p" dir="ltr"><b>catch</b> has many uses: catch a ball, catch a bus, catch a cold. Our title, Caught in a Storm, means that a storm came and you could not get away.</p>' +
         '<div class="tip" dir="ltr"><p><b>Spelling with -ing · إملاء ing:</b> shut → shutting · let → letting (double the last letter) · catch → catching · build → building</p></div>',
       arHtml:
         '<p>احفظ أفعال اليوم الخمسة في مجموعتين:</p>' +
         '<p><b>لا تتغير في الماضي:</b> <bdi class="en">shut</bdi> يغلق، و<bdi class="en">let</bdi> يدع أو يسمح، و<bdi class="en">cost</bdi> يكلّف.</p>' +
         '<p><b>تتغير صيغتها في الماضي:</b> <bdi class="en">catch → caught</bdi> يمسك أو يلحق، و<bdi class="en">build → built</bdi> يبني.</p>' +
-        '<p><bdi class="en">cost</bdi> فعل حالة لا يأخذ <bdi class="en">ing</bdi>: <bdi class="en">The new road cost a lot of money.</bdi> ولا نقول <bdi class="en">was costing</bdi>.</p>' +
+        '<p><bdi class="en">cost</bdi> في ذكر الثمن فعل حالة لا يأخذ <bdi class="en">ing</bdi>: <bdi class="en">The new road cost a lot of money.</bdi> ولا نقول <bdi class="en">was costing</bdi>.</p>' +
         '<p>و<bdi class="en">catch</bdi> كثيرة الاستعمال: <bdi class="en">catch a ball</bdi> يمسك كرة، و<bdi class="en">catch a bus</bdi> يلحق بحافلة، و<bdi class="en">catch a cold</bdi> يصاب بالزكام. وعنوان درسنا <bdi class="en">Caught in a Storm</bdi> معناه أن عاصفة جاءت ولم تستطع الابتعاد عنها.</p>' +
         '<p>ويُضاعف الحرف الأخير قبل <bdi class="en">ing</bdi> في <bdi class="en">shutting</bdi> و<bdi class="en">letting</bdi>.</p>'
     },
@@ -330,9 +330,9 @@ LESSONS.u3l4 = {
     { s: "While my brother ___ the car, I noticed black smoke over the market.", opts: ["washing", "was washing"], a: 1,
       whyEn: "The long action needs 'was' before verb-ing. 'my brother washing' has no 'be' verb, so it is not a full sentence part.",
       why: "الحدث الطويل تأتي فيه was قبل الفعل المنتهي بـ ing، وmy brother washing بلا فعل be فلا تصح.", errCat: "be_verb" },
-    { s: "While I was cleaning the kitchen, the wind ___ the front door with a loud noise.", opts: ["shut", "was shutting"], a: 0,
-      whyEn: "'was cleaning' is the long action. The door closed once, in one moment, so we use the past simple. 'shut' does not change in the past.",
-      why: "was cleaning هو الحدث الطويل، أما إغلاق الباب فوقع مرة واحدة في لحظة، فنستعمل الماضي البسيط، وshut لا يتغير في الماضي.", errCat: "tense" },
+    { s: "While my mother was sitting in the car, the driver ___ the door and started the engine.", opts: ["shut", "was shutting"], a: 0,
+      whyEn: "'was sitting' is the long action. The driver closed the door once, in one moment, so we use the past simple, like 'started'. 'shut' does not change in the past.",
+      why: "was sitting هو الحدث الطويل، أما إغلاق الباب فوقع مرة واحدة في لحظة، فنستعمل الماضي البسيط مثل started، وshut لا يتغير في الماضي.", errCat: "tense" },
     { s: "We were sitting in the garden ___ the big tree fell.", opts: ["while", "when"], a: 1,
       whyEn: "The tree fell in one moment, so this is a short action, and a short action takes 'when'. 'while' goes with a long action.",
       why: "سقطت الشجرة في لحظة فهو حدث قصير، والحدث القصير يأتي مع when، أما while فمع الحدث الطويل.", errCat: "tense" },
@@ -345,15 +345,15 @@ LESSONS.u3l4 = {
     { s: "We was sitting around the fire while my uncle was making tea.", ok: false, fix: "We were sitting around the fire while my uncle was making tea.",
       whyEn: "'We' takes 'were': we were sitting. 'my uncle' is singular, so 'was making' is right. Check the subject of each part.",
       why: "We تأخذ were: we were sitting، أما my uncle فمفرد فتصح was making، فانظر إلى فاعل كل جزء.", errCat: "agreement" },
-    { s: "While the firefighters were working, the neighbours were bringing them water.", ok: true,
+    { s: "While the men were cleaning the street, the neighbours were bringing them water.", ok: true,
       whyEn: "Correct: two long actions at the same time, 'were' with both plural subjects, and a comma because the sentence starts with 'While'.",
       why: "صحيحة: حدثان طويلان في الوقت نفسه، وwere مع الفاعلين الجمعين، وفاصلة لأن الجملة بدأت بـ While.", errCat: "tense" },
-    { s: "We were eating lunch while the ball hit the window.", ok: false, fix: "We were eating lunch when the ball hit the window.",
-      whyEn: "The ball hit the window in one moment. A short action takes 'when'. 'while' goes with the long action.",
-      why: "ضربت الكرة النافذة في لحظة، والحدث القصير يأتي مع when، أما while فمع الحدث الطويل.", errCat: "tense" },
-    { s: "The hotel room was costing 400 riyals a night.", ok: false, fix: "The hotel room cost 400 riyals a night.",
-      whyEn: "'cost' is a state verb, so it takes no -ing. It does not change in the past: cost.",
-      why: "cost فعل حالة لا يأخذ ing، ولا يتغير في الماضي: cost.", errCat: "stative" }
+    { s: "We were eating lunch while a bird hit the window.", ok: false, fix: "We were eating lunch when a bird hit the window.",
+      whyEn: "The bird hit the window in one moment. A short action takes 'when'. 'while' goes with the long action.",
+      why: "ضرب الطائر النافذة في لحظة، والحدث القصير يأتي مع when، أما while فمع الحدث الطويل.", errCat: "tense" },
+    { s: "My new shoes were costing 200 riyals.", ok: false, fix: "My new shoes cost 200 riyals.",
+      whyEn: "For a price, 'cost' is a state verb, so it takes no -ing. It does not change in the past: cost.",
+      why: "cost في ذكر الثمن فعل حالة لا يأخذ ing، ولا يتغير في الماضي: cost.", errCat: "stative" }
   ],
 
   gC: [
@@ -366,7 +366,7 @@ LESSONS.u3l4 = {
     { pre: "While the workers", verb: "build · Past Continuous", post: "the new bridge, the river flooded.", ans: ["were building"],
       whyEn: "'the workers' is plural, so we use 'were', not 'was': were building.",
       why: "the workers جمع فنستعمل were لا was: were building.", errCat: "agreement" },
-    { pre: "The bus ticket", verb: "not / cost", post: "much, so we bought two.", ans: ["didn't cost", "did not cost"],
+    { pre: "The bus ticket", verb: "not / cost · Past Simple", post: "much, so we bought two.", ans: ["didn't cost", "did not cost"],
       whyEn: "'bought' shows the story is in the past. 'cost' is a state verb, so the negative is didn't cost, not wasn't costing.",
       why: "bought تدل على أن القصة في الماضي، وcost فعل حالة، فنفيه didn't cost لا wasn't costing.", errCat: "stative" }
   ],
@@ -381,9 +381,9 @@ LESSONS.u3l4 = {
     { chips: ["building a fire.", "arrived,", "When my uncle", "we were"], ans: "When my uncle arrived, we were building a fire.",
       whyEn: "When + short action, then a comma, then the long action: we were building a fire.",
       why: "When مع الحدث القصير، ثم الفاصلة، ثم الحدث الطويل we were building a fire.", errCat: "word_order" },
-    { chips: ["while", "was watching the news", "my aunt was sleeping.", "My uncle"], ans: "My uncle was watching the news while my aunt was sleeping.",
-      whyEn: "Long action (My uncle was watching the news) + while + long action (my aunt was sleeping). Only 'My uncle' has a capital letter, so it goes first.",
-      why: "الحدث الطويل My uncle was watching the news ثم while ثم الحدث الطويل my aunt was sleeping، والحرف الكبير في My uncle يدل على أنها أول الجملة.", errCat: "word_order" }
+    { chips: ["while", "was painting the door", "my aunt was sleeping.", "My uncle"], ans: "My uncle was painting the door while my aunt was sleeping.",
+      whyEn: "Long action (My uncle was painting the door) + while + long action (my aunt was sleeping). Only 'My uncle' has a capital letter, so it goes first.",
+      why: "الحدث الطويل My uncle was painting the door ثم while ثم الحدث الطويل my aunt was sleeping، والحرف الكبير في My uncle يدل على أنها أول الجملة.", errCat: "word_order" }
   ],
 
   /* ---------- المرحلة 4: الاستماع على ثلاث مراحل (مقطع حقيقي من ELLLO، ونصه المكتوب في صفحة المصدر) ---------- */
@@ -419,27 +419,27 @@ LESSONS.u3l4 = {
       titleAr: "القصص نفسها تُحكى بـ while",
       l1En: "In the clip, Mike is the one speaker who says while with the past continuous, and he says it twice. Here are sentences of our own about the speakers, with while and a long action:",
       ex1: "While Mike was travelling along the coast, he noticed a big landslide. · While Tom was waiting in a phone box, the street was filling with water.",
-      l2En: "Doron joins two long actions with and. That is normal in speech. With while, we can say it like this, with a comma:",
-      ex2: "While Doron was visiting friends in Norway, they were all sleeping outdoors. · While they were out there, a very bad snowstorm came.",
+      l2En: "Doron joins two long actions with and. That is normal in speech. With while, we can say it like this, with a comma. The second sentence adds a short action:",
+      ex2: "While Doron was visiting friends in Norway, the whole group was sleeping outdoors. · While they were out there, a very bad snowstorm came.",
       arHtml: "<p><b>انتبه:</b> مايك وحده يقول while مع الماضي المستمر في المقطع، ويقولها مرتين. وفي قصة دورون حدثان طويلان موصولان بـ and، وهذا طبيعي في الكلام.</p><p>ويقول توم while مع الماضي البسيط لحدث طويل، وذلك صحيح أيضًا، فلا تعدّه خطأً.</p><p>وتأتي when في المقطع كما تعلمت: جيس تذكر بها عمرها، وجورج يذكر بها لحظة وصول الإعصار.</p><p>وهذه جمل أمثلة كتبناها عن المقطع، وليست كلام المتحدثين بنصه.</p>"
     },
     questions: [
-      { q: "A typhoon is a very big storm. Where did Tom hide from the typhoon in Hong Kong?", opts: ["Under a bridge", "In a phone box", "In a hotel"], a: 1,
-        whyEn: "At the start, in the first story, Tom says that he stayed in a telephone box in the street, with the water all around.",
-        why: "في أول المقطع، في القصة الأولى، يقول توم إنه اختبأ في كابينة هاتف في الشارع والماء من حوله.", errCat: "reading" },
+      { q: "A typhoon is a very big storm. What was the problem in the street in Tom's story?", opts: ["There was a lot of smoke.", "The water was getting higher.", "The lights went out."], a: 1,
+        whyEn: "At the start, in the first story, Tom talks about a lot of water in the street. It was all around him, so he stayed in a phone box.",
+        why: "في أول المقطع، في القصة الأولى، يتحدث توم عن ماء كثير في الشارع أحاط به، فبقي في كابينة هاتف.", errCat: "reading" },
       { tf: true, q: "Jess's story is about a natural disaster.", a: false,
         whyEn: "False. Near the start, in the second story, Jess says no to the question about natural disasters. Her story is about a bomb in Manchester.",
         why: "خطأ؛ قرب أول المقطع، في القصة الثانية، تقول جيس إنها لم تمر بكارثة طبيعية، وقصتها عن قنبلة في مانشستر.", errCat: "reading" },
-      { q: "A hurricane is a very big storm, too. What did George want to do during the hurricane in Hawaii?", opts: ["Play outside", "Run to a safe place", "Leave the island"], a: 0,
-        whyEn: "In the middle, in the third story, George says that the weather looked good, and he wanted to play with a kite, a toy that flies in the wind.",
-        why: "في وسط المقطع، في القصة الثالثة، يقول جورج إن الجو بدا جميلًا، وإنه أراد اللعب بطائرة ورقية (kite)، وهي لعبة تطير مع الريح.", errCat: "reading" },
+      { q: "A hurricane is a very big storm, too. What was the hurricane in Hawaii like for George?", opts: ["It was not a big problem for him.", "He lost his home in the storm.", "He was injured and went to hospital."], a: 0,
+        whyEn: "In the middle, in the third story, George says that it was not hard for him. The weather looked good, and he wanted to play with a kite, a toy that flies in the wind.",
+        why: "في وسط المقطع، في القصة الثالثة، يقول جورج إن الأمر لم يكن شاقًا عليه، فقد بدا الجو جميلًا، وأراد اللعب بطائرة ورقية (kite)، وهي لعبة تطير مع الريح.", errCat: "reading" },
       { q: "Why was it hard for Pernais to see in the fire?", opts: ["Because it was night", "Because of the heavy rain", "Because of the smoke"], a: 2,
         whyEn: "In the middle, in the fourth story, Pernais talks about a big fire, with smoke in every part of the place.",
         why: "في وسط المقطع، في القصة الرابعة، حريق كبير في قصة Pernais، والدخان يملأ المكان كله.", errCat: "reading" },
-      { q: "Who rescued Pernais from the fire?", opts: ["A firefighter", "A man who was going past", "A family member"], a: 1,
+      { q: "Who rescued Pernais from the fire?", opts: ["A neighbour", "A man who was going past", "A family member"], a: 1,
         whyEn: "In the middle, at the end of the fourth story, Pernais says that the person who helped was an old man who was going past the place.",
         why: "في وسط المقطع، في آخر القصة الرابعة، كان المنقذ في قصة Pernais رجلًا عجوزًا يمر بالمكان.", errCat: "reading" },
-      { q: "A landslide is when earth and rocks fall down a hill. Where was Mike when he saw one?", opts: ["At home, in front of the TV", "On a boat, at sea", "In a car, on the road"], a: 2,
+      { q: "A landslide is when earth and rocks fall down a hill. Where was Mike when he saw one?", opts: ["On a train", "On a boat, at sea", "In a car, on the road"], a: 2,
         whyEn: "Near the end, in the fifth story, Mike says that he was in his car on the road at that time. He says this twice. Later, it was on the news.",
         why: "قرب آخر المقطع، في القصة الخامسة، يقول مايك إنه رآه وهو يقود سيارته، ويذكر ذلك مرتين، ثم انتشر خبره في الأخبار.", errCat: "reading" },
       { q: "What was the weather like on Doron's trip in Norway?", opts: ["Very cold, with a lot of snow", "Very hot, with no wind", "Warm, with heavy rain"], a: 0,
@@ -467,7 +467,7 @@ LESSONS.u3l4 = {
           var s = ' ' + String(text || '').replace(/[‘’]/g, "'").replace(/\b([ap])\.m\./gi, '$1m') + ' ';
           var q = s.replace(/\b(?:was|were)(?:n't)?\s+(?:I|you|he|she|we|they)\b/gi, ' ');
           if (/\b(?:I|you|he|she|we|they)\s+(?:driving|riding|walking|running|going|camping|sitting|waiting|working|sleeping|cooking|studying|playing|watching|swimming)\b/i.test(q)) return false;
-          if (/\b(?:was|were)\s+(?:drive|ride|walk|go|sit|wait|sleep|cook|study|camp|swim)\b/i.test(s)) return false;
+          if (/\b(?:was|were)\s+(?:drive|ride|walk|go|sit|wait|sleep|cook|study|camp|swim)\b/i.test(s.replace(/\bdo\s+was\b/gi, ' '))) return false;
           if (/\b(?:we|they|you|people|children|friends|parents|brothers|sisters)\s+was\b/i.test(s)) return false;
           return !(s.match(/[^.!?]+[.!?]*/g) || []).some(function(x){
             return /^\s*(?:when|while)\b/i.test(x) && !/\?\s*$/.test(x) && !/^\s*when\s+(?:did|do|does|was|were|is|are)\b/i.test(x) && x.indexOf(',') < 0; }); } },
@@ -479,8 +479,8 @@ LESSONS.u3l4 = {
             .filter(function(r){ return r.test(s); }).length;
           return found >= 2 || ((a && a.used) || []).length >= 2; } }
     ],
-    modelMarked: "Last winter, we had a {frightening} night in our town. While I <<c:was coming>> home, the {heavy} rain <<s:started>>. The road near our house {flooded|flood}, so I <<s:left>> my car and <<s:walked>>. While my father <<c:was moving>> our things upstairs, my brothers <<c:were cleaning>> the kitchen floor. At that moment, the lights <<s:went>> out. When the rain <<s:stopped>>, we were all tired, but nobody was injured.",
-    model: "Last winter, we had a frightening night in our town. While I was coming home, the heavy rain started. The road near our house flooded, so I left my car and walked. While my father was moving our things upstairs, my brothers were cleaning the kitchen floor. At that moment, the lights went out. When the rain stopped, we were all tired, but nobody was injured.",
+    modelMarked: "Last winter, we had a {frightening} night in our town. While I <<c:was driving>> back from the market, {heavy} rain <<s:started>>. The road near our house {flooded|flood}, so I <<s:left>> my car and <<s:walked>>. While my father <<c:was moving>> our things upstairs, my brothers <<c:were cleaning>> the kitchen floor. At that moment, the lights <<s:went>> out. When the rain <<s:stopped>>, we were all tired, but nobody was injured.",
+    model: "Last winter, we had a frightening night in our town. While I was driving back from the market, heavy rain started. The road near our house flooded, so I left my car and walked. While my father was moving our things upstairs, my brothers were cleaning the kitchen floor. At that moment, the lights went out. When the rain stopped, we were all tired, but nobody was injured.",
     legendEn: "Light blue = short action (past simple) · Terracotta = long action (was / were + verb-ing)",
     legendAr: "الأزرق الفاتح للحدث القصير (الماضي البسيط)، والطوبي للحدث الطويل (was / were مع ing).",
     acceptExamples: [
@@ -488,7 +488,8 @@ LESSONS.u3l4 = {
       "There wasn’t a natural disaster in my city, but we had a big fire. While I was sleeping, my mother saw the smoke. She was calling the firefighters while my father was helping our neighbours. Nobody was injured.",
       "I was walking home while it was raining. It was heavy rain, and the road flooded. While I was waiting at the bus stop, a man rescued a small cat. It wasn’t serious, but it was frightening.",
       "At 9pm, the lights went out while we were eating. Just after midnight, I was reading while my sister was sleeping. What was happening? Where were they going? The wind was very strong. It was a frightening night, and the rain was heavy.",
-      "The smoke was black. While the workers were building the wall, it started to snow. We stayed inside while the men were still working. When was the flood? It was in May."
+      "The smoke was black. While the workers were building the wall, it started to snow. We stayed inside while the men were still working. When was the flood? It was in May.",
+      "We were sleeping while the wind was blowing. While the water was rising, we stayed on the roof. All we could do was wait. The rain was heavy, and the night was frightening."
     ]
   },
 
@@ -500,10 +501,10 @@ LESSONS.u3l4 = {
   ],
 
   quiz: [
-    { s: "Which sentence is correct?", opts: ["While my sister was study, I was cleaning the car.", "While my sister studying, I was cleaning the car.", "While my sister was studying, I was cleaning the car."], a: 2, tag: "Grammar · قواعد",
+    { s: "Which sentence is correct?", opts: ["While my sister was study, my parents were visiting our neighbours.", "While my sister studying, my parents were visiting our neighbours.", "While my sister was studying, my parents were visiting our neighbours."], a: 2, tag: "Grammar · قواعد",
       whyEn: "The long action needs 'was' + verb-ing: was studying. 'my sister studying' has no 'was', and 'was study' has no -ing.",
       why: "الحدث الطويل يأتي بـ was مع الفعل بـ ing: was studying، أما my sister studying فبلا was، وwas study بلا ing.", errCat: "be_verb" },
-    { s: "We ___ in the desert while the rain was falling over the city.", opts: ["was camping", "were camping", "camping"], a: 1, tag: "Grammar · قواعد",
+    { s: "We ___ near the river while our cousins were visiting Abha.", opts: ["was camping", "were camping", "camping"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'We' takes 'were': we were camping. 'was' does not go with 'we', and 'camping' alone has no 'be' verb.",
       why: "We تأخذ were: we were camping، ولا تأتي was مع we، وcamping وحدها بلا فعل be.", errCat: "agreement" },
     { s: "My mother was reading in the kitchen ___ the wind shut the door.", opts: ["when", "while", "during"], a: 0, tag: "Grammar · قواعد",
@@ -521,7 +522,7 @@ LESSONS.u3l4 = {
     { s: "Which sentence is correct?", opts: ["While we were fishing my brother caught a big fish.", "While we were fishing, my brother caught a big fish.", "While we were fishing, my brother catched a big fish."], a: 1, tag: "Grammar · قواعد",
       whyEn: "The sentence starts with 'While', so it needs a comma after the first part. The past of 'catch' is 'caught', not 'catched'.",
       why: "بدأت الجملة بـ While فتلزم فاصلة بعد الجزء الأول، وماضي catch هو caught لا catched.", errCat: "word_order" },
-    { s: "The firefighters ___ a family from the top floor, and now everyone is safe.", opts: ["flooded", "frightening", "rescued"], a: 2, tag: "Vocabulary · مفردات",
+    { s: "Two young men ___ a family from the top floor, and now everyone is safe.", opts: ["flooded", "frightening", "rescued"], a: 2, tag: "Vocabulary · مفردات",
       whyEn: "'rescued' means they took the family out of danger, so now everyone is safe.",
       why: "rescued تعني أنهم أخرجوا الأسرة من الخطر، فالجميع الآن في أمان.", errCat: "vocab" },
     { s: "Drive slowly in ___ rain, because the road is dangerous.", opts: ["smoke", "heavy", "rescued"], a: 1, tag: "Vocabulary · مفردات",
