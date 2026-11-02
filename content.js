@@ -401,6 +401,18 @@ var DATA = window.DATA = {
         "Tell me about a small accident, or a day when something suddenly went wrong: what were you doing when it happened, and what did you do after that?",
         "Let's do a short role play. I'm the police officer, and you saw an accident while you were walking in the street. Give me a witness statement: what was happening around you, what happened first, what happened then, and how did it end?"
       ]
+    },
+    103: {
+      unit: 103,
+      titleEn: "Consolidation Week · Choosing the Right Tense (Present Simple, Present Continuous, Past Simple, Past Continuous)",
+      titleAr: "أسبوع التثبيت · اختيار الزمن الصحيح (المضارع البسيط والمستمر، والماضي البسيط والمستمر)",
+      grammarEn: "1) Present Simple for habits and facts (I usually go to class at nine), 2) Present Continuous for actions in progress now or these days (This week, I am preparing for an exam), 3) Past Simple for finished events (Last month, I signed a contract · I didn't go · Did you go?), 4) Past Continuous for the background of a story (I was walking home when it started to rain · What were you doing when…?), 5) Stative verbs stay simple (I know, I need, I knew, I understood). Please help me ask myself two questions: Is this in the present or in the past? Was the action in progress at that moment? Also please check that I write and say separate sentences, not one long sentence.",
+      phrases: ["a typical day", "a busy schedule", "meet a deadline", "sign a contract", "annual leave", "at that moment", "witness statement", "a foreign country", "apply for a visa", "international law", "introduce myself", "my English journey"],
+      questions: [
+        "I wrote a paragraph to introduce myself. First, I will read it to you. Then please correct my mistakes, especially my tenses, and help me say it again with the corrections.",
+        "Tell me about a typical week in your life, and then tell me about this week: what do you usually do, and what are you doing differently these days?",
+        "Think of one big change in your life, like a new home, a new school or a new goal. How was your life before it? What were you doing when it happened? And how is your life different now?"
+      ]
     }
   },
 
@@ -756,6 +768,94 @@ var DATA = window.DATA = {
         promptAr: "مهمة تطبيقية قصيرة: اكتب 4 جمل منفصلة على الأقل عن حادث أو لحظة لا تُنسى، واستعمل فيها: ١) وقتًا أو مكانًا في أولها (At 9 pm أو Last summer أو On the way home)، ٢) الماضي المستمر لوصف المشهد (It was raining وI was feeling tired)، ٣) حدثًا طويلًا وحدثًا قصيرًا مع when أو while، ٤) الماضي البسيط للأحداث بترتيبها (First وThen وAfter that وFinally)، ٥) عبارة قانونية واحدة من العبارات الخمس في الوحدة، وأنهِ كل جملة بنقطة.",
         placeholder: "1. At 9 pm, I was …\n2. It was … People were …\n3. I was … when …\n4. First, … Then …\n5. … (a legal phrase from Unit 3)",
         minSentences: 4
+      }
+    },
+    103: {
+      unit: 103,
+      titleEn: "Consolidation Week Review, Legal Corner & Mastery Test",
+      titleAr: "مراجعة أسبوع التثبيت والركن القانوني واختبار الإتقان",
+      masteryPct: 90,
+      passPct: 80,
+      legalCorner: {
+        titleEn: "Weekly Legal Corner (10 min) · Five Legal Phrases from Units 1 to 3",
+        titleAr: "الركن القانوني الأسبوعي (10 دقائق) · خمس عبارات قانونية من الوحدات 1 إلى 3",
+        introEn: "Review five legal phrases from Units 1 to 3 in new everyday sentences with the four tenses of this week, before you start the Consolidation Week Mastery Test:",
+        introAr: "راجع خمس عبارات قانونية من الوحدات 1 إلى 3 في جمل يومية جديدة بأزمنة هذا الأسبوع الأربعة، قبل أن تبدأ اختبار إتقان أسبوع التثبيت:",
+        terms: [
+          { en: "break the law", ar: "يخالف القانون / يخرق النظام", ex: "A good driver doesn't break the law, even when the road is empty.", exAr: "السائق الجيد لا يخالف القانون، حتى حين يكون الطريق خاليًا." },
+          { en: "Islamic law", ar: "الفقه الإسلامي / الشريعة الإسلامية", ex: "My sister is preparing for her Islamic law exam this week, so the house is very quiet.", exAr: "تستعد أختي هذا الأسبوع لاختبار الفقه الإسلامي، فالبيت هادئ جدًا." },
+          { en: "pay a fine", ar: "يدفع غرامة (عقوبة مالية على مخالفة)", ex: "Last month, my brother parked in front of a hospital gate, so he paid a fine.", exAr: "أوقف أخي سيارته الشهر الماضي أمام بوابة مستشفى، فدفع غرامة." },
+          { en: "driving licence", ar: "رخصة قيادة", ex: "My sister was taking a photo of her new driving licence when our father came home.", exAr: "كانت أختي تلتقط صورة لرخصة قيادتها الجديدة حين عاد أبونا إلى البيت." },
+          { en: "state of emergency", ar: "حالة الطوارئ", ex: "The government declared a state of emergency because a big storm was moving towards the island.", exAr: "أعلنت الحكومة حالة الطوارئ لأن عاصفة كبيرة كانت تتجه نحو الجزيرة." }
+        ]
+      },
+      questions: [
+        { s: "Can you open the door? I ___ four big bags, so I can't use my hands.", opts: ["carry", "am carrying", "am carry"], a: 1, errCat: "tense", lesson: "u103l1",
+          whyEn: "The speaker needs help now and can't use both hands, so the action is in progress at this moment, and we use the Present Continuous: am carrying. 'I carry' is for a habit, not for this moment, and 'am carry' is wrong, because we never put am before a base verb.",
+          why: "المتكلم يطلب العون الآن ويداه مشغولتان، فالفعل جارٍ في هذه اللحظة، فنستعمل المضارع المستمر: am carrying، أما I carry فللعادة لا لهذه اللحظة، وam carry خطأ، لأننا لا نضع am قبل الفعل المجرد أبدًا." },
+        { s: "My mother ___ two cups of coffee every morning.", opts: ["is drink", "drink", "drinks"], a: 2, errCat: "be_verb", lesson: "u103l1",
+          whyEn: "'every morning' shows a habit, so we use the Present Simple, and 'my mother' is she, so the verb takes s: drinks. 'is drink' is wrong, because we never put is before a base verb.",
+          why: "every morning تدل على عادة، فنستعمل المضارع البسيط، والفاعل my mother بمعنى she، فيأخذ الفعل s: drinks، أما is drink فخطأ، لأننا لا نضع is قبل الفعل المجرد أبدًا." },
+        { s: "___ your brother need a new passport?", opts: ["Does", "Is", "Do"], a: 0, errCat: "be_verb", lesson: "u103l1",
+          whyEn: "'need' is a main verb, so its question in the Present Simple takes do or does, not is. 'your brother' is he, so we say Does, and then the base verb: need.",
+          why: "need فعل أساسي، فسؤاله في المضارع البسيط يكون بـ do أو does لا بـ is، والفاعل your brother بمعنى he، فنقول Does، ثم يأتي الفعل مجردًا: need." },
+        { s: "Thank you, but this tea is too sweet for me. I ___ it without sugar.", opts: ["am preferring", "prefer", "prefers"], a: 1, errCat: "stative", lesson: "u103l1",
+          whyEn: "'prefer' is a state verb, so it stays in the Present Simple, even when we talk about now: we don't say 'am preferring'. With I, the verb has no s, so 'prefers' is wrong.",
+          why: "prefer فعل حالة، فيبقى في المضارع البسيط ولو كان الكلام عن الآن، فلا نقول am preferring، والفعل مع I بلا s، فـ prefers خطأ." },
+        { s: "Look at Omar in the corner. He ___ a letter to his grandmother.", opts: ["is writting", "is writeing", "is writing"], a: 2, errCat: "spelling", lesson: "u103l1",
+          whyEn: "'write' ends in e, so we drop the e and add -ing: writing. We double the last letter only in short verbs that end in one vowel + one consonant, like sit: sitting.",
+          why: "ينتهي write بحرف e، فنحذفه ونضيف ing: writing، ولا نضاعف الحرف الأخير إلا في الأفعال القصيرة المنتهية بحرف علة واحد ثم حرف ساكن، مثل sit: sitting." },
+        { s: "Two days ago, my grandfather ___ us to the old market in Hofuf.", opts: ["took", "taked", "takes"], a: 0, errCat: "tense", lesson: "u103l2",
+          whyEn: "'Two days ago' is a finished time, so we use the past, not the present 'takes'. 'take' is irregular: its past is 'took', so 'taked' is not a word.",
+          why: "Two days ago وقت منتهٍ، فنستعمل الماضي لا المضارع takes، وtake فعل شاذ ماضيه took، فليست taked كلمة." },
+        { s: "Sorry, I ___ your message last night, because my phone was off.", opts: ["didn't saw", "didn't see", "don't saw"], a: 1, errCat: "tense", lesson: "u103l2",
+          whyEn: "'last night' is a finished time, so the negative is didn't + the base verb: didn't see. After didn't, the verb doesn't change, so we don't use the past form 'saw', and 'don't' is for the present.",
+          why: "last night وقت منتهٍ، فالنفي didn't مع الفعل المجرد: didn't see، فالفعل بعد didn't يبقى على أصله ولا يأتي بصيغة الماضي saw، وdon't للمضارع." },
+        { s: "Which question is correct?", opts: ["What you ate at the wedding last night?", "What did you ate at the wedding last night?", "What did you eat at the wedding last night?"], a: 2, errCat: "word_order", lesson: "u103l2",
+          whyEn: "A Past Simple Wh- question needs did after the question word, then the subject, then the base verb: What did you eat…? We can't leave out did, and after did the verb goes back to its base form, so we don't say 'did you ate'.",
+          why: "سؤال الاستفهام في الماضي البسيط يحتاج إلى did بعد كلمة الاستفهام، ثم الفاعل، ثم الفعل المجرد: What did you eat…؟ فلا نحذف did، ويعود الفعل بعدها إلى أصله، فلا نقول did you ate." },
+        { s: "The new mall ___ far from our hotel, so we walked there.", opts: ["wasn't", "weren't", "didn't"], a: 0, errCat: "be_verb", lesson: "u103l2",
+          whyEn: "'far' is an adjective, so we use be, not did. 'The new mall' is one thing (it), so we say wasn't, not weren't.",
+          why: "far صفة، فنستعمل be لا did، والفاعل The new mall مفرد (it)، فنقول wasn't لا weren't." },
+        { s: "Last night, my father ___ the letter from the bank, so he called them this morning.", opts: ["doesn't understand", "didn't understand", "wasn't understanding"], a: 1, errCat: "tense", lesson: "u103l2",
+          whyEn: "'Last night' is in the past, so we can't use the present 'doesn't understand'. 'understand' is a state verb, so it stays simple in the past: didn't understand, not 'wasn't understanding'.",
+          why: "Last night في الماضي، فلا نستعمل المضارع doesn't understand، وunderstand فعل حالة، فيبقى بسيطًا في الماضي: didn't understand لا wasn't understanding." },
+        { s: "At 6 am, my brothers ___ breakfast, because they were still in bed.", opts: ["didn't having", "wasn't having", "weren't having"], a: 2, errCat: "agreement", lesson: "u103l3",
+          whyEn: "The Past Continuous negative is wasn't / weren't + -ing. 'my brothers' is plural (they), so we use weren't, not wasn't. We never put didn't before an -ing verb.",
+          why: "نفي الماضي المستمر wasn't أو weren't مع ing، والفاعل my brothers جمع (they)، فنقول weren't لا wasn't، ولا نضع didn't قبل الفعل المنتهي بـ ing أبدًا." },
+        { s: "Lama was washing the dishes when a plate ___ in her hand.", opts: ["broke", "was breaking", "breaks"], a: 0, errCat: "tense", lesson: "u103l3",
+          whyEn: "The washing was the long action, in progress, and a plate breaks in one moment, so this is the short action, and it takes the Past Simple after when: broke. We don't use the Past Continuous for the short action, and 'breaks' is the present.",
+          why: "الغسل هو الحدث الطويل وكان جاريًا، أما انكسار الطبق فيقع في لحظة، فهو الحدث القصير، فيأتي بعد when بالماضي البسيط: broke، فلا نستعمل المستمر للحدث القصير، وbreaks للمضارع." },
+        { s: "My little sister woke up ___ midnight and asked for some water.", opts: ["in", "at", "on"], a: 1, errCat: "articles_prep", lesson: "u103l3",
+          whyEn: "We use at with an exact time, so we say 'at midnight', like 'at nine'. We use on with days and in with months and years.",
+          why: "نستعمل at مع الوقت المحدد، فنقول at midnight كما نقول at nine، ونستعمل on مع الأيام، وin مع الشهور والسنوات." },
+        { s: "Choose the correct question.", opts: ["What did your sister reading when the guests arrived?", "What was your sister read when the guests arrived?", "What was your sister reading when the guests arrived?"], a: 2, errCat: "be_verb", lesson: "u103l3",
+          whyEn: "A Past Continuous question has the question word, then was / were, then the subject, then the verb with -ing: What was your sister reading…? We never put did before an -ing verb, and we never put was before a base verb.",
+          why: "سؤال الماضي المستمر: كلمة الاستفهام، ثم was أو were، ثم الفاعل، ثم الفعل مع ing: What was your sister reading…؟ ولا نضع did قبل الفعل المنتهي بـ ing أبدًا، ولا نضع was قبل الفعل المجرد." },
+        { s: "I ___ the answer, but I didn't say it in class.", opts: ["knew", "was knowing", "knowed"], a: 0, errCat: "stative", lesson: "u103l3",
+          whyEn: "'know' is a state verb, so it stays simple, even in the past: we don't say 'was knowing'. It is irregular: its past is 'knew', so 'knowed' is not a word.",
+          why: "know فعل حالة، فيبقى بسيطًا حتى في الماضي، فلا نقول was knowing، وهو فعل شاذ ماضيه knew، فليست knowed كلمة." },
+        { s: "Please speak quietly. The students in the next room ___ an exam.", opts: ["take", "took", "are taking"], a: 2, errCat: "tense", lesson: "u103l4",
+          whyEn: "'Please speak quietly' shows that the exam is in progress now, so we use the Present Continuous: are taking. 'take' is for a habit, and 'took' is for a finished event, and neither is a reason to speak quietly now.",
+          why: "Please speak quietly تدل على أن الاختبار جارٍ الآن، فنستعمل المضارع المستمر: are taking، أما take فللعادة، وtook لحدث انتهى، وليس في أي منهما سبب لخفض الصوت الآن." },
+        { s: "The match on TV began at 8 and ended at 10, and we saw all of it. Omar called at 9. Which sentence is true?", opts: ["When Omar called, we were watching the match.", "When Omar called, we watched the match.", "When Omar called, we are watching the match."], a: 0, errCat: "tense", lesson: "u103l4",
+          whyEn: "Omar called at 9, and the match was in progress from 8 to 10, so we use the Past Continuous: we were watching. 'we watched' would mean that we started after Omar called, and we didn't. 'are watching' is the present, but this was in the past.",
+          why: "اتصل عمر الساعة 9، والمشاهدة جارية من 8 إلى 10، فنستعمل الماضي المستمر: we were watching، أما we watched فتعني أننا بدأنا بعد اتصاله، وهذا لم يحدث، وare watching للمضارع، والقصة في الماضي." },
+        { s: "My uncle was ___ engineer in Yanbu for ten years before he returned home.", opts: ["a", "an", "— (no article)"], a: 1, errCat: "articles_prep", lesson: "u103l4",
+          whyEn: "We put a or an before a job, in the past too, so we can't leave it out. 'engineer' starts with a vowel sound, so we say 'an engineer'.",
+          why: "نضع a أو an قبل المهنة، في الماضي أيضًا، فلا نحذفها، وتبدأ engineer بصوت علة، فنقول an engineer." },
+        { s: "In 2015, my neighbour ___ smoking, and now he feels much better.", opts: ["stops", "is stopping", "stopped"], a: 2, errCat: "tense", lesson: "u103l4",
+          whyEn: "'In 2015' is a finished time, so we use the Past Simple: stopped. 'now' goes with the next part of the sentence: he feels better now because of something that happened in the past. Don't forget the double p in stopped.",
+          why: "In 2015 وقت منتهٍ، فنستعمل الماضي البسيط: stopped، أما now فتتعلق ببقية الجملة: يشعر الآن بتحسن بسبب ما وقع في الماضي، ولا تنسَ مضاعفة p في stopped." },
+        { s: "Which text about Nasser has no mistakes?", opts: ["Last year, Nasser sells phones in a small shop. Now he had his own shop, and this week he is looking for a helper.", "Last year, Nasser sold phones in a small shop. Now he has his own shop, and this week he is looking for a helper.", "Last year, Nasser sold phones in a small shop. Now he is having his own shop, and this week he looks for a helper."], a: 1, errCat: "tense", lesson: "u103l4",
+          whyEn: "'Last year' needs the past: sold, not 'sells'. 'Now' needs the present: has, not 'had'. 'have' here means own, a state verb, so it stays simple: we don't say 'is having his own shop'. 'this week' with 'is looking' shows an action in progress these days.",
+          why: "Last year تحتاج إلى الماضي: sold لا sells، وNow تحتاج إلى المضارع: has لا had، وhave هنا بمعنى «يملك»، وهو فعل حالة، فيبقى بسيطًا، فلا نقول is having his own shop، وthis week مع is looking تدل على فعل جارٍ هذه الأيام." }
+      ],
+      appliedTask: {
+        promptEn: "Short Applied Task: Write at least 5 separate sentences about your life now and one moment from last month. Use 1) the Present Simple for a habit (I usually …), 2) the Present Continuous for something happening these days (This week, I am …), 3) the Past Continuous for the background of your moment (Last month, I was … when …), 4) the Past Simple for the events (After that, I …), and 5) one legal phrase from the Legal Corner (break the law, Islamic law, pay a fine, driving licence, state of emergency). Finish each sentence with a period (.).",
+        promptAr: "مهمة تطبيقية قصيرة: اكتب 5 جمل منفصلة على الأقل عن حياتك الآن ولحظة من الشهر الماضي، واستعمل فيها: ١) المضارع البسيط لعادة (I usually)، ٢) المضارع المستمر لما يجري هذه الأيام (This week, I am)، ٣) الماضي المستمر لخلفية تلك اللحظة (Last month, I was … when)، ٤) الماضي البسيط للأحداث (After that, I)، ٥) عبارة قانونية واحدة من الركن القانوني، وأنهِ كل جملة بنقطة.",
+        placeholder: "1. I usually …\n2. This week, I am …\n3. Last month, I was … when …\n4. After that, I …\n5. … (a legal phrase from the Legal Corner)",
+        minSentences: 5
       }
     }
   },
