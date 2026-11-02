@@ -78,7 +78,7 @@ LESSONS.u103l3 = {
       id: "rc-0",
       promptAr: "الفضاء، حيث النجوم والكواكب (اسم من الوحدة 3)",
       promptEn: "The area far above the Earth, where the stars and planets are (1 word)",
-      sentPre: "As a child, my brother dreamed of a trip into",
+      sentPre: "As a child, my brother wanted to travel into",
       sentPost: "on a big rocket.",
       ans: ["space"],
       hint: "s _ _ _ e (5 letters)",
@@ -90,7 +90,7 @@ LESSONS.u103l3 = {
       id: "rc-1",
       promptAr: "تجربة علمية (اسم من الوحدة 3)",
       promptEn: "A scientific test to find out something new (1 word)",
-      sentPre: "In the science class, we did a simple",
+      sentPre: "In the science class, we did an",
       sentPost: "with salt and warm water.",
       ans: ["experiment"],
       hint: "e _ _ _ _ _ _ _ _ t (10 letters)",
@@ -102,8 +102,8 @@ LESSONS.u103l3 = {
       id: "rc-2",
       promptAr: "يكتشف شيئًا موجودًا لم يكن معروفًا (فعل من الوحدة 3)",
       promptEn: "Find something that was already there, but nobody knew about it (1 word)",
-      sentPre: "Every year, doctors hope to",
-      sentPost: "new medicines in plants from the desert.",
+      sentPre: "The scientists went deep into the desert to",
+      sentPost: "new plants and animals.",
       ans: ["discover"],
       hint: "d _ _ _ _ _ _ r (8 letters)",
       spellNoteEn: "Spelled d-i-s-c-o-v-e-r: dis + cover. It is a regular verb: discovered.",
@@ -114,8 +114,8 @@ LESSONS.u103l3 = {
       id: "rc-3",
       promptAr: "يغمر بالماء (فعل من الوحدة 3)",
       promptEn: "Cover a place with a lot of water (1 word)",
-      sentPre: "After six hours of rain, the water from the river began to",
-      sentPost: "the streets of the old town.",
+      sentPre: "Every spring, the river can",
+      sentPost: "the small farms near our town.",
       ans: ["flood"],
       hint: "f _ _ _ d (5 letters)",
       spellNoteEn: "Spelled f-l-o-o-d, with double o. Here the double o sounds like the u in 'mud'.",
@@ -126,8 +126,8 @@ LESSONS.u103l3 = {
       id: "rc-4",
       promptAr: "يحصل على براءة اختراع (العبارة القانونية من الوحدة 3)",
       promptEn: "Legal phrase from Unit 3: receive the legal right that protects your invention (3 words)",
-      sentPre: "My aunt made a new kind of water bottle, and now she wants to",
-      sentPost: "so that nobody can copy it.",
+      sentPre: "My aunt made a new kind of water bottle, and her lawyer told her to",
+      sentPost: "quickly.",
       ans: ["get a patent"],
       isLegal: true,
       hint: "g _ _ _ _ _ _ _ _ t (10 letters, 3 words)",
@@ -144,8 +144,8 @@ LESSONS.u103l3 = {
     pos: "legal phrase",
     ar: "إفادة شاهد",
     say: "وِتْنَس سْتَيْتْمَنْت",
-    ex: "The shop owner gave the police a witness statement about the fire.",
-    exAr: "قدّم صاحب المحل إلى الشرطة إفادة شاهد عن الحريق.",
+    ex: "The taxi driver gave the police a witness statement about the accident on the bridge.",
+    exAr: "قدّم سائق الأجرة إلى الشرطة إفادة شاهد عن الحادث الذي وقع على الجسر.",
     tipEn: "Remember who does what: the witness gives a witness statement, and the police take it. A good statement says what was happening and then what happened, so the two past tenses often meet in it.",
     tip: "تذكّر من يفعل ماذا: الشاهد يقدّم الإفادة give a witness statement، والشرطة تأخذها take a witness statement. والإفادة الجيدة تذكر ما كان جاريًا ثم ما وقع، فكثيرًا ما يجتمع فيها الزمنان الماضيان.",
     legal: true,
@@ -164,7 +164,7 @@ LESSONS.u103l3 = {
       wikiFile: "En-us-accident.ogg",
       wikiCredit: "File:En-us-accident.ogg · Wikimedia Commons" },
     { en: "fall off", pos: "phrasal verb", ar: "يسقط من / يقع من فوق شيء", say: "فُول أُوف",
-      ex: "Sami was riding a horse when he fell off.", exAr: "كان سامي يركب حصانًا حين سقط عنه.",
+      ex: "Sami was sleeping on the sofa when he fell off.", exAr: "كان سامي نائمًا على الأريكة حين سقط عنها.",
       tipEn: "Remember the irregular past: fell off. In a story, it is often the short event: the Past Continuous gives the long action, and 'fell off' comes after when.",
       tip: "تذكّر الماضي الشاذ fell off. وكثيرًا ما تكون في القصة هي الحدث القصير: الماضي المستمر للحدث الطويل، وfell off بعد when.",
       oxfordSlug: "fall_1",
@@ -172,20 +172,20 @@ LESSONS.u103l3 = {
       wikiCredit: "File:En-us-fall.ogg & File:En-us-off.ogg · Wikimedia Commons" },
     { en: "notice", pos: "verb", ar: "يلاحظ (ينتبه إلى شيء)", say: "نُوتِس",
       ex: "My father noticed smoke at the kitchen window and called for help.", exAr: "لاحظ أبي دخانًا عند نافذة المطبخ فطلب المساعدة.",
-      tipEn: "In a story, 'noticed' is often the short event that stops the long action. Remember the spelling: keep the e and add only -d. There is no 'noticeed'.",
-      tip: "كثيرًا ما تكون noticed في القصة هي الحدث القصير الذي يقطع الحدث الطويل. وتذكّر الإملاء: تبقى e ونزيد d وحدها، فلا نكتب noticeed.",
+      tipEn: "In a story, 'noticed' is often the short event in the middle of the long action. Remember the spelling: keep the e and add only -d. There is no 'noticeed'.",
+      tip: "كثيرًا ما تكون noticed في القصة هي الحدث القصير الذي يقع في وسط الحدث الطويل. وتذكّر الإملاء: تبقى e ونزيد d وحدها، فلا نكتب noticeed.",
       oxfordSlug: "notice_1",
       wikiFile: "En-us-notice.ogg",
       wikiCredit: "File:En-us-notice.ogg · Wikimedia Commons" },
     { en: "heavy", pos: "adjective", ar: "غزير / شديد (في الطقس)", say: "هِفِي",
-      ex: "Heavy rain closed the road to the farm last night.", exAr: "أغلق المطر الغزير الطريق إلى المزرعة الليلة الماضية.",
+      ex: "Heavy rain fell all night, and our flight left three hours late.", exAr: "هطل مطر غزير طوال الليل، فأقلعت طائرتنا متأخرة ثلاث ساعات.",
       tipEn: "Keep the pair together: heavy rain, not big rain. The letters 'ea' here sound like the e in 'bed'.",
       tip: "احفظ العبارة كاملة: heavy rain لا big rain. وحرفا ea هنا يُنطقان كصوت e في كلمة bed.",
       oxfordSlug: "heavy_1",
       wikiFile: "En-us-heavy.ogg",
       wikiCredit: "File:En-us-heavy.ogg · Wikimedia Commons" },
     { en: "moment", pos: "noun", ar: "لحظة", say: "مُومَنْت",
-      ex: "At that moment, the teacher walked in, and everyone stopped talking.", exAr: "في تلك اللحظة دخل المعلم، فتوقف الجميع عن الكلام.",
+      ex: "At that moment, my sister opened the door, and the cat ran out.", exAr: "في تلك اللحظة فتحت أختي الباب، فخرج القط راكضًا.",
       tipEn: "'at that moment' goes with both past tenses, so it doesn't choose the tense for you: the rest of the sentence does. Don't mix it up with 'at the moment', which means now.",
       tip: "at that moment تأتي مع الزمنين الماضيين، فلا تختار لك الزمن، بل تختاره بقية الجملة. ولا تخلطها بـ at the moment التي تعني «الآن».",
       oxfordSlug: "moment",
@@ -255,11 +255,11 @@ LESSONS.u103l3 = {
         '<div class="xbox"><span class="xtag c" dir="ltr">Long, then short · طويل ثم قصير</span><p class="xen">Huda was making tea when the cup fell on the floor.</p></div>' +
         '<p class="formula"><b>While</b> + was / were + verb-ing, + <b>Past Simple</b></p>' +
         '<div class="xbox"><span class="xtag c" dir="ltr">while + long action · while مع الطويل</span><p class="xen">While Khalid was opening the door, his key broke.</p></div>' +
-        '<p class="en-p" dir="ltr">The verb after <b>when</b> takes the Past Simple if it is a state, too: Fahad was reading the letter when he understood the problem.</p>' +
+        '<p class="en-p" dir="ltr">The short part can be a state verb, too, and it takes the Past Simple: Fahad was reading the letter when he understood the problem. And <b>when</b> can also go with the long action: When Amal was driving home, her phone rang.</p>' +
         '<div class="tip" dir="ltr"><p><b>while · مع الحدث الطويل:</b> don\'t put while before a short event.</p><div class="pairs"><span class="yes">The glass fell while Nawal was cleaning the table.</span><span class="no">Nawal was cleaning the table while the glass fell.</span></div></div>',
       arHtml:
         '<p>في القصة كثيرًا ما يكون حدث طويل جارٍ، ويقع في وسطه حدث قصير: فالطويل بالماضي المستمر، والقصير بالماضي البسيط، ومثاله <bdi class="en">Huda was making tea when the cup fell on the floor</bdi>.</p>' +
-        '<p>و<bdi class="en">while</bdi> تأتي مع الحدث الطويل، ومثالها <bdi class="en">While Khalid was opening the door, his key broke</bdi>، فلا نضعها قبل حدث قصير. والفعل بعد <bdi class="en">when</bdi> بالماضي البسيط وإن كان فعل حالة، مثل <bdi class="en">when he understood the problem</bdi>.</p>'
+        '<p>و<bdi class="en">while</bdi> تأتي مع الحدث الطويل، ومثالها <bdi class="en">While Khalid was opening the door, his key broke</bdi>، فلا نضعها قبل حدث قصير. والجزء القصير بالماضي البسيط وإن كان فعل حالة، مثل <bdi class="en">when he understood the problem</bdi>. وتأتي <bdi class="en">when</bdi> مع الحدث الطويل أيضًا: <bdi class="en">When Amal was driving home, her phone rang</bdi>.</p>'
     },
     {
       tEn: "was / were, Negatives and Questions",
@@ -287,13 +287,13 @@ LESSONS.u103l3 = {
         '<p class="en-p" dir="ltr">To choose a tense in a past story, ask three questions:</p>' +
         '<ul class="spell" dir="ltr">' +
           '<li><b>Step 1</b> · Is it a state verb like know?<span class="s-en">Yes → Past Simple.</span></li>' +
-          '<li><b>Step 2</b> · Was the action going on when another event happened?<span class="s-en">Yes → Past Continuous.</span></li>' +
+          '<li><b>Step 2</b> · Was the action going on at a past moment, or when another event happened?<span class="s-en">Yes → Past Continuous.</span></li>' +
           '<li><b>Step 3</b> · Is it a finished action or one event in the story?<span class="s-en">Yes → Past Simple.</span></li>' +
         '</ul>' +
         '<div class="tip" dir="ltr"><p><b>Good to know · للفائدة:</b> feel and hurt can take both tenses, so both of these are correct: My head hurt. · My head was hurting.</p></div>',
       arHtml:
         '<p>الأفعال مثل <bdi class="en">know</bdi> و<bdi class="en">understand</bdi> و<bdi class="en">need</bdi> تصف حالة لا حدثًا، فتبقى بسيطة في الماضي: <bdi class="en">knew</bdi> و<bdi class="en">understood</bdi> و<bdi class="en">needed</bdi>.</p>' +
-        '<p>ولتختار الزمن في قصة ماضية اسأل نفسك: هل هو فعل حالة؟ فإن كان فالبسيط. وهل كان الحدث جاريًا حين وقع حدث آخر؟ فإن كان فالمستمر. وهل هو حدث مكتمل أو واقعة في القصة؟ فإن كان فالبسيط. أما <bdi class="en">feel</bdi> و<bdi class="en">hurt</bdi> فيأتيان بالزمنين معًا.</p>'
+        '<p>ولتختار الزمن في قصة ماضية اسأل نفسك: هل هو فعل حالة؟ فإن كان فالبسيط. وهل كان الحدث جاريًا في لحظة ماضية أو حين وقع حدث آخر؟ فإن كان فالمستمر. وهل هو حدث مكتمل أو واقعة في القصة؟ فإن كان فالبسيط. أما <bdi class="en">feel</bdi> و<bdi class="en">hurt</bdi> فيأتيان بالزمنين معًا.</p>'
     },
     {
       tEn: "Common Arab Mistakes",
@@ -331,10 +331,10 @@ LESSONS.u103l3 = {
     { s: "Two students ___ waiting for the bus when the rain started.", opts: ["were", "was"], a: 0,
       whyEn: "'Two students' is plural (they), so we use were. The verb is already in the -ing form, and was goes with I, he, she and it.",
       why: "Two students جمع (they)، فنقول were، والفعل جاء مع ing، أما was فمع I وhe وshe وit.", errCat: "agreement" },
-    { s: "We were playing football in the street when the ball ___ a car window.", opts: ["was breaking", "broke"], a: 1,
-      whyEn: "'We were playing' is the long action, and the ball hitting the window is one short event in the middle of it. The short event takes the Past Simple: broke.",
-      why: "We were playing هو الحدث الطويل، وكسر الزجاج واقعة قصيرة في وسطه، والحدث القصير بالماضي البسيط: broke.", errCat: "tense" },
-    { s: "We ___ the way to the new library, so we asked a police officer.", opts: ["weren't knowing", "didn't know"], a: 1,
+    { s: "My cousin was sitting on the old chair when it ___.", opts: ["was breaking", "broke"], a: 1,
+      whyEn: "'was sitting' is the long action, and the chair breaking is one short event in the middle of it. The short event takes the Past Simple: broke.",
+      why: "was sitting هو الحدث الطويل، وانكسار الكرسي واقعة قصيرة في وسطه، والحدث القصير بالماضي البسيط: broke.", errCat: "tense" },
+    { s: "We ___ the bus number, so we asked a police officer.", opts: ["weren't knowing", "didn't know"], a: 1,
       whyEn: "'know' is a state verb, so it takes no -ing in the past. The negative is didn't know.",
       why: "know فعل حالة، فلا يأتي مع ing في الماضي، ونفيه didn't know.", errCat: "stative" },
     { s: "My brother fell off his bike ___ Monday morning.", opts: ["on", "in"], a: 0,
@@ -343,12 +343,12 @@ LESSONS.u103l3 = {
   ],
 
   gB: [
-    { s: "Salman was study in the library when the lights went out.", ok: false, fix: "Salman was studying in the library when the lights went out.",
-      whyEn: "After was, the verb needs -ing. 'when the lights went out' is the short event, so 'study' is the long action: was studying. Remember the spelling: keep the y and add -ing.",
-      why: "بعد was يأتي الفعل مع ing، وwhen the lights went out هو الحدث القصير، فالمذاكرة هي الحدث الطويل: was studying، وتبقى y ونزيد ing.", errCat: "be_verb" },
-    { s: "My friends was standing outside the college at eight.", ok: false, fix: "My friends were standing outside the college at eight.",
-      whyEn: "'My friends' is plural, so it takes were. The form 'was standing' goes with one person.",
-      why: "My friends جمع، فيأخذ were، أما was standing فلشخص واحد.", errCat: "agreement" },
+    { s: "Salman was study in his room when his laptop broke, so he stopped and went to bed.", ok: false, fix: "Salman was studying in his room when his laptop broke, so he stopped and went to bed.",
+      whyEn: "After was, the verb needs -ing. 'so he stopped' shows that the studying was already going on when the laptop broke, so it is the long action: was studying. Remember the spelling: keep the y and add -ing.",
+      why: "بعد was يأتي الفعل مع ing، وso he stopped تبيّن أن المذاكرة كانت جارية حين تعطّل الحاسوب، فهي الحدث الطويل: was studying، وتبقى y ونزيد ing.", errCat: "be_verb" },
+    { s: "My two uncles was drinking coffee in the garden at eight.", ok: false, fix: "My two uncles were drinking coffee in the garden at eight.",
+      whyEn: "'My two uncles' is plural, so it takes were. The form 'was drinking' goes with one person.",
+      why: "My two uncles جمع، فيأخذ were، أما was drinking فلشخص واحد.", errCat: "agreement" },
     { s: "While we were waiting for the ambulance, a neighbour brought us some water.", ok: true,
       whyEn: "Correct: while comes with the long action in the Past Continuous, and the short event takes the Past Simple. brought is the past of bring.",
       why: "صحيحة: while مع الحدث الطويل بالماضي المستمر، والحدث القصير بالماضي البسيط، وbrought ماضي bring.", errCat: "tense" },
@@ -364,9 +364,9 @@ LESSONS.u103l3 = {
     { pre: "We", verb: "sit · Past Continuous", post: "near the window when the storm started.", ans: ["were sitting"],
       whyEn: "The task names the Past Continuous, and we takes were. Don't forget were: 'we sitting' is not a sentence. Spelling: sit has one short vowel + one consonant, so double the t: sitting.",
       why: "التعليمة تذكر الماضي المستمر، ومع we نقول were، ولا تُحذف، فـ we sitting ليست جملة. والإملاء: sit فيها صوت قصير واحد بعده حرف واحد، فيتضاعف t: sitting.", errCat: "spelling" },
-    { pre: "At the time of the accident, my sister", verb: "not / drive · Past Continuous", post: "; her husband was driving.", ans: ["wasn't driving", "was not driving"],
-      whyEn: "The task names the Past Continuous, and 'her husband was driving' shows the action in progress at that time. 'my sister' is one person, so the negative is wasn't + verb-ing. drive drops its e: driving.",
-      why: "التعليمة تذكر الماضي المستمر، وher husband was driving تبيّن الحدث الجاري وقتها، وmy sister مفرد، فالنفي wasn't مع الفعل وing، وتُحذف e من drive: driving.", errCat: "tense" },
+    { pre: "At the time of the accident, my sister", verb: "not / drive · Past Continuous", post: ". She was sitting in the back.", ans: ["wasn't driving", "was not driving"],
+      whyEn: "The task names the Past Continuous, and 'She was sitting in the back' shows what was going on at that time. 'my sister' is one person, so the negative is wasn't + verb-ing. drive drops its e: driving.",
+      why: "التعليمة تذكر الماضي المستمر، وShe was sitting in the back تبيّن ما كان جاريًا وقتها، وmy sister مفرد، فالنفي wasn't مع الفعل وing، وتُحذف e من drive: driving.", errCat: "tense" },
     { pre: "I", verb: "lose · Past Simple", post: "my umbrella on the bus yesterday.", ans: ["lost"],
       whyEn: "The task names the Past Simple: this is one finished event. lose is irregular, so its past is lost, not 'losed'.",
       why: "التعليمة تذكر الماضي البسيط، فهذه واقعة واحدة مكتملة، وlose فعل شاذ ماضيه lost لا losed.", errCat: "tense" }
@@ -404,11 +404,11 @@ LESSONS.u103l3 = {
     paras: [
       "Hi Turki,",
       "What a story! My week <<s:was>> quiet, thanks, but your email <<s:made>> me think of a small {accident} of my own. It <<s:happened>> <<t:last winter>> here in Britain.",
-      "<<t:At 8 am>> on a cold January morning, I <<c:was riding>> my bike to college. {Heavy|heavy} rain <<c:was falling>>, so I <<c:wasn't going>> fast. A small [[truck|شاحنة]] <<c:was moving>> slowly in front of me.",
-      "I <<c:was thinking>> about my first class <<t:when>> the truck {suddenly} <<s:stopped>>. I <<s:lost>> control of the bike and <<s:{fell off|fall off}>> in the middle of the road. At that {moment}, a woman <<c:was standing>> near a shop on the corner. She <<s:{noticed|notice}>> it all.",
+      "<<t:At 7:30 am>> on a cold January morning, I <<c:was riding>> my bike to college. {Heavy|heavy} rain <<c:was falling>>, so I <<c:wasn't going>> fast. A small [[truck|شاحنة]] <<c:was moving>> slowly in front of me.",
+      "I <<c:was thinking>> about my first class <<t:when>> the truck {suddenly} <<s:stopped>>. I <<s:lost>> control of the bike and <<s:{fell off|fall off}>> in the middle of the road. <<t:At that {moment}>>, a woman <<c:was standing>> near a shop on the corner. She <<s:{noticed|notice}>> it all.",
       "The driver <<s:got>> out and <<s:asked>>, '<<s:Are>> you injured?' My arm <<s:hurt>>, but it <<s:wasn't>> serious, and I <<s:didn't need>> an ambulance.",
-      "<<t:Then>> a police officer <<s:arrived>>, and the woman <<s:wrote>> a {witness statement} for him. She <<s:didn't know>> me, but she <<s:stayed>> in the rain and <<s:wrote>> exactly what she <<s:saw>>. <<t:Now>> I <<s:ride>> more slowly, and I <<s:stay>> far from trucks!",
-      "Tell me more about your accident. <<c:Were you standing>> in the rain without your umbrella <<t:when>> the ambulance <<s:arrived>>? What about the driver's phone? <<s:Did>> the police <<s:check>> it?",
+      "<<t:Then>> a police officer <<s:arrived>>, and the woman <<s:wrote>> a {witness statement} for him. She <<s:didn't know>> me, but she <<s:stayed>> in the rain and <<s:wrote>> exactly what she <<s:saw>>. <<t:Now>> I <<s:ride>> more slowly, and I <<s:stay>> away from trucks!",
+      "Tell me more about the accident. <<c:Were you standing>> in the rain without your umbrella <<t:when>> the ambulance <<s:arrived>>? What about the driver's phone? <<s:Did>> the police <<s:check>> it?",
       "Take care,<br>Oliver"
     ],
     predict: {
@@ -434,10 +434,10 @@ LESSONS.u103l3 = {
         ev: "My week was quiet, thanks",
         whyEn: "Oliver answers Turki's question at the start: his week was quiet.",
         why: "يجيب أوليفر عن سؤال تركي في أول إيميله: كان أسبوعه هادئًا.", errCat: "reading" },
-      { q: "What was Oliver doing at 8 am?", opts: ["He was walking to a shop.", "He was driving a truck.", "He was riding to college."], a: 2,
-        ev: "At 8 am on a cold January morning, I was riding my bike to college.",
-        whyEn: "Oliver writes that he was riding his bike to college at that time. The Past Continuous shows that the ride was in progress at 8 am.",
-        why: "يذكر أوليفر أنه كان يقود دراجته إلى الكلية في ذلك الوقت، والماضي المستمر يبيّن أن الرحلة كانت جارية عند الثامنة.", errCat: "reading" },
+      { q: "What was Oliver doing at 7:30 am?", opts: ["He was walking to a shop.", "He was driving a truck.", "He was riding to college."], a: 2,
+        ev: "At 7:30 am on a cold January morning, I was riding my bike to college.",
+        whyEn: "Oliver writes that he was riding his bike to college at that time. The Past Continuous shows that the ride was in progress at 7:30 am.",
+        why: "يذكر أوليفر أنه كان يقود دراجته إلى الكلية في ذلك الوقت، والماضي المستمر يبيّن أن الرحلة كانت جارية عند السابعة والنصف.", errCat: "reading" },
       { tf: true, q: "Oliver was going very fast before he fell off.", a: false,
         ev: "so I wasn't going fast.",
         whyEn: "False: there was a lot of rain, so Oliver wasn't going fast.",
@@ -477,16 +477,16 @@ LESSONS.u103l3 = {
       { k: "continuous", tEn: "At least 2 Past Continuous verbs: was / were + verb-ing", t: "فعلان على الأقل بالماضي المستمر: was أو were مع الفعل وing", ex: "I was walking. · We were waiting. · What was happening?",
         ok: function(a, text){ var s = String(text || '').replace(/[’‘‛ʼ`´]/g, "'"), n = 0;
           var notVerb = /^(?:interesting|boring|exciting|amazing|surprising|tiring|relaxing|frightening|worrying|something|anything|nothing|everything|morning|evening|king|thing|spring|ring|during)$/i;
-          (s.match(/[^.!?]+[.!?]*/g) || []).forEach(function(x){ var m, c = 0, re = /\b(?:was|were|wasn'?t|weren'?t)\s+(?:not\s+)?(?:(?:really|even|just|still|actually|also|always)\s+)?([a-z]+ing)\b/gi;
+          (s.match(/[^.!?]+[.!?]*/g) || []).forEach(function(x){ var m, c = 0, re = /\b(?:was|were|wasn'?t|weren'?t)\s+(?:not\s+)?(?:(?:really|even|just|still|actually|also|always|already|slowly|quickly)\s+)?([a-z]+ing)\b/gi;
             while ((m = re.exec(x))) { if (!notVerb.test(m[1])) c++; }
             if (!c && /\?\s*$/.test(x)) { var q = /\b(?:was|were|wasn'?t|weren'?t)\s+(?:[a-z']+\s+){1,4}?([a-z]+ing)\b/i.exec(x); if (q && !notVerb.test(q[1])) c = 1; }
             n += c; });
           return n >= 2; } },
       { k: "whenwhile", tEn: "1 sentence with when or while and a Past Simple verb", t: "جملة فيها when أو while مع فعل بالماضي البسيط", ex: "I was walking when it started to rain. · While we were waiting, I fell off the wall.",
         ok: function(a, text){ var s = String(text || '').replace(/[’‘‛ʼ`´]/g, "'");
-          var irregular = /\b(?:cut|put|set|let|cost|hit|hurt|shut|read|came|became|ran|had|made|said|paid|told|sold|found|thought|bought|brought|taught|caught|felt|kept|slept|left|met|meant|sent|spent|built|lent|lost|won|sat|stood|understood|heard|held|did|didn't|didnt|went|saw|took|gave|knew|wrote|spoke|broke|chose|forgot|drove|ate|fell|began|drank|flew|wore|got|rode|woke|grew|rang|threw|ran|was|were|wasn't|wasnt|weren't|werent)\b/i;
+          var irregular = /\b(?:cut|put|set|let|cost|hit|hurt|shut|read|came|became|ran|had|made|said|paid|told|sold|found|thought|bought|brought|taught|caught|felt|kept|slept|left|met|meant|sent|spent|built|lent|lost|won|sat|stood|understood|heard|held|did|didn't|didnt|went|saw|took|gave|knew|wrote|spoke|broke|chose|forgot|drove|ate|fell|began|drank|flew|wore|got|rode|woke|grew|rang|threw|sang|swam|drew|blew|bit|stole|shook|could|couldn't|couldnt|was|were|wasn't|wasnt|weren't|werent)\b/i;
           return (s.match(/[^.!?]+[.!?]*/g) || []).some(function(x){ if (!/\b(?:when|while)\b/i.test(x)) return false;
-            var y = x.replace(/\b(?:was|were|wasn'?t|weren'?t)\s+(?:not\s+)?(?:(?:really|even|just|still|actually|also|always)\s+)?[a-z]+ing\b/gi, ' ');
+            var y = x.replace(/\b(?:was|were|wasn'?t|weren'?t)\s+(?:not\s+)?(?:(?:really|even|just|still|actually|also|always|already|slowly|quickly)\s+)?[a-z]+ing\b/gi, ' ');
             if (/\?\s*$/.test(x)) y = y.replace(/\b(?:was|were|wasn'?t|weren'?t)\s+(?:[a-z']+\s+){1,4}?[a-z]+ing\b/gi, ' ');
             return irregular.test(y) || (y.match(/\b[a-z]+ed\b/gi) || []).some(function(w){ return !/^(?:bed|red|need|speed|feed|seed|weed|shed|hundred)$/i.test(w); }); }); } },
       { k: "vocab", tEn: "At least 2 words/phrases from today's lesson", t: "كلمتان أو عبارتان من درس اليوم", ex: "accident · fall off · notice · heavy · moment · suddenly · witness statement",
@@ -494,21 +494,22 @@ LESSONS.u103l3 = {
           var words = [/\baccidents?\b/i, /\b(?:fall|falls|fell|falling|fallen)\s+off\b/i, /\bnotic(?:e|es|ed|ing)\b/i, /\bheavy\b/i, /\bmoments?\b/i, /\bsuddenly\b/i, /\bwitness\s+statements?\b/i];
           return words.filter(function(r){ return r.test(s); }).length >= 2; } }
     ],
-    modelMarked: "<<t:Last Thursday>>, I <<s:had>> a small {accident} on my way to the university. I <<c:was walking>> to the bus stop in the rain. I <<c:was looking>> at my phone, so I <<s:didn't {notice}>> a hole in the road. <<t:While>> I <<c:was reading>> a message, I <<s:fell>> into it! At that {moment}, an old man <<c:was standing>> at the bus stop, and he <<s:came>> to help me. My leg <<s:hurt>> for two days, but I <<s:went>> to my class. <<t:Now>> I <<s:keep>> my phone in my bag <<t:when>> I <<s:walk>>.",
-    model: "Last Thursday, I had a small accident on my way to the university. I was walking to the bus stop in the rain. I was looking at my phone, so I didn't notice a hole in the road. While I was reading a message, I fell into it! At that moment, an old man was standing at the bus stop, and he came to help me. My leg hurt for two days, but I went to my class. Now I keep my phone in my bag when I walk.",
+    modelMarked: "<<t:Last Thursday>> <<s:was>> a bad day for me. I <<c:was walking>> to the bus stop in the rain. I <<c:was looking>> at my phone, so I <<s:didn't {notice}>> a hole in the road. <<t:While>> I <<c:was reading>> a message, I <<s:fell>> into it! <<t:At that {moment}>>, an old man <<c:was standing>> at the bus stop, and he <<s:came>> to help me. My leg <<s:hurt>> for two days, but I <<s:went>> to my class. <<t:Now>> I <<s:keep>> my phone in my bag <<t:when>> I <<s:walk>>.",
+    model: "Last Thursday was a bad day for me. I was walking to the bus stop in the rain. I was looking at my phone, so I didn't notice a hole in the road. While I was reading a message, I fell into it! At that moment, an old man was standing at the bus stop, and he came to help me. My leg hurt for two days, but I went to my class. Now I keep my phone in my bag when I walk.",
     legendEn: "Light blue = simple verbs · Terracotta = was / were + verb-ing · Dashed = time words, when and while",
     legendAr: "الأزرق الفاتح للأفعال البسيطة، والطوبي لـ was / were مع الفعل وing، والإطار المنقّط لكلمات الوقت وwhen وwhile.",
     acceptExamples: [
       "Last week, I noticed a strange noise in my car. At 9pm, I was driving to my college. It was raining. Suddenly, the car stopped. I wasn't going fast, so it wasn't an accident. A police officer helped me when I called him.",
       "Just after midnight, the lights went out. I was feeling tired, and my brother was sleeping. We didn't know what was happening. While I was looking for my phone, I fell off a chair! Where were you going at that moment? My mother heard the noise.",
       "My friends were building a small wall near our house. I wasn’t helping them. Suddenly, the heavy rain started. They weren’t working when it started. What was happening at that moment? We went inside and had tea.",
-      "It was dark when I was walking home. A big dog was following me. I did not notice it at first. Suddenly, it ran at me. I fell off the path and hurt my leg. What were you doing when I called you?"
+      "It was dark when I was walking home. A big dog was following me. I did not notice it at first. Suddenly, it ran at me. I fell off the path and hurt my leg. What were you doing when I called you?",
+      "Last month, I was walking home in the heavy rain. A small dog was following me. While I was crossing the road, it bit my leg. I couldn't walk well. A police officer noticed me. He called my father."
     ]
   },
 
   askChips: [
     "كيف أعرف أن الفعل بالماضي المستمر لا البسيط؟",
-    "لماذا يبقى الفعل بعد when بالماضي البسيط؟",
+    "لماذا يأتي الحدث القصير بالماضي البسيط لا المستمر؟",
     "لماذا نقول I knew ولا نقول I was knowing؟",
     "هل يصح الماضي البسيط والمستمر معًا في جملة واحدة؟"
   ],
@@ -533,9 +534,9 @@ LESSONS.u103l3 = {
     { s: "Which sentence uses while correctly?", opts: ["Lama was getting off the bus while her bag fell.", "Lama's bag fell while she was getting off the bus.", "Lama's bag fell while she getting off the bus."], a: 1, tag: "Grammar · قواعد",
       whyEn: "while goes with the long action (was getting off), not with the short event (fell). The long action also needs was before verb-ing.",
       why: "while تأتي مع الحدث الطويل was getting off لا مع الحدث القصير fell، والحدث الطويل يحتاج إلى was قبل الفعل وing.", errCat: "tense" },
-    { s: "Last winter, I ___ my bike to college every day, but now I take the bus.", opts: ["rode", "ride", "rides"], a: 0, tag: "Grammar · قواعد",
-      whyEn: "'Last winter' is past, and 'but now' shows that the habit stopped, so we need a past form. ride is irregular: its past is rode.",
-      why: "Last winter ماضٍ، وbut now تبيّن أن العادة انتهت، فنحتاج إلى صيغة ماضية، وride فعل شاذ ماضيه rode.", errCat: "tense" },
+    { s: "Last winter, I ___ to the university with my brother, but now I take the bus.", opts: ["drove", "drive", "drives"], a: 0, tag: "Grammar · قواعد",
+      whyEn: "'Last winter' is past, and 'but now' shows that the habit stopped, so we need a past form. drive is irregular: its past is drove.",
+      why: "Last winter ماضٍ، وbut now تبيّن أن العادة انتهت، فنحتاج إلى صيغة ماضية، وdrive فعل شاذ ماضيه drove.", errCat: "tense" },
     { s: "The match stopped after ten minutes because of the ___ rain.", opts: ["big", "heavy", "long"], a: 1, tag: "Vocabulary · مفردات",
       whyEn: "For a lot of rain, the phrase is 'heavy rain'. We do not say 'big rain'.",
       why: "نقول للمطر الكثير heavy rain، ولا نقول big rain.", errCat: "vocab" },
