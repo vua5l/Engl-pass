@@ -292,7 +292,7 @@ function readMap(rel, map, unit) {
     if (Number(m[1]) !== unit) { rl.error('id', `belongs to unit ${m[1]}, not to unit ${unit}`); return; }
     if (seen.has(id)) { rl.error('id', 'has two rows in the map'); return; }
     seen.add(id);
-    const row = { id, file: `lessons/u${m[1]}/l${m[2]}.js`, title: isStr(r.title) ? r.title : null, legal: undefined };
+    const row = { id, file: `lessons/u${m[1]}/l${m[2]}.js`, title: isStr(r.title) ? r.title : null, legal: undefined, fluencyFrom: isStr(r.fluencyFrom) ? r.fluencyFrom : undefined };
     // mode and clip
     if (MODES.includes(r.mode)) row.mode = r.mode;
     else rl.error('mode', isStr(r.mode) && UNFINISHED_RE.test(r.mode) ? UNFINISHED : `${JSON.stringify(r.mode)} must be "reading" or "listening"`);
@@ -405,6 +405,10 @@ function checkLesson(site, mapRel, row, stats) {
     if (row.targetSeconds != null && Number(L.listening.targetSeconds) !== row.targetSeconds)
       log.warn('listening.targetSeconds', `${JSON.stringify(L.listening.targetSeconds)}, but the map clip says ${row.targetSeconds}`);
   }
+
+  // the old text the learner reads again before the new one (consolidation weeks)
+  if (row.fluencyFrom !== (isObj(L.reading) && isStr(L.reading.fluencyFrom) ? L.reading.fluencyFrom : undefined))
+    log.error('reading.fluencyFrom', `${JSON.stringify(isObj(L.reading) ? L.reading.fluencyFrom : undefined)}, but the map row says ${JSON.stringify(row.fluencyFrom)}`);
 
   // 3. new items: vocab[].en and legalPhrase.en against the row, nothing missing and nothing extra
   const lessonLegal = L.legalPhrase == null ? null : headOf(L.legalPhrase);

@@ -675,6 +675,10 @@ function checkWriting(log, L, S) {
     else if (stated < CFG.minSentences) log.error('writing.taskEn', `the task text asks for ${stated} sentences; it must ask for at least ${CFG.minSentences} separate sentences`);
   }
   if (enforced != null && stated != null && enforced !== stated) log.warn('writing', `task text says ${stated} sentences but the checks enforce ${enforced}`);
+  if (W.minSentences != null) {                                             // the finish button and the counter read this field
+    if (!Number.isInteger(W.minSentences) || W.minSentences < CFG.minSentences) log.error('writing.minSentences', `must be a whole number of at least ${CFG.minSentences}`);
+    else if (enforced != null && enforced !== W.minSentences) log.error('writing.minSentences', `is ${W.minSentences} but the checks enforce ${enforced}`);
+  }
   if (isStr(W.model)) {
     const n = splitSentences(W.model).filter(s => (s.match(/[A-Za-z']+/g) || []).length >= 3).length, required = Math.max(CFG.minSentences, enforced || 0);
     if (n < required) log.error('writing.model', `the model answer has only ${n} sentences; at least ${required} are required`);
@@ -683,10 +687,11 @@ function checkWriting(log, L, S) {
   return { enforced, stated, own };
 }
 /* The fewest separate sentences (as analyze() counts them) the writing screen's finish button accepts: stWriting
-   shows a toast instead of finishing when a.sentences < N. null when that rule cannot be found in app.js. */
+   shows a toast instead of finishing when a.sentences < minSentences(), which is writing.minSentences or this default.
+   null when that rule cannot be found in app.js. */
 function finishMinimum(S) {
   if (S.finishMin === undefined) {
-    const src = extractDecl(S.appSrc, 'stWriting') || '', m = /\ba\.sentences\s*<\s*(\d+)/.exec(src);
+    const src = extractDecl(S.appSrc, 'minSentences') || '', m = /\|\|\s*(\d+)/.exec(src);
     S.finishMin = m ? Number(m[1]) : null;
   }
   return S.finishMin;
@@ -710,7 +715,7 @@ function checkWritingAnswers(log, L, S, checks, own) {
     });
   }
   if (!answers.length || !checks || !S.writing) return;                    // no checks: reported above; no engine: one WARN
-  const min = finishMinimum(S), which = own ? "the lesson's writing.checks" : `the default CHECKS of ${S.engine}`;
+  const min = Number.isInteger(W.minSentences) ? W.minSentences : finishMinimum(S), which = own ? "the lesson's writing.checks" : `the default CHECKS of ${S.engine}`;
   for (const [field, text] of answers) {
     let r;
     try { r = rejectingChecks(S, L, checks, text); }

@@ -1812,6 +1812,8 @@ var WRITING_TYPOS = {
   studys: { right:'studies', why:'Consonant + y → -ies with he / she / it (study → studies).' }
 };
 
+/* أقل عدد من الجمل المنفصلة في كتابة الدرس: writing.minSentences، و4 في سائر الدروس. */
+function minSentences(){ return (D.writing && D.writing.minSentences) || 4; }
 function analyze(t){ var text = fixQuotes(t);
   var words = (text.match(/[A-Za-z']+/g) || []).length;
   var sentences = text.split(/[.!?]+/).filter(function(s){ return (s.match(/[A-Za-z']+/g) || []).length >= 3; }).length;
@@ -1854,7 +1856,7 @@ function localWritingCheck(text){
     if (re.test(text)) sMist.push({ wrong:k, right:WRITING_TYPOS[k].right, why:WRITING_TYPOS[k].why });
   });
   if (a.runOn) {
-    sMist.push({ wrong:'One long connected sentence', right:'4 separate sentences with periods (.)', why:'Split long sentences with a period (.) and start the next sentence with a capital letter.' });
+    sMist.push({ wrong:'One long connected sentence', right:minSentences() + ' separate sentences with periods (.)', why:'Split long sentences with a period (.) and start the next sentence with a capital letter.' });
   }
   var activeCks = (D.writing && Array.isArray(D.writing.checks)) ? D.writing.checks : CHECKS;
   var met = activeCks.filter(function(c){ return c.ok(a, text); }).length, all = met >= activeCks.length, four = activeCks.length === 4;
@@ -1878,9 +1880,9 @@ function stWriting(ctl){
   function paint(){ var a = analyze(ta.value), text = fixQuotes(ta.value);
     var activeCks = (D.writing && Array.isArray(D.writing.checks)) ? D.writing.checks : CHECKS;
     put(checks, activeCks.map(function(c){ var on = c.ok(a, text); return h('li', { class:on ? 'on' : '' }, h('span', { class:'cb' }, on ? ico('check') : null), h('div', { class:'ck-t' }, h('span', { class:'ck-en' }, c.tEn || c.t), c.ex ? h('span', { class:'ck-ex', dir:'ltr', lang:'en' }, c.ex) : null, (c.k === 'vocab' && a.used.length) ? h('span', { class:'used' }, a.used.map(function(u){ return h('span', {}, u); })) : null)); }));
-    count.textContent = 'Words: ' + a.words + ' · Separate sentences: ' + a.sentences + ' / 4';
+    count.textContent = 'Words: ' + a.words + ' · Separate sentences: ' + a.sentences + ' / ' + minSentences();
     runOnWarn.hidden = !a.runOn;
-    if (a.runOn) put(runOnWarn, biNode('Tip: Split your writing into at least 4 separate sentences ending with a period (.) rather than one long connected sentence.', 'تنبيه: قسّم كتابتك إلى 4 جمل منفصلة تنتهي كل منها بنقطة (.) بدل جملة واحدة طويلة موصولة.'));
+    if (a.runOn) put(runOnWarn, biNode('Tip: Split your writing into at least ' + minSentences() + ' separate sentences ending with a period (.) rather than one long connected sentence.', 'تنبيه: قسّم كتابتك إلى ' + arDigits(minSentences()) + ' جمل منفصلة تنتهي كل منها بنقطة (.) بدل جملة واحدة طويلة موصولة.'));
     return a; }
   var t1, t2;
   ta.addEventListener('input', function(){ clearTimeout(t1); t1 = setTimeout(paint, 120); clearTimeout(t2); t2 = setTimeout(function(){ S.writing.text = ta.value; touch(); }, 900); });
@@ -1890,7 +1892,7 @@ function stWriting(ctl){
   copy.addEventListener('click', function(){ var text = ta.value.trim(); if (!text) { toast('Paragraph is empty.'); return; }
     var payload = 'صحّح لي فقرة درس «' + (D.en || lessonTag(curLessonId)) + '» من جواز الإنجليزية (مع فصل أخطاء الإملاء عن القواعد):\n\n' + text, fallback = function(){ ta.focus(); ta.select(); toast('Text selected — copy from your device menu.'); };
     try { navigator.clipboard.writeText(payload).then(function(){ toast('Copied! Paste it in chat.'); }, fallback); } catch (e) { fallback(); } });
-  ctl.set(S.writingDone ? 'التالي' : 'إنهاء المهمة', true, function(){ var a = analyze(ta.value); if (a.sentences < 4) { toast('Write at least 4 separate sentences ending with a period (.).'); return; } S.writing.text = ta.value; S.writingDone = true; touch(); updateProgress(); nextStep(); });
+  ctl.set(S.writingDone ? 'التالي' : 'إنهاء المهمة', true, function(){ var a = analyze(ta.value); if (a.sentences < minSentences()) { toast('Write at least ' + minSentences() + ' separate sentences ending with a period (.).'); return; } S.writing.text = ta.value; S.writingDone = true; touch(); updateProgress(); nextStep(); });
   if (S.writing.fb) { fbBox.hidden = false; paintFeedback(fbBox, S.writing.fb); }
   paint();
   var modelSrc = W.modelMarked || W.model || '', modelLegend = writingModelLegend(W, modelSrc);
