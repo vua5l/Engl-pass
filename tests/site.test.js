@@ -130,11 +130,11 @@ function fakeGitHub(token) {
   async function startApp(page) { await page.goto(URL0); await sleep(400); if (await page.locator('.wel-cta .btn').count()) { await page.click('.wel-cta .btn'); await sleep(250); } }
   // تصميم 1 نوفمبر 2026: الدروس في شاشة «Course»، والوحدة المفتوحة بطاقة واحدة (.tl-it.open) تُفتح بلمس سطرها.
   // كتلة وحدة مفتوحة برقمها، فلا تختلط سطور الوحدة 1 بسطور وحدة أخرى
-  const unitBlock = (page, u) => page.locator('.tl-it.open').filter({ has: page.locator('.u-n', { hasText: new RegExp('^' + u + '$') }) });
+  const unitBlock = (page, u) => page.locator('.tl-it.open').filter({ has: page.locator('.u-n[data-u="' + u + '"]') });
   async function expandUnit(page, u) {
     await page.locator('.nav-it').nth(1).click(); await sleep(200);
     if (await unitBlock(page, u).count()) return;
-    const row = page.locator('.tl-it').filter({ has: page.locator('.u-n', { hasText: new RegExp('^' + u + '$') }) }).locator('button.tl-row');
+    const row = page.locator('.tl-it').filter({ has: page.locator('.u-n[data-u="' + u + '"]') }).locator('button.tl-row');
     if (await row.count()) { await row.first().click(); await sleep(200); }
   }
   // درس الأسبوع التأسيسي بترتيبه: يفتح «Today» على ذلك الدرس

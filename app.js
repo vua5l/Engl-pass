@@ -693,7 +693,7 @@ function unitNode(u, openN){
   var isOpen = u.n === 0 || !!u.open, list = unitList(u.n), lessons = list.filter(function(l){ return l && !l.test; });
   var doneN = lessons.filter(function(l){ return l.open && l.id && isLessonDone(l.id); }).length;
   var sub = (u.gEn || '') + (isOpen ? ' · ' + lessons.length + ' lessons' : ' · coming soon');
-  var node = h('span', { class:'u-n' + (isOpen ? '' : ' lk') }, unitBadge(u));
+  var node = h('span', { class:'u-n' + (isOpen ? '' : ' lk'), 'data-u':u.n }, unitBadge(u));
   function toggle(){ G.ui.openUnit = openN === u.n ? -1 : u.n; saveLocal(); render(); }
   if (!isOpen) return h('li', { class:'tl-it' + (D.preTests && D.preTests[u.n] ? ' u-card-wrap' : '') },
     node, h('div', { class:'tl-main' }, h('div', { class:'tl-row locked' }, h('span', { class:'tl-t' }, h('b', {}, u.en), h('small', {}, sub)), ico('lock')), preTestBox(u)));
@@ -711,7 +711,7 @@ function unitNode(u, openN){
       isNext ? h('span', { class:'chip-next' }, 'Next') : done ? null : ico('chev')));
   });
   if (u.n === 0 && !list.some(function(l){ return l && l.test; })) rows.push(unitTestRow(0, null));
-  return h('li', { class:'tl-it open' }, h('span', { class:'u-n on' }, unitBadge(u)),
+  return h('li', { class:'tl-it open' }, h('span', { class:'u-n on', 'data-u':u.n }, unitBadge(u)),
     h('div', { class:'tl-card' },
       h('button', { class:'tl-head', type:'button', 'aria-expanded':'true', on:{ click:toggle } },
         h('span', { class:'tl-t' }, h('b', {}, u.en), h('small', {}, u.gEn || '')),
