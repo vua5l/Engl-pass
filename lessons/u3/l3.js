@@ -114,7 +114,7 @@ LESSONS.u3l3 = {
       id: "rc-3",
       promptAr: "يسقط من فوق شيء كالدراجة أو الحصان (فعل من كلمتين من الدرس الثاني)",
       promptEn: "Drop to the ground from something like a bike or a horse (2 words)",
-      sentPre: "The road was wet, and my little brother was afraid to",
+      sentPre: "My little brother rides slowly, because he doesn't want to",
       sentPost: "his bike.",
       ans: ["fall off"],
       hint: "f _ _ _ _ _ f (7 letters, 2 words)",
