@@ -22,8 +22,10 @@ function wIsPastWord(w){ return W_PAST.indexOf(w) >= 0 || (w.length > 3 && /ed$/
 var W_CONT_STRIP = /\b(?:was|were)(?:n't|\s+not)?\s+(?:(?:still|just|already|also|really|all|both|always|never|busy|out|outside|there|[a-z]+ly|i|you|he|she|it|we|they)\s+|(?:the|my|his|her|our|their|your)\s+[a-z]+\s+|(?:at|in|on)\s+(?:home|work|class|college|school|university|bed|(?:the|my|our|his|her|a)\s+[a-z]+),?\s+)?[a-z]{2,}ing\b/gi;
 var W_BE_NEXT = /\b(?:was|were)(?:n't|\s+not)?\s+([a-z']+)/gi;
 var W_BE_BASE = /^(?:go|come|see|call|study|work|walk|run|sit|stand|take|give|know|tell|feel|eat|drink|sleep|read|write|talk|play|watch|wait|happen|live|learn|teach|want|need|like|love|ask|help|start|finish|travel|drive|ride|wake|get|make|do|have|say|speak|buy|meet|find|think|pray|visit|arrive|stay|leave|try|listen|look|move|pass|pay|send|stop|swim|wash|wear|use|cook)$/i;
+/* relaxing وأخواتها فعل في I was relaxing، وصفة في It was relaxing، فتُعد في المستمر، وتبقى مع was صفةً في الماضي البسيط. */
+var W_ING_BOTH = /^(?:relaxing|worrying|annoying|encouraging)$/i;
 function wBePast(s){
-  var t = s.replace(W_CONT_STRIP, function(x){ var w = (x.match(/[a-z]+$/i) || [''])[0]; return W_ING_NOT.test(w) ? x : ' '; });
+  var t = s.replace(W_CONT_STRIP, function(x){ var w = (x.match(/[a-z]+$/i) || [''])[0]; return (W_ING_NOT.test(w) || W_ING_BOTH.test(w)) ? x : ' '; });
   var m; W_BE_NEXT.lastIndex = 0;
   while ((m = W_BE_NEXT.exec(t))) { if (!W_BE_BASE.test(m[1])) return true; }
   return false;
@@ -389,9 +391,9 @@ LESSONS.u103l5 = {
     { s: "My brother is a nurse now, but last year he ___ in a shop.", opts: ["works", "worked"], a: 1,
       whyEn: "The sentence moves from 'now' to 'last year', a finished time, so the second verb changes to the Past Simple.",
       why: "تنتقل الجملة من now إلى last year، وهو وقت انتهى، فيتغيّر الفعل الثاني إلى الماضي البسيط.", errCat: "tense" },
-    { s: "I was sitting on the boat when my keys ___ into the water.", opts: ["fell", "were falling"], a: 0,
-      whyEn: "The sitting was the long action, and the keys fell once, in the middle of it. This short action comes after 'when', so it takes the Past Simple.",
-      why: "الجلوس في القارب هو الحدث الطويل، وسقطت المفاتيح مرة واحدة في أثنائه. وهذا حدث قصير بعد when، فيأتي بالماضي البسيط.", errCat: "tense" },
+    { s: "I was fishing with my uncle when my keys ___ into the water.", opts: ["fell", "were falling"], a: 0,
+      whyEn: "Fishing was the long action, and the keys fell once, in the middle of it. This short action comes after 'when', so it takes the Past Simple.",
+      why: "صيد السمك هو الحدث الطويل، وسقطت المفاتيح مرة واحدة في أثنائه. وهذا حدث قصير بعد when، فيأتي بالماضي البسيط.", errCat: "tense" },
     { s: "Your topic sentence is 'I am a student at Qassim University.' Which sentence supports it?", opts: ["Penguins live in very cold places.", "I study business there, and I go to class five days a week."], a: 1,
       whyEn: "A supporting sentence gives details about the topic: here, the writer's studies. The sentence about penguins has nothing to do with that topic, so it doesn't belong.",
       why: "الجملة الداعمة تذكر تفاصيل الموضوع، وهو هنا دراسة الكاتب. أما الجملة عن البطاريق فلا صلة لها بالموضوع، فلا مكان لها في الفقرة.", errCat: "word_order" },
@@ -464,7 +466,7 @@ LESSONS.u103l5 = {
     // {word|key} كلمات الدرس السبع وحدها · [[text|معنى]] كلمة واحدة مساعدة · والنص فقرة واحدة طويلة، لأنه نموذج لكتابة المتعلم
     paras: [
       "Dear Ms Lewis,",
-      "<<t:Before>> our first lesson, I <<s:want>> to {introduce} myself and {describe} my life. My name <<s:is>> Khaled, and I<<s:'m>> an [[engineering|الهندسة]] student in Dammam. On a typical day, I <<s:get>> up at six, and class <<s:starts>> at eight. <<t:After that>>, I <<t:usually>> <<s:stay>> in the library until four, and in the evening I <<s:relax>> with my brother. <<t:These days>>, I<<c:'m doing>> research on safe roads with two classmates. We<<c:'re measuring>> the traffic in our city, <<t:so>> my schedule <<s:is>> very busy. There <<s:is>> one moment that I can't forget. One night <<t:two years ago>>, I <<c:was studying>> for an exam <<t:when>> my sister suddenly <<s:called>>. She <<s:got>> a place at a university in London to study {international law}. I <<s:felt>> very {proud} of her. <<t:That night>>, I <<s:{decided|decide}>> to learn English <<t:because>> I <<s:wanted>> to visit her and talk to people there. <<t:The next week>>, I <<s:started>> my English {journey}. <<t:Now>> I <<s:read>> English every day, <<t:but>> speaking <<s:is>> still difficult for me, <<t:so>> I <<s:need>> your help. Please {reply} if you <<s:have>> any questions. I <<s:am>> ready for our first lesson!",
+      "<<t:Before>> our first lesson, I <<s:want>> to {introduce} myself and {describe} my life. My name <<s:is>> Khaled, and I<<s:'m>> an [[engineering|الهندسة]] student in Dammam. On a typical day, I <<s:get>> up at six, and class <<s:starts>> at eight. <<t:After class>>, I <<t:usually>> <<s:stay>> in the library until four, and in the evening I <<s:relax>> with my brother. <<t:These days>>, I<<c:'m doing>> research on safe roads with two classmates. We<<c:'re measuring>> the traffic in our city, <<t:so>> my schedule <<s:is>> very busy. There <<s:is>> one moment that I can't forget. One night <<t:two years ago>>, I <<c:was studying>> for an exam <<t:when>> my sister suddenly <<s:called>>. She <<s:got>> a place at a university in London to study {international law}. I <<s:felt>> very {proud} of her. <<t:That night>>, I <<s:{decided|decide}>> to learn English <<t:because>> I <<s:wanted>> to visit her and talk to people there. <<t:The next week>>, I <<s:started>> my English {journey}. <<t:Now>> I <<s:read>> English every day, <<t:but>> speaking <<s:is>> still difficult for me, <<t:so>> I <<s:need>> your help. Please {reply} if you <<s:have>> any questions. I <<s:am>> ready for our first lesson!",
       "Best wishes,<br>Khaled"
     ],
     predict: {
@@ -568,9 +570,9 @@ LESSONS.u103l5 = {
     { s: "We were having dinner when my uncle ___ at the door.", opts: ["was arriving", "arrived", "arrives"], a: 1, tag: "Grammar · قواعد",
       whyEn: "Dinner was the long action, and the arrival is the short action after 'when', so it takes the Past Simple. 'arrives' is the present, and this story is in the past.",
       why: "العشاء هو الحدث الطويل، والوصول حدث قصير بعد when، فيأتي بالماضي البسيط. أما arrives فمضارع، والقصة في الماضي.", errCat: "tense" },
-    { s: "Can you wait ten minutes? I ___ my car at the moment.", opts: ["wash", "washed", "am washing"], a: 2, tag: "Grammar · قواعد",
-      whyEn: "The speaker asks you to wait because the washing is going on right now, so we need am + verb-ing. 'wash' is a habit, and 'washed' is finished.",
-      why: "يطلب المتحدث الانتظار لأن الغسل جارٍ الآن، فنحتاج am مع الفعل وing. أما wash فللعادة، وwashed لحدث انتهى.", errCat: "tense" },
+    { s: "Can you wait ten minutes? I ___ the kitchen at the moment.", opts: ["clean", "cleaned", "am cleaning"], a: 2, tag: "Grammar · قواعد",
+      whyEn: "The speaker asks you to wait because the cleaning is going on right now, so we need am + verb-ing. 'clean' is a habit, and 'cleaned' is finished.",
+      why: "يطلب المتحدث الانتظار لأن التنظيف جارٍ الآن، فنحتاج am مع الفعل وing. أما clean فللعادة، وcleaned لحدث انتهى.", errCat: "tense" },
     { s: "My uncle is ___ officer at the airport.", opts: ["a", "at", "an"], a: 2, tag: "Grammar · قواعد",
       whyEn: "A job after 'is' needs 'a' or 'an'. The next word, 'officer', starts with a vowel sound, so we use 'an'.",
       why: "المهنة بعد is تحتاج a أو an، والكلمة التالية officer تبدأ بصوت متحرك، فنستعمل an.", errCat: "articles_prep" },
