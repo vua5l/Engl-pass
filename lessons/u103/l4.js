@@ -31,7 +31,7 @@ LESSONS.u103l4 = {
   descEn: "I can choose between the present simple, the present continuous, the past simple and the past continuous, move from my past to my life now, and follow a real talk about life in three countries.",
   descAr: "أقدر أن أختار بين المضارع البسيط والمضارع المستمر والماضي البسيط والماضي المستمر، وأنتقل من ماضيّ إلى حياتي الآن، وأتابع حديثًا حقيقيًا عن الحياة في ثلاثة بلدان.",
   goals: [
-    { en: "I can ask two questions before I choose a tense: present or past, and going on at that moment or not.", ar: "أقدر أن أسأل نفسي سؤالين قبل أن أختار الزمن: أهو في الحاضر أم في الماضي؟ وهل هو جارٍ في تلك اللحظة أم لا؟" },
+    { en: "I can ask two questions before I choose a tense: present or past, and going on or not.", ar: "أقدر أن أسأل نفسي سؤالين قبل أن أختار الزمن: أهو في الحاضر أم في الماضي؟ وهل هو جارٍ أم لا؟" },
     { en: "I can use the other action in a sentence to choose between the past simple and the past continuous.", ar: "أقدر أن أستعمل الحدث الآخر في الجملة لأختار بين الماضي البسيط والماضي المستمر." },
     { en: "I can keep state verbs simple, and move from the past to the present when I talk about my life.", ar: "أقدر أن أُبقي أفعال الحالة في البسيط، وأنتقل من الماضي إلى الحاضر حين أتكلم عن حياتي." },
     { en: "I can follow a real talk about life in different countries, and write at least 6 sentences about my life before and now.", ar: "أقدر أن أتابع حديثًا حقيقيًا عن الحياة في بلدان مختلفة، وأكتب 6 جمل على الأقل عن حياتي قبلُ والآن." }
@@ -379,12 +379,12 @@ LESSONS.u103l4 = {
     { pre: "These days, my sister", verb: "want", post: "a job in a foreign country.", ans: ["wants"],
       whyEn: "'These days' puts this in the present. 'want' is a state verb, so it stays simple, and 'my sister' takes -s: wants.",
       why: "These days تجعل الجملة في الحاضر، وwant فعل حالة فيبقى بسيطًا، وmy sister مفرد غائب فنضيف s: wants.", errCat: "stative" },
-    { pre: "Please turn off the TV. My little brother", verb: "sleep", post: "on the sofa.", ans: ["is sleeping"],
-      whyEn: "'Please turn off the TV' asks for quiet because the sleep is going on now. So we use the present continuous: is sleeping.",
-      why: "Please turn off the TV طلب للهدوء لأن النوم جارٍ الآن، فنستعمل المضارع المستمر: is sleeping.", errCat: "tense" },
-    { pre: "I", verb: "wait", post: "outside the bank when my brother called my name.", ans: ["was waiting"],
-      whyEn: "'when my brother called my name' is the short action. The wait was going on at that moment, so it takes the past continuous: was waiting.",
-      why: "when my brother called my name هو الحدث القصير، والانتظار كان جاريًا في تلك اللحظة، فيأتي بالماضي المستمر: was waiting.", errCat: "tense" },
+    { pre: "Shh! My little brother", verb: "sleep", post: "on the sofa.", ans: ["is sleeping"],
+      whyEn: "'Shh!' tells us to be quiet because the sleep is going on now. So we use the present continuous: is sleeping.",
+      why: "Shh! تطلب الهدوء لأن النوم جارٍ الآن، فنستعمل المضارع المستمر: is sleeping.", errCat: "tense" },
+    { pre: "I", verb: "wait", post: "outside the bank when an old friend walked past.", ans: ["was waiting"],
+      whyEn: "'when an old friend walked past' is the short action. The wait was going on at that moment, so it takes the past continuous: was waiting.",
+      why: "when an old friend walked past هو الحدث القصير، والانتظار كان جاريًا في تلك اللحظة، فيأتي بالماضي المستمر: was waiting.", errCat: "tense" },
     { pre: "Our neighbour works on", verb: "article", post: "island in the Gulf.", ans: ["an"], groupEn: "Write a or an", group: "اكتب a أو an",
       whyEn: "The s in 'island' is silent, so the word starts with a vowel sound, and we say 'an island'.",
       why: "حرف s في island لا يُنطق، فتبدأ الكلمة بصوت متحرك، ونقول an island.", errCat: "articles_prep" }
@@ -459,8 +459,8 @@ LESSONS.u103l4 = {
         whyEn: "In the middle, Todd explains it: he was on a trip, his money was gone, and he wanted to stay, so he looked for work.",
         why: "في وسط المقطع يبيّن تود السبب: كان في رحلة ونفد ماله، وأراد البقاء، فبحث عن عمل.", errCat: "reading" },
       { q: "What does Todd say is good about life in Thailand?", opts: ["Good weather, kind people and great food", "Big cities and good shops", "Cheap flats and quiet roads"], a: 0,
-        whyEn: "In the middle, after he talks about his students, Todd gives three reasons: the weather, the people and the food.",
-        why: "في وسط المقطع، بعد حديثه عن طلابه، يذكر تود ثلاثة أسباب: الطقس والناس والطعام.", errCat: "reading" },
+        whyEn: "In the middle, after he talks about his students, Todd names three good things: the weather, the people and the food.",
+        why: "في وسط المقطع، بعد حديثه عن طلابه، يذكر تود ثلاثة أمور حسنة: الطقس والناس والطعام.", errCat: "reading" },
       { tf: true, q: "Todd's job in Japan is different from his job in Thailand.", a: false,
         whyEn: "False. After the middle, Todd says that he is an English teacher in Japan, and that was his job in Thailand too.",
         why: "خطأ؛ بعد وسط المقطع يقول تود إنه معلم إنجليزية في اليابان، وكان هذا عمله في تايلاند أيضًا.", errCat: "reading" },
@@ -543,7 +543,7 @@ LESSONS.u103l4 = {
     { s: "We went to a small ___ with no cars, and we saw the sea all around us.", opts: ["culture", "nature", "island"], a: 2, tag: "Vocabulary · مفردات",
       whyEn: "The sea was all around the place, so it was an 'island'. 'a culture' and 'a nature' do not fit a place with no cars.",
       why: "كان البحر يحيط بالمكان، فهو جزيرة island، ولا يوصف culture ولا nature بأنهما مكان بلا سيارات.", errCat: "vocab" },
-    { s: "Our holiday in a foreign country starts in May, so this month my father has to ___.", opts: ["pay a fine", "apply for a visa", "get a patent"], a: 1, tag: "Legal Track · المسار القانوني",
+    { s: "We want to visit a foreign country in May, so this month my father has to ___.", opts: ["pay a fine", "apply for a visa", "get a patent"], a: 1, tag: "Legal Track · المسار القانوني",
       whyEn: "To enter many countries, you need official permission first, so you 'apply for a visa'. A fine and a patent have nothing to do with this.",
       why: "دخول كثير من البلدان يحتاج أولًا إلى إذن رسمي، فتتقدّم بطلب تأشيرة apply for a visa، ولا صلة لهذا بالغرامة ولا ببراءة الاختراع.", errCat: "vocab" }
   ]
