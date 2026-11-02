@@ -275,6 +275,12 @@ LESSONS.u1l2 = {
    - اختبار ELLLO لا يظهر في نص الصفحة، بل يُحمَّل من ملف (`https://elllo.org/quiz/mixerquiz/Q078.js` لسلسلة Mixer، والرقم رقم المقطع). فافتحه، وتأكد أن أسئلتك لا تحاكيه ولا تأخذ خياراته.
    - `oxfordSlug` يُفتح ويُقرأ معناه: فتح `fall-off` معنى «يتناقص»، وفتح `statement` صفة عن الملابس.
    - فعل حالة لا يُخطَّأ بإطلاق إذا صح في سياق آخر: `cost` في ذكر الثمن وحده، فـ `was costing 400 riyals a night` قد تصح.
+4. ومما وجده المراجعون في أسبوع التثبيت (2 نوفمبر 2026):
+   - قاعدة الإملاء تُكتب بقيدها: `Short verb, one vowel + one consonant` مع الاستثناء (`not w, x or y`)، فـ«short vowel» تعطي `visitted`، و«longer verbs don't double» تخطّئ `travelled`، و«only in short verbs» تخطّئ `beginning`.
+   - قاعدة مطلقة عن s الغائب تخطّئ النفي والماضي: `In a positive Present Simple sentence`، لا `One colleague takes a verb with -s`.
+   - «الفعل بعد when بالماضي البسيط» خطأ: قل الحدث القصير، فـ when تأتي مع الطويل أيضًا.
+   - فحوص الكتابة: لا تعدّ `relaxing` و`worrying` و`annoying` صفات وحدها، فهي أفعال أيضًا (`I was relaxing`)؛ و`need` تنتهي بـ ed؛ و`my sister don't` قد تكون آخر فاعل مركب؛ و`ly` قبل الفعل (`was quietly reading`)، والمكان قبله (`was at home studying`)؛ و`stole` و`could` وثواني غير القائمة الستين. وجرّبها على ست فقرات صحيحة على الأقل.
+   - جملة السؤال بعد الإصلاح تُختبر من جديد: كل جولة إصلاح في هذا الأسبوع أدخلت مشكلات high، فالمراجعة الثانية لازمة، والثالثة نافعة.
 
 ## 8. ضمانات الجودة
 

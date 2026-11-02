@@ -20,7 +20,7 @@ var JEDDAH_SVG = '<svg viewBox="0 0 320 96" role="img" aria-label="The sun going
    والصيغ الخاطئة تُرفض في 2 و3 معًا: I am work وShe is go وIs she work? وHe don't وI am knowing. والفحوص واسعة حتى لا يُرفض جواب صحيح معتاد. */
 function wNorm(text){ return String(text || '').replace(/[’‘ʼ`´]/g, "'"); }
 /* ما ينتهي بـ ing بعد is / are وليس فعلًا مستمرًا. */
-var W_ING_NOT = /^(?:thing|string|king|spring|during|morning|evening|nothing|something|anything|everything|amazing|interesting|exciting|boring|tiring|surprising|shocking|charming|frightening|worrying|annoying|confusing|disappointing|embarrassing|exhausting|outstanding|thrilling)$/i;
+var W_ING_NOT = /^(?:thing|string|king|spring|during|morning|evening|nothing|something|anything|everything|amazing|interesting|exciting|boring|tiring|surprising|shocking|charming|frightening|confusing|disappointing|embarrassing|exhausting|outstanding|thrilling)$/i;
 var W_CONT_RE = /(?:\b(?:am|is|are|isn't|aren't)|[a-z]'(?:m|re|s))(?:\s+not)?\s+(?:(?:still|just|already|also|really|currently|now|all|both|i|you|he|she|it|we|they)\s+|(?:the|my|your|his|her|our|their)\s+[a-z]+\s+)?([a-z]{2,}ing)\b/gi;
 var W_CONT_NAME = /\b(?:[Ii]s|[Aa]re|[Ii]sn't|[Aa]ren't)\s+[A-Z][a-z]+\s+([a-z]{2,}ing)\b/g;
 function wCont(text){
@@ -211,8 +211,8 @@ LESSONS.u103l1 = {
   vocab: [
     { en: "typical", pos: "adjective", ar: "عادي / معتاد (a typical day = يوم عادي)", say: "تِبِيكَل",
       ex: "This is a typical lunch in our family: rice, chicken and salad.", exAr: "هذا غداء معتاد في أسرتنا: أرز ودجاج وسلطة.",
-      tipEn: "'On a typical day' is a good way to start talking about a habit, and the Present Simple comes after it: On a typical day, I … The word typical goes before a noun: a typical lunch, a typical week.",
-      tip: "a typical day بداية حسنة للكلام عن العادة، ويأتي بعدها المضارع البسيط: On a typical day, I … وكلمة typical تأتي قبل الاسم: a typical lunch وa typical week.",
+      tipEn: "'On a typical day' is a good way to start talking about a habit, and the Present Simple comes after it: On a typical day, I … The word typical often goes before a noun: a typical lunch, a typical week.",
+      tip: "a typical day بداية حسنة للكلام عن العادة، ويأتي بعدها المضارع البسيط: On a typical day, I … وكثيرًا ما تأتي كلمة typical قبل الاسم: a typical lunch وa typical week.",
       oxfordSlug: "typical",
       wikiFile: "En-us-typical.ogg",
       wikiCredit: "File:En-us-typical.ogg · Wikimedia Commons (author and licence on the file page)" },
@@ -561,7 +561,8 @@ LESSONS.u103l1 = {
       "I usually study at night. I'm missing my family this week. My schedule is busy. I have a deadline on Sunday.",
       "Is Sara teaching this week? My colleagues work hard. I usually help them. We have a busy schedule.",
       "My friends play football on the beach. My colleagues are working hard. My schedule is busy. The deadline is near.",
-      "My brother and my sister don't work on Fridays. I am writing a report this week. My schedule is busy. I miss them."
+      "My brother and my sister don't work on Fridays. I am writing a report this week. My schedule is busy. I miss them.",
+      "I usually study at night. I am worrying about my exam. My schedule is busy. My deadline is on Sunday."
     ]
   },
 

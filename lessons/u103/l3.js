@@ -272,10 +272,10 @@ LESSONS.u103l3 = {
         '<div class="xbox"><span class="xtag c" dir="ltr">Question word · كلمة السؤال</span><p class="xen">What was the taxi driver doing when the light changed?</p></div>' +
         '<p class="en-p" dir="ltr"><b>Did</b> goes with a base verb, and <b>was / were</b> go with verb-ing. Never put them together:</p>' +
         '<div class="tip" dir="ltr"><div class="pairs"><span class="yes">Did you call? · Were you calling?</span><span class="no">Did you calling? · Did you were calling?</span></div></div>' +
-        '<ul class="spell" dir="ltr"><li><b>-ing spelling</b> · most verbs add -ing: play → playing<span class="s-en">final e goes: make → making</span><span class="s-en">one short vowel + one consonant, double it: run → running</span></li></ul>',
+        '<ul class="spell" dir="ltr"><li><b>-ing spelling</b> · most verbs add -ing: play → playing<span class="s-en">final e goes: make → making</span><span class="s-en">short verb, one short vowel + one consonant (not w, x, y), double it: run → running</span></li></ul>',
       arHtml:
         '<p>نقول <bdi class="en">was / wasn\'t</bdi> مع <bdi class="en">I, he, she, it</bdi>، و<bdi class="en">were / weren\'t</bdi> مع <bdi class="en">you, we, they</bdi> والأسماء الجمع، ويأتي الفعل مع ing في الإثبات والنفي والسؤال. ومع كلمة السؤال: <bdi class="en">What was the taxi driver doing when the light changed?</bdi></p>' +
-        '<p>و<bdi class="en">Did</bdi> تأتي مع الفعل المجرد، و<bdi class="en">was / were</bdi> مع الفعل وing، فلا نجمعهما. وفي إملاء ing: أغلب الأفعال تزيد ing (<bdi class="en">playing</bdi>)، وتُحذف e الأخيرة (<bdi class="en">making</bdi>)، ويتضاعف الحرف الأخير بعد صوت قصير واحد (<bdi class="en">running</bdi>).</p>'
+        '<p>و<bdi class="en">Did</bdi> تأتي مع الفعل المجرد، و<bdi class="en">was / were</bdi> مع الفعل وing، فلا نجمعهما. وفي إملاء ing: أغلب الأفعال تزيد ing (<bdi class="en">playing</bdi>)، وتُحذف e الأخيرة (<bdi class="en">making</bdi>)، ويتضاعف الحرف الأخير في الفعل القصير بعد صوت قصير واحد (<bdi class="en">running</bdi>)، إلا <bdi class="en">w</bdi> و<bdi class="en">x</bdi> و<bdi class="en">y</bdi>.</p>'
     },
     {
       tEn: "State Verbs, and How to Choose",
@@ -476,7 +476,7 @@ LESSONS.u103l3 = {
         ok: function(a){ return a.sentences >= 6; } },
       { k: "continuous", tEn: "At least 2 Past Continuous verbs: was / were + verb-ing", t: "فعلان على الأقل بالماضي المستمر: was أو were مع الفعل وing", ex: "I was walking. · We were waiting. · What was happening?",
         ok: function(a, text){ var s = String(text || '').replace(/[’‘‛ʼ`´]/g, "'"), n = 0;
-          var notVerb = /^(?:interesting|boring|exciting|amazing|surprising|tiring|relaxing|frightening|worrying|something|anything|nothing|everything|morning|evening|king|thing|spring|ring|during)$/i;
+          var notVerb = /^(?:interesting|boring|exciting|amazing|surprising|tiring|frightening|something|anything|nothing|everything|morning|evening|king|thing|spring|ring|during)$/i;
           (s.match(/[^.!?]+[.!?]*/g) || []).forEach(function(x){ var m, c = 0, re = /\b(?:was|were|wasn'?t|weren'?t)\s+(?:not\s+)?(?:(?:really|even|just|still|actually|also|always|already|slowly|quickly)\s+)?([a-z]+ing)\b/gi;
             while ((m = re.exec(x))) { if (!notVerb.test(m[1])) c++; }
             if (!c && /\?\s*$/.test(x)) { var q = /\b(?:was|were|wasn'?t|weren'?t)\s+(?:[a-z']+\s+){1,4}?([a-z]+ing)\b/i.exec(x); if (q && !notVerb.test(q[1])) c = 1; }
@@ -499,6 +499,7 @@ LESSONS.u103l3 = {
     legendEn: "Light blue = simple verbs · Terracotta = was / were + verb-ing · Dashed = time words, when and while",
     legendAr: "الأزرق الفاتح للأفعال البسيطة، والطوبي لـ was / were مع الفعل وing، والإطار المنقّط لكلمات الوقت وwhen وwhile.",
     acceptExamples: [
+      "I was relaxing at home when the lights went out. My mother was worrying about my father. He called us at that moment. It was a small accident. We drove to the road. He was fine.",
       "Last week, I noticed a strange noise in my car. At 9pm, I was driving to my college. It was raining. Suddenly, the car stopped. I wasn't going fast, so it wasn't an accident. A police officer helped me when I called him.",
       "Just after midnight, the lights went out. I was feeling tired, and my brother was sleeping. We didn't know what was happening. While I was looking for my phone, I fell off a chair! Where were you going at that moment? My mother heard the noise.",
       "My friends were building a small wall near our house. I wasn’t helping them. Suddenly, the heavy rain started. They weren’t working when it started. What was happening at that moment? We went inside and had tea.",
