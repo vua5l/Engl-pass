@@ -678,7 +678,8 @@ function checkWriting(log, L, S) {
   if (W.minSentences != null) {                                             // the finish button and the counter read this field
     if (!Number.isInteger(W.minSentences) || W.minSentences < CFG.minSentences) log.error('writing.minSentences', `must be a whole number of at least ${CFG.minSentences}`);
     else if (enforced != null && enforced !== W.minSentences) log.error('writing.minSentences', `is ${W.minSentences} but the checks enforce ${enforced}`);
-  }
+  } else if (enforced != null && enforced > CFG.minSentences)
+    log.error('writing.minSentences', `the checks enforce ${enforced} sentences, so the finish button needs writing.minSentences: ${enforced}`);
   if (isStr(W.model)) {
     const n = splitSentences(W.model).filter(s => (s.match(/[A-Za-z']+/g) || []).length >= 3).length, required = Math.max(CFG.minSentences, enforced || 0);
     if (n < required) log.error('writing.model', `the model answer has only ${n} sentences; at least ${required} are required`);
