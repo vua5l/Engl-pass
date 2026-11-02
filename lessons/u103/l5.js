@@ -5,23 +5,23 @@
    4) كلمتان من كلمات الدرس. والقوائم واسعة حتى لا تُرفض فقرة صحيحة. */
 function wNorm(text){ return String(text || '').replace(/[’‘ʼ`´]/g, "'"); }
 
-/* ما ينتهي بـ ing بعد was / were وليس فعلًا مستمرًا. أما was building وwas feeling وwas meeting فأفعال تُعد. */
-var W_ING_NOT = /^(?:bring|thing|string|sting|swing|morning|evening|nothing|something|anything|everything|king|spring|during|wedding|amazing|interesting|exciting|boring|tiring|relaxing|surprising|shocking|charming|frightening|worrying|annoying|confusing|disappointing|embarrassing|terrifying|exhausting|outstanding|thrilling|inspiring|challenging|fascinating|satisfying|encouraging|rewarding|pleasing)$/i;
-var W_CONT_RE = /\b(?:was|were)(?:n't|\s+not)?\s+(?:(?:still|just|already|also|really|slowly|quickly|suddenly|all|both|always|never|i|you|he|she|it|we|they)\s+|(?:the|my|his|her|our|their|your)\s+[a-z]+\s+)?([a-z]{2,}ing)\b/gi;
+/* ما ينتهي بـ ing بعد was / were وليس فعلًا مستمرًا. أما was building وwas feeling وwas meeting وwas relaxing وwas worrying فأفعال تُعد. */
+var W_ING_NOT = /^(?:bring|thing|string|sting|swing|morning|evening|nothing|something|anything|everything|king|spring|during|wedding|amazing|interesting|exciting|boring|tiring|surprising|shocking|charming|frightening|confusing|disappointing|embarrassing|terrifying|exhausting|outstanding|thrilling|inspiring|challenging|fascinating|satisfying|rewarding|pleasing)$/i;
+var W_CONT_RE = /\b(?:was|were)(?:n't|\s+not)?\s+(?:(?:still|just|already|also|really|all|both|always|never|busy|out|outside|there|[a-z]+ly|i|you|he|she|it|we|they)\s+|(?:the|my|his|her|our|their|your)\s+[a-z]+\s+|(?:at|in|on)\s+(?:home|work|class|college|school|university|bed|(?:the|my|our|his|her|a)\s+[a-z]+),?\s+)?([a-z]{2,}ing)\b/gi;
 function wCont(s){
   var n = 0, m; W_CONT_RE.lastIndex = 0;
   while ((m = W_CONT_RE.exec(s))) { if (!W_ING_NOT.test(m[1])) n++; }
   return n;
 }
-/* ثواني irregularVerbs الستين بلا was / were، وdid وdidn't، ثم got وrode وwoke، وستة أفعال أخرى يكتبها المتعلم عادة. */
-var W_PAST = 'cut put set let cost hit hurt shut read came became ran had made said paid told sold found thought bought brought taught caught felt kept slept left met meant sent spent built lent lost won sat stood understood heard held did didn\'t went saw took gave knew wrote spoke broke chose forgot drove ate fell began drank flew wore got rode woke rang sang swam threw grew drew'.split(' ');
+/* ثواني irregularVerbs الستين بلا was / were، وdid وdidn't، ثم got وrode وwoke، وأفعال شاذة أخرى يكتبها المتعلم في سطر «ما وقع»، لأن سطر الإطار هذا قد يكون الماضي البسيط الوحيد في الفقرة. */
+var W_PAST = 'cut put set let cost hit hurt shut read came became ran had made said paid told sold found thought bought brought taught caught felt kept slept left met meant sent spent built lent lost won sat stood understood heard held did didn\'t went saw took gave knew wrote spoke broke chose forgot drove ate fell began drank flew wore got rode woke rang sang swam threw grew drew could couldn\'t stole shook bit blew beat burst quit fought fled fed led forgave froze hid hung lay laid lit rose shot sank slid stuck struck tore swept dug wept learnt'.split(' ');
 /* ما ينتهي بـ ed وليس ماضيًا: need وأخواتها في الشكل، والأسماء الشائعة (Ahmed وKhaled)، والصفات التي تأتي بعد am / is / are. */
 var W_ED_NOT = /^(?:need|feed|bleed|breed|speed|succeed|exceed|proceed|indeed|seed|weed|heed|shed|shred|wed|embed|plead|red|bed|fed|hundred|ahmed|mohammed|mohamed|muhammed|khaled|majed|saeed|sayed|waleed|hamed|hameed|rashed|rasheed|fahed|raed|zayed|majeed|fareed|waheed|tired|interested|excited|bored|worried|united|advanced|crowded|pleased)$/;
 function wIsPastWord(w){ return W_PAST.indexOf(w) >= 0 || (w.length > 3 && /ed$/.test(w) && !W_ED_NOT.test(w)); }
 /* قاعدة was / were مع صفة أو اسم أو مكان، بعد حذف المستمر كله، ولا تُعد was go ولا was study ماضيًا بسيطًا. */
-var W_CONT_STRIP = /\b(?:was|were)(?:n't|\s+not)?\s+(?:(?:still|just|already|also|really|slowly|quickly|suddenly|all|both|always|never|i|you|he|she|it|we|they)\s+|(?:the|my|his|her|our|their|your)\s+[a-z]+\s+)?[a-z]{2,}ing\b/gi;
+var W_CONT_STRIP = /\b(?:was|were)(?:n't|\s+not)?\s+(?:(?:still|just|already|also|really|all|both|always|never|busy|out|outside|there|[a-z]+ly|i|you|he|she|it|we|they)\s+|(?:the|my|his|her|our|their|your)\s+[a-z]+\s+|(?:at|in|on)\s+(?:home|work|class|college|school|university|bed|(?:the|my|our|his|her|a)\s+[a-z]+),?\s+)?[a-z]{2,}ing\b/gi;
 var W_BE_NEXT = /\b(?:was|were)(?:n't|\s+not)?\s+([a-z']+)/gi;
-var W_BE_BASE = /^(?:go|come|see|call|study|work|walk|run|sit|stand|take|give|know|tell|feel|eat|drink|sleep|read|write|talk|play|watch|wait|happen|live|learn|teach|want|need|like|love|ask|help|start|finish|travel|drive|ride|wake|get|make|do|have|say|speak|buy|meet|find|think)$/i;
+var W_BE_BASE = /^(?:go|come|see|call|study|work|walk|run|sit|stand|take|give|know|tell|feel|eat|drink|sleep|read|write|talk|play|watch|wait|happen|live|learn|teach|want|need|like|love|ask|help|start|finish|travel|drive|ride|wake|get|make|do|have|say|speak|buy|meet|find|think|pray|visit|arrive|stay|leave|try|listen|look|move|pass|pay|send|stop|swim|wash|wear|use|cook)$/i;
 function wBePast(s){
   var t = s.replace(W_CONT_STRIP, function(x){ var w = (x.match(/[a-z]+$/i) || [''])[0]; return W_ING_NOT.test(w) ? x : ' '; });
   var m; W_BE_NEXT.lastIndex = 0;
@@ -173,8 +173,8 @@ LESSONS.u103l5 = {
       id: "rc-4",
       promptAr: "إجازة مرضية: غياب عن العمل بسبب المرض (العبارة القانونية من الوحدة 1، كلمتان)",
       promptEn: "Legal phrase from Unit 1: time away from work because you are ill (2 words)",
-      sentPre: "My brother had a high fever, so he took three days of",
-      sentPost: "from his job.",
+      sentPre: "The doctor told my father to rest, so he is on",
+      sentPost: "this week.",
       ans: ["sick leave"],
       isLegal: true,
       hint: "s _ _ _ _ _ _ _ e (9 letters, 2 words)",
@@ -239,7 +239,7 @@ LESSONS.u103l5 = {
       wikiFile: "En-us-reply.ogg",
       wikiCredit: "File:En-us-reply.ogg · Wikimedia Commons" },
     { en: "journey", pos: "noun", ar: "رحلة (طويلة غالبًا)", say: "جِيرْنِي",
-      ex: "The journey to my grandfather's village takes six hours.", exAr: "تستغرق الرحلة إلى قرية جدي ست ساعات.",
+      ex: "On our journey home, we stopped at a small restaurant.", exAr: "في رحلة عودتنا إلى البيت توقفنا عند مطعم صغير.",
       tipEn: "Today's use: my English journey. A journey is travel from one place to another, but people also use it for a long time of learning or change. The spelling has 'our': j-o-u-r-n-e-y.",
       tip: "استعمالها اليوم: my English journey (رحلتي مع الإنجليزية). فالـ journey انتقال من مكان إلى آخر، ويستعملها الناس أيضًا لمدة طويلة من التعلم أو التغيّر. وفيها our عند الكتابة: j-o-u-r-n-e-y.",
       oxfordSlug: "journey_1",
@@ -355,7 +355,7 @@ LESSONS.u103l5 = {
         '<h2 class="bi-h"><span class="en" dir="ltr">Common Arab Mistakes</span><small>أخطاء يقع فيها كثير من العرب حين يكتبون عن أنفسهم</small></h2>' +
         '<ul class="mist">' +
           '<li><span class="no">my name is omar i am from tabuk i like reading</span><span class="yes">My name is Omar. I am from Tabuk. I like reading.</span><p class="en-m" dir="ltr">Write separate sentences. Use a capital letter for the first word, for <b>I</b> and for names, and end each sentence with a period.</p><p>اكتب جملًا منفصلة، واجعل الحرف كبيرًا في أول الجملة وفي <bdi class="en">I</bdi> وفي الأسماء، وأنهِ كل جملة بنقطة.</p></li>' +
-          '<li><span class="no">Last summer, I visit my uncle in Baha.</span><span class="yes">Last summer, I visited my uncle in Baha.</span><p class="en-m" dir="ltr"><b>Last summer</b> moves the story to the past, so the verb changes to the past too.</p><p><bdi class="en">Last summer</bdi> تنقل القصة إلى الماضي، فيتغيّر الفعل إلى الماضي معها.</p></li>' +
+          '<li><span class="no">Last Ramadan, I help my father in his shop.</span><span class="yes">Last Ramadan, I helped my father in his shop.</span><p class="en-m" dir="ltr"><b>Last Ramadan</b> moves the story to the past, so the verb changes to the past too.</p><p><bdi class="en">Last Ramadan</bdi> تنقل القصة إلى الماضي، فيتغيّر الفعل إلى الماضي معها.</p></li>' +
           '<li><span class="no">I am teacher at a high school.</span><span class="yes">I am a teacher at a high school.</span><p class="en-m" dir="ltr">Put <b>a</b> or <b>an</b> before a job: a teacher, an engineer.</p><p>ضع <bdi class="en">a</bdi> أو <bdi class="en">an</bdi> قبل المهنة: <bdi class="en">a teacher</bdi> و<bdi class="en">an engineer</bdi>.</p></li>' +
           '<li><span class="no">My brother is good in football.</span><span class="yes">My brother is good at football.</span><p class="en-m" dir="ltr">We say <b>good at</b> something, not <b>good in</b>.</p><p>نقول <bdi class="en">good at</bdi> لا <bdi class="en">good in</bdi>.</p></li>' +
         '</ul>'
@@ -389,13 +389,13 @@ LESSONS.u103l5 = {
     { s: "My brother is a nurse now, but last year he ___ in a shop.", opts: ["works", "worked"], a: 1,
       whyEn: "The sentence moves from 'now' to 'last year', a finished time, so the second verb changes to the Past Simple.",
       why: "تنتقل الجملة من now إلى last year، وهو وقت انتهى، فيتغيّر الفعل الثاني إلى الماضي البسيط.", errCat: "tense" },
-    { s: "I was washing the car when my keys ___ into the water.", opts: ["fell", "were falling"], a: 0,
-      whyEn: "The washing was the long action, and the keys fell once, in the middle of it. This short action comes after 'when', so it takes the Past Simple.",
-      why: "غسل السيارة هو الحدث الطويل، وسقطت المفاتيح مرة واحدة في أثنائه. وهذا حدث قصير بعد when، فيأتي بالماضي البسيط.", errCat: "tense" },
+    { s: "I was sitting on the boat when my keys ___ into the water.", opts: ["fell", "were falling"], a: 0,
+      whyEn: "The sitting was the long action, and the keys fell once, in the middle of it. This short action comes after 'when', so it takes the Past Simple.",
+      why: "الجلوس في القارب هو الحدث الطويل، وسقطت المفاتيح مرة واحدة في أثنائه. وهذا حدث قصير بعد when، فيأتي بالماضي البسيط.", errCat: "tense" },
     { s: "Your topic sentence is 'I am a student at Qassim University.' Which sentence supports it?", opts: ["Penguins live in very cold places.", "I study business there, and I go to class five days a week."], a: 1,
       whyEn: "A supporting sentence gives details about the topic: here, the writer's studies. The sentence about penguins has nothing to do with that topic, so it doesn't belong.",
       why: "الجملة الداعمة تذكر تفاصيل الموضوع، وهو هنا دراسة الكاتب. أما الجملة عن البطاريق فلا صلة لها بالموضوع، فلا مكان لها في الفقرة.", errCat: "word_order" },
-    { s: "Which text has three separate sentences?", opts: ["I am Fahad. I study history. I live in Hail.", "I am Fahad, I study history, I live in Hail."], a: 0,
+    { s: "Which text has three separate sentences?", opts: ["I am Fahad. I study history. I live in Yanbu.", "I am Fahad, I study history, I live in Yanbu."], a: 0,
       whyEn: "A comma doesn't end a sentence, so the text with commas is one long connected sentence. Three ideas need three periods and three capital letters.",
       why: "الفاصلة لا تنهي الجملة، فالنص الذي فيه فواصل جملة واحدة طويلة موصولة. والأفكار الثلاث تحتاج ثلاث نقاط وثلاثة أحرف كبيرة.", errCat: "word_order" }
   ],
@@ -407,7 +407,7 @@ LESSONS.u103l5 = {
     { s: "Last month I start my new job at the bank.", ok: false, fix: "Last month I started my new job at the bank.",
       whyEn: "'Last month' is a finished time, so the base verb 'start' doesn't fit it. The event needs the Past Simple: started.",
       why: "Last month وقت انتهى، فلا يناسبه الفعل المجرد start، ويأتي الحدث بالماضي البسيط: started.", errCat: "tense" },
-    { s: "My sister is engineer at a company in Jeddah.", ok: false, fix: "My sister is an engineer at a company in Jeddah.",
+    { s: "Reem is engineer at the new hospital.", ok: false, fix: "Reem is an engineer at the new hospital.",
       whyEn: "A job after 'is' needs 'a' or 'an'. 'engineer' starts with a vowel sound, so we use 'an'.",
       why: "المهنة بعد is تحتاج a أو an، وengineer تبدأ بصوت متحرك، فنستعمل an.", errCat: "articles_prep" },
     { s: "My colleague teaches history now, but ten years ago he drove a taxi.", ok: true,
@@ -425,7 +425,8 @@ LESSONS.u103l5 = {
     { pre: "My father", verb: "not / sleep · Past Continuous", post: "when I came home, so we talked.", ans: ["wasn't sleeping", "was not sleeping"],
       whyEn: "This is the background of the story, and the tense is given. 'My father' takes 'was', and the negative is wasn't + verb-ing.",
       why: "هذه خلفية القصة، والزمن مذكور. وMy father يأتي معها was، والنفي wasn't مع الفعل وing.", errCat: "tense" },
-    { pre: "My cousin is very good", verb: "the right preposition", post: "drawing.", ans: ["at"],
+    { pre: "My cousin is very good", verb: "preposition", post: "drawing.", ans: ["at"],
+      groupEn: "Write the correct preposition", group: "اكتب حرف الجر الصحيح",
       whyEn: "We say 'good at' something. Arabic speakers often say 'good in', but in English the preposition is 'at'.",
       why: "نقول good at الشيء. وكثير من العرب يقولون good in، لكن حرف الجر هنا at.", errCat: "articles_prep" }
   ],
@@ -440,7 +441,7 @@ LESSONS.u103l5 = {
     { chips: ["but today", "I usually", "I am driving.", "walk to college,"], ans: "I usually walk to college, but today I am driving.",
       whyEn: "The sentence moves from the habit (usually + Present Simple) to what is different today (Present Continuous), and 'but' joins them.",
       why: "تنتقل الجملة من العادة (usually مع المضارع البسيط) إلى ما تغيّر اليوم (المضارع المستمر)، وتصل but بينهما.", errCat: "tense" },
-    { chips: ["Then I have breakfast with my father.", "My morning is always the same.", "Finally, I drive to college.", "First, I make coffee."], ans: "My morning is always the same. First, I make coffee. Then I have breakfast with my father. Finally, I drive to college.",
+    { chips: ["Then I have breakfast with my father.", "Let me describe my usual morning.", "Finally, I drive to college.", "First, I make coffee."], ans: "Let me describe my usual morning. First, I make coffee. Then I have breakfast with my father. Finally, I drive to college.",
       whyEn: "The topic sentence comes first and says what the paragraph is about. The supporting sentences follow with First, Then and Finally.",
       why: "تأتي جملة الموضوع أولًا فتقول عمّ تتحدث الفقرة، ثم الجمل الداعمة بـ First وThen وFinally.", errCat: "word_order" }
   ],
@@ -463,7 +464,7 @@ LESSONS.u103l5 = {
     // {word|key} كلمات الدرس السبع وحدها · [[text|معنى]] كلمة واحدة مساعدة · والنص فقرة واحدة طويلة، لأنه نموذج لكتابة المتعلم
     paras: [
       "Dear Ms Lewis,",
-      "<<t:Before>> our first lesson, I <<s:want>> to {introduce} myself and {describe} my life. My name <<s:is>> Khaled, and I<<s:'m>> an [[engineering|الهندسة]] student in Dammam. On a typical day, I <<s:get>> up at six and <<s:go>> to class at eight. <<t:After that>>, I <<t:usually>> <<s:stay>> in the library until four, and in the evening I <<s:relax>> with my brother. <<t:These days>>, I<<c:'m doing>> research on safe roads with two classmates. We<<c:'re measuring>> the traffic in our city, <<t:so>> my schedule <<s:is>> very busy. There <<s:is>> one moment that I can't forget. One night <<t:two years ago>>, I <<c:was studying>> for an exam <<t:when>> my sister suddenly <<s:called>>. She <<s:got>> a place at a university in London to study {international law}. I <<s:felt>> very {proud} of her. <<t:That night>>, I {decided|decide} to learn English <<t:because>> I <<s:wanted>> to visit her and talk to people there. <<t:The next week>>, I <<s:started>> my English {journey}. <<t:Now>> I <<s:read>> English every day, <<t:but>> speaking <<s:is>> still difficult for me, <<t:so>> I <<s:need>> your help. Please {reply} if you <<s:have>> any questions. I <<s:am>> ready for our first lesson!",
+      "<<t:Before>> our first lesson, I <<s:want>> to {introduce} myself and {describe} my life. My name <<s:is>> Khaled, and I<<s:'m>> an [[engineering|الهندسة]] student in Dammam. On a typical day, I <<s:get>> up at six, and class <<s:starts>> at eight. <<t:After that>>, I <<t:usually>> <<s:stay>> in the library until four, and in the evening I <<s:relax>> with my brother. <<t:These days>>, I<<c:'m doing>> research on safe roads with two classmates. We<<c:'re measuring>> the traffic in our city, <<t:so>> my schedule <<s:is>> very busy. There <<s:is>> one moment that I can't forget. One night <<t:two years ago>>, I <<c:was studying>> for an exam <<t:when>> my sister suddenly <<s:called>>. She <<s:got>> a place at a university in London to study {international law}. I <<s:felt>> very {proud} of her. <<t:That night>>, I <<s:{decided|decide}>> to learn English <<t:because>> I <<s:wanted>> to visit her and talk to people there. <<t:The next week>>, I <<s:started>> my English {journey}. <<t:Now>> I <<s:read>> English every day, <<t:but>> speaking <<s:is>> still difficult for me, <<t:so>> I <<s:need>> your help. Please {reply} if you <<s:have>> any questions. I <<s:am>> ready for our first lesson!",
       "Best wishes,<br>Khaled"
     ],
     predict: {
@@ -478,21 +479,21 @@ LESSONS.u103l5 = {
     insight: {
       titleEn: "How Khaled Builds His Paragraph",
       titleAr: "كيف بنى خالد فقرته",
-      l1En: "His first sentence is the topic sentence. Then he tells his habits in the Present Simple:",
+      l1En: "His first sentence is the topic sentence. Then he tells who he is and what he usually does in the Present Simple:",
       ex1: "Before our first lesson, I want to introduce myself · My name is Khaled · I usually stay in the library",
       l2En: "Later, a time word moves the paragraph to the past, and the last sentence closes it:",
       ex2: "There is one moment that I can't forget · two years ago · I felt very proud of her · I am ready for our first lesson!",
       arHtml: '<p>لاحظ أن خالدًا بدأ بجملة موضوع تقول ما سيفعله، ثم انتقل من عاداته بالمضارع البسيط إلى ما يجري هذه الأيام بالمضارع المستمر. ثم نقلته كلمة الوقت <bdi class="en">two years ago</bdi> إلى قصة في الماضي، خلفيتها بالماضي المستمر وأحداثها بالماضي البسيط. ثم عاد إلى الحاضر بكلمة <bdi class="en">Now</bdi>، وأنهى فقرته بجملة ختام. وكل جملة منفصلة، بحرف كبير ونقطة.</p>'
     },
     questions: [
-      { q: "What does Khaled study?", opts: ["Law", "Engineering", "English"], a: 1,
+      { q: "What does Khaled study?", opts: ["Law", "Engineering", "Medicine"], a: 1,
         ev: "My name is Khaled, and I'm an engineering student in Dammam.",
         whyEn: "'an engineering student' tells us his subject. International law is what his sister studies.",
         why: "an engineering student تدل على تخصصه، أما القانون الدولي فتخصص أخته.", errCat: "reading" },
-      { tf: true, q: "Khaled goes to class at six.", a: false,
-        ev: "On a typical day, I get up at six and go to class at eight.",
-        whyEn: "False: six is the time when he gets up. He goes to class at eight.",
-        why: "خطأ؛ السادسة وقت استيقاظه، ويذهب إلى الفصل في الثامنة.", errCat: "reading" },
+      { tf: true, q: "Khaled's class starts at six.", a: false,
+        ev: "On a typical day, I get up at six, and class starts at eight.",
+        whyEn: "False: six is the time when he gets up. His class starts at eight.",
+        why: "خطأ؛ السادسة وقت استيقاظه، ويبدأ فصله في الثامنة.", errCat: "reading" },
       { q: "What is Khaled doing these days?", opts: ["He is doing research on safe roads.", "He is writing a book about London.", "He is teaching his brother English."], a: 0,
         ev: "These days, I'm doing research on safe roads with two classmates.",
         whyEn: "'These days' introduces what is going on now, and the Present Continuous tells us what it is: research on safe roads.",
@@ -523,8 +524,8 @@ LESSONS.u103l5 = {
   /* ---------- المرحلة 5: الكتابة ---------- */
   writing: {
     minSentences: 8,
-    taskEn: "This paragraph takes about 15 minutes. Write one long paragraph to introduce yourself to your Cambly teacher. Write at least 8 separate sentences, one for each line: (1) Who I am: this is your topic sentence. (2) Where I study. (3) My usual day. (4) What I am doing these days. (5) What was going on in a moment that I can't forget. (6) What happened in that moment. (7) Why I am learning English. (8) A closing sentence. Use the present for your life now. In your story, use the Past Continuous for the background and the Past Simple for the event. Start each sentence with a capital letter, end it with a period, and use at least 2 words from today's lesson.",
-    task: "تستغرق هذه الفقرة نحو 15 دقيقة. اكتب فقرة واحدة طويلة تعرّف فيها بنفسك لمعلم كامبلي، في 8 جمل منفصلة على الأقل، جملة لكل سطر: (1) من أنا، وهي جملة الموضوع. (2) أين أدرس. (3) يومي المعتاد. (4) ما أفعله هذه الأيام. (5) ما كان يجري في لحظة لا أنساها. (6) ما وقع فيها. (7) لماذا أتعلم الإنجليزية. (8) جملة ختام. استعمل المضارع لحياتك الآن، وفي القصة الماضي المستمر للخلفية والماضي البسيط للحدث. وابدأ كل جملة بحرف كبير، وأنهها بنقطة، واستعمل كلمتين على الأقل من كلمات الدرس.",
+    taskEn: "This paragraph takes about 15 minutes. Write one long paragraph to introduce yourself to your Cambly teacher. Write at least 8 separate sentences, one for each number: (1) Who I am: this is your topic sentence. (2) Where I study. (3) My usual day. (4) What I am doing these days. (5) What was going on in a moment that I can't forget. (6) What happened in that moment. (7) Why I am learning English. (8) A closing sentence, not just 'Thank you'. Every sentence needs at least 3 words. Use the present for your life now. In your story, use the Past Continuous for the background and the Past Simple for the event. Start each sentence with a capital letter, end it with a period, and use at least 2 words from today's lesson.",
+    task: "تستغرق هذه الفقرة نحو 15 دقيقة. اكتب فقرة واحدة طويلة تعرّف فيها بنفسك لمعلم كامبلي، في 8 جمل منفصلة على الأقل، جملة لكل رقم: (1) من أنا، وهي جملة الموضوع. (2) أين أدرس. (3) يومي المعتاد. (4) ما أفعله هذه الأيام. (5) ما كان يجري في لحظة لا أنساها. (6) ما وقع فيها. (7) لماذا أتعلم الإنجليزية. (8) جملة ختام، لا Thank you وحدها. وكل جملة ثلاث كلمات على الأقل. استعمل المضارع لحياتك الآن، وفي القصة الماضي المستمر للخلفية والماضي البسيط للحدث. وابدأ كل جملة بحرف كبير، وأنهها بنقطة، واستعمل كلمتين على الأقل من كلمات الدرس.",
     placeholder: "My name is …\nI study at …\nOn a typical day, I …\nThese days, I am …\nOne night, I was …\nSuddenly, …\nI am learning English because …\n…",
     checks: [
       { k: "sentences", tEn: "At least 8 separate sentences (end each with a period)", t: "8 جمل منفصلة على الأقل (تنتهي كل جملة بنقطة)",
@@ -536,14 +537,18 @@ LESSONS.u103l5 = {
       { k: "vocab", tEn: "At least 2 words or phrases from today's lesson", t: "كلمتان أو عبارتان على الأقل من درس اليوم", ex: "introduce · describe · decide · proud · reply · journey · international law",
         ok: function(a, text){ var s = wNorm(text); return W_VOCAB.filter(function(re){ return re.test(s); }).length >= 2; } }
     ],
-    modelMarked: "My name <<s:is>> Salem, and I <<s:am>> a medical student. I <<s:study>> at King Khalid University in Abha. On a typical day, I <<s:go>> to the hospital and <<s:read>> in the library. <<t:This week>>, I <<c:am preparing>> for a big exam. <<t:Last spring>>, I <<c:was helping>> a doctor at the hospital. <<t:Suddenly>>, a visitor <<s:asked>> me a question in English, <<t:but>> I <<s:didn't understand>> him. I {decided|decide} to learn English <<t:because>> I <<s:want>> to help all my patients. My {journey} <<s:is>> long, <<t:but>> I <<s:am>> {proud} of every new word.",
-    model: "My name is Salem, and I am a medical student. I study at King Khalid University in Abha. On a typical day, I go to the hospital and read in the library. This week, I am preparing for a big exam. Last spring, I was helping a doctor at the hospital. Suddenly, a visitor asked me a question in English, but I didn't understand him. I decided to learn English because I want to help all my patients. My journey is long, but I am proud of every new word.",
+    modelMarked: "Hello, I <<s:am>> Salem, a medical student. I <<s:study>> at King Khalid University in Abha. <<t:Every morning>>, I <<s:go>> to the hospital, and <<t:at night>> I <<s:read>> my books. <<t:This week>>, I <<c:am preparing>> for a big exam. <<t:Last spring>>, I <<c:was helping>> a doctor at the hospital. <<t:Suddenly>>, a visitor <<s:asked>> me a question in English, <<t:but>> I <<s:didn't understand>> him. <<t:Now>> I <<c:am learning>> English <<t:because>> I <<s:want>> to help all my patients. My {journey} <<s:is>> long, <<t:but>> I <<s:am>> {proud} of every new word.",
+    model: "Hello, I am Salem, a medical student. I study at King Khalid University in Abha. Every morning, I go to the hospital, and at night I read my books. This week, I am preparing for a big exam. Last spring, I was helping a doctor at the hospital. Suddenly, a visitor asked me a question in English, but I didn't understand him. Now I am learning English because I want to help all my patients. My journey is long, but I am proud of every new word.",
     legendEn: "Light blue = simple tenses · Terracotta = continuous tenses · Dashed = time words and joining words",
     legendAr: "الأزرق الفاتح للأزمنة البسيطة، والطوبي للأزمنة المستمرة، والإطار المنقّط لكلمات الوقت والربط.",
     acceptExamples: [
       "I study business in Jeddah. My college is near the sea. Every day I wake up early and take the bus. This month I work in my father's shop after class. Two years ago, we were living in Taif. One day a tourist came to the shop and asked me about the prices. I didn’t know what to say, so I decided to learn English. I want to reply to my customers in good English. Thank you for reading about my journey.",
       "Hello teacher, I’m Noura and I’m a nursing student from Hail. I go to Hail University. I usually start my day at 6 am and finish at 4 pm. This week I’m working in a small hospital with my colleagues. Last Ramadan, my friends and I weren’t studying, because we were helping poor families. Then an old woman thanked us, and I felt proud. I want to travel and study in Canada, so I need English. I hope you can help me on this journey!",
-      "My name is Ahmed. I live in Taif with my family. I like my college very much. I don't work, but I help my father on Fridays. Last winter, it was raining all day and we were sitting at home. I was very happy that day because my brother was home from Japan. I want to speak English with him, and I decided to start today. Let me describe my goal: I want to be a good lawyer."
+      "My name is Ahmed. I live in Taif with my family. I like my college very much. I don't work, but I help my father on Fridays. Last winter, it was raining all day and we were sitting at home. I was very happy that day because my brother was home from Japan. I want to speak English with him, and I decided to start today. Let me describe my goal: I want to be a good lawyer.",
+      "Hello, I am Fahad from Jeddah. I am a second-year student at the College of Law. I usually wake up at seven and drive to college. This month, I am reading about international law. One evening last summer, I was relaxing at home with my father. The phone rang, and my uncle told me some good news. I want to work in a big office, so I need English. I am proud of this plan, and I am ready to start.",
+      "I want to introduce myself. I am Nawaf, and I study law in Qassim. My day starts at six, and I pray with my father. This term, I am studying contracts. Last Friday, I was quietly reading in the park. An old man sat next to me and spoke to me in English. I decided to learn English because I want to talk to people. It is a long journey, but I like it.",
+      "Let me introduce myself. My name is Turki, and I am a law student in Riyadh. I go to King Saud University. I usually study in the morning and go to the gym in the evening. These days, I am helping my brother with his English. One night last year, I was at home studying for an exam. My friend called me and said that he got a job in London. I felt proud of him, and now I want to learn English too.",
+      "I am Bandar, a law student from Abha. I study at King Khalid University. My classes start at nine, and I finish at two. These days, I am working on a report about contracts. Last summer, I was walking in a street in Istanbul. Suddenly, a man stole my phone. I need English because I want to reply to people when I travel. This journey is hard, but I am ready."
     ]
   },
 
@@ -563,12 +568,12 @@ LESSONS.u103l5 = {
     { s: "We were having dinner when my uncle ___ at the door.", opts: ["was arriving", "arrived", "arrives"], a: 1, tag: "Grammar · قواعد",
       whyEn: "Dinner was the long action, and the arrival is the short action after 'when', so it takes the Past Simple. 'arrives' is the present, and this story is in the past.",
       why: "العشاء هو الحدث الطويل، والوصول حدث قصير بعد when، فيأتي بالماضي البسيط. أما arrives فمضارع، والقصة في الماضي.", errCat: "tense" },
-    { s: "Please call me later. I ___ dinner at the moment.", opts: ["cook", "cooked", "am cooking"], a: 2, tag: "Grammar · قواعد",
-      whyEn: "The speaker can't talk because the cooking is going on right now, so we need am + verb-ing. 'cook' is a habit, and 'cooked' is finished.",
-      why: "لا يستطيع المتحدث الكلام لأن الطبخ جارٍ الآن، فنحتاج am مع الفعل وing. أما cook فللعادة، وcooked لحدث انتهى.", errCat: "tense" },
-    { s: "My mother is ___ English teacher.", opts: ["a", "at", "an"], a: 2, tag: "Grammar · قواعد",
-      whyEn: "A job after 'is' needs 'a' or 'an'. The next word, 'English', starts with a vowel sound, so we use 'an'.",
-      why: "المهنة بعد is تحتاج a أو an، والكلمة التالية English تبدأ بصوت متحرك، فنستعمل an.", errCat: "articles_prep" },
+    { s: "Can you wait ten minutes? I ___ my car at the moment.", opts: ["wash", "washed", "am washing"], a: 2, tag: "Grammar · قواعد",
+      whyEn: "The speaker asks you to wait because the washing is going on right now, so we need am + verb-ing. 'wash' is a habit, and 'washed' is finished.",
+      why: "يطلب المتحدث الانتظار لأن الغسل جارٍ الآن، فنحتاج am مع الفعل وing. أما wash فللعادة، وwashed لحدث انتهى.", errCat: "tense" },
+    { s: "My uncle is ___ officer at the airport.", opts: ["a", "at", "an"], a: 2, tag: "Grammar · قواعد",
+      whyEn: "A job after 'is' needs 'a' or 'an'. The next word, 'officer', starts with a vowel sound, so we use 'an'.",
+      why: "المهنة بعد is تحتاج a أو an، والكلمة التالية officer تبدأ بصوت متحرك، فنستعمل an.", errCat: "articles_prep" },
     { s: "Which text is written correctly?", opts: ["my uncle has a farm he grows dates we visit him on fridays", "My uncle has a farm. He grows dates. We visit him on Fridays.", "My uncle has a farm, he grows dates, we visit him on Fridays."], a: 1, tag: "Grammar · قواعد",
       whyEn: "Three ideas need three separate sentences, each with a capital letter and a period. Commas don't end a sentence, and 'Fridays' needs a capital letter.",
       why: "الأفكار الثلاث تحتاج ثلاث جمل منفصلة، كل جملة بحرف كبير ونقطة. والفواصل لا تنهي الجملة، وتُكتب Fridays بحرف كبير.", errCat: "word_order" },
