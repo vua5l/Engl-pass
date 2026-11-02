@@ -6,7 +6,7 @@ var TL_SVG = '<svg class="tl" viewBox="0 0 340 132" role="img" aria-label="Timel
   '<line x1="30" y1="62" x2="326" y2="62" stroke="#5A6B7C" stroke-width="1.5"/><path d="M22 62l10-5v10z" fill="#5A6B7C"/>' +
   '<rect x="92" y="54" width="218" height="16" rx="8" fill="#B94A33" opacity="0.28"/>' +
   '<circle cx="256" cy="62" r="7" fill="#2C4A6E"/><circle cx="201" cy="62" r="7" fill="#2C4A6E"/><circle cx="146" cy="62" r="7" fill="#2C4A6E"/>' +
-  '<text x="201" y="42" text-anchor="middle" font-family="Quicksand, Readex Pro, sans-serif" font-size="12" font-weight="700" fill="#A8432E">was raining · background</text>' +
+  '<text x="201" y="42" text-anchor="middle" font-family="Quicksand, Readex Pro, sans-serif" font-size="12" font-weight="700" fill="#A8432E">was going down · background</text>' +
   '<text x="256" y="88" text-anchor="middle" font-family="Quicksand, Readex Pro, sans-serif" font-size="11.5" font-weight="700" fill="#2C4A6E">First</text>' +
   '<text x="201" y="88" text-anchor="middle" font-family="Quicksand, Readex Pro, sans-serif" font-size="11.5" font-weight="700" fill="#2C4A6E">Then</text>' +
   '<text x="146" y="88" text-anchor="middle" font-family="Quicksand, Readex Pro, sans-serif" font-size="11.5" font-weight="700" fill="#2C4A6E">Finally</text>' +
@@ -16,7 +16,7 @@ var STOP_SVG = '<svg viewBox="0 0 320 96" role="img" aria-label="A bus stop on a
   '<path d="M0 78 H320 V96 H0 Z" fill="#14233A"/><path d="M0 78 H320" stroke="#5A6B7C" stroke-width="2"/>' +
   '<path d="M232 34 H294 V40 H232 Z" fill="#F2B857"/><path d="M238 40 V78 M288 40 V78" stroke="#F7F3EC" stroke-width="3"/><path d="M246 62 H280" stroke="#F7F3EC" stroke-width="3"/>' +
   '<path d="M214 78 V30" stroke="#F7F3EC" stroke-width="2.5"/><circle cx="214" cy="26" r="8" fill="#F2B857"/>' +
-  '<g stroke="#9DB7D1" stroke-width="1.3" stroke-linecap="round" opacity="0.8"><path d="M24 8 l-4 12"/><path d="M70 30 l-4 12"/><path d="M118 10 l-4 12"/><path d="M168 34 l-4 12"/><path d="M200 8 l-4 12"/><path d="M252 12 l-4 12"/><path d="M304 16 l-4 12"/><path d="M308 52 l-4 12"/><path d="M146 54 l-4 12"/><path d="M44 56 l-4 12"/></g>' +
+  '<g stroke="#9DB7D1" stroke-width="1.3" stroke-linecap="round" opacity="0.8"><path d="M24 8 l-4 12"/><path d="M70 14 l-4 12"/><path d="M118 10 l-4 12"/><path d="M168 34 l-4 12"/><path d="M200 8 l-4 12"/><path d="M252 12 l-4 12"/><path d="M304 16 l-4 12"/><path d="M308 52 l-4 12"/><path d="M146 54 l-4 12"/><path d="M176 60 l-4 12"/></g>' +
   '<text x="14" y="50" font-family="Quicksand, sans-serif" font-weight="700" font-size="11" fill="#F7F3EC">RIYADH · ABOUT 6 PM</text>' +
   '<text x="14" y="64" font-family="Quicksand, sans-serif" font-weight="700" font-size="8" letter-spacing="1" fill="#F2B857">WHAT I SAW YESTERDAY</text></svg>';
 
@@ -31,10 +31,10 @@ var W_CLOSE_RE = new RegExp('(?:^|\\n|[.!?]\\s*)\\s*' + W_CLOSE + '\\s*(?:[,!.]|
 var W_ORDER = [/\bfirst(?:ly)?\b/i, /\bthen\b/i, /\bnext\b/i, /\bafter\s+(?:that|this)\b|\bafterwards?\b/i, /\blater\b/i, /\bfinally\b|\blastly\b|\bin\s+the\s+end\b/i];
 var W_NUM = '(?:[0-9]{1,2}(?:[:.][0-9]{2})?(?:\\s*[ap]\\.?m\\.?)?|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|midnight|noon|sunset|sunrise|dawn|night)';
 var W_DAY = '(?:day|january|february|march|april|may|june|july|august|september|october|november|december|ramadan|eid|saturday|sunday|monday|tuesday|wednesday|thursday|friday|week|weekend|month|year|summer|winter|spring|autumn|term|semester|night|evening|morning|afternoon)';
-var W_TIME = new RegExp('\\b(?:(?:at|around|about|by)\\s+(?:about\\s+|around\\s+|exactly\\s+|almost\\s+)?' + W_NUM + '\\b|(?:just\\s+)?(?:before|after)\\s+' + W_NUM + '\\b|[0-9]{1,2}(?:[:.][0-9]{2})?\\s*[ap]\\.?m\\b|[a-z0-9]+\\s+o\'clock|(?:19|20)[0-9]{2}|yesterday|tonight|today|ago|(?:last|this|that|one|on|in|during)\\s+(?:the\\s+)?' + W_DAY + '\\b|(?:on|during|at)\\s+(?:the\\s+|my\\s+|our\\s+)?(?:way|weekend))\\b', 'i');
+var W_TIME = new RegExp('\\b(?:(?:at|around|about|by)\\s+(?:about\\s+|around\\s+|exactly\\s+|almost\\s+)?' + W_NUM + '\\b|(?:just\\s+)?(?:before|after)\\s+' + W_NUM + '\\b|[0-9]{1,2}(?:[:.][0-9]{2})?\\s*[ap]\\.?m\\b|[a-z0-9]+\\s+o\'clock|(?:19|20)[0-9]{2}|yesterday|tonight|today|ago|half\\s+past|quarter\\s+(?:past|to)|the\\s+other\\s+(?:day|night|week)|(?:last|this|that|one|on|in|during)\\s+(?:the\\s+)?' + W_DAY + '\\b|(?:on|during|at)\\s+(?:the\\s+|my\\s+|our\\s+)?(?:way|weekend))\\b', 'i');
 /* ما ينتهي بـ ing بعد was / were وليس فعلًا مستمرًا. أما was building وwas feeling وwas meeting فأفعال تُعد، لأن الاسم يأتي بعد a أو the. */
-var W_ING_NOT = /^(?:morning|evening|nothing|something|anything|everything|king|spring|during|amazing|interesting|exciting|boring|tiring|relaxing|surprising|shocking|charming|frightening|worrying|annoying|confusing|disappointing|embarrassing|terrifying|exhausting|outstanding|thrilling)$/i;
-var W_CONT_RE = /\b(?:was|were)(?:n't|\s+not)?\s+(?:(?:still|just|already|also|really|slowly|quickly|suddenly|i|you|he|she|it|we|they)\s+|(?:the|my|his|her|our|their|your)\s+[a-z]+\s+)?([a-z]{2,}ing)\b/gi;
+var W_ING_NOT = /^(?:bring|thing|string|sting|swing|morning|evening|nothing|something|anything|everything|king|spring|during|amazing|interesting|exciting|boring|tiring|relaxing|surprising|shocking|charming|frightening|worrying|annoying|confusing|disappointing|embarrassing|terrifying|exhausting|outstanding|thrilling)$/i;
+var W_CONT_RE = /\b(?:was|were)(?:n't|\s+not)?\s+(?:(?:still|just|already|also|really|slowly|quickly|suddenly|all|both|always|never|i|you|he|she|it|we|they)\s+|(?:the|my|his|her|our|their|your)\s+[a-z]+\s+)?([a-z]{2,}ing)\b/gi;
 function wCont(text){
   var n = 0, m, s = wNorm(text); W_CONT_RE.lastIndex = 0;
   while ((m = W_CONT_RE.exec(s))) { if (!W_ING_NOT.test(m[1])) n++; }
@@ -51,10 +51,21 @@ function wPastSimple(text){
    فهي صحيحة: was hit وwas told وwas sold وwas lent وwas run وwas mean. */
 var W_BE_BAD = /\b(?:was|were|wasn't|weren't|was\s+not|were\s+not)\s+(?:see|saw|go|went|come|came|ran|stand|stood|sit|sat|walk|drive|drove|wait|happen|happened|take|took|give|gave|know|knew|tell|feel|felt|lend|sell)\b|\bit\s+was\s+rain\b/i;
 var W_STATE_BAD = /\b(?:was|were)\s+(?:meaning|knowing|understanding|wanting|needing|costing)\b/i;
-var W_NO_BE = /\b(?:i|you|he|she|we|they)\s+(?:driving|walking|standing|running|sitting|waiting|going|looking|working|watching)\b/i;
-function wBadForms(text){ var s = wNorm(text); return W_BE_BAD.test(s) || W_STATE_BAD.test(s) || W_NO_BE.test(s); }
+/* I walking خطأ، أما Were you going? وWas he driving? وI saw you walking فصحيحة، فيُنظر إلى الكلمة التي قبل الضمير (بلا lookbehind لأن نسخ iOS القديمة لا تدعمه). */
+var W_NO_BE = /(?:^|[^a-z'])([a-z']+\s+)?(i|you|he|she|we|they)\s+(?:driving|walking|standing|running|sitting|waiting|going|looking|working|watching)\b/gi;
+function wNoBe(s){
+  var m; W_NO_BE.lastIndex = 0;
+  while ((m = W_NO_BE.exec(s))) {
+    var prev = (m[1] || '').trim().toLowerCase().replace(/^'+/, '');
+    if (/^(?:was|were|wasn't|weren't|am|is|are|isn't|aren't)$/.test(prev)) continue;
+    if (m[2].toLowerCase() === 'you' && /^(?:saw|see|seen|heard|watched|noticed|met|found)$/.test(prev)) continue;
+    return true;
+  }
+  return false;
+}
+function wBadForms(text){ var s = wNorm(text); return W_BE_BAD.test(s) || W_STATE_BAD.test(s) || wNoBe(s); }
 function wWhenLine(text){
-  return wNorm(text).split(/[.!?\n]+/).some(function(x){ return /\b(?:when|while)\b/i.test(x) && wCont(x) >= 1; });
+  return wNorm(text).replace(/\b([ap])\.m\./gi, '$1m').split(/[.!?\n]+/).some(function(x){ return /\b(?:when|while)\b/i.test(x) && wCont(x) >= 1; });
 }
 var W_VOCAB = [/\bsuddenly\b/i, /\bpolice\s*officers?\b/i, /\bdescrib(?:e|es|ed|ing)\b/i, /\bexactly\b/i, /\bambulances?\b/i, /\bcorners?\b/i, /\bwitness\s+statements?\b/i];
 /* التحية (Hi Omar,) والختام (Best wishes, Turki) لا يُحسبان جملًا: يُحذفان ويوضع مكانهما فاصل، ثم تُعدّ الجمل كما يعدّها المحرك
@@ -156,8 +167,8 @@ LESSONS.u3l5 = {
       id: "rc-1",
       promptAr: "يغمر: يغطي الماء مكانًا كان جافًّا (فعل من الدرس الرابع)",
       promptEn: "Cover a dry place with a lot of water (verb)",
-      sentPre: "Don't park your car in this low street. After heavy rain, the water can",
-      sentPost: "it very quickly.",
+      sentPre: "Don't park your car here. After heavy rain, the water can",
+      sentPost: "this street very quickly.",
       ans: ["flood"],
       hint: "f _ _ _ d (5 letters)",
       spellNoteEn: "Spelled f-l-o-o-d. It has a double o, but it sounds like 'mud', not like 'food': FLUD.",
@@ -215,7 +226,7 @@ LESSONS.u3l5 = {
     tipEn: "A witness statement is a report from a person who saw or heard something. It says what that person really saw or heard. Collocations: give a witness statement (the witness does this), take a witness statement (the police do this). You know 'witness' from Unit 0. Spelling: state + ment, with the e in the middle: s-t-a-t-e-m-e-n-t.",
     tip: "إفادة الشاهد تقرير من شخص رأى شيئًا أو سمعه، يذكر فيه ما رآه أو سمعه حقًّا. ومن متلازماتها: give a witness statement (يقدّم إفادة شاهد، وهذا فعل الشاهد)، وtake a witness statement (يأخذ إفادة شاهد، وهذا فعل الشرطة). وقد عرفت witness في الوحدة 0. وتُكتب statement من state ثم ment، وتبقى e في وسطها: s-t-a-t-e-m-e-n-t.",
     legal: true,
-    oxfordSlug: "statement",
+    oxfordSlug: "statement_2",
     wikiFiles: ["En-us-witness.ogg", "En-us-statement.ogg"],
     wikiCredit: "File:En-us-witness.ogg & File:En-us-statement.ogg · Wikimedia Commons"
   },
@@ -223,7 +234,7 @@ LESSONS.u3l5 = {
   /* ---------- المفردات ---------- */
   vocab: [
     { en: "suddenly", pos: "adverb", ar: "فجأة", say: "سَدِنْلِي",
-      ex: "The room was quiet, and then my little brother suddenly started to laugh.", exAr: "كانت الغرفة هادئة، ثم بدأ أخي الصغير يضحك فجأة.",
+      ex: "My little brother was laughing, and then he suddenly started to cry.", exAr: "كان أخي الصغير يضحك، ثم بدأ يبكي فجأة.",
       tipEn: "suddenly = quickly, when nobody expected it. It can start a sentence with a comma, or come before the verb: he suddenly stopped. Spelling: sudden + ly, with two d's: s-u-d-d-e-n-l-y.",
       tip: "suddenly تعني فجأة، حين لا يتوقع أحد ما يحدث. وتأتي في أول الجملة وبعدها فاصلة، أو قبل الفعل: he suddenly stopped (توقف فجأة). وتُكتب sudden ثم ly، وفيها حرفا d: s-u-d-d-e-n-l-y.",
       oxfordSlug: "suddenly",
@@ -267,16 +278,16 @@ LESSONS.u3l5 = {
   ],
 
   vocabGaps: [
-    { s: "There is a new coffee shop on the ___ of Olaya Street, next to the bank.", opts: ["ambulance", "corner", "police officer"], a: 1,
-      whyEn: "A coffee shop can be 'on the corner of' a street: the place where two streets meet. An ambulance and a police officer are not places in a street.",
-      why: "يقع المقهى on the corner of الشارع، أي عند ملتقى شارعين، أما ambulance وpolice officer فليسا مكانين في الشارع.", errCat: "vocab" },
+    { s: "Turn left at the ___ of Olaya Street, and you will see the bank.", opts: ["ambulance", "corner", "police officer"], a: 1,
+      whyEn: "You can turn left 'at the corner of' a street: the place where two streets meet. An ambulance and a police officer are not places in a street.",
+      why: "تنعطف at the corner of الشارع، أي عند ملتقى شارعين، أما ambulance وpolice officer فليسا مكانين في الشارع.", errCat: "vocab" },
     { s: "The house was quiet. ___, a loud noise woke the whole family.", opts: ["Exactly", "Corner", "Suddenly"], a: 2,
       whyEn: "'Suddenly' means quickly, when nobody expected it: the house was quiet, and then the noise came. 'Exactly' doesn't start a story event, and 'Corner' is a noun.",
       why: "Suddenly تعني فجأة، حين لا يتوقع أحد ما يحدث: كان البيت هادئًا ثم جاء الصوت. أما Exactly فلا تفتتح حدثًا في القصة، وCorner اسم.", errCat: "vocab" },
-    { s: "On the road to Jeddah, a ___ asked to see my driving licence.", opts: ["police officer", "corner", "ambulance"], a: 0,
-      whyEn: "Only a person can ask you for something, and a 'police officer' is a person whose job is to check licences. A corner and an ambulance can't ask.",
-      why: "لا يطلب منك شيئًا إلا شخص، وpolice officer شخص من عمله فحص الرخص، أما corner وambulance فلا يطلبان شيئًا.", errCat: "vocab" },
-    { s: "Please move your car to the side of the road. An ___ is coming.", opts: ["corner", "ambulance", "witness statement"], a: 1,
+    { s: "On the road to Jeddah, a ___ stopped my car and told me to drive more slowly.", opts: ["police officer", "corner", "ambulance"], a: 0,
+      whyEn: "Only a person can tell you something, and a 'police officer' is a person whose job is to keep the roads safe. A corner and an ambulance can't tell you anything.",
+      why: "لا يقول لك شيئًا إلا شخص، وpolice officer شخص من عمله حفظ السلامة على الطريق، أما corner وambulance فلا يقولان شيئًا.", errCat: "vocab" },
+    { s: "Please move your car to the side of the road. The ___ needs to pass.", opts: ["corner", "ambulance", "witness statement"], a: 1,
       whyEn: "An 'ambulance' is the car that comes for sick or injured people, and other cars move to the side to let it pass. A corner and a witness statement can't come along the road.",
       why: "ambulance سيارة تأتي للمرضى والمصابين، وتتنحى السيارات الأخرى لتفسح لها الطريق. أما corner وwitness statement فلا يأتيان على الطريق.", errCat: "vocab" },
     { s: "The film starts at ___ eight o'clock, so please don't be late.", opts: ["suddenly", "corner", "exactly"], a: 2,
@@ -288,9 +299,9 @@ LESSONS.u3l5 = {
     { s: "I lost my phone at the airport, so I ___ it to the man at the desk: black, with a red cover.", opts: ["suddenly", "described", "exactly"], a: 1,
       whyEn: "'described' is the past of 'describe', and the words after the colon tell us what the phone looks like. We need a past verb here; the other two options are not verbs.",
       why: "described ماضي describe، وما بعد النقطتين يذكر صفات الهاتف، ونحتاج هنا فعلًا ماضيًا، أما الخياران الآخران فليسا فعلين.", errCat: "vocab" },
-    { s: "Sara saw two cars hit each other, so the police asked her for a ___.", opts: ["corner", "ambulance", "witness statement"], a: 2,
-      whyEn: "Sara saw what happened, so she is a witness, and the police ask a witness for a 'witness statement': a report of what she saw.",
-      why: "رأت سارة ما حدث فهي شاهدة، والشرطة تطلب من الشاهد witness statement: تقريرًا بما رآه.", errCat: "vocab" }
+    { s: "Sara told the officer what happened, and he wrote it all in her ___.", opts: ["corner", "ambulance", "witness statement"], a: 2,
+      whyEn: "Sara is telling the officer what she saw, so she is a witness, and a 'witness statement' is the report of what a witness saw. A corner and an ambulance are not reports.",
+      why: "تخبر سارة الشرطي بما رأته فهي شاهدة، وwitness statement تقرير بما رآه الشاهد، أما corner وambulance فليسا تقريرين.", errCat: "vocab" }
   ],
 
   /* ---------- المرحلة 3: بطاقات القواعد ---------- */
@@ -354,14 +365,12 @@ LESSONS.u3l5 = {
       enHtml:
         '<h2 class="bi-h"><span class="en" dir="ltr">I Saw or I Think?</span><small>ما رأيته وما أظنه</small></h2>' +
         '<p class="en-p" dir="ltr">A witness says what he really saw. <b>I think</b> shows only an idea in his head, so keep the two apart:</p>' +
-        '<div class="tbl"><table><thead><tr><th>What I saw · ما رأيته</th><th>What I think · ما أظنه</th></tr></thead><tbody>' +
-          '<tr><td>I saw a woman leave the shop.</td><td>I think she was angry.</td></tr>' +
-          '<tr><td>She was walking fast.</td><td>I think she was late.</td></tr>' +
-        '</tbody></table></div>' +
+        '<div class="xbox"><span class="xtag" dir="ltr">What I saw · ما رأيته</span><p class="xen">I saw a woman leave the shop. She was walking fast.</p>' +
+        '<span class="xtag" dir="ltr">What I think · ما أظنه</span><p class="xen">I think she was angry. I think she was late.</p></div>' +
         '<h3 class="bi-h"><span class="en" dir="ltr">Today\'s 4 verbs</span><small>أفعال اليوم الأربعة</small></h3>' +
         '<ul class="spell" dir="ltr">' +
           '<li><b>set</b> an alarm or a date: no change<span class="s-en">set → set</span></li>' +
-          '<li><b>sell</b>: sounds like <b>told</b><span class="s-en">sell → sold</span></li>' +
+          '<li><b>sell</b>: the past sounds like <b>told</b><span class="s-en">sell → sold</span></li>' +
           '<li><b>lend</b> = give for a short time: ends in <b>-t</b>, like <b>sent</b><span class="s-en">lend → lent</span></li>' +
           '<li><b>mean</b>: ends in <b>-t</b>, and "ee" becomes a short "e"<span class="s-en">mean → meant</span></li>' +
         '</ul>' +
@@ -379,7 +388,7 @@ LESSONS.u3l5 = {
         '<h2 class="bi-h"><span class="en" dir="ltr">Common Arab Mistakes</span><small>أخطاء يقع فيها كثير من العرب في سرد ما رأوه</small></h2>' +
         '<ul class="mist">' +
           '<li><span class="no">I was see the man at the door.</span><span class="yes">I saw the man at the door.</span><p class="en-m" dir="ltr">An event takes the Past Simple alone, with no <b>was</b> before it.</p><p>الحدث يأتي بالماضي البسيط وحده، بلا <bdi class="en">was</bdi> قبله.</p></li>' +
-          '<li><span class="no">While the bus stopped, I was talking to Ali.</span><span class="yes">When the bus stopped, I was talking to Ali.</span><p class="en-m" dir="ltr">The bus stopped once: this is a short action, so it goes after <b>when</b>.</p><p>توقفت الحافلة مرة واحدة، فهو حدث قصير يأتي بعد <bdi class="en">when</bdi>.</p></li>' +
+          '<li><span class="no">While the door opened, I was washing my hands.</span><span class="yes">When the door opened, I was washing my hands.</span><p class="en-m" dir="ltr">The door opened once: this is a short action, so it goes after <b>when</b>.</p><p>انفتح الباب مرة واحدة، فهو حدث قصير يأتي بعد <bdi class="en">when</bdi>.</p></li>' +
           '<li><span class="no">The police was asking questions.</span><span class="yes">The police were asking questions.</span><p class="en-m" dir="ltr"><b>the police</b> means many people, so it takes <b>were</b>.</p><p><bdi class="en">the police</bdi> جماعة، فيأتي معها <bdi class="en">were</bdi>.</p></li>' +
           '<li><span class="no">at 6 pm i was walking it was raining suddenly a car stopped</span><span class="yes">At 6 pm, I was walking. It was raining. Suddenly, a car stopped.</span><p class="en-m" dir="ltr">Write separate sentences, start each one with a capital letter, write <b>I</b> as a capital, and end each one with a period.</p><p>اكتب جملًا منفصلة، وابدأ كل جملة بحرف كبير، واكتب الضمير <bdi class="en">I</bdi> كبيرًا، وأنهِ كل جملة بنقطة.</p></li>' +
         '</ul>'
@@ -395,7 +404,7 @@ LESSONS.u3l5 = {
           '<p><b>was / were + verb-ing</b><span>The background: what was already going on</span></p>' +
           '<p><b>First, · Then · After that, · Finally,</b><span>The events in the Past Simple, in order</span></p>' +
           '<p><b>when + short action · while + long action</b><span>A short action goes after when, not after while</span></p>' +
-          '<p><b>I saw, not I think · set · sold · lent · meant</b><span>Say exactly what you saw; meant takes no -ing</span></p>' +
+          '<p><b>I saw, not I think · set · sold · lent · meant</b><span>Say exactly what you saw; mean takes no -ing</span></p>' +
         '</div>' +
         '<p class="en-p" dir="ltr">Now let\'s practise: 16 guided exercises with brand-new sentences.</p>',
       arHtml:
@@ -403,14 +412,14 @@ LESSONS.u3l5 = {
         '<p><b>الخلفية:</b> <bdi class="en">was / were</bdi> مع الفعل و<bdi class="en">ing</bdi> لما كان جاريًا.</p>' +
         '<p><b>الأحداث:</b> الماضي البسيط بترتيبها: <bdi class="en">First, Then, After that, Finally</bdi>.</p>' +
         '<p><b>when وwhile:</b> الحدث القصير بعد <bdi class="en">when</bdi> لا بعد <bdi class="en">while</bdi>، والحدث الطويل بعد <bdi class="en">while</bdi>.</p>' +
-        '<p><b>الشاهد:</b> اذكر ما رأيته بالضبط، لا ما تظنه. وأفعال اليوم: <bdi class="en">set, sold, lent, meant</bdi>، و<bdi class="en">meant</bdi> لا تأخذ <bdi class="en">ing</bdi>.</p>' +
+        '<p><b>الشاهد:</b> اذكر ما رأيته بالضبط، لا ما تظنه. وأفعال اليوم: <bdi class="en">set, sold, lent, meant</bdi>، و<bdi class="en">mean</bdi> لا تأخذ <bdi class="en">ing</bdi>.</p>' +
         '<p>والآن نتدرّب: 16 تمرينًا موجّهًا بجمل جديدة.</p>'
     }
   ],
 
   /* ---------- المرحلة 3: التمارين ---------- */
   gA: [
-    { s: "We ___ tea in the garden when the doorbell rang, so my sister left her cup and went to the door.", opts: ["had", "were having"], a: 1,
+    { s: "We ___ tea in the living room when the doorbell rang, so my sister left her cup and went to the door.", opts: ["had", "were having"], a: 1,
       whyEn: "The tea was already going on, and the doorbell rang in the middle of it: the sister left her cup. A long action needs were + verb-ing.",
       why: "كان شرب الشاي جاريًا، ورنّ الجرس في أثنائه، فتركت الأخت كوبها. والحدث الطويل يأتي بـ were مع الفعل وing.", errCat: "tense" },
     { s: "Everyone in the hall was listening ___ somebody's phone fell on the floor.", opts: ["when", "while"], a: 0,
@@ -419,33 +428,33 @@ LESSONS.u3l5 = {
     { s: "Nobody replied to Hind because nobody knew what her message ___.", opts: ["was meaning", "meant"], a: 1,
       whyEn: "Here 'mean' tells us what the message says, so it is a state verb. State verbs take no -ing, so we use the past form 'meant'.",
       why: "mean هنا تدل على ما تقوله الرسالة، فهي فعل حالة، وأفعال الحالة لا تأخذ ing، فنستعمل صيغة الماضي meant.", errCat: "stative" },
-    { s: "Last month, my neighbour ___ his motorbike to a student.", opts: ["sold", "selled"], a: 0,
-      whyEn: "'sell' is irregular: its past form is 'sold', and it sounds like 'told'. Irregular verbs never take -ed.",
-      why: "sell فعل شاذ ماضيه sold (على وزن told)، والأفعال الشاذة لا تأخذ ed.", errCat: "tense" }
+    { s: "I didn't see the driver's face, so I wrote: '___ he was a young man.'", opts: ["I think", "I saw"], a: 0,
+      whyEn: "The writer didn't see the face, so this is only an idea in his head, and 'I think' shows that. 'I saw' is only for what a witness really saw.",
+      why: "لم ير الكاتب وجه السائق، فهذه فكرة في ذهنه فحسب، وتدل عليها I think. أما I saw فلما رآه الشاهد حقًّا.", errCat: "vocab" }
   ],
 
   gB: [
-    { s: "My brother was lend me his car last week.", ok: false, fix: "My brother lent me his car last week.",
+    { s: "My brother was lend my car to his friend last week.", ok: false, fix: "My brother lent my car to his friend last week.",
       whyEn: "This is a finished event, so it takes the Past Simple alone: lend → lent. We don't put 'was' before a base verb.",
       why: "هذا حدث انتهى، فيأتي بالماضي البسيط وحده: lend ← lent، ولا نضع was قبل الفعل المجرد.", errCat: "be_verb" },
-    { s: "While the teacher closed the door, we were talking.", ok: false, fix: "When the teacher closed the door, we were talking.",
-      whyEn: "'closed the door' is a short action, so it goes after 'when'. 'while' goes before a long action.",
-      why: "closed the door حدث قصير، فيأتي بعد when، أما while فتأتي قبل الحدث الطويل.", errCat: "tense" },
+    { s: "The students were writing their answers while the fire alarm started.", ok: false, fix: "The students were writing their answers when the fire alarm started.",
+      whyEn: "'the fire alarm started' is a short action, so it goes after 'when'. 'while' goes before a long action.",
+      why: "the fire alarm started حدث قصير، فيأتي بعد when، أما while فتأتي قبل الحدث الطويل.", errCat: "tense" },
     { s: "While my brother was driving, I was reading the map.", ok: true,
       whyEn: "Correct: two long actions at the same time, both with was + verb-ing, 'while' at the start, and a comma after the first part.",
       why: "صحيحة: حدثان طويلان في وقت واحد، كلاهما بـ was مع الفعل وing، وwhile في أول الجملة، وبعد الجزء الأول فاصلة.", errCat: "tense" },
-    { s: "My friends was waiting for me outside the gym.", ok: false, fix: "My friends were waiting for me outside the gym.",
-      whyEn: "'My friends' is plural, so we use 'were', not 'was': they were waiting.",
-      why: "My friends جمع، فنستعمل were لا was: they were waiting.", errCat: "agreement" }
+    { s: "My friends was having lunch outside the gym.", ok: false, fix: "My friends were having lunch outside the gym.",
+      whyEn: "'My friends' is plural, so we use 'were', not 'was': they were having lunch.",
+      why: "My friends جمع، فنستعمل were لا was: they were having lunch.", errCat: "agreement" }
   ],
 
   gC: [
     { pre: "At 7 pm yesterday, my sisters", verb: "clean · Past Continuous", post: "the house for Eid.", ans: ["were cleaning"],
       whyEn: "An action in progress at a moment in the past: were + verb-ing. 'my sisters' is plural, so we use 'were'.",
       why: "حدث كان جاريًا في لحظة من الماضي: were مع الفعل وing، وmy sisters جمع فنستعمل were.", errCat: "tense" },
-    { pre: "My cousin needed money for his books, so I", verb: "lend · Past Simple", post: "him 200 riyals.", ans: ["lent"],
-      whyEn: "'lend' is irregular: its past form ends in -t, like send → sent. It is the same for every subject.",
-      why: "lend فعل شاذ ينتهي ماضيه بـ t مثل send ← sent، وهو واحد مع كل الضمائر.", errCat: "tense" },
+    { pre: "My cousin needed money for his books, so he", verb: "sell · Past Simple", post: "his old phone.", ans: ["sold"],
+      whyEn: "'sell' is irregular: its past form is 'sold', and it sounds like 'told'. It is the same for every subject.",
+      why: "sell فعل شاذ ماضيه sold (على وزن told)، وهو واحد مع كل الضمائر.", errCat: "tense" },
     { pre: "", verb: "where / you / go · Past Continuous", post: "when I saw you in the street?", ans: ["Where were you going"],
       whyEn: "A Past Continuous question: Where + were + subject (you) + verb-ing. There is no 'did' with verb-ing.",
       why: "سؤال في الماضي المستمر: Where ثم were ثم الفاعل you ثم الفعل وing، ولا تأتي did مع الفعل بـ ing.", errCat: "word_order" },
@@ -455,15 +464,15 @@ LESSONS.u3l5 = {
   ],
 
   gD: [
-    { chips: ["on the steps.", "At about 9 pm,", "were sitting", "the students"], ans: "At about 9 pm, the students were sitting on the steps.",
+    { chips: ["outside the hall.", "At about 4 pm,", "were standing", "the students"], ans: "At about 4 pm, the students were standing outside the hall.",
       whyEn: "The time comes first with a comma, then the subject (the students), were + verb-ing, and the place at the end.",
       why: "الزمن أولًا وبعده فاصلة، ثم الفاعل the students، ثم were مع الفعل وing، ثم المكان في آخر الجملة.", errCat: "word_order" },
     { chips: ["for 5 am.", "My father", "his alarm", "set"], ans: "My father set his alarm for 5 am.",
       whyEn: "Subject (My father) + past verb (set) + object (his alarm) + time. The past of set is set: no change, and no -s after 'My father' here because it is past.",
       why: "الفاعل My father ثم الفعل الماضي set ثم المفعول his alarm ثم الوقت. وماضي set هو set بلا تغيير، ولا نضيف s لأن الجملة في الماضي.", errCat: "word_order" },
-    { chips: ["while I was", "My uncle", "packing my bag.", "arrived"], ans: "My uncle arrived while I was packing my bag.",
-      whyEn: "The short action comes first (My uncle arrived), then 'while' before the long action (I was packing my bag).",
-      why: "الحدث القصير أولًا My uncle arrived، ثم while قبل الحدث الطويل I was packing my bag.", errCat: "word_order" },
+    { chips: ["Then he called the police.", "Finally, he went home.", "First, the driver got out.", "After that, he sat down."], ans: "First, the driver got out. Then he called the police. After that, he sat down. Finally, he went home.",
+      whyEn: "The order words tell the order of the events: First, then Then, then After that, and Finally for the last event.",
+      why: "كلمات الترتيب تحدد ترتيب الأحداث: First ثم Then ثم After that، وFinally للحدث الأخير.", errCat: "word_order" },
     { chips: ["didn't see", "I saw the car,", "but I", "the driver."], ans: "I saw the car, but I didn't see the driver.",
       whyEn: "First what the witness saw (I saw the car,), then 'but' and what he did not see, with didn't + base verb.",
       why: "ما رآه الشاهد أولًا I saw the car، ثم but وما لم يره بـ didn't مع الفعل المجرد.", errCat: "word_order" }
@@ -492,7 +501,8 @@ LESSONS.u3l5 = {
       "<<t:While>> I <<c:was waiting>>, I <<s:noticed>> a white car. It <<c:was going>> very fast <<t:when>> it <<s:hit>> a [[delivery bike|دراجة توصيل]]. It all <<s:happened>> very {suddenly}. For a moment, everyone <<s:stopped>>. [[Thank God|الحمد لله]], nobody was [[seriously injured|مصابًا إصابة خطيرة]].",
       "<<t:First>>, I <<s:called>> the police and <<s:lent>> the [[rider|راكب الدراجة]] my [[umbrella|مظلة]]. <<t:Then>> an {ambulance} and a {police officer} <<s:arrived>>. <<t:After that>>, the officer <<s:checked>> the driver's driving licence and <<s:asked>> me to give a {witness statement}.",
       "<<t:Finally>>, I <<s:sat>> in the police car and <<s:wrote>> everything in order. One sentence was, 'I think the driver <<c:was using>> his phone.' The officer <<s:read>> it and <<s:asked>>, '<<s:Did you see>> his phone?' I <<s:understood>> what he <<s:meant>>. I <<s:didn't see>> it, so I <<s:changed>> that sentence.",
-      "Now I know: a witness {describes|describe} {exactly} what he <<s:saw>>, not what he thinks. It was a good lesson for a law student! How was your week?",
+      "Now I know: a witness {describes|describe} {exactly} what he <<s:saw>>, not what he thinks. It was a good lesson for a law student!",
+      "How was your week?",
       "Best wishes,<br>Turki"
     ],
     predict: {
@@ -507,7 +517,7 @@ LESSONS.u3l5 = {
     insight: {
       titleEn: "How Turki Builds His Email",
       titleAr: "كيف بنى تركي إيميله",
-      l1En: "He starts the details with the time, then he gives the background in the Past Continuous:",
+      l1En: "He starts the details with the time and the place, then he gives the background in the Past Continuous:",
       ex1: "At about 6 pm · It was raining · People were running to their cars · the traffic was moving slowly",
       l2En: "Then he tells the events in the Past Simple, in order, and he closes with a question and a friendly phrase:",
       ex2: "Then an ambulance and a police officer arrived · Finally, I sat in the police car · How was your week? · Best wishes, Turki",
@@ -551,8 +561,8 @@ LESSONS.u3l5 = {
 
   /* ---------- المرحلة 5: الكتابة ---------- */
   writing: {
-    taskEn: "Write your own short email to a friend about something you saw: a small accident or a problem in the street, at the mall or at university. It can be true, or you can make it up. Start with a greeting (Hi …,) and finish with a closing (Best wishes,) and your name. Between them, write at least 4 separate sentences: say when and where it happened (At about 6 pm, on the corner of …), give the background with at least 2 Past Continuous verbs (It was raining. People were running.), use when or while in a sentence with the Past Continuous, and tell the events in the Past Simple with at least 3 order words (First, Then, After that, Finally). Say exactly what you saw, and use at least 2 words from today's lesson.",
-    task: "اكتب إلى صديق إيميلًا قصيرًا عن شيء رأيته: حادث صغير أو مشكلة في الشارع أو السوق أو الجامعة، حقيقيًا كان أو من خيالك. ابدأ بتحية (Hi …,) واختم بعبارة ختام (Best wishes,) ثم اسمك، واكتب بينهما 4 جمل منفصلة على الأقل: اذكر متى وقع وأين (At about 6 pm, on the corner of …)، وارسم الخلفية بصيغتين على الأقل من الماضي المستمر (It was raining. People were running.)، واستعمل when أو while في جملة فيها الماضي المستمر، واحكِ الأحداث بالماضي البسيط بثلاث كلمات ترتيب على الأقل (First وThen وAfter that وFinally). اذكر ما رأيته بالضبط، واستعمل كلمتين على الأقل من كلمات الدرس.",
+    taskEn: "Write your own short email to a friend about something you saw: a small accident or a problem in the street, at the mall or at university. It can be true, or you can make it up. Start with a greeting (Hi …,), then say why you are writing (I'm writing to tell you …), and finish with a closing (Best wishes,) and your name. Between them, write at least 4 separate sentences: say when and where it happened (At about 6 pm, on the corner of …), give the background with at least 2 Past Continuous verbs (It was raining. People were running.), use when or while in a sentence with the Past Continuous, and tell the events in the Past Simple with at least 3 order words (First, Then, After that, Finally). Say exactly what you saw, and use at least 2 words from today's lesson.",
+    task: "اكتب إلى صديق إيميلًا قصيرًا عن شيء رأيته: حادث صغير أو مشكلة في الشارع أو السوق أو الجامعة، حقيقيًا كان أو من خيالك. ابدأ بتحية (Hi …,)، ثم اذكر غرض إيميلك (I'm writing to tell you …)، واختم بعبارة ختام (Best wishes,) ثم اسمك، واكتب بينهما 4 جمل منفصلة على الأقل: اذكر متى وقع وأين (At about 6 pm, on the corner of …)، وارسم الخلفية بصيغتين على الأقل من الماضي المستمر (It was raining. People were running.)، واستعمل when أو while في جملة فيها الماضي المستمر، واحكِ الأحداث بالماضي البسيط بثلاث كلمات ترتيب على الأقل (First وThen وAfter that وFinally). اذكر ما رأيته بالضبط، واستعمل كلمتين على الأقل من كلمات الدرس.",
     placeholder: "Hi …,\nAt about 6 pm, I was …\nFirst, …",
     checks: [
       { k: "sentences", tEn: "At least 4 separate sentences between the greeting and the closing (end each with . or ?)", t: "4 جمل منفصلة على الأقل بين التحية والختام (تنتهي كل جملة بنقطة أو علامة استفهام)",
@@ -565,15 +575,17 @@ LESSONS.u3l5 = {
       { k: "vocab", tEn: "At least 2 words or phrases from today's lesson", t: "كلمتان أو عبارتان على الأقل من درس اليوم", ex: "suddenly · police officer · describe · exactly · ambulance · corner · witness statement",
         ok: function(a, text){ var s = wNorm(text); return W_VOCAB.filter(function(re){ return re.test(s); }).length >= 2; } }
     ],
-    modelMarked: "Hi Majed,<br>I want to tell you what I <<s:saw>> <<t:last Thursday>>. <<t:At about 9 pm>>, I <<c:was sitting>> in a café on the {corner} of our street. It was very windy, and two boys <<c:were playing>> football outside. A man <<c:was parking>> his car <<t:when>> a ball {suddenly} <<s:broke>> his window. <<t:First>>, the boys <<s:stopped>> playing. <<t:Then>> the man <<s:got>> out, and they <<s:said>> sorry to him. <<t:After that>>, their father <<s:came>> and <<s:paid>> for the window. <<t:Finally>>, the man <<s:drove>> away. I <<s:saw>> the ball, but I <<s:didn't see>> {exactly} who <<s:kicked>> it.<br>Best wishes,<br>Saad",
-    model: "Hi Majed,\nI want to tell you what I saw last Thursday. At about 9 pm, I was sitting in a café on the corner of our street. It was very windy, and two boys were playing football outside. A man was parking his car when a ball suddenly broke his window. First, the boys stopped playing. Then the man got out, and they said sorry to him. After that, their father came and paid for the window. Finally, the man drove away. I saw the ball, but I didn't see exactly who kicked it.\nBest wishes,\nSaad",
+    modelMarked: "Hi Majed,<br>I want to tell you what I <<s:saw>> <<t:last Thursday>>.<br><<t:At about 9 pm>>, I <<c:was sitting>> in a café on the {corner} of King Abdullah Road. It was very windy, and two boys <<c:were playing>> football outside. A man <<c:was parking>> his car <<t:when>> a ball {suddenly} <<s:broke>> his mirror. <<t:First>>, the boys <<s:stopped>> playing. <<t:Then>> the man <<s:got>> out, and they <<s:said>> sorry to him. <<t:After that>>, their father <<s:came>> and <<s:paid>> for the mirror. <<t:Finally>>, the man <<s:drove>> away. I <<s:didn't see>> {exactly} who <<s:kicked>> the ball. I think it was the taller boy.<br>How is your family?<br>Best wishes,<br>Saad",
+    model: "Hi Majed,\nI want to tell you what I saw last Thursday.\nAt about 9 pm, I was sitting in a café on the corner of King Abdullah Road. It was very windy, and two boys were playing football outside. A man was parking his car when a ball suddenly broke his mirror. First, the boys stopped playing. Then the man got out, and they said sorry to him. After that, their father came and paid for the mirror. Finally, the man drove away. I didn't see exactly who kicked the ball. I think it was the taller boy.\nHow is your family?\nBest wishes,\nSaad",
     legendEn: "Light blue = Past Simple: events · Terracotta = Past Continuous: background · Dashed = time and order words, when and while",
     legendAr: "الأزرق الفاتح للماضي البسيط (الأحداث)، والطوبي للماضي المستمر (الخلفية)، والإطار المنقّط لكلمات الزمن والترتيب وwhen وwhile.",
     acceptExamples: [
       "Hello Ali,\nI want to tell you about a small accident. At 9pm last night, I was walking near the mall. It was very cold, and people were waiting for their cars. A taxi was turning at the corner when it hit a small car. First, the two drivers got out. Then a police officer came. After that, he talked to them. Finally, they left. Nobody was injured.\nSee you soon,\nOmar",
       "Dear Sara,\nJust after midnight, I was driving home from my aunt's house. What was happening on the road? Many cars were stopping, and I was feeling tired. While I was waiting, I saw an ambulance. First, it stopped near a small car. Then I noticed a man on the ground. After that, a police officer asked me to describe what I saw. Finally, I went home.\nThanks,\nHuda",
       "Hi Khalid,\nYesterday I saw a small fire near my university. Workers were building a new shop on the corner, and smoke was coming from a room. When the fire started, I was buying coffee. First, people ran out. Then an ambulance arrived. After that, a police officer asked me for a witness statement. Finally, I went to class. It wasn’t serious.\nBest regards,\nFaisal",
-      "Hi Sami,\nI’m writing to tell you what happened this morning. I was waiting for my brother on the corner of Tahlia Street, and the traffic was moving slowly. Suddenly, a motorbike hit a bus while it was stopping. First, the rider got up. Then the bus driver called the police. Finally, they talked and everyone left. I didn’t see exactly who was wrong.\nBest,\nOmar"
+      "Hi Sami,\nI’m writing to tell you what happened this morning. I was waiting for my brother on the corner of Tahlia Street, and the traffic was moving slowly. Suddenly, a motorbike hit a bus while it was stopping. First, the rider got up. Then the bus driver called the police. Finally, they talked and everyone left. I didn’t see exactly who was wrong.\nBest,\nOmar",
+      "Hi Nasser,\nI want to tell you what I saw on Sunday. At half past six, we were all waiting at the bank on the corner of our street. A man was running to his car when he fell. First, a police officer came. Then he asked me, 'Was he driving fast?' After that, I said, 'No, he wasn't.' Finally, the man went home.\nBest wishes,\nAhmed",
+      "Dear Ali,\nThe other day, I was walking near the mall at 6 p.m. when a bus stopped suddenly. Where were you going that day? I saw you walking with your brother. People were running because it was raining. First, a man got off the bus. Then a police officer came. Finally, the bus left.\nThanks,\nAdel"
     ]
   },
 
@@ -593,9 +605,9 @@ LESSONS.u3l5 = {
     { s: "I was watering the plants ___ my neighbour came to say hello.", opts: ["when", "while", "during"], a: 0, tag: "Grammar · قواعد",
       whyEn: "'came' is the short action, in the middle of the watering, and a short action goes after 'when'. 'while' goes before a long action, and 'during' goes before a noun.",
       why: "came حدث قصير وقع في أثناء سقي النباتات، والحدث القصير يأتي بعد when، أما while فتأتي قبل الحدث الطويل، وduring تأتي قبل الاسم.", errCat: "tense" },
-    { s: "Nobody understood what the sign on the door ___.", opts: ["was meaning", "was mean", "meant"], a: 2, tag: "Grammar · قواعد",
-      whyEn: "Here 'mean' tells us what the sign says, so it is a state verb with no -ing: meant. We also don't put 'was' before a base verb.",
-      why: "mean هنا تدل على ما تقوله اللوحة، فهي فعل حالة لا يأخذ ing، فنقول meant، ولا نضع was قبل الفعل المجرد.", errCat: "stative" },
+    { s: "The red light in my car ___ that the engine was too hot.", opts: ["was meaning", "was mean", "meant"], a: 2, tag: "Grammar · قواعد",
+      whyEn: "Here 'mean' tells us what the light shows, so it is a state verb with no -ing: meant. We also don't put 'was' before a base verb.",
+      why: "mean هنا تدل على ما يبيّنه الضوء، فهي فعل حالة لا يأخذ ing، فنقول meant، ولا نضع was قبل الفعل المجرد.", errCat: "stative" },
     { s: "Last Sunday, Ahmed ___ me his notes for the exam.", opts: ["lended", "lent", "was lend"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'Last Sunday' shows a finished event, and lend is irregular: lent. 'lended' is not a word, and we don't put 'was' before a base verb.",
       why: "Last Sunday تدل على حدث انتهى، وlend فعل شاذ ماضيه lent، أما lended فليست كلمة، ولا نضع was قبل الفعل المجرد.", errCat: "tense" },
@@ -614,9 +626,9 @@ LESSONS.u3l5 = {
     { s: "Please ___ the man that you saw: was he tall or short?", opts: ["suddenly", "exactly", "describe"], a: 2, tag: "Vocabulary · مفردات",
       whyEn: "After 'Please' we need a verb, and 'describe' means say what someone looks like. 'suddenly' and 'exactly' are not verbs.",
       why: "بعد Please نحتاج فعلًا، وdescribe تعني أن تذكر صفات الشخص، أما suddenly وexactly فليسا فعلين.", errCat: "vocab" },
-    { s: "A woman saw the accident, so the police asked her to give a ___.", opts: ["witness statement", "witness speech", "witness letter"], a: 0, tag: "Legal Track · المسار القانوني",
-      whyEn: "The phrase is 'witness statement': a report from a person who saw something. We say 'give a witness statement'. We don't say 'witness speech' or 'witness letter'.",
-      why: "العبارة witness statement، وهي تقرير من شخص رأى شيئًا، ونقول give a witness statement، ولا نقول witness speech ولا witness letter.", errCat: "vocab" }
+    { s: "The police came to our street and asked each neighbour to give a ___.", opts: ["witness statement", "witness speech", "witness letter"], a: 0, tag: "Legal Track · المسار القانوني",
+      whyEn: "The phrase is 'witness statement': a report from a person who saw or heard something. We say 'give a witness statement'. We don't say 'witness speech' or 'witness letter'.",
+      why: "العبارة witness statement، وهي تقرير من شخص رأى شيئًا أو سمعه، ونقول give a witness statement، ولا نقول witness speech ولا witness letter.", errCat: "vocab" }
   ]
 };
 })();

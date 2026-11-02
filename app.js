@@ -1777,9 +1777,11 @@ function localWritingCheck(text){
     var m1 = text.match(/\b(?:I\s+am|He\s+is|She\s+is|We\s+are|They\s+are)\s+(?:work|study|go|live|sleep|wake|check|measure|miss)\b/i)[0];
     gMist.push({ wrong:m1, right:m1.replace(/\b(He|She)\s+is\s+(\w+)/i, '$1 $2s').replace(/\b(am|is|are)\s+/i, ''), why:'Do not put am/is/are before a base verb in Present Simple.' });
   }
-  if (/\b(?:I|He|She|We|They)\s+(?:working|studying|going|living|sleeping|sitting|writing|reading|learning)\b/i.test(text)) {
-    var m2 = text.match(/\b(?:I|He|She|We|They)\s+(?:working|studying|going|living|sleeping|sitting|writing|reading|learning)\b/i)[0];
-    gMist.push({ wrong:m2, right:m2.replace(/^(\w+)\s+/, '$1 am/is/are '), why:'Present Continuous needs am / is / are before verb-ing.' });
+  // في السؤال يتقدم الفعل على الفاعل (Was he going?)، فليس بعد الضمير خطأ
+  var noInv = text.replace(/\b(?:am|is|are|was|were)(?:n't|n’t)?\s+(?:I|you|he|she|it|we|they)\b/gi, ' ');
+  if (/\b(?:I|He|She|We|They)\s+(?:working|studying|going|living|sleeping|sitting|writing|reading|learning)\b/i.test(noInv)) {
+    var m2 = noInv.match(/\b(?:I|He|She|We|They)\s+(?:working|studying|going|living|sleeping|sitting|writing|reading|learning)\b/i)[0];
+    gMist.push({ wrong:m2, right:m2.replace(/^(\w+)\s+/, '$1 am/is/are (past: was/were) '), why:'The continuous needs am / is / are before verb-ing, or was / were in the past.' });
   }
   if (/\b(?:am|is|are|'m|'s|'re)\s+(?:knowing|needing|wanting|understanding|loving)\b/i.test(text)) {
     var m3 = text.match(/\b(?:am|is|are|'m|'s|'re)\s+(?:knowing|needing|wanting|understanding|loving)\b/i)[0];
