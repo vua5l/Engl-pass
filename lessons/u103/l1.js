@@ -48,7 +48,7 @@ function wSimple(text){
 var W_BASES = '(?:work|go|study|write|eat|drink|walk|drive|sleep|wake|play|cook|help|teach|learn|sit)\\b(?!\\s+(?:colleagues?|friends?|partners?|groups?))';
 var W_BE_BASE = new RegExp("\\b(?:i\\s+am|i'm|he\\s+is|he's|she\\s+is|she's|we\\s+are|we're|they\\s+are|they're|you\\s+are|you're)\\s+(?:not\\s+)?(?:usually\\s+|always\\s+|often\\s+)?" + W_BASES, 'i');
 var W_BE_Q = new RegExp('\\b(?:is|are|am)\\s+(?:he|she|you|they|we|i)\\s+' + W_BASES, 'i');
-var W_HE_DONT = /\b(?:he|she|it|my\s+(?:father|mother|brother|sister|son|daughter|uncle|aunt|cousin|friend|teacher|manager|colleague))\s+don't\b/i;
+var W_HE_DONT = /\b(?:he|she|it)\s+don't\b|(?:^|[.!?,]\s+)my\s+(?:father|mother|brother|sister|son|daughter|uncle|aunt|cousin|friend|teacher|manager|colleague)\s+don't\b/im;
 var W_STATE_BAD = /(?:\b(?:am|is|are)|'m|'re|'s)\s+(?:not\s+)?(?:knowing|wanting|needing|preferring)\b/i;
 function wBadForms(text){ var s = wNorm(text); return W_BE_BASE.test(s) || W_BE_Q.test(s) || W_HE_DONT.test(s) || W_STATE_BAD.test(s); }
 var W_VOCAB = [/\btypical\b/i, /\bmiss(?:es|ed|ing)?\b/i, /\bresearch\b/i, /\bcolleagues?\b/i, /\bschedules?\b/i, /\bdeadlines?\b/i, /\bsign(?:s|ed|ing)?\b[^.!?]*\bcontracts?\b/i];
@@ -211,8 +211,8 @@ LESSONS.u103l1 = {
   vocab: [
     { en: "typical", pos: "adjective", ar: "عادي / معتاد (a typical day = يوم عادي)", say: "تِبِيكَل",
       ex: "This is a typical lunch in our family: rice, chicken and salad.", exAr: "هذا غداء معتاد في أسرتنا: أرز ودجاج وسلطة.",
-      tipEn: "'On a typical day' is a good way to start talking about a habit, and the Present Simple comes after it: On a typical day, I … It goes before a noun: a typical lunch, a typical week.",
-      tip: "a typical day بداية حسنة للكلام عن العادة، ويأتي بعدها المضارع البسيط: On a typical day, I … وتأتي قبل الاسم: a typical lunch وa typical week.",
+      tipEn: "'On a typical day' is a good way to start talking about a habit, and the Present Simple comes after it: On a typical day, I … The word typical goes before a noun: a typical lunch, a typical week.",
+      tip: "a typical day بداية حسنة للكلام عن العادة، ويأتي بعدها المضارع البسيط: On a typical day, I … وكلمة typical تأتي قبل الاسم: a typical lunch وa typical week.",
       oxfordSlug: "typical",
       wikiFile: "En-us-typical.ogg",
       wikiCredit: "File:En-us-typical.ogg · Wikimedia Commons (author and licence on the file page)" },
@@ -225,22 +225,22 @@ LESSONS.u103l1 = {
       wikiCredit: "File:En-us-miss.ogg · Wikimedia Commons (CC BY-SA 3.0)" },
     { en: "research", pos: "noun", ar: "بحث علمي / أبحاث", say: "رِسِيرْتش",
       ex: "My cousin needs more time for his research on old Arabic books.", exAr: "يحتاج ابن عمي إلى وقت أطول لبحثه في الكتب العربية القديمة.",
-      tipEn: "The verb is do: I do research, and she is doing research. Add 'on' for the subject: research on old books.",
-      tip: "الفعل معها do: I do research وshe is doing research. ونذكر الموضوع بعد on: research on old books.",
+      tipEn: "The usual verb is do: I do research, and she is doing research. Add 'on' for the subject: research on old books.",
+      tip: "الفعل المعتاد معها do: I do research وshe is doing research. ونذكر الموضوع بعد on: research on old books.",
       oxfordSlug: "research_1",
       wikiFile: "En-us-research.ogg",
       wikiCredit: "File:En-us-research.ogg · Dvortygirl / Wikimedia Commons (CC BY-SA 3.0)" },
     { en: "colleague", pos: "noun", ar: "زميل / زميلة (في العمل)", say: "كُولِيق",
       ex: "My colleagues and I have coffee together every morning.", exAr: "أشرب أنا وزملائي القهوة معًا كل صباح.",
-      tipEn: "One colleague takes a verb with -s: My colleague works here. Two or more take no -s: My colleagues work here.",
-      tip: "مع المفرد يأخذ الفعل s: My colleague works here. ومع الجمع لا يأخذها: My colleagues work here.",
+      tipEn: "In a positive Present Simple sentence, one colleague takes a verb with -s: My colleague works here. Two or more take no -s: My colleagues work here.",
+      tip: "في إثبات المضارع البسيط يأخذ الفعل s مع المفرد: My colleague works here. ولا يأخذها مع الجمع: My colleagues work here.",
       oxfordSlug: "colleague",
       wikiFile: "En-us-colleague.ogg",
       wikiCredit: "File:En-us-colleague.ogg · Wikimedia Commons" },
     { en: "schedule", pos: "noun", ar: "جدول (مواعيد أو أعمال)", say: "سْكِيجُول / شِيدْيُول",
       ex: "My father has a busy schedule this month, so he eats at the office.", exAr: "جدول أبي مزدحم هذا الشهر، فهو يأكل في المكتب.",
-      tipEn: "Say a busy schedule or a full schedule when you have many things to do. We use it with have: I have a busy schedule. That takes the Present Simple, because this 'have' is a state.",
-      tip: "نقول a busy schedule أو a full schedule حين تكثر الأعمال، ونستعملها مع have: I have a busy schedule. وهذه بالمضارع البسيط، لأن have هنا حالة.",
+      tipEn: "Say a busy schedule or a full schedule when you have many things to do. We often use it with have: I have a busy schedule. That takes the Present Simple, because this 'have' is a state.",
+      tip: "نقول a busy schedule أو a full schedule حين تكثر الأعمال، وكثيرًا ما نستعملها مع have: I have a busy schedule. وهذه بالمضارع البسيط، لأن have هنا حالة.",
       oxfordSlug: "schedule_1",
       wikiFile: "En-us-schedule.ogg",
       wikiCredit: "File:En-us-schedule.ogg · Wikimedia Commons" },
@@ -346,12 +346,12 @@ LESSONS.u103l1 = {
         '<ul class="spell" dir="ltr">' +
           '<li><b>y</b> stays: add -ing<span class="s-en">study → studying</span></li>' +
           '<li>silent <b>e</b> goes: drop it, then add -ing<span class="s-en">write → writing</span></li>' +
-          '<li>short verb, one short vowel + one consonant: write the consonant twice<span class="s-en">sit → sitting · run → running</span></li>' +
+          '<li>short verb, one short vowel + one consonant (not w, x, y): write the consonant twice<span class="s-en">sit → sitting · run → running</span></li>' +
         '</ul>',
       arHtml:
         '<p>أفعال الحالة مثل <bdi class="en">know</bdi> و<bdi class="en">want</bdi> و<bdi class="en">need</bdi> و<bdi class="en">prefer</bdi> تبقى بسيطة حتى في هذه اللحظة: <bdi class="en">I prefer the window seat.</bdi></p>' +
         '<p>وتعرف من الوحدة 1 فعلين لهما معنيان: <bdi class="en">think</bdi> تأخذ <bdi class="en">ing</bdi> إذا كانت بمعنى «يفكر الآن»، و<bdi class="en">have</bdi> تأخذها إذا كانت بمعنى «يأكل» أو «يستمتع».</p>' +
-        '<p>وفي الإملاء: تبقى <bdi class="en">y</bdi> (<bdi class="en">studying</bdi>)، وتسقط <bdi class="en">e</bdi> الصامتة (<bdi class="en">writing</bdi>)، ويتضاعف الحرف الأخير في الفعل القصير بعد صوت قصير (<bdi class="en">sitting, running</bdi>).</p>'
+        '<p>وفي الإملاء: تبقى <bdi class="en">y</bdi> (<bdi class="en">studying</bdi>)، وتسقط <bdi class="en">e</bdi> الصامتة (<bdi class="en">writing</bdi>)، ويتضاعف الحرف الأخير في الفعل القصير بعد صوت قصير (<bdi class="en">sitting, running</bdi>)، إلا w وx وy.</p>'
     },
     {
       tEn: "Common Arab Mistakes",
@@ -445,9 +445,9 @@ LESSONS.u103l1 = {
     { chips: ["walk", "Does", "to the mosque?", "your grandfather"], ans: "Does your grandfather walk to the mosque?",
       whyEn: "A Present Simple question: Does + subject (your grandfather) + base verb. The verb takes no -s after Does.",
       why: "سؤال في المضارع البسيط: Does ثم الفاعل your grandfather ثم الفعل الأصلي، ولا يأخذ الفعل s بعد Does.", errCat: "word_order" },
-    { chips: ["isn't", "today.", "Our teacher", "teaching"], ans: "Our teacher isn't teaching today.",
-      whyEn: "A Present Continuous negative: subject + isn't + verb-ing. The time comes at the end.",
-      why: "نفي في المضارع المستمر: الفاعل ثم isn't ثم الفعل وing، والوقت في آخر الجملة.", errCat: "word_order" }
+    { chips: ["aren't", "sleeping well", "this week.", "My parents"], ans: "My parents aren't sleeping well this week.",
+      whyEn: "A Present Continuous negative: subject + aren't + verb-ing. The time comes at the end.",
+      why: "نفي في المضارع المستمر: الفاعل ثم aren't ثم الفعل وing، والوقت في آخر الجملة.", errCat: "word_order" }
   ],
 
   /* ---------- المرحلة 4: القراءة، وقبلها قراءة الطلاقة لإيميل نور في u1l1 ---------- */
@@ -560,7 +560,8 @@ LESSONS.u103l1 = {
       "My colleagues usually start at nine. I am relaxing at home today. My schedule is empty this week. I miss the office.",
       "I usually study at night. I'm missing my family this week. My schedule is busy. I have a deadline on Sunday.",
       "Is Sara teaching this week? My colleagues work hard. I usually help them. We have a busy schedule.",
-      "My friends play football on the beach. My colleagues are working hard. My schedule is busy. The deadline is near."
+      "My friends play football on the beach. My colleagues are working hard. My schedule is busy. The deadline is near.",
+      "My brother and my sister don't work on Fridays. I am writing a report this week. My schedule is busy. I miss them."
     ]
   },
 
@@ -574,7 +575,7 @@ LESSONS.u103l1 = {
 
   /* ---------- المرحلة 6: الاختبار القصير ---------- */
   quiz: [
-    { s: "Please don't ring the bell. My little brother ___ right now.", opts: ["sleeps", "is sleeping", "is sleep"], a: 1, tag: "Grammar · قواعد",
+    { s: "Please don't ring the bell. My mother ___ right now.", opts: ["sleeps", "is sleeping", "is sleep"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'Please don't ring the bell' shows that the action is going on at this moment, and 'sleep' is a long action, so we use is + verb-ing. 'is sleep' has no -ing.",
       why: "جملة Please don't ring the bell تثبت أن الفعل جارٍ في هذه اللحظة، وsleep حدث طويل، فنستعمل is مع الفعل وing، أما is sleep فبلا ing.", errCat: "tense" },
     { s: "Which sentence is correct?", opts: ["Is Majed study at night?", "Does Majed studies at night?", "Does Majed study at night?"], a: 2, tag: "Grammar · قواعد",
@@ -593,8 +594,8 @@ LESSONS.u103l1 = {
       whyEn: "'Look!' shows that the action is going on now, so we need are + verb-ing. run has a short vowel + one consonant, so the n doubles: running.",
       why: "Look! تثبت أن الفعل جارٍ الآن، فنحتاج are مع الفعل وing. وrun فيها صوت قصير ثم حرف واحد، فتتضاعف n: running.", errCat: "spelling" },
     { s: "Last week, my cousins ___ at our house for three days.", opts: ["were", "was", "are"], a: 0, tag: "Grammar · قواعد",
-      whyEn: "'last week' shows the past, and 'My cousins' is plural, so we use 'were'. 'was' is for one person, and 'are' is the present.",
-      why: "last week تدل على الماضي، وMy cousins جمع، فنستعمل were، أما was فللمفرد، وare مضارع.", errCat: "agreement" },
+      whyEn: "'Last week' shows the past, and 'my cousins' is plural, so we use 'were'. 'was' is for one person, and 'are' is the present.",
+      why: "Last week تدل على الماضي، وmy cousins جمع، فنستعمل were، أما was فللمفرد، وare مضارع.", errCat: "agreement" },
     { s: "We have to send this form before five o'clock today. Five o'clock is the ___.", opts: ["colleague", "research", "deadline"], a: 2, tag: "Vocabulary · مفردات",
       whyEn: "The last time to send the form is the 'deadline'. A colleague is a person, and research isn't a time.",
       why: "آخر وقت لإرسال النموذج deadline، أما colleague فشخص، وresearch ليس وقتًا.", errCat: "vocab" },
