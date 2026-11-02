@@ -55,11 +55,14 @@ function loadContent(root) {
   return sandbox.DATA;
 }
 
+/* A consolidation week is numbered 100 + the unit it follows (103), and its place in the course is right after that unit. */
+const unitRank = n => (Number(n) >= 100 ? Number(n) - 99.5 : Number(n));
+
 /* The lessons index.html loads, in course order: { DATA, lessons: [{ id, unit, n, open, file }], warnings }. */
 function collectLessons(rootDir) {
   const root = path.resolve(rootDir), DATA = loadContent(root);
   const lessons = [], warnings = [], seen = new Set();
-  const lists = Object.keys(DATA).map(k => /^unit(\d+)Lessons$/.exec(k)).filter(Boolean).sort((a, b) => a[1] - b[1]);
+  const lists = Object.keys(DATA).map(k => /^unit(\d+)Lessons$/.exec(k)).filter(Boolean).sort((a, b) => unitRank(a[1]) - unitRank(b[1]));
   for (const [key] of lists) {
     if (!Array.isArray(DATA[key])) { warnings.push(`content.js ${key} is not a list; skipped`); continue; }
     for (const l of DATA[key]) {

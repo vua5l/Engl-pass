@@ -1,0 +1,207 @@
+{
+  "unit": 103,
+  "title": "أسبوع التثبيت بعد الوحدة 3",
+  "grammar": "الأزمنة الأربعة في الوحدات 1 إلى 3: المضارع البسيط والمستمر، والماضي البسيط والمستمر، واختيار الزمن الصحيح بينها، وبلا كلمات جديدة",
+  "lessons": [
+    {
+      "id": "u103l1",
+      "title": "Back Home",
+      "mode": "reading",
+      "clip": null,
+      "fluencyFrom": "u1l1",
+      "text": "إيميل جديد من نور إلى صديقتها ريم، تكملة لإيميلها من القارة القطبية في u1l1، ويقرأ المتعلم ذلك الإيميل القديم أولًا بقراءة الطلاقة. عادت نور إلى بيتها في جدة وصارت تعمل في مختبر بجامعة: ما تفعله عادةً (المضارع البسيط، وما زالت تستيقظ مبكرًا) وما تفعله هذا الأسبوع (المضارع المستمر: تكتب تقريرًا عن بيانات البطاريق، وتوقّع هذا الأسبوع عقدًا مع مركز أبحاث)، وتشتاق إلى فريقها، وتسأل ريم أسئلة قصيرة في آخره. 150–210 كلمات",
+      "vocab": [
+        "typical (a typical day)",
+        "miss (I miss the team)",
+        "research (do research)",
+        "colleague (my colleagues)",
+        "schedule (a busy schedule)",
+        "deadline (meet a deadline)"
+      ],
+      "legalPhrase": "sign a contract",
+      "grammarFocus": "مراجعة المضارع البسيط مقابل المضارع المستمر بلا قاعدة جديدة: البسيط للعادة والحقيقة والجدول (I usually start at eight)، والمستمر لما يجري الآن أو هذه الأيام (I'm writing a report this week)، وكلمات الإشارة (usually وevery day مقابل now وat the moment)، وs الغائب، وdo / does مقابل am / is / are في السؤال والنفي، وموضع كلمات التكرار، وأفعال الحالة تبقى بسيطة (know وwant وneed وprefer). وأخطاؤه المستهدفة: I am work، She is go، Is she work?، He don't، I am knowing. ونحو 70% لهذا المحور و30% لما قبله (be / do والمطابقة وwas / were)، وفي التمارين تمرينان عن أدوات التعريف وحروف الجر",
+      "recall": {
+        "items": [
+          "measure (u1l1)",
+          "wake up (u1l2)",
+          "invite (u1l3)",
+          "greet (u1l4)",
+          "working hours (u1l2، وهو عنصر isLegal)"
+        ],
+        "from": "كلمات الوحدة 1 وليست في صف هذا الدرس"
+      },
+      "recycled": [
+        "strange (u1l1)",
+        "safe (u1l1)",
+        "data (u1l1)",
+        "scientist (u1l1)",
+        "takeaway (u1l3)",
+        "have people over (u1l3)",
+        "busy (u0l1)"
+      ],
+      "topics": "العمل والجامعة، العادات اليومية، الأسرة، ما يجري هذا الأسبوع"
+    },
+    {
+      "id": "u103l2",
+      "title": "How Was Your Weekend?",
+      "mode": "listening",
+      "clip": {
+        "url": "https://elllo.org/english/grammar/A2-07-Past-Tense-.htm",
+        "title": "Weekend Talk",
+        "about": "ELLLO Grammar Talks A2-07: تود يسأل كاتي (إنجلترا: علم الصفحة) عن عطلة نهاية الأسبوع: المكتبة مع صديقاتها يوم السبت، ومطعم أجنحة الدجاج الحارة مع زملائها، والتسوق يوم الأحد، وفستان وحذاء اشترتهما لأنهما رخيصان، ثم مقهى. ثم تسأله كاتي: فيلم يوم السبت ذهب إليه وحده (تود من الولايات المتحدة)، ويوم الأحد الجري في الحديقة والصور. Beginner A2، 3:44 من ملف الصوت نفسه",
+        "targetSeconds": 224
+      },
+      "text": null,
+      "vocab": [
+        "relax (I relaxed at home)",
+        "go shopping",
+        "have fun",
+        "cheap (it was cheap)",
+        "take photos"
+      ],
+      "legalPhrase": "annual leave",
+      "grammarFocus": "مراجعة الماضي البسيط كله بلا قاعدة جديدة: المنتظم وإملاء ed، والشاذ (go وhave وread وbuy وeat وdrink وtake وsee، وهي أفعال تدريب هذا الدرس)، والنفي بـ didn't + الفعل الأصلي، والسؤال بـ Did وWhat did، وwas / were مع الصفة والاسم بلا did، وعودة الماضي مقابل المضارع (خطأه في التشخيص: I don't understand للماضي). وأخطاؤه المستهدفة: I didn't went، Did you went?، I was go، She buyed. ونحو 70% لهذا المحور و30% للمضارع من u103l1، وتمرينان عن أدوات التعريف وحروف الجر",
+      "recall": {
+        "items": [
+          "cross (u2l1)",
+          "luggage (u2l3)",
+          "delayed (u2l3)",
+          "souvenir (u2l5)",
+          "report a crime (u2l4، وهو عنصر isLegal)"
+        ],
+        "from": "كلمات الوحدة 2 وليست في صف هذا الدرس"
+      },
+      "recycled": [
+        "arrive (u2l1)",
+        "flight (u2l3)",
+        "book (u2l3)",
+        "on time (u2l3)",
+        "choose (u2l4)",
+        "amazing (u2l5)",
+        "tour guide (u2l5)",
+        "swimming pool (u2l2)"
+      ],
+      "topics": "عطلة نهاية الأسبوع، الأسواق والمطاعم، الأصدقاء والأسرة، الرحلات القصيرة"
+    },
+    {
+      "id": "u103l3",
+      "title": "What Were You Doing?",
+      "mode": "reading",
+      "clip": null,
+      "fluencyFrom": "u3l5",
+      "text": "إيميل من أوليفر يرد فيه على إيميل تركي في u3l5، ويقرأ المتعلم إيميل تركي أولًا بقراءة الطلاقة. يحكي أوليفر حادثًا صغيرًا وقع له في الشتاء الماضي: كان يقود دراجته إلى الكلية والمطر غزير حين توقفت شاحنة صغيرة فجأة أمامه فسقط عن دراجته، ولم تكن إصابته خطيرة، ولاحظت امرأة كانت واقفة قرب محل ما جرى، وكتبت إفادة شاهد للشرطة، ويسأل تركي في آخره أسئلة قصيرة. 150–210 كلمات",
+      "vocab": [
+        "accident (a small accident)",
+        "fall off (fall off my bike)",
+        "notice (she noticed it)",
+        "heavy (heavy rain)",
+        "moment (at that moment)",
+        "suddenly"
+      ],
+      "legalPhrase": "witness statement",
+      "grammarFocus": "مراجعة الماضي المستمر مقابل الماضي البسيط بلا قاعدة جديدة: الحدث الجاري عند لحظة محددة (At 8 am, I was cycling)، والحدث الطويل يقطعه حدث قصير مع when وwhile، والنفي wasn't / weren't + ing، والسؤال What were you doing when …?، وwas مع المفرد وwere مع الجمع، وأفعال الحالة تبقى بسيطة في الماضي (I knew لا I was knowing). والخطر الأكبر هنا سؤال يصح فيه الزمنان، فيُعطى السياق أو اسم الزمن، كما في القسم 7. ونحو 70% لهذا المحور و30% للماضي البسيط والمضارع، وتمرينان عن أدوات التعريف وحروف الجر",
+      "recall": {
+        "items": [
+          "space (u3l1)",
+          "experiment (u3l1)",
+          "discover (u3l3)",
+          "flood (u3l4)",
+          "get a patent (u3l3، وهو عنصر isLegal)"
+        ],
+        "from": "كلمات الوحدة 3 وليست في صف هذا الدرس"
+      },
+      "recycled": [
+        "injured (u3l2)",
+        "serious (u3l2)",
+        "control (u3l2)",
+        "ambulance (u3l5)",
+        "police officer (u3l5)",
+        "exactly (u3l5)",
+        "corner (u3l5)",
+        "rain (u0l5)"
+      ],
+      "topics": "الحوادث الصغيرة، الطقس، الطريق إلى الجامعة، ما كان يجري في لحظة محددة"
+    },
+    {
+      "id": "u103l4",
+      "title": "Twenty Years Abroad",
+      "mode": "listening",
+      "clip": {
+        "url": "https://elllo.org/english/1401/1406-MegTodd-Travel-Thailand.htm",
+        "title": "20 Years Abroad",
+        "about": "ELLLO Views #1406: ميغ تسأل تود (وكلاهما من الولايات المتحدة بعلم الصفحة) عن البلدان التي عاش فيها: إنجلترا سنة بعد الجامعة وعمره 23، ثم تايلاند أكثر من أربع سنوات صار فيها معلم إنجليزية لأنه احتاج إلى عمل، ثم اليابان حيث يعمل الآن معلمًا ويعيش. فيه الماضي البسيط والمضارع البسيط وI was traveling. Beginner، 4:08 من ملف الصوت نفسه، فوق حد الأربع دقائق بثماني ثوانٍ، فيكون الترديد في المرحلة الثالثة لجزء منه نحو 90 ثانية لا للمقطع كله",
+        "targetSeconds": 248
+      },
+      "text": null,
+      "vocab": [
+        "stay (stay in a country)",
+        "island (a beautiful island)",
+        "nature (beautiful nature)",
+        "foreign (a foreign country)",
+        "culture (a different culture)",
+        "return (return home)"
+      ],
+      "legalPhrase": "apply for a visa",
+      "grammarFocus": "اختيار الزمن الصحيح بين الأزمنة الأربعة، وهو غاية الأسبوع، بلا قاعدة جديدة: يسأل المتعلم نفسه سؤالين: هل هذا الآن أم في الماضي؟ وهل هو عادة وحقيقة أم حدث جارٍ؟ فتخرج الأزمنة الأربعة (I teach، I'm teaching، I taught، I was teaching)، وكلمات الإشارة لكل منها، والانتقال من الماضي إلى الحاضر في الكلام عن الحياة (I lived in Thailand. Now I live in Japan). وتتوزع التمارين على الأزمنة الأربعة بالتساوي تقريبًا، وتمرينان عن أدوات التعريف وحروف الجر. وخطؤه المستهدف خلط الأزمنة (I don't understand للماضي، وI am live، وWhen I arrive yesterday)",
+      "recall": {
+        "items": [
+          "gift (u1l4)",
+          "arrive (u2l1)",
+          "ancient (u2l5)",
+          "invent (u3l3)",
+          "against the law (u1l4، وهو عنصر isLegal)"
+        ],
+        "from": "من الوحدات الثلاث وليست في صف هذا الدرس"
+      },
+      "recycled": [
+        "colleague (u1l5)",
+        "decide (u2l1)",
+        "moment (u3l1)",
+        "suddenly (u3l5)",
+        "amazing (u2l5)",
+        "miss (u1l1)",
+        "typical (u1l2)"
+      ],
+      "topics": "العيش في الخارج، العمل والدراسة، الحياة قبل وبعد، السفر"
+    },
+    {
+      "id": "u103l5",
+      "title": "This Is Me",
+      "mode": "reading",
+      "clip": null,
+      "fluencyFrom": "u1l5",
+      "text": "إيميل من خالد، طالب هندسة في الدمام، يعرّف فيه بنفسه لمعلمته الجديدة عبر الإنترنت قبل أول حصة، ويقرأ المتعلم إيميل u1l5 أولًا بقراءة الطلاقة. وهو فقرة واحدة طويلة واضحة: من هو، وماذا يفعل عادةً، وماذا يفعل هذه الأيام، ولحظة لا ينساها (كان يذاكر حين سمع أن أخته قُبلت لدراسة القانون الدولي في الخارج، أو ما يشبهها)، ولماذا قرر تعلم الإنجليزية، وجملة ختام. وهو نموذج لكتابة المتعلم، 150–190 كلمة",
+      "vocab": [
+        "introduce (introduce myself)",
+        "describe (describe my day)",
+        "decide (I decided to learn)",
+        "proud (I felt proud)",
+        "reply (reply to an email)",
+        "journey (my English journey)"
+      ],
+      "legalPhrase": "international law",
+      "grammarFocus": "الفقرة الطويلة بالأزمنة الأربعة، بلا قاعدة نحوية جديدة: جملة أولى تقول موضوع الفقرة، وجمل تدعمها، وجملة ختام؛ والجمل منفصلة، كل جملة بحرف كبير ونقطة، لا جملة واحدة موصولة (وهذا خطؤه في التشخيص)؛ وكلمات الربط التي درسها: first وthen وafter that وbecause وbut وso وwhen وwhile؛ والانتقال بين الأزمنة داخل الفقرة: المضارع لما هو الآن، والماضي للقصة، والماضي المستمر لخلفيتها. والكتابة نفسها فقرة من 8 جمل منفصلة على الأقل يعرّف بها المتعلم نفسه لمعلم كامبلي، والفحوص الأربعة: عدد الجمل 8، والمضارع، والماضي بنوعيه، والكلمات",
+      "recall": {
+        "items": [
+          "dangerous (u2l1)",
+          "custom (u1l4)",
+          "view (u2l5)",
+          "rescue (u3l4)",
+          "sick leave (u1l5، وهو عنصر isLegal)"
+        ],
+        "from": "من الوحدات الثلاث وليست في صف هذا الدرس"
+      },
+      "recycled": [
+        "research (u1l1)",
+        "typical (u1l2)",
+        "schedule (u1l5)",
+        "moment (u3l1)",
+        "suddenly (u3l5)",
+        "colleague (u1l5)",
+        "relax (u2l2)",
+        "stay (u2l1)"
+      ],
+      "topics": "التعريف بالنفس، الدراسة والعمل، لحظة لا تُنسى، الأهداف"
+    }
+  ]
+}

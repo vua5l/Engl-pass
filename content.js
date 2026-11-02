@@ -59,15 +59,19 @@ var DATA = window.DATA = {
     { n: 1, en: "Life & Work Around the World", ar: "الحياة والعمل حول العالم", gEn: "Present Simple & Continuous", g: "المضارع البسيط والمضارع المستمر", open: true },
     { n: 2, en: "Great Journeys", ar: "رحلات عظيمة", gEn: "Past Simple (Regular & Irregular)", g: "الماضي البسيط (المنتظم والشاذ)", open: true },
     { n: 3, en: "Moments to Remember", ar: "لحظات لا تُنسى", gEn: "Past Continuous with when & while", g: "الماضي المستمر مع when و while", open: true },
+    { n: 103, en: "Consolidation Week", ar: "أسبوع التثبيت", gEn: "Units 1–3: Choosing the Right Tense", g: "الوحدات 1–3: اختيار الزمن الصحيح" },
     { n: 4, en: "Cities of the World", ar: "مدن العالم", gEn: "Comparatives & Superlatives", g: "المقارنة والتفضيل" },
     { n: 5, en: "Food & Health", ar: "الغذاء والصحة", gEn: "Countable & Uncountable · much / many / a few", g: "المعدود وغير المعدود، و much / many / a few" },
     { n: 6, en: "Plans & Trips", ar: "خطط ورحلات", gEn: "Future: going to & will", g: "المستقبل: going to و will" },
+    { n: 106, en: "Consolidation Week", ar: "أسبوع التثبيت", gEn: "Review of Units 4–6", g: "مراجعة الوحدات 4–6" },
     { n: 7, en: "Life Experiences", ar: "تجارب الحياة", gEn: "Present Perfect with ever & never", g: "المضارع التام مع ever و never" },
     { n: 8, en: "Rules at Work & University", ar: "أنظمة العمل والجامعة", gEn: "Modals: must / have to / should / can", g: "must / have to / should / can" },
     { n: 9, en: "How Things Work", ar: "كيف تعمل الأشياء", gEn: "Present Simple Passive", g: "المبني للمجهول في المضارع" },
+    { n: 109, en: "Consolidation Week", ar: "أسبوع التثبيت", gEn: "Review of Units 7–9", g: "مراجعة الوحدات 7–9" },
     { n: 10, en: "Healthy Habits", ar: "عادات صحية", gEn: "Verb + -ing & Verb + to", g: "الفعل + ing والفعل + to" },
     { n: 11, en: "Our Planet", ar: "كوكبنا", gEn: "First Conditional", g: "الجملة الشرطية الأولى" },
-    { n: 12, en: "People Who Changed the World", ar: "أشخاص غيّروا العالم", gEn: "Relative Clauses: who / which / that", g: "who / which / that" }
+    { n: 12, en: "People Who Changed the World", ar: "أشخاص غيّروا العالم", gEn: "Relative Clauses: who / which / that", g: "who / which / that" },
+    { n: 112, en: "Consolidation Week", ar: "أسبوع التثبيت", gEn: "Review of Units 10–12", g: "مراجعة الوحدات 10–12" }
   ],
 
   unit0Lessons: [
@@ -103,6 +107,15 @@ var DATA = window.DATA = {
     { id: "u3l4", n: 4, en: "Caught in a Storm", subEn: "Past Continuous with while", ar: "قصص العواصف والكوارث: while مع الماضي المستمر", shortAr: "while مع الماضي المستمر", icon: "clock", open: true },
     { id: "u3l5", n: 5, en: "I Saw It Happen", subEn: "Writing: A Witness Statement", ar: "كتابة: إفادة شاهد في إيميل", shortAr: "سرد ما رأيته", icon: "mail", open: true },
     { id: "u3l6", n: 6, en: "Unit Review & Test", subEn: "Unit 3 Review & Mastery Test", ar: "مراجعة الوحدة واختبارها", shortAr: "مراجعة الوحدة واختبارها", icon: "trophy", test: true }
+  ],
+
+  unit103Lessons: [
+    { id: "u103l1", n: 1, en: "Back Home", subEn: "Review: Present Simple vs. Present Continuous", ar: "مراجعة المضارع البسيط والمستمر", shortAr: "مراجعة المضارع", icon: "penguin" },
+    { id: "u103l2", n: 2, en: "How Was Your Weekend?", subEn: "Review: Past Simple", ar: "مراجعة الماضي البسيط", shortAr: "مراجعة الماضي البسيط", icon: "speaker" },
+    { id: "u103l3", n: 3, en: "What Were You Doing?", subEn: "Review: Past Continuous vs. Past Simple", ar: "مراجعة الماضي المستمر والبسيط", shortAr: "مراجعة الماضي المستمر", icon: "clock" },
+    { id: "u103l4", n: 4, en: "Twenty Years Abroad", subEn: "Review: Choosing the Right Tense", ar: "اختيار الزمن الصحيح بين الأزمنة الأربعة", shortAr: "اختيار الزمن الصحيح", icon: "speaker" },
+    { id: "u103l5", n: 5, en: "This Is Me", subEn: "Writing: Your First Long Paragraph", ar: "كتابة: أول فقرة طويلة عن نفسك", shortAr: "فقرة طويلة عن نفسك", icon: "pen" },
+    { id: "u103l6", n: 6, en: "Week Review & Test", subEn: "Units 1–3 Mastery Test", ar: "مراجعة الأسبوع واختباره", shortAr: "مراجعة الأسبوع واختباره", icon: "trophy", test: true }
   ],
 
   unit4Lessons: [

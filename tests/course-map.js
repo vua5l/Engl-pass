@@ -22,7 +22,7 @@ const byNum = {};
 
 /* حالة كل وحدة: مربع لكل درس مخطط (5 إن لم تُكتب قائمة دروسها بعد).
    b مبني، x التالي (دروس الوحدة الحالية التي لم تُبنَ)، - باقٍ. والوحدة الحالية أول وحدة لم تكتمل دروسها. */
-const ORDER = [0, 1, 2, 3, 4, 5, 'special', 6, 7, 8, 9, 10, 11, 12];
+const ORDER = [0, 1, 2, 3, 103, 4, 5, 'special', 6, 106, 7, 8, 9, 109, 10, 11, 12, 112];
 let current = null;
 for (const n of ORDER) {
   const u = byNum[n]; if (!u) continue;
@@ -38,9 +38,9 @@ function card(n) {
   const test = u.unitTest && u.unitTest.exists ? 'b' : (n === current ? 'x' : '-');
   const pre = u.preTest && u.preTest.exists ? (u.preTest.version || 1) : 0;
   const grammar = u.grammarEn || (n === 0 ? 'be / do · was / were · agreement' : '');
-  return [String(n), u.titleAr || u.titleEn || '', grammar, lessons, test, pre];
+  return [n >= 100 ? 'تثبيت' : String(n), u.titleAr || u.titleEn || '', grammar, lessons, test, pre];
 }
-const BLOCKS = [[0], [1, 2, 3], [4, 5, 'special', 6], [7, 8, 9], [10, 11, 12]];
+const BLOCKS = [[0], [1, 2, 3, 103], [4, 5, 'special', 6, 106], [7, 8, 9, 109], [10, 11, 12, 112]];
 const U = BLOCKS.map(b => b.map(card).filter(Boolean));
 
 const t = map.totals || {};
@@ -54,8 +54,7 @@ const sq = (c, e = '') => '<span class="' + SQ[c] + e + '"></span>';
 const GRID = U.map((B, i) => '<div class="row">' + B.map(([n, ti, g, l, q, p]) =>
   '<div class="c"><b>' + esc(n) + '</b> · ' + esc(ti) + '<small dir="ltr" style="text-align:right">' + esc(g) + '</small>' +
   '<div style="display:flex;gap:3px;margin-top:5px">' + [...l].map(c => sq(c)).join('') + '<span style="width:3px"></span>' + sq(q, ' o') + '</div>' +
-  (p ? '<span class="chip">اختبار قبلي مبني · الإصدار ' + p + '</span>' : '') + '</div>').join('') +
-  (i ? '<div class="th">تثبيت</div>' : '') + '</div>').join('\n');
+  (p ? '<span class="chip">اختبار قبلي مبني · الإصدار ' + p + '</span>' : '') + '</div>').join('') + '</div>').join('\n');
 process.stdout.write(`<h2 class="sr-only">خريطة كورس الإنجليزية: ما بُني وما بقي</h2>
 <style>
 .m{direction:rtl;font-size:13px;line-height:1.6;color:var(--text-primary);padding:.5rem 0}.m b{font-weight:500}

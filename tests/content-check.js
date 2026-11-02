@@ -854,6 +854,12 @@ function checkLesson(id, L, S) {
   if (L.reading) {
     need(log, 'reading', L.reading, 'title');
     if (!isArr(L.reading.paras) || !L.reading.paras.length) log.error('reading.paras', 'missing or empty');
+    const from = L.reading.fluencyFrom;                                       // the old text the learner reads again before the new one
+    if (from != null) {
+      const o = isStr(from) ? S.LESSONS[from] : null;
+      if (!o || !o.reading || !isArr(o.reading.paras) || !o.reading.paras.length) log.error('reading.fluencyFrom', `${q(String(from))} is not a lesson with a reading text`);
+      else if (unitRank(o.unit) >= unitRank(L.unit)) log.error('reading.fluencyFrom', `${q(from)} comes after this lesson in the course`);
+    }
   }
   checkComprehension(log, L.reading, 'reading');
   checkListening(log, L);
@@ -888,9 +894,19 @@ function scanEmoji(log, obj, p, depth = 0) {
 }
 
 // ------------------------------------------------------------------ cross-lesson checks (course order) and recycling report
+/* A consolidation week is numbered 100 + the unit it follows (103 comes after unit 3): it has a normal list, lesson ids
+   and files, and its place in the course is right after that unit (rank 3.5). */
+const isWeek = u => num(u) >= 100;
+const unitRank = u => (isWeek(u) ? num(u) - 99.5 : num(u));
+/* The units whose sentences a lesson of unit u must not repeat: for a consolidation week the three units it reviews,
+   for any other unit the unit just before it in the course (and the week just before it, if there is one). */
+function poolUnits(u) {
+  if (isWeek(u)) return new Set([u - 102, u - 101, u - 100]);
+  return new Set([u - 1, u + 99]);
+}
 /* Lesson ids in course order: unit, then lesson number n, then id. */
 function orderedLessonIds(LESSONS) {
-  return Object.keys(LESSONS).sort((a, b) => num(LESSONS[a].unit) - num(LESSONS[b].unit) || num(LESSONS[a].n) - num(LESSONS[b].n) || a.localeCompare(b));
+  return Object.keys(LESSONS).sort((a, b) => unitRank(LESSONS[a].unit) - unitRank(LESSONS[b].unit) || num(LESSONS[a].n) - num(LESSONS[b].n) || a.localeCompare(b));
 }
 /* Vocab key: normalised words, light plural strip on the last word ("lawyers" = "lawyer"). */
 function vocabKey(en) {
@@ -971,7 +987,8 @@ const clipList = (a, max) => a.slice(0, max).join('; ') + (a.length > max ? `; (
 /* INFO lines: which vocab of earlier lessons (same unit) and of the previous unit reappears in this lesson. */
 function recyclingReport(S, id) {
   const { order, info } = S.cross, u = num(S.LESSONS[id].unit), pos = order.indexOf(id);
-  const poolIds = order.filter((x, i) => (num(S.LESSONS[x].unit) === u && i < pos) || num(S.LESSONS[x].unit) === u - 1);
+  const before = poolUnits(u);
+  const poolIds = order.filter((x, i) => (num(S.LESSONS[x].unit) === u && i < pos) || before.has(num(S.LESSONS[x].unit)));
   const pool = poolIds.flatMap(x => info[x].vocab);
   if (!pool.length) return [['recycling', 'no earlier lesson in this unit or the previous unit to recycle vocabulary from']];
   const me = info[id];
@@ -1009,16 +1026,24 @@ function nearOverlaps(e, pool) {
 function checkAcrossLessons(log, id, S) {
   const { order, info } = S.cross, L = S.LESSONS[id], me = info[id], pos = order.indexOf(id), u = num(L.unit);
   const seen = new Map();                                                    // vocab key -> first item that introduced it
-  order.slice(0, pos).forEach(x => info[x].vocab.forEach(v => { if (!seen.has(v.key)) seen.set(v.key, v); }));
+  // A consolidation week brings old words back, so it introduces nothing: its items never count as new, and each of them must be old.
+  order.slice(0, pos).filter(x => !isWeek(S.LESSONS[x].unit)).forEach(x => info[x].vocab.forEach(v => { if (!seen.has(v.key)) seen.set(v.key, v); }));
   me.vocab.forEach(v => {
     const first = seen.get(v.key);
+    if (isWeek(u)) {
+      if (!first) { log.error(v.field, `${q(v.en)} was never introduced: a consolidation week brings back old words only`); return; }
+      const twice = order.slice(0, pos).find(x => num(S.LESSONS[x].unit) === u && info[x].vocab.some(w => w.key === v.key));
+      if (twice) log.warn(v.field, `${q(v.en)} already comes back in ${twice}`);
+      return;
+    }
     if (!first) { seen.set(v.key, v); return; }
     if (first.lesson === id) { log.warn(v.field, `${q(v.en)} is introduced as new twice in this lesson (also ${first.field})`); return; }
     const other = num(S.LESSONS[first.lesson].unit) !== u ? ` (unit ${S.LESSONS[first.lesson].unit})` : '';
     log.error(v.field, `${q(v.en)} is introduced as new here but was already introduced as new in ${first.lesson} ${first.field}${other}; recycle it instead (a new item is new once in the course)`);
   });
   // Earlier lessons of the same unit, then every lesson of the previous unit (course order).
-  const poolIds = order.filter((x, i) => (num(S.LESSONS[x].unit) === u && i < pos) || num(S.LESSONS[x].unit) === u - 1);
+  const before = poolUnits(u);
+  const poolIds = order.filter((x, i) => (num(S.LESSONS[x].unit) === u && i < pos) || before.has(num(S.LESSONS[x].unit)));
   const pool = poolIds.flatMap(x => info[x].entries);
   const where = p => (num(S.LESSONS[p.lesson].unit) === u ? 'earlier lesson of the same unit' : 'lesson of the previous unit');
   const reported = new Set(), near = [];
@@ -1041,10 +1066,10 @@ function checkAcrossLessons(log, id, S) {
 const isTypedQ = x => !!x && (x.type === 'typing' || (isArr(x.ans) && !isArr(x.opts)));
 /* All sentences the learner met in one unit's lessons (for the "no reused question" rule). */
 function unitPool(S, unit) {
-  const pool = [];
+  const pool = [], units = isWeek(unit) ? new Set([unit, ...poolUnits(unit)]) : new Set([unit]);
   const push = (text, src) => { const e = entry(text, src); if (e) pool.push(e); };
   for (const [id, L] of Object.entries(S.LESSONS)) {
-    if (L.unit !== unit) continue;
+    if (!units.has(L.unit)) continue;
     explanationExamples(L).forEach(e => pool.push(Object.assign({}, e, { src: `${id} ${e.src}` })));
     for (const it of exerciseItems(L)) itemSentences(it.kind, it.x).forEach(s => push(s, `${id} ${it.field}`));
     for (const part of [L.reading, L.listening]) if (part) {
