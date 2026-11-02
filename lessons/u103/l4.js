@@ -1,19 +1,21 @@
 /* ===== أسبوع التثبيت · الدرس 4: Twenty Years Abroad — اختيار الزمن الصحيح بين الأزمنة الأربعة (6 مراحل · درس استماع) ===== */
 (function(){
 /* فحوص الكتابة: تُطرح صيغ المستمر أولًا، فلا يُحسب am studying مضارعًا بسيطًا ولا was studying ماضيًا بسيطًا */
-var ADV = "(?:(?:still|all|both|just|really|also|always|often|now|not)\\s+)?";
+var ADV = "(?:(?:still|all|both|just|really|also|always|often|usually|sometimes|never|currently|now|not)\\s+){0,2}";
 var NOT_V = "(?!(?:morning|evening|nothing|something|anything|everything|spring|during|wedding|frightening|interesting|exciting|boring|amazing|surprising|tiring)\\b)";
 var ING = ADV + NOT_V + "[a-z]+ing\\b";
 var WHO = "(?:I|you|he|she|it|we|they|(?:the|my|our|his|her|their)\\s+[a-z]+)";
 var PRES_C = new RegExp("(?:\\b(?:am|is|are)(?:n't)?|'m|'re|\\b[a-z]+'s)\\s+" + ING + "|\\b(?:am|is|are)(?:n't)?\\s+" + WHO + "\\s+" + ING, "gi");
 var PAST_C = new RegExp("\\b(?:was|were)(?:n't)?\\s+" + ING + "|\\b(?:was|were)(?:n't)?\\s+" + WHO + "\\s+" + ING, "gi");
-var PAST_FORMS = "cut|put|set|let|cost|hit|hurt|shut|read|came|became|ran|had|made|said|paid|told|sold|found|thought|bought|brought|taught|caught|felt|kept|slept|left|met|meant|sent|spent|built|lent|lost|won|sat|stood|understood|heard|held|went|saw|took|gave|knew|wrote|spoke|broke|chose|forgot|drove|ate|fell|began|got|rode|woke|rang|drank|flew|wore|grew|sang|swam|threw|drew|blew|did|was|were|could";
+var PAST_FORMS = "cut|put|set|let|cost|hit|hurt|shut|read|came|became|ran|had|made|said|paid|told|sold|found|thought|bought|brought|taught|caught|felt|kept|slept|left|met|meant|sent|spent|built|lent|lost|won|sat|stood|understood|heard|held|went|saw|took|gave|knew|wrote|spoke|broke|chose|forgot|drove|ate|fell|began|got|rode|woke|rang|drank|flew|wore|grew|sang|swam|threw|drew|blew|learnt|dreamt|burnt|stole|fought|shook|hung|hid|stuck|tore|did|was|were|could";
 var PAST_S = new RegExp("\\b(?:" + PAST_FORMS + "|didn't|wasn't|weren't|couldn't)\\b|\\b(?!(?:need|feed|speed|seed|bed|red|shed|hundred|indeed)\\b)[a-z]{2,}ed\\b", "i");
 var PRES_BE = /\b(?:am|is|are|isn't|aren't|do|does|don't|doesn't)\b|'m\b|'re\b|\b(?:it|he|she|that|there|this|what)'s\b/i;
 var PRES_I = new RegExp("\\b(?:I|we|they)\\s+(?:(?:usually|often|always|sometimes|never|still|also|really|now)\\s+)?(?!(?:" + PAST_FORMS + "|didn't|wasn't|weren't|couldn't|would|should|might|will)\\b)(?!(?!need\\b)[a-z]+ed\\b)[a-z]+\\b", "i");
-var PRES_3 = /\b(?:lives|works|studies|teaches|goes|has|wants|needs|likes|loves|knows|helps|gets|comes|takes|makes|says|thinks|misses|stays|returns|visits|writes|reads|speaks|drives|walks|plays|cooks|sells|prefers|understands|believes|enjoys|travels|sleeps|wakes|eats|drinks|buys|runs|starts|finishes|leaves|uses|means|costs|feels|looks|remembers)\b/i;
+var PRES_3 = /\b(?:lives|works|studies|teaches|goes|has|wants|needs|likes|loves|knows|helps|gets|comes|takes|makes|says|thinks|misses|stays|returns|visits|writes|reads|speaks|drives|walks|plays|cooks|sells|prefers|understands|believes|enjoys|travels|sleeps|wakes|eats|drinks|buys|runs|starts|finishes|leaves|uses|means|costs|feels|looks|remembers|watches|opens|closes|cleans|wears|pays|sends|calls|brings|tells|gives|sits|stands|meets|swims|sings|draws|owns|tries|flies|hopes|plans|sees|hears)\b/i;
+var BASE_V = "live|work|study|teach|go|have|want|need|like|love|know|help|get|come|take|make|say|think|miss|stay|return|visit|write|read|speak|drive|walk|play|cook|sell|prefer|understand|believe|enjoy|travel|sleep|wake|eat|drink|buy|run|start|finish|leave|use|mean|cost|feel|look|remember|watch|open|close|clean|wear|pay|send|call|bring|tell|give|sit|stand|meet|swim|sing|draw|own|try|fly|hope|plan|see|hear";
+var PRES_PL = new RegExp("\\b(?:you|people|and\\s+(?:my\\s+|our\\s+)?[a-z]+|(?:my|our|his|her|their|the|these|those|many|some|most|all)\\s+(?:[a-z]+\\s+)?[a-z]+s)\\s+(?:(?:usually|often|always|sometimes|never|still|also|really|now)\\s+)?(?:" + BASE_V + ")\\b", "i");
 function plain(text){ return String(text || '').replace(/[‘’]/g, "'"); }
-function noCont(text){ return plain(text).replace(PRES_C, ' ').replace(PAST_C, ' '); }
+function noCont(text){ return plain(text).replace(PRES_C, ' . ').replace(PAST_C, ' . '); }
 function has(re, s){ re.lastIndex = 0; return re.test(s); }
 
 LESSONS.u103l4 = {
@@ -24,8 +26,8 @@ LESSONS.u103l4 = {
   en: "Twenty Years Abroad",
   ar: "اختيار الزمن الصحيح بين الأزمنة الأربعة",
   subEn: "Review: Choosing the Right Tense",
-  canDoEn: "I can choose the right tense with two questions: is it present or past, and is it going on at that moment or these days?",
-  canDoAr: "أقدر أن أختار الزمن الصحيح بسؤالين: أهو في الحاضر أم في الماضي؟ وهل هو جارٍ في تلك اللحظة أو هذه الأيام؟",
+  canDoEn: "I can choose the right tense with two questions: is it present or past, and is it going on now, these days or at that moment?",
+  canDoAr: "أقدر أن أختار الزمن الصحيح بسؤالين: أهو في الحاضر أم في الماضي؟ وهل هو جارٍ الآن أو هذه الأيام أو في تلك اللحظة؟",
   descEn: "I can choose between the present simple, the present continuous, the past simple and the past continuous, move from my past to my life now, and follow a real talk about life in three countries.",
   descAr: "أقدر أن أختار بين المضارع البسيط والمضارع المستمر والماضي البسيط والماضي المستمر، وأنتقل من ماضيّ إلى حياتي الآن، وأتابع حديثًا حقيقيًا عن الحياة في ثلاثة بلدان.",
   goals: [
@@ -141,7 +143,7 @@ LESSONS.u103l4 = {
       promptAr: "العبارة القانونية من الوحدة الأولى: مخالف للقانون (ثلاث كلمات)",
       promptEn: "Legal phrase from Unit 1: not allowed by the law (three words)",
       sentPre: "In many countries, it is",
-      sentPost: "to use a phone in your hand while you are driving.",
+      sentPost: "to take photos inside a court.",
       ans: ["against the law"],
       isLegal: true,
       hint: "a _ _ _ _ _ _ _ _ _ _ _ w (13 letters, 3 words)",
@@ -176,7 +178,7 @@ LESSONS.u103l4 = {
       wikiFile: "En-us-stay.ogg",
       wikiCredit: "File:En-us-stay.ogg · Wikimedia Commons" },
     { en: "island", pos: "noun", ar: "جزيرة", say: "آيْلَنْد",
-      ex: "We spent a quiet week on a beautiful island in the Red Sea.", exAr: "قضينا أسبوعًا هادئًا في جزيرة جميلة في البحر الأحمر.",
+      ex: "My uncle showed me photos of a beautiful island in Greece.", exAr: "أراني عمي صورًا لجزيرة جميلة في اليونان.",
       tipEn: "Say a beautiful island. Remember that the s is silent, and that we say on an island. Water is all around an island.",
       tip: "نقول a beautiful island أي جزيرة جميلة، وتذكّر أن حرف s لا يُنطق، وأننا نقول on an island، والماء يحيط بالجزيرة من كل جانب.",
       oxfordSlug: "island",
@@ -204,7 +206,7 @@ LESSONS.u103l4 = {
       wikiFile: "En-us-culture.ogg",
       wikiCredit: "File:En-us-culture.ogg · Dvortygirl / Wikimedia Commons (CC BY-SA 3.0)" },
     { en: "return", pos: "verb", ar: "يعود / يرجع", say: "رِتِيرْن",
-      ex: "After her studies in Australia, Sara returned home and found a job.", exAr: "بعد دراستها في أستراليا عادت سارة إلى بلدها ووجدت عملًا.",
+      ex: "After a long trip, my father returned home with gifts for everyone.", exAr: "بعد رحلة طويلة عاد أبي إلى البيت ومعه هدايا للجميع.",
       tipEn: "Say return home, with no 'to', just like go home. With a place, use to: return to Riyadh. Stress the second part: re-TURN.",
       tip: "نقول return home بلا to، كما نقول go home، ومع اسم المكان نستعمل to: return to Riyadh، والنبر على المقطع الثاني.",
       oxfordSlug: "return_1",
@@ -231,7 +233,7 @@ LESSONS.u103l4 = {
     { s: "I can't read the signs here, because this is a ___ country for me.", opts: ["foreign", "return", "stay"], a: 0,
       whyEn: "We need an adjective before 'country', and 'foreign' means not your own. 'return' and 'stay' are verbs here.",
       why: "يلزم قبل country صفة، وforeign تعني غير بلدك، أما return وstay ففعلان هنا.", errCat: "vocab" },
-    { s: "Many countries ask foreign students to ___ before they travel.", opts: ["stay", "apply for a visa", "return"], a: 1,
+    { s: "The rules of that country are clear: visitors need to ___ before the trip.", opts: ["stay", "apply for a visa", "return"], a: 1,
       whyEn: "To 'apply for a visa' is to ask for official permission to enter a country, and this comes before the trip. 'stay' and 'return' come after you travel.",
       why: "apply for a visa أن تطلب إذنًا رسميًا بدخول البلد، وهذا يكون قبل السفر، أما stay وreturn فبعد السفر.", errCat: "vocab" },
     { s: "My brother missed his family, so he decided to ___ home after one year abroad.", opts: ["return", "island", "culture"], a: 0,
@@ -246,7 +248,7 @@ LESSONS.u103l4 = {
       enHtml:
         '<h2 class="bi-h"><span class="en" dir="ltr">Two Questions</span><small>سؤالان قبل كل فعل</small></h2>' +
         '<p class="en-p" dir="ltr">You know four tenses now, and there is no new rule today. Before you write a verb, ask yourself two questions:</p>' +
-        '<div class="formula"><b>1.</b> Is it in the present or in the past?<br><b>2.</b> Was it going on at that moment, or is it going on these days?</div>' +
+        '<div class="formula"><b>1.</b> Is it in the present or in the past?<br><b>2.</b> Is it going on now or these days? In the past: was it going on at that moment?</div>' +
         '<p class="en-p" dir="ltr">If the action is going on, use the <b>continuous</b>. If not, use the <b>simple</b>: it is for a habit, a fact or a finished action.</p>' +
         '<div class="tbl"><table><thead><tr><th></th><th>Simple · البسيط</th><th>Continuous · المستمر</th></tr></thead><tbody>' +
           '<tr><td>Present</td><td>I <span class="hs">teach</span> every morning.</td><td>I\'m <span class="hc">teaching</span> right now.</td></tr>' +
@@ -255,7 +257,7 @@ LESSONS.u103l4 = {
       arHtml:
         '<p>تعرف الآن أربعة أزمنة، وليس اليوم قاعدة جديدة. وقبل أن تكتب الفعل اسأل نفسك سؤالين:</p>' +
         '<p><b>الأول:</b> أهذا في الحاضر أم في الماضي؟</p>' +
-        '<p><b>الثاني:</b> هل كان الحدث جاريًا في تلك اللحظة، أو هو جارٍ هذه الأيام؟</p>' +
+        '<p><b>الثاني:</b> هل هو جارٍ الآن أو هذه الأيام؟ وفي الماضي: هل كان جاريًا في تلك اللحظة؟</p>' +
         '<p>فإن كان جاريًا فالزمن <b>مستمر</b>، وإلا <b>فبسيط</b>، والبسيط للعادة والحقيقة والحدث المكتمل.</p>' +
         '<p><bdi class="en">I teach every morning.</bdi> عادة في الحاضر. <bdi class="en">I\'m teaching right now.</bdi> جارٍ الآن. <bdi class="en">I taught two classes yesterday.</bdi> حدث مكتمل في الماضي. <bdi class="en">I was teaching when you called.</bdi> كان جاريًا في لحظة الاتصال.</p>'
     },
@@ -267,7 +269,7 @@ LESSONS.u103l4 = {
         '<p class="en-p" dir="ltr">A time word gives you a good clue, but it does not always decide.</p>' +
         '<div class="sigs">' +
           '<div class="sig s"><h3 dir="ltr">Usually simple<small class="sig-ar">ترجّح البسيط</small></h3><ul><li>every day</li><li>usually</li></ul></div>' +
-          '<div class="sig c"><h3 dir="ltr">Past: both tenses<small class="sig-ar">للماضي بنوعيه</small></h3><ul><li>yesterday</li><li>two years ago</li></ul></div>' +
+          '<div class="sig"><h3 dir="ltr">Past: both tenses<small class="sig-ar">للماضي بنوعيه</small></h3><ul><li>yesterday</li><li>two years ago</li></ul></div>' +
         '</div>' +
         '<p class="en-p" dir="ltr"><b>The past continuous has no time word of its own.</b> The other action in the sentence, or the situation, decides:</p>' +
         '<div class="xbox"><span class="xtag c" dir="ltr">Long action · الحدث الطويل</span><p class="xen">The guests were waiting in the garden</p><span class="xtag s" dir="ltr">Short action · الحدث القصير</span><p class="xen">when my father opened the door.</p></div>' +
@@ -289,10 +291,12 @@ LESSONS.u103l4 = {
           '<tr><td>Present</td><td>My cousin <span class="hs">prefers</span> a quiet life.</td></tr>' +
           '<tr><td>Past</td><td>At that time, I <span class="hs">knew</span> only ten English words.</td></tr>' +
         '</tbody></table></div>' +
+        '<p class="en-p" dir="ltr"><b>have</b> is a state verb too when it means own: My aunt has a small garden.</p>' +
         '<div class="tip" dir="ltr"><p><b>Do not say · لا تقل:</b> I am knowing · she is preferring · I was knowing · I was understanding · I was needing</p></div>',
       arHtml:
         '<p>أفعال الحالة لا تحتاج إلى السؤال الثاني، فهي تبقى بسيطة في الحاضر والماضي، ومنها <bdi class="en">know</bdi> و<bdi class="en">understand</bdi> و<bdi class="en">believe</bdi> و<bdi class="en">want</bdi> و<bdi class="en">need</bdi> و<bdi class="en">prefer</bdi>.</p>' +
         '<p><bdi class="en">My cousin prefers a quiet life.</bdi> في الحاضر، و<bdi class="en">At that time, I knew only ten English words.</bdi> في الماضي.</p>' +
+        '<p>وكذلك <bdi class="en">have</bdi> بمعنى «يملك»: <bdi class="en">My aunt has a small garden.</bdi></p>' +
         '<p>فلا تقل <bdi class="en">I am knowing</bdi> ولا <bdi class="en">she is preferring</bdi> ولا <bdi class="en">I was knowing</bdi> ولا <bdi class="en">I was understanding</bdi> ولا <bdi class="en">I was needing</bdi>.</p>'
     },
     {
@@ -322,7 +326,7 @@ LESSONS.u103l4 = {
           '<li><span class="no">Last night I don\'t understand the film.</span><span class="yes">Last night I didn\'t understand the film.</span><p class="en-m" dir="ltr">Last night is in the past, so the verb must be in the past: <b>didn\'t</b> + base verb.</p><p><bdi class="en">Last night</bdi> في الماضي، فيكون الفعل ماضيًا: <bdi class="en">didn\'t</bdi> مع الفعل الأصلي.</p></li>' +
           '<li><span class="no">I am drive to college every day.</span><span class="yes">I drive to college every day.</span><p class="en-m" dir="ltr">This is a habit, so use the present simple. Do not put <b>am</b> before a base verb.</p><p>هذه عادة، فنستعمل المضارع البسيط، ولا نضع <bdi class="en">am</bdi> قبل الفعل الأصلي.</p></li>' +
           '<li><span class="no">When I arrive at the hotel last night, my cousin was waiting outside.</span><span class="yes">When I arrived at the hotel last night, my cousin was waiting outside.</span><p class="en-m" dir="ltr">The short action is in the past too, so it takes the past simple: <b>arrived</b>.</p><p>الحدث القصير في الماضي أيضًا، فيأتي بالماضي البسيط: <bdi class="en">arrived</bdi>.</p></li>' +
-          '<li><span class="no">I am knowing your brother from school.</span><span class="yes">I know your brother from school.</span><p class="en-m" dir="ltr"><b>know</b> is a state verb, so it stays simple.</p><p><bdi class="en">know</bdi> فعل حالة، فيبقى بسيطًا.</p></li>' +
+          '<li><span class="no">We are wanting a bigger house.</span><span class="yes">We want a bigger house.</span><p class="en-m" dir="ltr"><b>want</b> is a state verb, so it stays simple.</p><p><bdi class="en">want</bdi> فعل حالة، فيبقى بسيطًا.</p></li>' +
         '</ul>'
     },
     {
@@ -331,12 +335,12 @@ LESSONS.u103l4 = {
       enHtml:
         '<h2 class="bi-h"><span class="en" dir="ltr">Quick Summary</span><small>الخلاصة</small></h2>' +
         '<div class="sumc" dir="ltr"><h3>In Two Lines · في سطرين</h3>' +
-          '<p><b>Two questions · سؤالان</b><span>present or past? · going on at that moment or these days? · yes: continuous · no: simple (habit, fact, finished action)</span></p>' +
+          '<p><b>Two questions · سؤالان</b><span>present or past? · going on now or these days, or at that moment in the past? · yes: continuous · no: simple (habit, fact, finished action)</span></p>' +
           '<p><b>Clues · القرائن</b><span>time words help, but do not always decide · the past continuous: look at the other action · state verbs: always simple · ago: past · now: present</span></p>' +
         '</div>' +
         '<p class="en-p" dir="ltr">Now let\'s practise: 16 guided exercises on all four tenses.</p>',
       arHtml:
-        '<p><b>السؤالان:</b> أفي الحاضر أم في الماضي؟ وهل هو جارٍ في تلك اللحظة أو هذه الأيام؟ فإن كان جاريًا فالمستمر، وإلا فالبسيط للعادة والحقيقة والحدث المكتمل.</p>' +
+        '<p><b>السؤالان:</b> أفي الحاضر أم في الماضي؟ وهل هو جارٍ الآن أو هذه الأيام، أو كان جاريًا في تلك اللحظة؟ فإن كان جاريًا فالمستمر، وإلا فالبسيط للعادة والحقيقة والحدث المكتمل.</p>' +
         '<p><b>القرائن:</b> كلمات الوقت تساعد ولا تقطع، والماضي المستمر يقرره الحدث الآخر، وأفعال الحالة بسيطة دائمًا، وبعد <bdi class="en">ago</bdi> الماضي، ومع <bdi class="en">now</bdi> الحاضر.</p>'
     }
   ],
@@ -345,10 +349,10 @@ LESSONS.u103l4 = {
     { s: "Ten years ago, my family ___ in a small town near Taif.", opts: ["lived", "live"], a: 0,
       whyEn: "Question 1: 'Ten years ago' puts this in the past, so we need a past verb. 'live' is a present form.",
       why: "السؤال الأول: Ten years ago تجعل الحدث في الماضي، فيلزم فعل ماضٍ، أما live فمضارع.", errCat: "tense" },
-    { s: "Can we talk later? I ___ dinner for the guests in the kitchen.", opts: ["cook", "am cooking"], a: 1,
-      whyEn: "Question 2: the speaker can't talk because the cooking is going on at this moment. 'Can we talk later?' shows this, so we use the present continuous: am cooking.",
-      why: "السؤال الثاني: لا يستطيع المتكلم الحديث لأن الطبخ جارٍ في هذه اللحظة، وتدل على ذلك Can we talk later?، فنستعمل المضارع المستمر: am cooking.", errCat: "tense" },
-    { s: "We ___ for our flight when my colleague suddenly called.", opts: ["were waiting", "waited"], a: 0,
+    { s: "Can we talk later? I ___ my mother to the mall.", opts: ["drive", "am driving"], a: 1,
+      whyEn: "Question 2: the speaker can't talk because the drive is going on at this moment. 'Can we talk later?' shows this, so we use the present continuous: am driving.",
+      why: "السؤال الثاني: لا يستطيع المتكلم الحديث لأن القيادة جارية في هذه اللحظة، وتدل على ذلك Can we talk later?، فنستعمل المضارع المستمر: am driving.", errCat: "tense" },
+    { s: "We ___ for our train when my colleague suddenly called.", opts: ["were waiting", "waited"], a: 0,
       whyEn: "The call is the short action, and it came in the middle of the wait. The wait was going on at that moment, so it takes the past continuous.",
       why: "الاتصال هو الحدث القصير، وقد وقع في أثناء الانتظار، فالانتظار كان جاريًا في تلك اللحظة، فيأتي بالماضي المستمر.", errCat: "tense" },
     { s: "My sister arrived ___ Malaysia on Sunday morning.", opts: ["to", "in"], a: 1,
@@ -357,15 +361,15 @@ LESSONS.u103l4 = {
   ],
 
   gB: [
-    { s: "My father is walk to his office every day.", ok: false, fix: "My father walks to his office every day.",
-      whyEn: "'every day' shows a habit, so we use the present simple with -s for he: walks. We do not put 'is' before a base verb.",
-      why: "every day تدل على عادة، فنستعمل المضارع البسيط بإضافة s مع المفرد الغائب: walks، ولا نضع is قبل الفعل الأصلي.", errCat: "be_verb" },
+    { s: "My uncle is sell dates at the market every Saturday.", ok: false, fix: "My uncle sells dates at the market every Saturday.",
+      whyEn: "'every Saturday' shows a habit, so we use the present simple with -s for he: sells. We do not put 'is' before a base verb.",
+      why: "every Saturday تدل على عادة، فنستعمل المضارع البسيط بإضافة s مع المفرد الغائب: sells، ولا نضع is قبل الفعل الأصلي.", errCat: "be_verb" },
     { s: "Two years ago, we don't have a car.", ok: false, fix: "Two years ago, we didn't have a car.",
       whyEn: "'Two years ago' is in the past, but 'don't have' is present. The past negative is didn't + base verb.",
       why: "Two years ago في الماضي، أما don't have فمضارع، ونفي الماضي didn't مع الفعل الأصلي.", errCat: "tense" },
-    { s: "The children were playing in the garden when a ball was hitting the window.", ok: false, fix: "The children were playing in the garden when a ball hit the window.",
-      whyEn: "The ball hit the window in one moment. A short action after 'when' takes the past simple, and 'hit' does not change in the past.",
-      why: "ضربت الكرة النافذة في لحظة واحدة، والحدث القصير بعد when يأتي بالماضي البسيط، وhit لا يتغير في الماضي.", errCat: "tense" },
+    { s: "My brothers were cleaning the garden when they were finding an old key.", ok: false, fix: "My brothers were cleaning the garden when they found an old key.",
+      whyEn: "They found the key in one moment. A short action after 'when' takes the past simple, and the past of 'find' is irregular: found.",
+      why: "وجدوا المفتاح في لحظة واحدة، والحدث القصير بعد when يأتي بالماضي البسيط، وماضي find شاذ: found.", errCat: "tense" },
     { s: "My cousin is studying in Jeddah this term, and she misses her family.", ok: true,
       whyEn: "Correct: 'this term' shows something going on these days, so 'is studying' is right. 'misses' tells us how she feels, and it has the -s of the present simple.",
       why: "صحيحة: this term تدل على ما يجري هذه الأيام، فتصح is studying، وmisses تعبّر عن شعورها وفيها s المضارع البسيط.", errCat: "tense" }
@@ -375,15 +379,15 @@ LESSONS.u103l4 = {
     { pre: "These days, my sister", verb: "want", post: "a job in a foreign country.", ans: ["wants"],
       whyEn: "'These days' puts this in the present. 'want' is a state verb, so it stays simple, and 'my sister' takes -s: wants.",
       why: "These days تجعل الجملة في الحاضر، وwant فعل حالة فيبقى بسيطًا، وmy sister مفرد غائب فنضيف s: wants.", errCat: "stative" },
-    { pre: "Shh! My grandfather", verb: "sleep", post: "in the next room.", ans: ["is sleeping"],
-      whyEn: "'Shh!' tells us to be quiet because the sleep is going on now. So we use the present continuous: is sleeping.",
-      why: "Shh! تطلب الهدوء لأن النوم جارٍ الآن، فنستعمل المضارع المستمر: is sleeping.", errCat: "tense" },
-    { pre: "We were having lunch when my colleague", verb: "call", post: "from the airport.", ans: ["called"],
-      whyEn: "'were having lunch' is the long action. The call is the short action after 'when', so it takes the past simple: called.",
-      why: "were having lunch هو الحدث الطويل، والاتصال حدث قصير بعد when، فيأتي بالماضي البسيط: called.", errCat: "tense" },
-    { pre: "My aunt is", verb: "article", post: "English teacher in Oman.", ans: ["an"], groupEn: "Write a or an", group: "اكتب a أو an",
-      whyEn: "We use a or an before a job. 'English' starts with a vowel sound, so we say 'an English teacher'.",
-      why: "نضع a أو an قبل المهنة، وEnglish تبدأ بصوت متحرك، فنقول an English teacher.", errCat: "articles_prep" }
+    { pre: "Please turn off the TV. My little brother", verb: "sleep", post: "on the sofa.", ans: ["is sleeping"],
+      whyEn: "'Please turn off the TV' asks for quiet because the sleep is going on now. So we use the present continuous: is sleeping.",
+      why: "Please turn off the TV طلب للهدوء لأن النوم جارٍ الآن، فنستعمل المضارع المستمر: is sleeping.", errCat: "tense" },
+    { pre: "I", verb: "wait", post: "outside the bank when my brother called my name.", ans: ["was waiting"],
+      whyEn: "'when my brother called my name' is the short action. The wait was going on at that moment, so it takes the past continuous: was waiting.",
+      why: "when my brother called my name هو الحدث القصير، والانتظار كان جاريًا في تلك اللحظة، فيأتي بالماضي المستمر: was waiting.", errCat: "tense" },
+    { pre: "Our neighbour works on", verb: "article", post: "island in the Gulf.", ans: ["an"], groupEn: "Write a or an", group: "اكتب a أو an",
+      whyEn: "The s in 'island' is silent, so the word starts with a vowel sound, and we say 'an island'.",
+      why: "حرف s في island لا يُنطق، فتبدأ الكلمة بصوت متحرك، ونقول an island.", errCat: "articles_prep" }
   ],
 
   gD: [
@@ -391,11 +395,11 @@ LESSONS.u103l4 = {
       whyEn: "This is a habit, so we use the present simple. 'usually' goes before the main verb: usually visit.",
       why: "هذه عادة، فنستعمل المضارع البسيط، وusually تأتي قبل الفعل الأساسي: usually visit.", errCat: "word_order" },
     { chips: ["when my father", "The children", "came home.", "were doing their homework"], ans: "The children were doing their homework when my father came home.",
-      whyEn: "The long action comes first in the past continuous. Then comes when + the short action in the past simple.",
-      why: "يأتي الحدث الطويل أولًا بالماضي المستمر، ثم when مع الحدث القصير بالماضي البسيط.", errCat: "word_order" },
-    { chips: ["this week.", "from home", "My sister", "is working"], ans: "My sister is working from home this week.",
-      whyEn: "'this week' shows something going on these days, and the time phrase goes at the end. The verb is is + verb-ing.",
-      why: "this week تدل على ما يجري هذه الأيام، وتأتي عبارة الوقت في الآخر، والفعل is مع الفعل بـ ing.", errCat: "word_order" },
+      whyEn: "Here the long action comes first, in the past continuous. Then comes when + the short action in the past simple.",
+      why: "يأتي الحدث الطويل هنا أولًا بالماضي المستمر، ثم when مع الحدث القصير بالماضي البسيط.", errCat: "word_order" },
+    { chips: ["this week.", "at our house", "My aunt", "is staying"], ans: "My aunt is staying at our house this week.",
+      whyEn: "'this week' shows something going on these days, so the verb is is + verb-ing. Here the time phrase ends the sentence, but it can also come first: This week, my aunt is staying at our house.",
+      why: "this week تدل على ما يجري هذه الأيام، فالفعل is مع الفعل بـ ing. وعبارة الوقت هنا في آخر الجملة، ويجوز أن تأتي في أولها: This week, my aunt is staying at our house.", errCat: "word_order" },
     { chips: ["but now", "last year,", "we have a house.", "We had a small flat"], ans: "We had a small flat last year, but now we have a house.",
       whyEn: "The sentence moves from the past to the present: 'last year' goes with had, and 'now' goes with have.",
       why: "تنتقل الجملة من الماضي إلى الحاضر: last year مع had، وnow مع have.", errCat: "word_order" }
@@ -439,7 +443,7 @@ LESSONS.u103l4 = {
       arHtml: "<p><b>انتبه:</b> يسير حديث تود من الماضي البسيط إلى المضارع البسيط، وهذا طبيعي في الكلام عن الحياة. ويقول الماضي المستمر مرة واحدة فقط، وليس في المقطع مضارع مستمر، وقد تدربت عليه في التمارين.</p><p>وستسمع صيغًا لم ندرسها بعد، مثل <bdi class=\"en\">I've lived</bdi>، وقاعدتها ستأتي لاحقًا، فلا تقف عندها الآن.</p><p>وهذه جمل أمثلة كتبناها عن المقطع، وليست كلام المتحدثين بنصه. أما الترديد فليكن من 1:58 إلى 3:26 فقط.</p>"
     },
     questions: [
-      { q: "How many years in Japan?", opts: ["Four", "15", "One"], a: 1,
+      { q: "How many years in Japan?", opts: ["4", "15", "1"], a: 1,
         whyEn: "At the start, Todd gives a number for each country. The number for Japan is 15.",
         why: "في أول المقطع يذكر تود عددًا لكل بلد، والعدد الذي يذكره لليابان 15.", errCat: "reading" },
       { q: "After six months near Cambridge, where did Todd go?", opts: ["To Thailand", "To California", "To London"], a: 2,
@@ -452,9 +456,9 @@ LESSONS.u103l4 = {
         whyEn: "Before the middle, Todd says that his home, California, is very warm, so England felt cold to him.",
         why: "قبل وسط المقطع يقول تود إن موطنه كاليفورنيا شديد الدفء، فبدت له إنجلترا باردة.", errCat: "reading" },
       { q: "What was the reason for Todd's years in Thailand?", opts: ["A school there asked him to come.", "His family moved there.", "He needed money during a long trip."], a: 2,
-        whyEn: "In the middle, Todd explains it: he was on a trip, his money was gone, and he liked the country, so he looked for work.",
-        why: "في وسط المقطع يبيّن تود السبب: كان في رحلة ونفد ماله، وأعجبه البلد، فبحث عن عمل.", errCat: "reading" },
-      { q: "Why does Todd like life in Thailand?", opts: ["Good weather, kind people and great food", "Big cities and good shops", "Cheap flats and quiet roads"], a: 0,
+        whyEn: "In the middle, Todd explains it: he was on a trip, his money was gone, and he wanted to stay, so he looked for work.",
+        why: "في وسط المقطع يبيّن تود السبب: كان في رحلة ونفد ماله، وأراد البقاء، فبحث عن عمل.", errCat: "reading" },
+      { q: "What does Todd say is good about life in Thailand?", opts: ["Good weather, kind people and great food", "Big cities and good shops", "Cheap flats and quiet roads"], a: 0,
         whyEn: "In the middle, after he talks about his students, Todd gives three reasons: the weather, the people and the food.",
         why: "في وسط المقطع، بعد حديثه عن طلابه، يذكر تود ثلاثة أسباب: الطقس والناس والطعام.", errCat: "reading" },
       { tf: true, q: "Todd's job in Japan is different from his job in Thailand.", a: false,
@@ -467,17 +471,17 @@ LESSONS.u103l4 = {
   },
 
   writing: {
-    taskEn: "Write at least 6 separate sentences about your life before and your life now. It can be true, or you can make it up. Use all four tenses: the past simple (We moved to Jeddah.), the past continuous (I was reading when the phone rang.), the present simple (I go to college by bus.) and the present continuous (This week, I am writing a report.). Use at least 2 words from today's lesson (for example: stay, foreign, culture). Write 'I' with a capital letter.",
-    task: "اكتب 6 جمل منفصلة على الأقل عن حياتك قبلُ وحياتك الآن، حقيقية كانت أو من خيالك. واستعمل الأزمنة الأربعة كلها: الماضي البسيط (We moved to Jeddah.)، والماضي المستمر (I was reading when the phone rang.)، والمضارع البسيط (I go to college by bus.)، والمضارع المستمر (This week, I am writing a report.). واستعمل كلمتين على الأقل من كلمات الدرس (مثل stay وforeign وculture)، واكتب الضمير I بحرف كبير.",
+    taskEn: "Write at least 6 separate sentences about your life before and your life now. It can be true, or you can make it up. Use all four tenses: the past simple (We moved to Jeddah.), the past continuous (I was reading when the phone rang.), the present simple (We eat lunch at two.) and the present continuous (This week, I am helping my uncle.). Use at least 2 words from today's lesson (for example: stay, foreign, culture). Write 'I' with a capital letter.",
+    task: "اكتب 6 جمل منفصلة على الأقل عن حياتك قبلُ وحياتك الآن، حقيقية كانت أو من خيالك. واستعمل الأزمنة الأربعة كلها: الماضي البسيط (We moved to Jeddah.)، والماضي المستمر (I was reading when the phone rang.)، والمضارع البسيط (We eat lunch at two.)، والمضارع المستمر (This week, I am helping my uncle.). واستعمل كلمتين على الأقل من كلمات الدرس (مثل stay وforeign وculture)، واكتب الضمير I بحرف كبير.",
     placeholder: "Five years ago, I …\nI was … when …\nNow I …\nThese days, I am …",
     minSentences: 6,
     checks: [
       { k: "sentences", tEn: "At least 6 separate sentences (end each with a period .), and 'I' is always a capital", t: "6 جمل منفصلة على الأقل (بنقطة في نهاية كل جملة)، والضمير I بحرف كبير دائمًا",
         ok: function(a, text){ return a.sentences >= 6 && !/\bi\b/.test(String(text || '')); } },
-      { k: "present", tEn: "Both present tenses: the present simple and am / is / are + verb-ing", t: "زمنا الحاضر معًا: المضارع البسيط، وam / is / are مع الفعل بـ ing", ex: "I go to college by bus. · This week, I am writing a report.",
+      { k: "present", tEn: "Both present tenses: the present simple and am / is / are + verb-ing", t: "زمنا الحاضر معًا: المضارع البسيط، وam / is / are مع الفعل بـ ing", ex: "We eat lunch at two. · This week, I am helping my uncle.",
         ok: function(a, text){
           var rest = noCont(text);
-          return has(PRES_C, plain(text)) && (PRES_BE.test(rest) || PRES_I.test(rest) || PRES_3.test(rest)); } },
+          return has(PRES_C, plain(text)) && (PRES_BE.test(rest) || PRES_I.test(rest) || PRES_3.test(rest) || PRES_PL.test(rest)); } },
       { k: "past", tEn: "Both past tenses: the past simple and was / were + verb-ing", t: "زمنا الماضي معًا: الماضي البسيط، وwas / were مع الفعل بـ ing", ex: "We moved to Jeddah. · I was reading when the phone rang.",
         ok: function(a, text){ return has(PAST_C, plain(text)) && PAST_S.test(noCont(text)); } },
       { k: "vocab", tEn: "At least 2 words or phrases from today's lesson", t: "كلمتان أو عبارتان على الأقل من درس اليوم", ex: "stay · island · nature · foreign · culture · return · apply for a visa",
@@ -488,7 +492,7 @@ LESSONS.u103l4 = {
             .filter(function(r){ return r.test(s); }).length;
           return found >= 2 || ((a && a.used) || []).length >= 2; } }
     ],
-    modelMarked: "Three years ago, I <<s:lived>> with my family in Hail. I <<c:was studying>> at a small college when my father <<s:got>> a new job in Jeddah. We <<s:left>> our house in the summer. At first, Jeddah <<s:felt>> like a {foreign} country, and I <<s:missed>> my friends. Now I <<s:study>> law at the university, and I {return} to Hail every summer. This term, I <<c:am writing>> a long report about the {culture} of our old town.",
+    modelMarked: "Three years ago, I <<s:lived>> with my family in Hail. I <<c:was studying>> at a small college when my father <<s:got>> a new job in Jeddah. We <<s:left>> our house in the summer. At first, Jeddah <<s:felt>> like a {foreign} country, and I <<s:missed>> my friends. Now I <<s:study>> law at the university, and I <<s:{return}>> to Hail every summer. This term, I <<c:am writing>> a long report about the {culture} of our old town.",
     model: "Three years ago, I lived with my family in Hail. I was studying at a small college when my father got a new job in Jeddah. We left our house in the summer. At first, Jeddah felt like a foreign country, and I missed my friends. Now I study law at the university, and I return to Hail every summer. This term, I am writing a long report about the culture of our old town.",
     legendEn: "Light blue = simple (present or past) · Terracotta = continuous (present or past)",
     legendAr: "الأزرق الفاتح للبسيط حاضرًا وماضيًا، والطوبي للمستمر حاضرًا وماضيًا.",
@@ -498,7 +502,9 @@ LESSONS.u103l4 = {
       "Where were you going when I saw you? I was going to the market. It was an interesting day, and the island was beautiful. What are you doing now? I'm reading about nature. My father works at a bank.",
       "My uncle left Hail in 2010. He was working in a bank when he decided to stay in Dubai. His family returned home after two years. He still works there. My aunt is visiting him this week. She loves the nature there.",
       "At 9pm, the lights went out. We weren't sleeping. My brother's reading now, and my sister is cooking. Our culture is different from my friend's culture. He doesn't eat rice. I couldn't stay at the party last night.",
-      "I applied for a student visa last year. While I was waiting for it, I worked in a shop. Then I travelled to a foreign country. I need a new phone now. My friends are building a small house on an island. Is she working today?"
+      "I applied for a student visa last year. While I was waiting for it, I worked in a shop. Then I travelled to a foreign country. I need a new phone now. My friends are building a small house on an island. Is she working today?",
+      "Ten years ago, my family lived in Abha. I was studying at school when my father got a new job. We returned to Riyadh in the summer. Now my parents live in a big house. My brothers work in a foreign company. My sister is studying law this year.",
+      "My aunt learnt English at school in Tabuk. My uncle was working in a shop when she came to Riyadh. It was a foreign city for her. My father watches football on Fridays. My mother and my sister stay at home. My cousin is currently studying law."
     ]
   },
 
@@ -522,9 +528,9 @@ LESSONS.u103l4 = {
     { s: "When our bus ___ in Abha yesterday, it was raining.", opts: ["arrive", "arrived", "arrives"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'yesterday' is in the past, so the verb must be past. The other two forms are present.",
       why: "yesterday في الماضي، فيلزم فعل ماضٍ، والصيغتان الأخريان مضارع.", errCat: "tense" },
-    { s: "My brother was washing the car when it suddenly ___ to rain.", opts: ["started", "starts", "was starting"], a: 0, tag: "Grammar · قواعد",
-      whyEn: "'was washing' is the long action. The rain began in one moment, and 'suddenly' shows this, so the short action takes the past simple.",
-      why: "was washing هو الحدث الطويل، وبدأ المطر في لحظة، وتدل على ذلك suddenly، فيأتي الحدث القصير بالماضي البسيط.", errCat: "tense" },
+    { s: "My father was painting the garden wall when it suddenly ___ to rain.", opts: ["started", "starts", "was starting"], a: 0, tag: "Grammar · قواعد",
+      whyEn: "'was painting' is the long action. The rain began in one moment, and 'suddenly' shows this, so the short action takes the past simple.",
+      why: "was painting هو الحدث الطويل، وبدأ المطر في لحظة، وتدل على ذلك suddenly، فيأتي الحدث القصير بالماضي البسيط.", errCat: "tense" },
     { s: "My mother ___ when I got home, so I closed the door quietly.", opts: ["sleeps", "was sleeping", "slept"], a: 1, tag: "Grammar · قواعد",
       whyEn: "I got home in the middle of her sleep, and that is why I was quiet. Her sleep was going on at that moment, so it takes the past continuous.",
       why: "وصلت إلى البيت في أثناء نومها، ولهذا أغلقت الباب بهدوء، فالنوم كان جاريًا في تلك اللحظة، فيأتي بالماضي المستمر.", errCat: "tense" },
@@ -537,9 +543,9 @@ LESSONS.u103l4 = {
     { s: "We went to a small ___ with no cars, and we saw the sea all around us.", opts: ["culture", "nature", "island"], a: 2, tag: "Vocabulary · مفردات",
       whyEn: "The sea was all around the place, so it was an 'island'. 'a culture' and 'a nature' do not fit a place with no cars.",
       why: "كان البحر يحيط بالمكان، فهو جزيرة island، ولا يوصف culture ولا nature بأنهما مكان بلا سيارات.", errCat: "vocab" },
-    { s: "My cousin got a place at a foreign university, so now she needs to ___.", opts: ["pay a fine", "apply for a visa", "get a patent"], a: 1, tag: "Legal Track · المسار القانوني",
-      whyEn: "To study in another country, you usually need official permission, so you 'apply for a visa'. A fine and a patent have nothing to do with this.",
-      why: "الدراسة في بلد آخر تحتاج عادةً إلى إذن رسمي، فتقدّم طلب تأشيرة apply for a visa، ولا صلة لهذا بالغرامة ولا ببراءة الاختراع.", errCat: "vocab" }
+    { s: "Our holiday in a foreign country starts in May, so this month my father has to ___.", opts: ["pay a fine", "apply for a visa", "get a patent"], a: 1, tag: "Legal Track · المسار القانوني",
+      whyEn: "To enter many countries, you need official permission first, so you 'apply for a visa'. A fine and a patent have nothing to do with this.",
+      why: "دخول كثير من البلدان يحتاج أولًا إلى إذن رسمي، فتتقدّم بطلب تأشيرة apply for a visa، ولا صلة لهذا بالغرامة ولا ببراءة الاختراع.", errCat: "vocab" }
   ]
 };
 })();
