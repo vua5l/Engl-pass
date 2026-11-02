@@ -351,9 +351,9 @@ LESSONS.u3l4 = {
     { s: "We were eating lunch while a bird hit the window.", ok: false, fix: "We were eating lunch when a bird hit the window.",
       whyEn: "The bird hit the window in one moment. A short action takes 'when'. 'while' goes with the long action.",
       why: "ضرب الطائر النافذة في لحظة، والحدث القصير يأتي مع when، أما while فمع الحدث الطويل.", errCat: "tense" },
-    { s: "My new shoes were costing 200 riyals.", ok: false, fix: "My new shoes cost 200 riyals.",
-      whyEn: "For a price, 'cost' is a state verb, so it takes no -ing. It does not change in the past: cost.",
-      why: "cost في ذكر الثمن فعل حالة لا يأخذ ing، ولا يتغير في الماضي: cost.", errCat: "stative" }
+    { s: "How much was your flight to Jeddah costing?", ok: false, fix: "How much did your flight to Jeddah cost?",
+      whyEn: "For a price, 'cost' is a state verb, so it takes no -ing. In a past question, we use did: How much did your flight to Jeddah cost?",
+      why: "cost في ذكر الثمن فعل حالة لا يأخذ ing، وفي السؤال عن الماضي نستعمل did: How much did your flight to Jeddah cost؟", errCat: "stative" }
   ],
 
   gC: [
