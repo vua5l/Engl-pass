@@ -714,6 +714,10 @@ function fakeGitHub(token) {
     await page.locator('.nav-it').nth(1).click(); await sleep(250);
     const order = await page.evaluate(() => Array.from(document.querySelectorAll('#screen .tl > .tl-it > .u-n')).map(n => n.getAttribute('data-u')));
     ok(order.indexOf('103') === order.indexOf('3') + 1 && order.indexOf('4') === order.indexOf('103') + 1, 'the Consolidation Week sits between Unit 3 and Unit 4 in Course: ' + order.join(','));
+    const labStart = await page.evaluate(() => Object.values(JSON.parse(localStorage.getItem('ep4.course')).errorLab).reduce((a, x) => a + x.count, 0));
+    ok(labStart === 0, 'the Error Lab starts from zero: ' + labStart);
+    await page.evaluate(() => { const g = JSON.parse(localStorage.getItem('ep4.course')); g.errorLab.be_verb.count = 2; localStorage.setItem('ep4.course', JSON.stringify(g)); });
+    await page.reload(); await sleep(300);
     const opened = await openLesson(page, 'u103l1');
     const today = await text(page);
     ok(opened && today.includes('Consolidation Week') && today.includes('Words Coming Back') && !today.includes('New Phrases') && !/Unit 103/.test(today), 'a week lesson opens on Today under its own name, and its words stage is Words Coming Back');
