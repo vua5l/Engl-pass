@@ -273,7 +273,7 @@ function writeJSON(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } ca
 function seedErrorLab(){
   var lab = {};
   (BASE.errorLabCatalog || []).forEach(function(cat){
-    lab[cat.key] = { count: cat.seedCount || 1, solved: 0, box: 0, nextAt: 0, fromDiag: !!cat.fromDiag, lastSample: cat.wrongEx || '' };
+    lab[cat.key] = { count: 0, solved: 0, box: 0, nextAt: 0, fromDiag: false, lastSample: '' };
   });
   return lab;
 }
@@ -282,7 +282,7 @@ function LDEFAULT(){ return { v:4, updatedAt:0, cards:{}, match:false, read1Done
 function normalizeG(o){ var r = Object.assign(GDEFAULT(), isObj(o) ? o : {});
   ['mistakes','errorLab','irrSr','unitTests','preTests'].forEach(function(k){ if (!isObj(r[k])) r[k] = {}; });
   (BASE.errorLabCatalog || []).forEach(function(cat){
-    if (!isObj(r.errorLab[cat.key])) r.errorLab[cat.key] = { count: cat.seedCount || 1, solved: 0, box: 0, nextAt: 0, fromDiag: !!cat.fromDiag, lastSample: cat.wrongEx || '' };
+    if (!isObj(r.errorLab[cat.key])) r.errorLab[cat.key] = { count: 0, solved: 0, box: 0, nextAt: 0, fromDiag: false, lastSample: '' };
   });
   if (typeof r.expressSessions !== 'number' || r.expressSessions < 0) r.expressSessions = 0;
   if (typeof r.practiceMins !== 'number' || r.practiceMins < 0) r.practiceMins = 0;
@@ -319,6 +319,19 @@ function touch(){ var t = Date.now(); G.updatedAt = t; S.updatedAt = t; saveLoca
     var old = [];
     for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && (k.indexOf('english-passport.') === 0 || k.indexOf('gh_sync_') === 0)) old.push(k); }
     old.forEach(function(k){ localStorage.removeItem(k); });
+  } catch (e) {}
+})();
+
+/* تصفير طلبه صاحب الموقع في 5 نوفمبر 2026: يمسح مرة واحدة في كل جهاز التقدم كله، ويبقي مفتاح المزامنة.
+   ولا يُؤخذ من السحابة ما هو أقدم من RESET_AT، فلا يعود التقدم القديم من جهاز لم يتحدث بعد. */
+var KEY_RESET = 'ep4.reset', RESET_ID = '2026-11-05', RESET_AT = Date.UTC(2026, 10, 4, 22, 30);
+(function resetProgressOnce(){
+  try {
+    if (localStorage.getItem(KEY_RESET) === RESET_ID) return;
+    var old = [KEY_G, KEY_SYNC_META];
+    for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && k.indexOf('ep4.lesson.') === 0) old.push(k); }
+    old.forEach(function(k){ localStorage.removeItem(k); });
+    localStorage.setItem(KEY_RESET, RESET_ID);
   } catch (e) {}
 })();
 
@@ -757,11 +770,11 @@ function sortedErrorLabCats(){
 function practiceMistakes(){
   var cats = sortedErrorLabCats(), all = allMistakeKeys(), list = mistakeIds();
   var patterns = h('div', { class:'card plist' }, cats.map(function(cat){
-    var st = G.errorLab[cat.key] || { count:cat.seedCount || 1, solved:0, box:0, fromDiag:true };
+    var st = G.errorLab[cat.key] || { count:0, solved:0, box:0 };
     var net = Math.max(0, (st.count || 0) - (st.solved || 0));
     var srDay = st.box > 0 ? SR_DAYS[Math.min(SR_DAYS.length - 1, st.box - 1)] : 1;
     return h('details', { class:'pat' },
-      h('summary', {}, h('span', { class:'pat-t' }, cat.en), net > 0 ? h('span', { class:'p-chip' }, st.count + '×') : h('span', { class:'p-chip ok' }, 'Practiced · +' + srDay + 'd'), ico('down')),
+      h('summary', {}, h('span', { class:'pat-t' }, cat.en), net > 0 ? h('span', { class:'p-chip' }, st.count + '×') : st.count ? h('span', { class:'p-chip ok' }, 'Practiced · +' + srDay + 'd') : null, ico('down')),
       h('div', { class:'pat-body' },
         h('div', { class:'elab-ex' }, h('span', { class:'no' }, st.lastSample || cat.wrongEx), h('span', { class:'yes' }, cat.rightEx)),
         h('p', { class:'elab-rule' }, cat.ruleEn),
@@ -843,7 +856,7 @@ function vReview(){
     h('div', { class:'p-cards' },
       h('div', { class:'p-card dark', id:'elabHero' },
         h('span', { class:'p-lbl' }, 'Mistakes'),
-        h('b', { class:'p-big' }, String(active || (D.errorLabCatalog || []).length)),
+        h('b', { class:'p-big' }, String(active)),
         h('span', { class:'p-sub' }, 'patterns to fix' + (due ? ' · ' + due + ' due' : '')),
         h('button', { class:'btn sm', type:'button', on:{ click:function(){ openSession('errlab'); } } }, 'Practice')),
       h('div', { class:'p-card' },
@@ -2032,7 +2045,7 @@ function stErrDrill(st, ctl){
   var nodes = MCQ({ prompt:d.s, opts:d.opts, a:d.a, whyEn:d.whyEn, why:d.why }, {
     tag:'Error Lab · ' + cat.en,
     onAnswer:function(ok){
-      var entry = G.errorLab[cat.key] || { count:cat.seedCount || 1, solved:0, box:0 };
+      var entry = G.errorLab[cat.key] || { count:0, solved:0, box:0 };
       if (ok) {
         entry.solved = (entry.solved || 0) + 1;
         entry.box = Math.min(4, (entry.box || 0) + 1);
@@ -2955,6 +2968,7 @@ function createSync(){
         if (!opts.force && known.sha === x.sha) return;
         chain = chain.then(function(){ return readRemote(x.path).then(function(rem){
           if (!rem || !rem.value) return;
+          if ((rem.value.updatedAt || 0) < RESET_AT) { patchMeta(function(m){ m.files[x.path] = { sha:rem.sha, dg:digest(rem.value) }; }); return; }
           var local = readJSON(k), take = opts.force || first || !local || (rem.value.updatedAt || 0) > (local.updatedAt || 0);
           if (take) { writeJSON(k, rem.value); changed = true; }
           patchMeta(function(m){ m.files[x.path] = { sha:rem.sha, dg:digest(rem.value) }; });
