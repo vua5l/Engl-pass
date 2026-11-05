@@ -529,7 +529,7 @@ LESSONS.u103l2 = {
       why: "last Friday كلمة وقت ماضية، فتلزم صيغة الماضي saw، أما on Fridays فتخص sees في الجزء الأول وحده.", errCat: "tense" },
     { s: "My sister ___ to choose a new car this year, but she can't decide.", opts: ["is want", "wants", "wanting"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'want' is a state verb, so it stays in the present simple, and 'she' needs -s: wants. 'is want' mixes be with a base verb, and 'wanting' has no 'be' verb.",
-      why: "want فعل لا يأخذ ing يبقى في المضارع البسيط، وتحتاج she إلى s: wants، أما is want فتجمع be مع أصل الفعل، وwanting بلا فعل be.", errCat: "stative" },
+      why: "want فعل لا يأخذ ing، فيبقى في المضارع البسيط، وتحتاج she إلى s: wants، أما is want فتجمع be مع أصل الفعل، وwanting بلا فعل be.", errCat: "stative" },
     { s: "On Thursday, we ___ for new shoes at the big mall near our house.", opts: ["took photos", "relaxed", "went shopping"], a: 2, tag: "Vocabulary · مفردات",
       whyEn: "New shoes are something you buy, so they 'went shopping'. 'for new shoes' goes with shopping, not with the other two.",
       why: "الحذاء الجديد مما يُشترى، فالمناسب went shopping، وfor new shoes تناسب التسوق لا الخيارين الآخرين.", errCat: "vocab" },

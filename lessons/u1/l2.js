@@ -196,7 +196,7 @@ LESSONS.u1l2 = {
     { en: "canteen", pos: "noun", ar: "مقصف / كافتيريا (في مدرسة أو جامعة أو مقر عمل)", say: "كَانْتِين",
       ex: "The university canteen sells hot soup in winter.", exAr: "يبيع مقصف الجامعة حساءً ساخنًا في الشتاء.",
       tipEn: "A canteen is the place to eat at a school, university, factory or office (mostly British English). Stress the second part: can-TEEN.",
-      tip: "canteen مكان الطعام في المدرسة أو الجامعة أو المصنع أو مقر العمل، والنبر على مقطعها الثاني: كان-تين.",
+      tip: "canteen مكان الطعام في المدرسة أو الجامعة أو المصنع أو مقر العمل، ونضغط في نطقها على مقطعها الثاني: كان-تين.",
       oxfordSlug: "canteen",
       wikiFile: "LL-Q1860 (eng)-Vealhurl-canteen.wav",
       wikiCredit: "File:LL-Q1860 (eng)-Vealhurl-canteen.wav · Lingua Libre / Wikimedia Commons (author and licence on the file page)" },
@@ -223,7 +223,7 @@ LESSONS.u1l2 = {
     { s: "My alarm rings at six, but I usually ___ before it, at about ten to six.", opts: ["wake up", "get changed", "last"], a: 0,
       whyEn: "'wake up' means stop sleeping. You can wake up before your alarm rings.",
       why: "wake up تعني يستيقظ من النوم، وقد تستيقظ قبل أن يرنّ المنبّه.", errCat: "vocab" },
-    { s: "It is very cold this morning, so nobody in my family wants to ___.", opts: ["last a long time", "eat in the canteen", "get out of bed"], a: 2,
+    { s: "It is very cold this morning, so nobody in my family wants to ___.", opts: ["last a long time", "wear warm clothes", "get out of bed"], a: 2,
       whyEn: "'get out of bed' means leave your bed. On a cold morning, people want to stay under the blanket.",
       why: "get out of bed تعني يقوم من فراشه، وفي الصباح البارد يفضّل الناس البقاء تحت الغطاء.", errCat: "vocab" },
     { s: "At lunchtime, the students buy sandwiches and juice in the school ___.", opts: ["timetable", "canteen", "bed"], a: 1,
@@ -324,7 +324,7 @@ LESSONS.u1l2 = {
         '<h2 class="bi-h"><span class="en" dir="ltr">Common Arab Mistakes</span><small>أخطاء يقع فيها كثير من العرب (من التشخيص)</small></h2>' +
         '<ul class="mist">' +
           '<li><span class="no">Does your father works on Fridays?</span><span class="yes">Does your father work on Fridays?</span><p class="en-m" dir="ltr"><b>Does</b> already has the -s, so the main verb stays in the base form: <b>work</b>.</p><p>الـ s موجودة في <bdi class="en">Does</bdi>، فيبقى الفعل الأساسي مجردًا: <bdi class="en">work</bdi> لا <bdi class="en">works</bdi>.</p></li>' +
-          '<li><span class="no">Are you go to the gym every day?</span><span class="yes">Do you go to the gym every day?</span><p class="en-m" dir="ltr">A habit with an action verb needs <b>Do</b>. <b>Are</b> never comes before a base verb (the same mistake as "I am work").</p><p>العادة مع فعل عادي تحتاج <bdi class="en">Do</bdi>، ولا يأتي <bdi class="en">Are</bdi> قبل فعل مجرد، وهو الخطأ نفسه في <bdi class="en">I am work</bdi>.</p></li>' +
+          '<li><span class="no">Are you go to the gym every day?</span><span class="yes">Do you go to the gym every day?</span><p class="en-m" dir="ltr">A habit with an action verb needs <b>Do</b>. <b>Are</b> never comes before a base verb (the same mistake as "I am work").</p><p>ما يتكرر بفعل عادي يحتاج <bdi class="en">Do</bdi>، ولا يأتي <bdi class="en">Are</bdi> قبل فعل مجرد، وهو الخطأ نفسه في <bdi class="en">I am work</bdi>.</p></li>' +
           '<li><span class="no">Where your sister studies?</span><span class="yes">Where does your sister study?</span><p class="en-m" dir="ltr">Arabic «أين تدرس أختك؟» has no helper, but English needs <b>does</b> after the question word, and then the base verb.</p><p>لا نحتاج في العربية فعلًا مساعدًا، أما في الإنجليزية فلا بد من <bdi class="en">does</bdi> بعد كلمة الاستفهام، ثم الفعل مجردًا.</p></li>' +
           '<li><span class="no">Do you walk to class? Yes, I walk.</span><span class="yes">Do you walk to class? Yes, I do.</span><p class="en-m" dir="ltr">In a short answer, repeat the helper (<b>do</b>), not the main verb.</p><p>في الإجابة القصيرة نكرر المساعد (<bdi class="en">do</bdi>) لا الفعل الأساسي.</p></li>' +
         '</ul>'

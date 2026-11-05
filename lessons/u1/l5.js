@@ -356,7 +356,7 @@ LESSONS.u1l5 = {
       why: "know من الأفعال التي لا تأخذ ing، والصواب We know.", errCat: "stative" },
     { s: "Our lecturer always replies to student emails within a day.", ok: true,
       whyEn: "Correct: 'always' comes before the main verb, 'replies' has -ies with he / she (consonant + y), and we say 'reply to'.",
-      why: "جملة صحيحة: always قبل الفعل الأساسي، وreplies بـ ies مع المفرد الغائب لأن قبل y حرفًا ساكنًا، ونقول reply to.", errCat: "word_order" },
+      why: "جملة صحيحة: always قبل الفعل الأساسي، وreplies بـ ies مع he / she / it لأن قبل y حرفًا ساكنًا، ونقول reply to.", errCat: "word_order" },
     { s: "Our group presentation is in Tuesday morning.", ok: false, fix: "Our group presentation is on Tuesday morning.",
       whyEn: "Use 'on' with days, also with a day + part of the day (on Tuesday morning). We say 'in the morning' only without a day.",
       why: "نستعمل on مع الأيام، ومع اليوم وجزئه أيضًا (on Tuesday morning)، ولا نقول in the morning إلا بلا ذكر اليوم.", errCat: "articles_prep" }
@@ -524,7 +524,7 @@ LESSONS.u1l5 = {
       why: "كلمة التكرار تأتي قبل الفعل الأساسي: She always answers.", errCat: "word_order" },
     { s: "___ your lecturer usually share the slides after class?", opts: ["Is", "Do", "Does"], a: 2, tag: "Grammar · قواعد",
       whyEn: "A routine question with an action verb (share) and a singular subject (your lecturer) → Does + base verb. 'Is' would need an -ing verb.",
-      why: "سؤال عن عادة بفعل عادي (share) وفاعل مفرد (your lecturer)، فنبدأ بـ Does ثم الفعل المجرد، أما Is فتحتاج فعلًا بـ ing.", errCat: "be_verb" },
+      why: "سؤال عن أمر متكرر بفعل عادي (share) وفاعل مفرد (your lecturer)، فنبدأ بـ Does ثم الفعل المجرد، أما Is فتحتاج فعلًا بـ ing.", errCat: "be_verb" },
     { s: "'Are you working on the presentation this week?' 'Yes, I ___.'", opts: ["do", "am", "is"], a: 1, tag: "Grammar · قواعد",
       whyEn: "A question with 'Are you …?' gets a short answer with 'am': Yes, I am. (We don't use 'do' because the question has no do.)",
       why: "السؤال بـ Are you يُجاب بـ am: Yes, I am، ولا نستعمل do لأن السؤال ليس فيه do.", errCat: "be_verb" },

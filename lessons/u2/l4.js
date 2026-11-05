@@ -158,7 +158,7 @@ LESSONS.u2l4 = {
     ex: "You can report a crime at the nearest police station or by phone.",
     exAr: "تستطيع أن تبلّغ عن جريمة في أقرب مركز شرطة أو بالهاتف.",
     tipEn: "Legal collocation: report a crime (to the police); we also say report a theft or report a lost passport. A crime is an act against the law that the police deal with, like stealing. Breaking a small rule, like parking in the wrong place, usually ends with a fine (pay a fine, Lesson 3). report is regular: reported. In a question: Did you report it to the police?",
-    tip: "تعبير قانوني ثابت: report a crime (to the police) أي يبلّغ الشرطة عن جريمة، ومثلها report a theft (يبلّغ عن سرقة) وreport a lost passport (يبلّغ عن ضياع جواز سفر). والجريمة crime فعل يخالف القانون وتتولاه الشرطة، كالسرقة، أما مخالفة نظام صغير كالوقوف في مكان ممنوع فتنتهي في الغالب بغرامة (pay a fine من الدرس الثالث). والفعل report منتظم ماضيه reported، وفي السؤال نقول: Did you report it to the police?",
+    tip: "تعبير قانوني ثابت: report a crime (to the police) أي يبلّغ الشرطة عن جريمة، ومثله report a theft (يبلّغ عن سرقة) وreport a lost passport (يبلّغ عن ضياع جواز سفر). والجريمة crime فعل يخالف القانون وتتولاه الشرطة، كالسرقة، أما مخالفة نظام صغير كالوقوف في مكان ممنوع فتنتهي في الغالب بغرامة (pay a fine من الدرس الثالث). والفعل report منتظم ماضيه reported، وفي السؤال نقول: Did you report it to the police?",
     legal: true,
     oxfordSlug: "crime",
     wikiFiles: ["En-us-report.ogg", "En-us-a-unstressed.ogg", "En-us-crime.ogg"],
@@ -205,7 +205,7 @@ LESSONS.u2l4 = {
     { en: "vacation", pos: "noun", ar: "إجازة / عطلة (بالأمريكية، وتقابلها holiday بالبريطانية)", say: "فَيْكَيْشَن",
       ex: "In the USA, schools close for a long summer vacation.", exAr: "تُغلق المدارس في الولايات المتحدة أبوابها في إجازة صيفية طويلة.",
       tipEn: "American English says vacation; British English usually says holiday. Collocations: go on vacation, a summer vacation, be on vacation. In Lesson 2 you learned the British phrase 'go on holiday'. Stress: va-CA-tion.",
-      tip: "يقول الأمريكيون vacation ويقول البريطانيون غالبًا holiday. ومن تعابيرها الثابتة go on vacation (يسافر في إجازة) وa summer vacation (إجازة صيفية) وbe on vacation (يكون في إجازة)، وقد تعلمت في الدرس الثاني العبارة البريطانية go on holiday. والنبر على مقطعها الثاني: va-CA-tion.",
+      tip: "يقول الأمريكيون vacation ويقول البريطانيون غالبًا holiday. ومن تعابيرها الثابتة go on vacation (يسافر في إجازة) وa summer vacation (إجازة صيفية) وbe on vacation (يكون في إجازة)، وقد تعلمت في الدرس الثاني العبارة البريطانية go on holiday. ونضغط في نطقها على مقطعها الثاني: va-CA-tion.",
       oxfordSlug: "vacation_1",
       wikiFile: "En-us-vacation.ogg",
       wikiCredit: "File:En-us-vacation.ogg · Wikimedia Commons" }
@@ -323,7 +323,7 @@ LESSONS.u2l4 = {
         '<tr><td>Were they …?</td><td>Yes, they <span class="hc">were</span>.</td><td>No, they <span class="hc">weren\'t</span>.</td></tr></tbody></table></div>' +
         '<div class="tip" dir="ltr"><p><b>Never Did + was · لا تجمع Did وwas:</b></p><div class="pairs"><span class="no">Did the museum was open?</span><span class="yes">Was the museum open?</span></div></div>',
       arHtml:
-        '<p>إذا لم يكن في الجملة فعل أساسي، حدثًا كان أو حالة (<bdi class="en">go, like, know</bdi>)، بل صفة (<bdi class="en">hot</bdi>) أو مكان (<bdi class="en">at home</bdi>) أو اسم (<bdi class="en">a teacher</bdi>)، بدأنا السؤال بـ <bdi class="en">Was</bdi> مع المفرد، و<bdi class="en">Were</bdi> مع الجمع ومع <bdi class="en">you</bdi>، بلا <bdi class="en">did</bdi>، ويجوز أن تسبقهما كلمة استفهام: <bdi class="en">How was …?</bdi> و<bdi class="en">Where were …?</bdi></p>' +
+        '<p>إذا لم يكن في الجملة فعل عادي (<bdi class="en">go, like, know</bdi>)، بل صفة (<bdi class="en">hot</bdi>) أو مكان (<bdi class="en">at home</bdi>) أو اسم (<bdi class="en">a teacher</bdi>)، بدأنا السؤال بـ <bdi class="en">Was</bdi> مع المفرد، و<bdi class="en">Were</bdi> مع الجمع ومع <bdi class="en">you</bdi>، بلا <bdi class="en">did</bdi>، ويجوز أن تسبقهما كلمة استفهام: <bdi class="en">How was …?</bdi> و<bdi class="en">Where were …?</bdi></p>' +
         '<p>والإجابة القصيرة تكرر <bdi class="en">was / were</bdi>: <bdi class="en">Yes, it was</bdi> و<bdi class="en">No, they weren\'t</bdi>. وانتبه: إذا سُئلت <bdi class="en">Were you …?</bdi> فأجب بـ <bdi class="en">I was</bdi> أو <bdi class="en">I wasn\'t</bdi>، لأن الضمير صار <bdi class="en">I</bdi>.</p>' +
         '<p>ولا نجمع <bdi class="en">Did</bdi> و<bdi class="en">was</bdi> في سؤال واحد، فـ <bdi class="en">Did the museum was open?</bdi> خطأ، والصواب <bdi class="en">Was the museum open?</bdi></p>'
     },

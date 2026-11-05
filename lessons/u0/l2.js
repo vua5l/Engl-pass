@@ -404,8 +404,8 @@ LESSONS.u0l2 = {
     url: "https://elllo.org/english/grammar/A1-21-There-is-are-Hometowns.htm",
     audioWord: "court",
     targetSeconds: 240,
-    introEn: "Listen to Sarah and John, two Americans from the state of Wisconsin. They describe their hometowns: what there is there and what there isn't.",
-    intro: "استمع إلى سارة وجون، وهما أمريكيان من ولاية ويسكونسن، يصفان مدينتيهما: ما فيهما وما ليس فيهما.",
+    introEn: "Listen to Sarah and John, two Americans. They describe their hometowns: what there is there and what there isn't.",
+    intro: "استمع إلى سارة وجون، وهما أمريكيان، يصفان مدينتيهما: ما فيهما وما ليس فيهما.",
     predict: {
       qEn: "Stage 1 Main-Idea Question: How are the two hometowns different?",
       q: "سؤال الفكرة العامة: ما الفرق بين المدينتين؟",

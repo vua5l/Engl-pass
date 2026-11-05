@@ -45,7 +45,7 @@ LESSONS.u3l1 = {
   goals: [
     { en: "I can form the Past Continuous in the affirmative: was / were + verb-ing, with the right spelling (making, sitting, lying).", ar: "أقدر أن أكوّن الماضي المستمر في الإثبات: was / were مع الفعل وing، بالإملاء الصحيح (making وsitting وlying)." },
     { en: "I can use it for an action in progress at an exact past time and for the scene in a story, with time words (at midnight, at that moment, this time last year).", ar: "أقدر أن أستعمله لحدث جارٍ في وقت محدد من الماضي ولوصف المشهد في القصة، مع كلمات الزمن (at midnight وat that moment وthis time last year)." },
-    { en: "I can choose between the Past Continuous and the Past Simple, use sat, stood, held, wore, drank and read, and keep state verbs without -ing (knew).", ar: "أقدر أن أختار بين الماضي المستمر والماضي البسيط، وأستعمل sat وstood وheld وwore وdrank وread، ولا أضيف ing إلى الأفعال التي لا تأخذها (knew)." },
+    { en: "I can choose between the Past Continuous and the Past Simple, use sat, stood, held, wore, drank and read, and keep state verbs without -ing (knew).", ar: "أقدر أن أختار بين الماضي المستمر والماضي البسيط، وأستعمل sat وstood وheld وwore وdrank وread، وأُبقي know وأمثالها بلا ing (knew)." },
     { en: "I can read an email for the main idea and details, use 6 words and the legal phrase 'international law', and write at least 4 separate sentences about a special moment.", ar: "أقدر أن أفهم الفكرة العامة والتفاصيل في إيميل، وأستعمل 6 كلمات والعبارة القانونية international law، وأكتب 4 جمل منفصلة على الأقل عن لحظة مميزة." }
   ],
   intro: {
@@ -338,7 +338,7 @@ LESSONS.u3l1 = {
       arHtml:
         '<p>نقول <bdi class="en">I watched the match</bdi> إذا أخبرنا عن <b>الحدث كله</b> من أوله إلى آخره، ونقول <bdi class="en">I was watching the match at seven</bdi> إذا وضعنا السامع <b>في وسط الحدث</b> وهو جارٍ.</p>' +
         '<p>ولهذه الأفعال الستة صيغة ماضٍ شاذة: <bdi class="en">sat</bdi> و<bdi class="en">stood</bdi> و<bdi class="en">held</bdi> و<bdi class="en">wore</bdi> و<bdi class="en">drank</bdi> و<bdi class="en">read</bdi>، وتُكتب الأخيرة كمضارعها وتُنطق «رِد». أما في الماضي المستمر فلا شذوذ: <bdi class="en">was / were</bdi> مع <bdi class="en">ing</bdi>.</p>' +
-        '<p>والأفعال التي لا تأخذ ing مثل <bdi class="en">know</bdi> و<bdi class="en">want</bdi> و<bdi class="en">like</bdi> و<bdi class="en">need</bdi> لا تأخذ <bdi class="en">ing</bdi> في الماضي، كما لا تأخذها في المضارع: نقول <bdi class="en">She knew my name</bdi> ولا نقول <bdi class="en">She was knowing my name</bdi>.</p>'
+        '<p>والأفعال مثل <bdi class="en">know</bdi> و<bdi class="en">want</bdi> و<bdi class="en">like</bdi> و<bdi class="en">need</bdi> لا تأخذ <bdi class="en">ing</bdi> في الماضي، كما لا تأخذها في المضارع: نقول <bdi class="en">She knew my name</bdi> ولا نقول <bdi class="en">She was knowing my name</bdi>.</p>'
     },
     {
       tEn: "Common Arab Mistakes",
@@ -493,10 +493,10 @@ LESSONS.u3l1 = {
         ev: "She is a scientist, and she does research on cancer stem cells.",
         whyEn: "Lama writes that she 'does research on cancer stem cells'. International law and the moon are in the part about Lama's college.",
         why: "تكتب لمى أنها does research on cancer stem cells، أما القانون الدولي والقمر فجاءا فيما تعلمته لمى في كليتها.", errCat: "reading" },
-      { q: "Rayyanah Barnawi was the first …", opts: ["Saudi pilot in space", "Saudi woman in space", "Arab doctor in space"], a: 1,
+      { q: "Rayyanah Barnawi was the first …", opts: ["Arab to go into space", "Saudi woman in space", "Saudi person in space"], a: 1,
         ev: "She became the first Saudi woman in space, and Ali AlQarni was with her.",
-        whyEn: "Lama writes 'the first Saudi woman in space', so the word 'woman' is important. She doesn't write about a pilot or a doctor.",
-        why: "تكتب لمى the first Saudi woman in space، فكلمة woman هنا مهمة، ولم تذكر طيّارًا ولا طبيبًا.", errCat: "reading" },
+        whyEn: "Lama writes 'the first Saudi woman in space', so the word 'woman' is important. Prince Sultan bin Salman went into space before her, in 1985.",
+        why: "تكتب لمى the first Saudi woman in space، فكلمة woman هنا مهمة، فقد سبقها الأمير سلطان بن سلمان إلى الفضاء عام 1985.", errCat: "reading" },
       { q: "How long did Rayyanah and Ali stay on the space station?", opts: ["About eight days", "About eight weeks", "About eight months"], a: 0,
         ev: "They stayed on the International Space Station for about eight days, did science experiments and then returned to Earth.",
         whyEn: "Lama writes 'for about eight days'. 'for' tells us how long, and the word is 'days', not weeks or months.",
@@ -564,7 +564,7 @@ LESSONS.u3l1 = {
     { s: "Ali ___ the way to the court, so we followed him.", opts: ["was knowing", "knew", "knowing"], a: 1, tag: "Grammar · قواعد",
       whyEn: "know is a state verb, so it doesn't take -ing: knew. We don't say 'was knowing'.",
       why: "know فعل لا يأخذ ing: knew، ولا نقول was knowing.", errCat: "stative" },
-    { s: "Which sentence tells us that the action was in progress at 9 p.m.?", opts: ["I study in my room at 9 p.m.", "I studied in my room at 9 p.m.", "I was studying there at 9 p.m."], a: 2, tag: "Grammar · قواعد",
+    { s: "Which sentence tells us that the action was in progress at 9 p.m.?", opts: ["I study in my room every day at 9 p.m.", "I studied in my room at 9 p.m. last night.", "I was studying in my room at 9 p.m."], a: 2, tag: "Grammar · قواعد",
       whyEn: "was + -ing shows an action in progress at an exact past time. 'I study' is a present habit, and 'I studied' is a finished action.",
       why: "تدل was مع ing على حدث جارٍ في وقت محدد من الماضي؛ أما I study فعادة في الحاضر، وI studied حدث مكتمل.", errCat: "tense" },
     { s: "Which sentence has the correct past forms?", opts: ["We sitted near the door, and my brother stood behind us.", "We sat near the door, and my brother stood behind us.", "We sat near the door, and my brother standed behind us."], a: 1, tag: "Grammar · قواعد",

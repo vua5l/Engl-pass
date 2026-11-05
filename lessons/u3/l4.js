@@ -273,7 +273,7 @@ LESSONS.u3l4 = {
         '<p>انظر إلى الحدث الذي يأتي بعد الكلمة مباشرة: أطويل هو أم قصير؟</p>' +
         '<p>فالحدث الطويل يصح قبله الاثنان: <bdi class="en">While I was walking home, it started to rain.</bdi> و<bdi class="en">When I was walking home, it started to rain.</bdi></p>' +
         '<p>أما الحدث القصير والعمر فلا يأتي قبلهما إلا <bdi class="en">when</bdi>: <bdi class="en">We were sleeping when the phone rang.</bdi> و<bdi class="en">We moved to Abha when I was ten.</bdi></p>' +
-        '<p>وقد يكون الجزء الطويل حالة لا حدثًا، كما في <bdi class="en">be</bdi> و<bdi class="en">know</bdi>، وهذه لا تأخذ <bdi class="en">ing</bdi>: <bdi class="en">While I was in Jeddah, I caught a cold.</bdi></p>' +
+        '<p>وقد يأتي الجزء الطويل بفعل لا يأخذ <bdi class="en">ing</bdi>، مثل <bdi class="en">be</bdi> و<bdi class="en">know</bdi>: <bdi class="en">While I was in Jeddah, I caught a cold.</bdi></p>' +
         '<p>ويصح أيضًا أن تأتي <bdi class="en">while</bdi> مع الماضي البسيط لحدث طويل، وليس ذلك خطأً: <bdi class="en">While we waited for the bus, we talked about the exam.</bdi></p>'
     },
     {
@@ -437,7 +437,7 @@ LESSONS.u3l4 = {
       { q: "What was the weather like on Doron's trip in Norway?", opts: ["Very cold and snowy", "Very hot, with no wind", "Warm, with heavy rain"], a: 0,
         whyEn: "At the end, in the last story, Doron talks about a snowstorm: everything was white, and it was very cold.",
         why: "في آخر المقطع، في القصة الأخيرة، عاصفة ثلجية في قصة دورون: كل شيء أبيض، والبرد شديد.", errCat: "reading" },
-      { q: "Why was Doron lucky in the snow?", opts: ["The snow stopped very quickly.", "A rescue team came very quickly.", "His friends from Norway could help."], a: 2,
+      { q: "Why was Doron lucky in the snow?", opts: ["The snow stopped very quickly.", "A rescue team came very quickly.", "Friends from Norway could help."], a: 2,
         whyEn: "At the end, in the last story, Doron talks about being with big men from Norway. They understood the situation well, and that was the good luck in this story.",
         why: "في آخر المقطع، في القصة الأخيرة، كان من حسن الحظ في قصة دورون وجود رجال أشداء من النرويج عرفوا كيف يتصرفون.", errCat: "reading" }
     ]

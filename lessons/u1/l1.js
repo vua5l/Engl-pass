@@ -171,7 +171,7 @@ LESSONS.u1l1 = {
     ex: "When my father buys a car, he signs a contract with the seller.",
     exAr: "حين يشتري أبي سيارة يوقّع عقدًا مع البائع.",
     tipEn: "Legal collocation: sign a contract (verb + a + noun). With he / she / it: signs a contract. The 'g' in 'sign' is silent.",
-    tip: "تعبير قانوني ثابت أساسي: sign a contract (يوقّع عقدًا)، ومع he / she / it تصبح signs a contract، وحرف g في sign صامت لا يُنطق.",
+    tip: "تعبير قانوني ثابت أساسي: sign a contract (يوقّع عقدًا)، ومع he / she / it يصبح signs a contract، وحرف g في sign صامت لا يُنطق.",
     legal: true,
     oxfordSlug: "contract_1",
     wikiFiles: ["En-us-sign.ogg", "En-uk-contract (noun).ogg"],
@@ -255,7 +255,7 @@ LESSONS.u1l1 = {
       why: "miss تعني يشتاق إلى من يحب لبُعده، ومع he تصبح misses بإضافة es بعد ss.", errCat: "vocab" },
     { s: "Before my brother moves into his new apartment, he has to ___ with the owner.", opts: ["miss a contract", "sign a contract", "measure a contract"], a: 1,
       whyEn: "The legal collocation is 'sign a contract': write your name on an official agreement. We don't 'miss' or 'measure' a contract.",
-      why: "التعبير القانوني الثابت sign a contract تعني يوقّع اتفاقًا رسميًا باسمه، ولا يصح miss ولا measure مع contract.", errCat: "vocab" }
+      why: "التعبير القانوني الثابت sign a contract يعني يوقّع اتفاقًا رسميًا باسمه، ولا يصح miss ولا measure مع contract.", errCat: "vocab" }
   ],
 
   /* ---------- المرحلة 3: بطاقات الشرح (6 بطاقات: 4 شرح + الأخطاء + الخلاصة) ---------- */

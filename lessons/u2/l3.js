@@ -280,7 +280,7 @@ LESSONS.u2l3 = {
         '<div class="tip" dir="ltr"><p><b>Quick test · اختبار سريع:</b> Is there a main verb (go, pay, know)? Use <b>didn\'t</b> + base verb. Is there only an adjective, a place or a noun? Use <b>wasn\'t / weren\'t</b>.</p><div class="pairs"><span class="yes">The film wasn\'t long.</span><span class="no">The film didn\'t long.</span><span class="no">The film didn\'t be long.</span></div></div>',
       arHtml:
         '<p>الفعل <bdi class="en">be</bdi> مختلف: لا نستعمل معه <bdi class="en">didn\'t</bdi>، فماضيه <bdi class="en">was / were</bdi> ونفيه <bdi class="en">wasn\'t / weren\'t</bdi>، ويأتي قبل الصفة أو المكان أو الاسم.</p>' +
-        '<p>والاختبار السريع: إن كان في الجملة فعل أساسي، حدثًا كان أو حالة (<bdi class="en">go, pay, know</bdi>)، نفيناه بـ <bdi class="en">didn\'t</bdi> والفعل المجرد، وإن لم يكن فيها إلا صفة أو مكان أو اسم نفينا بـ <bdi class="en">wasn\'t / weren\'t</bdi>، ولا نقول <bdi class="en">didn\'t be</bdi> أبدًا.</p>'
+        '<p>والاختبار السريع: إن كان في الجملة فعل عادي (<bdi class="en">go, pay, know</bdi>)، نفيناه بـ <bdi class="en">didn\'t</bdi> والفعل المجرد، وإن لم يكن فيها إلا صفة أو مكان أو اسم نفينا بـ <bdi class="en">wasn\'t / weren\'t</bdi>، ولا نقول <bdi class="en">didn\'t be</bdi> أبدًا.</p>'
     },
     {
       tEn: "Positive + Negative with but",
@@ -320,7 +320,7 @@ LESSONS.u2l3 = {
         '</div>' +
         '<p class="en-p" dir="ltr">Now let\'s practise: 16 guided exercises with brand-new sentences.</p>',
       arHtml:
-        '<p><b>الأفعال الأساسية</b> (حدثًا وحالة) ننفيها بـ <bdi class="en">didn\'t</bdi> والفعل المجرد مع كل الضمائر وكل الأفعال، المنتظمة والشاذة.</p>' +
+        '<p><b>الأفعال العادية</b> ننفيها بـ <bdi class="en">didn\'t</bdi> والفعل المجرد مع كل الضمائر وكل الأفعال، المنتظمة والشاذة.</p>' +
         '<p><b>فعل be</b> ننفيه بـ <bdi class="en">wasn\'t / weren\'t</bdi>، ونجمع الإثبات والنفي في جملة واحدة بـ <bdi class="en">but</bdi>.</p>'
     }
   ],
@@ -456,7 +456,7 @@ LESSONS.u2l3 = {
         ev: "But on Saturday, everything changed. The airline found my luggage, and it didn't rain all day!",
         whyEn: "True: on Saturday everything changed, and the airline found his luggage.",
         why: "صحيح؛ تغيّر كل شيء يوم السبت، ووجدت شركة الطيران أمتعته.", errCat: "reading" },
-      { q: "In 'I didn't sleep at all', why does Faisal write 'sleep' and not 'slept'?", opts: ["Because 'sleep' is a regular verb", "Because he is talking about tonight", "Because didn't takes the base form"], a: 2,
+      { q: "In 'I didn't sleep at all', why does Faisal write 'sleep' and not 'slept'?", opts: ["Because 'sleep' is a regular verb", "Because he is talking about tonight", "Because a base verb follows 'didn't'"], a: 2,
         ev: "The heater made a strange noise all night, so I didn't sleep at all.",
         whyEn: "After didn't, we always use the base verb, even with irregular verbs like sleep (slept): didn't sleep, not didn't slept.",
         why: "بعد didn't نستعمل الفعل المجرد دائمًا حتى مع الأفعال الشاذة مثل sleep (ماضيه slept): didn't sleep لا didn't slept.", errCat: "tense" }
@@ -537,7 +537,7 @@ LESSONS.u2l3 = {
       why: "book a room تعني أن تحجز الغرفة لإقامتك، وكانت في الفندق غرفة واحدة شاغرة فحجزها الكاتب، وماضي book هو booked.", errCat: "vocab" },
     { s: "The driver didn't stop at the red light, so he ___.", opts: ["made a fine", "paid a fine", "did a fine"], a: 1, tag: "Legal Track · المسار القانوني",
       whyEn: "The collocation is 'pay a fine' (past: paid a fine); we don't say 'make a fine' or 'do a fine'. Not stopping at a red light breaks the traffic rules, so the driver pays money as a punishment.",
-      why: "التعبير الثابت الصحيح pay a fine وماضيها paid a fine، ولا نقول make a fine ولا do a fine، وتجاوز الإشارة الحمراء مخالفة لنظام المرور فيدفع السائق غرامة.", errCat: "vocab" }
+      why: "التعبير الثابت الصحيح pay a fine وماضيه paid a fine، ولا نقول make a fine ولا do a fine، وتجاوز الإشارة الحمراء مخالفة لنظام المرور فيدفع السائق غرامة.", errCat: "vocab" }
   ]
 };
 })();

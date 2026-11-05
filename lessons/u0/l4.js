@@ -251,7 +251,7 @@ LESSONS.u0l4 = {
         '<div class="xbox"><span class="xtag c" dir="ltr">Arabic Verb-First Order · خطأ ترجمة الجملة الفعلية</span><p class="xen"><span class="no">Works Faisal in an office.</span><span class="no">Arrived the client early.</span></p></div>' +
         SENT_SVG,
       arHtml:
-        '<p>في العربية لدينا جملة فعلية تبدأ بالفعل («ذهب المحامي»، «تدرس أختي»)، أما في الإنجليزية فلا توجد جملة خبرية تبدأ بالفعل أبدًا؛ يجب أن تضع <b>الفاعل أولًا (من فعل؟)</b> ثم <b>الفعل ثانيًا (ماذا فعل؟)</b>.</p>'
+        '<p>في العربية لدينا جملة فعلية تبدأ بالفعل («ذهب المحامي»، «تدرس أختي»)، أما في الإنجليزية فلا توجد جملة خبرية (أي جملة تخبر بشيء، لا سؤال ولا أمر) تبدأ بالفعل أبدًا؛ يجب أن تضع <b>الفاعل أولًا (من فعل؟)</b> ثم <b>الفعل ثانيًا (ماذا فعل؟)</b>.</p>'
     },
     {
       tEn: "Rule 2: No Double Subject (Don't Repeat the Pronoun!)",
@@ -473,7 +473,7 @@ LESSONS.u0l4 = {
     { s: "What is wrong with this text? 'The draft is ready, the lawyer is in court.'", opts: ["A comma joins two complete sentences.", "It is too short to be a correct sentence.", "The word 'draft' is a verb, not a noun."], a: 0, tag: "Grammar · قواعد",
       whyEn: "Two complete sentences must be separated by a period (.): 'The draft is ready. The lawyer is in court.'",
       why: "ربط جملتين تامتين بفاصلة فقط خطأ (Run-on)؛ الصواب وضع نقطة بعد الجملة الأولى.", errCat: "word_order" },
-    { s: "Which of these words do we write with a capital letter everywhere in a sentence?", opts: ["teacher", "I", "morning"], a: 1, tag: "Grammar · قواعد",
+    { s: "Which sentence is correct?", opts: ["Now i am in my room.", "Now I am in my room.", "now i am in my room."], a: 1, tag: "Grammar · قواعد",
       whyEn: "The pronoun 'I' is always a capital letter in English.",
       why: "ضمير المتكلم I يُكتب بحرف كبير دائمًا أينما وقع في الجملة.", errCat: "spelling" },
     { s: "Choose the sentence without a double-subject error:", opts: ["My parents they are in Makkah this week.", "My parents are in Makkah this week.", "Are in Makkah my parents this week."], a: 1, tag: "Grammar · قواعد",

@@ -300,7 +300,7 @@ LESSONS.u3l3 = {
         '<p class="en-p" dir="ltr"><b>Sound and spelling:</b> taught has the same ending sound as bought and thought · won sounds like one · put does not change in the past · double the last letter in forgetting, putting and winning.</p>' +
         '<div class="tip" dir="ltr"><p><b>State verb:</b> understand is like know: it takes no -ing in the past.</p><div class="pairs"><span class="yes">Sami understood the lesson.</span><span class="no">Sami was understanding the lesson.</span></div></div>',
       arHtml:
-        '<p><bdi class="en">Did</bdi> مع الفعل المجرد تسأل عن حدث مكتمل أو حالة ماضية (<bdi class="en">Did you see the new film last week?</bdi>)، و<bdi class="en">Was / Were</bdi> مع الفعل وing تسأل عن حدث كان جاريًا في لحظة من الماضي (<bdi class="en">Were you watching the news at eight?</bdi>).</p>' +
+        '<p><bdi class="en">Did</bdi> مع الفعل المجرد تسأل عن حدث مكتمل أو أمر ثابت في الماضي (<bdi class="en">Did you see the new film last week?</bdi>)، و<bdi class="en">Was / Were</bdi> مع الفعل وing تسأل عن حدث كان جاريًا في لحظة من الماضي (<bdi class="en">Were you watching the news at eight?</bdi>).</p>' +
         '<p>واحفظ أفعال اليوم الستة: <bdi class="en">forget / forgot</bdi> و<bdi class="en">keep / kept</bdi> و<bdi class="en">put / put</bdi> (لا يتغير في الماضي) و<bdi class="en">win / won</bdi> (تُنطق كـ <bdi class="en">one</bdi>) و<bdi class="en">teach / taught</bdi> و<bdi class="en">understand / understood</bdi>. ويتضاعف الحرف الأخير في <bdi class="en">forgetting</bdi> و<bdi class="en">putting</bdi> و<bdi class="en">winning</bdi>.</p>' +
         '<p>أما <bdi class="en">understand</bdi> ففعل لا يأخذ ing مثل <bdi class="en">know</bdi>، فنقول <bdi class="en">understood</bdi> ولا نقول <bdi class="en">was understanding</bdi>.</p>'
     },
@@ -362,7 +362,7 @@ LESSONS.u3l3 = {
       why: "صحيحة: weren't مع الفعل وing تناسب we، وkept ماضي keep.", errCat: "tense" },
     { s: "I wasn't understanding the doctor, so I asked her to explain it again.", ok: false, fix: "I didn't understand the doctor, so I asked her to explain it again.",
       whyEn: "'understand' is a state verb, so it doesn't take -ing here. Use the Past Simple negative: didn't understand.",
-      why: "understand فعل لا يأخذ ing هنا، ونستعمل نفي الماضي البسيط: didn't understand.", errCat: "stative" }
+      why: "understand فعل لا يأخذ ing، ونستعمل نفي الماضي البسيط: didn't understand.", errCat: "stative" }
   ],
 
   gC: [
@@ -547,7 +547,7 @@ LESSONS.u3l3 = {
       why: "العبارة by accident بحرف by وبلا an، ومعناها دون تخطيط.", errCat: "vocab" },
     { s: "A small company invented a new kind of lock and wanted to protect it by law, so it ___.", opts: ["did a patent", "got a patent", "made a patent"], a: 1, tag: "Legal Track · المسار القانوني",
       whyEn: "The collocation is 'get a patent' (past: got a patent); we don't say 'do a patent' or 'make a patent'. A patent protects an invention by law.",
-      why: "التعبير الثابت الصحيح get a patent وماضيها got a patent، ولا نقول do a patent ولا make a patent، والبراءة تحمي الاختراع بالقانون.", errCat: "vocab" }
+      why: "التعبير الثابت الصحيح get a patent وماضيه got a patent، ولا نقول do a patent ولا make a patent، والبراءة تحمي الاختراع بالقانون.", errCat: "vocab" }
   ]
 };
 })();

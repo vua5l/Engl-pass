@@ -500,7 +500,7 @@ LESSONS.u103l5 = {
         ev: "These days, I'm doing research on safe roads with two classmates.",
         whyEn: "'These days' introduces what is going on now, and the Present Continuous tells us what it is: research on safe roads.",
         why: "These days تدل على ما يجري الآن، ويذكر المضارع المستمر ما هو: بحث عن الطرق الآمنة.", errCat: "reading" },
-      { q: "Why is Khaled's schedule very busy?", opts: ["He works at the library every day.", "He has a new job in London now.", "He and his class are measuring traffic."], a: 2,
+      { q: "Why is Khaled's schedule very busy?", opts: ["He works at the library every day.", "He has a new job in London now.", "He is measuring the traffic."], a: 2,
         ev: "We're measuring the traffic in our city, so my schedule is very busy.",
         whyEn: "'so' gives the result. The work on the traffic comes first, and the busy schedule is the result of it.",
         why: "so تدل على النتيجة: قياس حركة السير أولًا، والجدول المزدحم نتيجته.", errCat: "reading" },

@@ -288,7 +288,7 @@ LESSONS.u3l2 = {
         '<div class="tip" dir="ltr"><p><b>Also correct · يصح أيضًا:</b> when can go with the long action: When I was running for the bus, I fell. You will learn more in Lesson 4.</p></div>',
       arHtml:
         '<p>اسأل نفسك: أيّ الحدثين كان جاريًا حين وقع الآخر؟ فهو الطويل، ويأتي بالماضي المستمر. وأيهما وقع في لحظة؟ فهو القصير، ويأتي بالماضي البسيط.</p>' +
-        '<p>وقد تكون الخلفية حالة لا حدثًا، كما في <bdi class="en">be</bdi> و<bdi class="en">know</bdi>، وهذه لا تأخذ <bdi class="en">ing</bdi>: <bdi class="en">When the taxi came, I was ready.</bdi></p>' +
+        '<p>وقد تأتي الخلفية بفعل لا يأخذ <bdi class="en">ing</bdi>، مثل <bdi class="en">be</bdi> و<bdi class="en">know</bdi>: <bdi class="en">When the taxi came, I was ready.</bdi></p>' +
         '<p>وتأتي <bdi class="en">when</bdi> مع <bdi class="en">was / were</bdi> لتحديد الزمن من العمر أو الحياة، فلا يقع هنا حدث في أثناء حدث، فيصح الماضي البسيط في الفعلين: <bdi class="en">When I was fifteen, I lived in Abha.</bdi></p>' +
         '<p>ويصح أن تأتي <bdi class="en">when</bdi> مع الحدث الطويل نفسه، وليس ذلك خطأً: <bdi class="en">When I was running for the bus, I fell.</bdi> وتفصيله في الدرس الرابع.</p>'
     },
@@ -330,7 +330,7 @@ LESSONS.u3l2 = {
       why: "were sitting هو الحدث الطويل، أما اصطدام الشاحنة فوقع في لحظة، فيأتي بالماضي البسيط: hit.", errCat: "tense" },
     { s: "When I ___ twelve, I fell off a wall and hurt my back.", opts: ["was", "was being"], a: 0,
       whyEn: "Here 'When I was twelve' only tells the time in my life, so we use 'was' with the age. 'be' is a state, and it takes no -ing here.",
-      why: "When I was twelve تحدد زمنًا من العمر، فنستعمل was مع السن، وbe هنا حالة لا تأخذ ing.", errCat: "be_verb" },
+      why: "When I was twelve تحدد زمنًا من العمر، فنستعمل was مع السن، وbe هنا لا تأخذ ing.", errCat: "be_verb" },
     { s: "Which sentence is correct?", opts: ["When my phone fell I was crossing the busy street.", "When my phone fell, I was crossing the busy street."], a: 1,
       whyEn: "The sentence starts with 'When', so we put a comma after the short action: When my phone fell, ...",
       why: "بدأت الجملة بـ When، فنضع فاصلة بعد الحدث القصير: When my phone fell,", errCat: "word_order" }
@@ -510,7 +510,7 @@ LESSONS.u3l2 = {
     { s: "The island is big, so we want to ___ a car for a week and see all of it.", opts: ["rent", "control", "fall off"], a: 0, tag: "Vocabulary · مفردات",
       whyEn: "'rent' means pay to use something for a time, like a car for one week.",
       why: "rent تعني أن تدفع لتنتفع بشيء مدة من الزمن، كسيارة لأسبوع واحد.", errCat: "vocab" },
-    { s: "By law, you need ___ to drive a car on the road.", opts: ["a sick leave note", "an annual leave form", "a driving licence"], a: 2, tag: "Legal Track · المسار القانوني",
+    { s: "By law, you need ___ to use a car on the road.", opts: ["a sick leave note", "an annual leave form", "a driving licence"], a: 2, tag: "Legal Track · المسار القانوني",
       whyEn: "A 'driving licence' is the official document that gives you the right to drive. 'sick leave' and 'annual leave' are kinds of time off work.",
       why: "driving licence الوثيقة الرسمية التي تمنحك حق القيادة، أما sick leave وannual leave فنوعان من الإجازة من العمل.", errCat: "vocab" }
   ]

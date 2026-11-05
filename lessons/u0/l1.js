@@ -291,7 +291,7 @@ LESSONS.u0l1 = {
         '<div class="tip" dir="ltr"><p><b>After don\'t / doesn\'t / Do / Does:</b> Always return the verb to its <b>base form</b> (without -s):</p><div class="pairs"><span class="yes">Does he work here?</span><span class="no">Does he works here?</span></div></div>',
       arHtml:
         '<p>مع الأفعال العادية (<bdi class="en">work, study, prepare</bdi>) نضيف <bdi class="en">s</bdi> للفعل مع <bdi class="en">he / she / it</bdi> في الإثبات فقط.</p>' +
-        '<p>وفي النفي والسؤال نستعين بـ <bdi class="en">don\'t / doesn\'t</bdi> و<bdi class="en">Do / Does</bdi>، ويعود الفعل بعدها إلى أصله المجرد بدون <bdi class="en">s</bdi>.</p>'
+        '<p>وفي النفي والسؤال نستعين بـ <bdi class="en">don\'t / doesn\'t</bdi> و<bdi class="en">Do / Does</bdi>، ويعود الفعل بعدها إلى صورته الأصلية كما في القاموس، بلا <bdi class="en">s</bdi> ولا زيادة، وهذا ما نسميه «الفعل المجرد»، مثل <bdi class="en">work</bdi>.</p>'
     },
     {
       tEn: "How to Choose in 2 Seconds",
@@ -300,13 +300,13 @@ LESSONS.u0l1 = {
         '<h2 class="bi-h"><span class="en" dir="ltr">How to Choose in 2 Seconds</span><small>كيف تختار بين Be و Do في ثانيتين؟</small></h2>' +
         '<p class="en-p" dir="ltr">Look at what comes <b>after the subject</b> in a question or negative sentence:</p>' +
         '<div class="sigs">' +
-          '<div class="sig s"><h3 dir="ltr">Use Am / Is / Are<small class="sig-ar">إذا لم يأتِ فعل مجرد</small></h3><ul><li>a lawyer (noun)</li><li>busy / safe (adj)</li><li>in the office (place)</li><li>from Saudi Arabia</li></ul></div>' +
-          '<div class="sig c"><h3 dir="ltr">Use Do / Does<small class="sig-ar">إذا جاء فعل أصلي مجرد</small></h3><ul><li>work</li><li>study</li><li>live</li><li>prepare</li><li>need / want</li></ul></div>' +
+          '<div class="sig s"><h3 dir="ltr">Use Am / Is / Are<small class="sig-ar">إذا لم يأتِ فعل عادي</small></h3><ul><li>a lawyer (noun)</li><li>busy / safe (adj)</li><li>in the office (place)</li><li>from Saudi Arabia</li></ul></div>' +
+          '<div class="sig c"><h3 dir="ltr">Use Do / Does<small class="sig-ar">إذا جاء فعل عادي</small></h3><ul><li>work</li><li>study</li><li>live</li><li>prepare</li><li>need / want</li></ul></div>' +
         '</div>' +
         '<div class="xbox"><div class="pairs"><span class="yes">Are you at the office? (place → Are)</span><span class="yes">Do you work at the office? (verb "work" → Do)</span></div></div>',
       arHtml:
-        '<p>اسأل نفسك سؤالًا واحدًا: <b>هل يوجد بعد الفاعل فعل أصلي مجرد؟</b></p>' +
-        '<p>١) إن وُجد فعل أصلي (مثل <bdi class="en">work, study, live</bdi>) ← اختر <bdi class="en">Do / Does / don\'t / doesn\'t</bdi>.</p>' +
+        '<p>اسأل نفسك سؤالًا واحدًا: <b>هل يوجد بعد الفاعل فعل عادي؟</b></p>' +
+        '<p>١) إن وُجد فعل عادي (مثل <bdi class="en">work, study, live</bdi>) ← اختر <bdi class="en">Do / Does / don\'t / doesn\'t</bdi>.</p>' +
         '<p>٢) إن لم يوجد فعل (بل اسم أو صفة أو حرف جر ومكان) ← اختر <bdi class="en">Am / Is / Are / isn\'t / aren\'t</bdi>.</p>'
     },
     {
@@ -316,7 +316,7 @@ LESSONS.u0l1 = {
       enHtml:
         '<h2 class="bi-h"><span class="en" dir="ltr">Common Arab Mistakes</span><small>أخطاء يقع فيها كثير من العرب (من التشخيص)</small></h2>' +
         '<ul class="mist">' +
-          '<li><span class="no">I am study law at university.</span><span class="yes">I study law at university.</span><p class="en-m" dir="ltr">Never put <b>am / is / are</b> before a base verb in Present Simple.</p><p>لا نضع <bdi class="en">am / is / are</bdi> قبل الفعل الأصلي في المضارع البسيط.</p></li>' +
+          '<li><span class="no">I am study law at university.</span><span class="yes">I study law at university.</span><p class="en-m" dir="ltr">Never put <b>am / is / are</b> before a base verb in Present Simple.</p><p>لا نضع <bdi class="en">am / is / are</bdi> قبل الفعل المجرد في المضارع البسيط.</p></li>' +
           '<li><span class="no">Are you agree with this point?</span><span class="yes">Do you agree with this point?</span><p class="en-m" dir="ltr"><b>agree</b> is a verb (not an adjective), so we ask with <b>Do / Does</b>.</p><p>كلمة <bdi class="en">agree</bdi> فعل بمعنى «يوافق» وليست صفة، لذلك نسأل عنها بـ <bdi class="en">Do you agree?</bdi> لا بـ <bdi class="en">Are you agree?</bdi></p></li>' +
           '<li><span class="no">My brother lawyer in Jeddah.</span><span class="yes">My brother is a lawyer in Jeddah.</span><p class="en-m" dir="ltr">English sentences cannot omit <b>is</b>, and singular jobs need <b>a / an</b>.</p><p>لا بد من <bdi class="en">is</bdi> في الجملة الاسمية، ولا بد من <bdi class="en">a</bdi> قبل المهنة المفردة.</p></li>' +
           '<li><span class="no">Where you work?</span><span class="yes">Where do you work?</span><p class="en-m" dir="ltr">Questions with action verbs need the helper verb <b>do / does</b> before the subject.</p><p>السؤال بفعل عادي يحتاج <bdi class="en">do</bdi> أو <bdi class="en">does</bdi> قبل الفاعل.</p></li>' +
@@ -348,16 +348,16 @@ LESSONS.u0l1 = {
       why: "كلمة ready صفة وليست فعلًا، والفاعل جمع (your parents)، فنسأل بـ Are.", errCat: "be_verb" },
     { s: "I ___ drink coffee in the afternoon.", opts: ["am not", "don't"], a: 1,
       whyEn: "'drink' is a base action verb → I don't drink.",
-      why: "مع الفعل الأصلي drink ننفي بـ don't وليس am not.", errCat: "be_verb" },
+      why: "مع الفعل العادي drink ننفي بـ don't وليس am not.", errCat: "be_verb" },
     { s: "Where ___ your cousin study engineering?", opts: ["is", "does"], a: 1,
       whyEn: "'study' is a base verb and 'your cousin' is singular → Where does your cousin study?",
-      why: "لوجود الفعل الأصلي study مع فاعل مفرد نستخدم المساعد does.", errCat: "be_verb" }
+      why: "لوجود الفعل العادي study مع فاعل مفرد نستخدم المساعد does.", errCat: "be_verb" }
   ],
 
   gB: [
     { s: "He is work in a hospital in Dammam.", ok: false, fix: "He works in a hospital in Dammam.",
       whyEn: "Never put 'is' before a base verb. Use Present Simple: 'He works'.",
-      why: "لا نضع is قبل الفعل الأصلي work؛ الصواب في المضارع البسيط He works.", errCat: "be_verb" },
+      why: "لا نضع is قبل الفعل المجرد work؛ الصواب في المضارع البسيط He works.", errCat: "be_verb" },
     { s: "Does the bus to the university leave at seven?", ok: true,
       whyEn: "Correct question: Does + singular subject (the bus) + base verb (leave).",
       why: "سؤال صحيح: Does مع الفاعل المفرد (the bus) ثم الفعل المجرد leave.", errCat: "be_verb" },
@@ -375,13 +375,13 @@ LESSONS.u0l1 = {
       why: "الفاعل جمع (My grandparents) وبعده مكان (from Hail) بلا فعل عادي، فنكتب are.", errCat: "be_verb" },
     { pre: "My sister", verb: "not / watch", post: "TV on school nights.", ans: ["doesn't watch", "does not watch"],
       whyEn: "'My sister' is singular (she) + action verb → doesn't watch (base verb, no -s).",
-      why: "الفاعل مفرد (My sister) والفعل فعل عادي، فننفي بـ doesn't ثم الفعل المجرد watch بلا s.", errCat: "agreement" },
+      why: "الفاعل مفرد (My sister)، وwatch فعل عادي، فننفي بـ doesn't ثم الفعل المجرد watch بلا s.", errCat: "agreement" },
     { pre: "We", verb: "not / work", post: "on Fridays and Saturdays.", ans: ["don't work", "do not work"],
       whyEn: "Negative action verb with 'We' → don't work.",
       why: "نفي الفعل العادي work مع الفاعل We يكون بـ don't work.", errCat: "be_verb" },
     { pre: "What time", verb: "you / arrive", post: "at the university?", ans: ["do you arrive"],
       whyEn: "Question with the action verb 'arrive' + 'you' → do you arrive.",
-      why: "في السؤال مع الفعل الأصلي arrive والفاعل you نستخدم do you arrive.", errCat: "word_order" }
+      why: "في السؤال مع الفعل العادي arrive والفاعل you نستخدم do you arrive.", errCat: "word_order" }
   ],
 
   gD: [
@@ -435,7 +435,7 @@ LESSONS.u0l1 = {
       ex1: "I am a trainee · The office is near the court · Sundays are very busy",
       l2En: "And he uses base verbs (or don't / Do) when there is an action:",
       ex2: "I prepare the client files · I don't go to court alone · Do you have free time?",
-      arHtml: "<p>لاحظ أن فيصل استخدم <b style=\"color:var(--dark)\">am / is / are</b> مع الاسم (<bdi class=\"en\">a trainee</bdi>) والمكان (<bdi class=\"en\">near the court</bdi>) والصفة (<bdi class=\"en\">busy</bdi>)، واستخدم <b style=\"color:var(--accent-ink)\">الأفعال العادية و don't / Do</b> مع الأفعال (<bdi class=\"en\">prepare, go, have</bdi>).</p>"
+      arHtml: "<p>لاحظ أن فيصل استخدم <b style=\"color:var(--dark)\">am / is / are</b> مع الاسم (<bdi class=\"en\">a trainee</bdi>) والمكان (<bdi class=\"en\">near the court</bdi>) والصفة (<bdi class=\"en\">busy</bdi>)، واستخدم <b style=\"color:var(--accent-ink)\">don't / Do</b> مع الأفعال العادية (<bdi class=\"en\">prepare, go, have</bdi>).</p>"
     },
     questions: [
       { q: "Where is Al-Noor Law Office?", opts: ["Near the airport in Jeddah", "Near the main court in Riyadh", "Inside the university"], a: 1,
@@ -502,7 +502,7 @@ LESSONS.u0l1 = {
       why: "بعد الفراغ اسم مفرد بلا فعل عادي، فنستخدم is.", errCat: "be_verb" },
     { s: "___ you prepare dinner for your family on Fridays?", opts: ["Are", "Do", "Is"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'prepare' is a base action verb → Do you prepare…?",
-      why: "لوجود الفعل الأصلي prepare نسأل بـ Do.", errCat: "be_verb" },
+      why: "لوجود الفعل العادي prepare نسأل بـ Do.", errCat: "be_verb" },
     { s: "Which sentence is correct?", opts: ["I am study English every day.", "I study English every day.", "I studying English every day."], a: 1, tag: "Grammar · قواعد",
       whyEn: "In Present Simple, use the verb directly after the subject without 'am': I study.",
       why: "في المضارع البسيط نضع الفعل بعد الفاعل مباشرة بدون am: I study.", errCat: "be_verb" },
@@ -511,7 +511,7 @@ LESSONS.u0l1 = {
       why: "كلمة busy صفة، فننفي بـ isn't وليس doesn't.", errCat: "be_verb" },
     { s: "Mr. Salman ___ meet clients on Saturdays.", opts: ["isn't", "doesn't", "don't"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'meet' is a base verb and 'Mr. Salman' is singular (he) → doesn't meet.",
-      why: "مع الفاعل المفرد والفعل الأصلي meet ننفي بـ doesn't.", errCat: "be_verb" },
+      why: "مع الفاعل المفرد والفعل العادي meet ننفي بـ doesn't.", errCat: "be_verb" },
     { s: "Where ___ the new trainees from?", opts: ["do", "are", "is"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'from' has no action verb and 'trainees' is plural → Where are the new trainees from?",
       why: "السؤال عن البلد بـ from ليس فيه فعل عادي، والفاعل جمع فنستخدم are.", errCat: "agreement" },

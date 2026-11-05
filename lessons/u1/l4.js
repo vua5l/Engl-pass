@@ -11,7 +11,7 @@ LESSONS.u1l4 = {
   canDoEn: "I can keep state verbs (know, understand, want, need, like, love, prefer, believe, think) in Present Simple, use Present Continuous for actions happening now, and use 'think' and 'have' with both meanings.",
   canDoAr: "أقدر أن أُبقي الأفعال التي لا تأخذ ing (know وunderstand وwant وneed وlike وlove وprefer وbelieve وthink) في المضارع البسيط، وأستعمل المضارع المستمر لما يحدث الآن، وأميّز معنيي think وhave.",
   descEn: "I can talk about customs and about what I know, need and prefer without adding -ing to state verbs.",
-  descAr: "أقدر أن أتحدث عن العادات وعمّا أعرفه وأحتاجه وأفضّله دون أن أضيف ing إلى الأفعال التي لا تأخذها، من إيميل طالب سعودي في اليابان.",
+  descAr: "أقدر أن أتحدث عن العادات وعمّا أعرفه وأحتاجه وأفضّله بالمضارع البسيط بلا ing، من إيميل طالب سعودي في اليابان.",
   goals: [
     { en: "I can use know, understand, want, need, like, love, prefer and believe in Present Simple, even when I mean right now.", ar: "أقدر أن أستعمل know وunderstand وwant وneed وlike وlove وprefer وbelieve في المضارع البسيط حتى حين أقصد الآن." },
     { en: "I can choose Present Continuous for actions happening now (I'm cooking) and Present Simple for states (I like cooking).", ar: "أقدر أن أختار المضارع المستمر لما يحدث الآن (I'm cooking) والمضارع البسيط لما نحبه ونعرفه (I like cooking)." },
@@ -132,7 +132,7 @@ LESSONS.u1l4 = {
       isLegal: true,
       hint: "b _ _ _ k (5 letters)",
       spellNoteEn: "Collocation: 'break the law' (= do something illegal). Spelled b-r-e-a-k.",
-      spellNote: "التعبير القانوني الثابت break the law تعني يخالف القانون، وتُكتب b-r-e-a-k.",
+      spellNote: "التعبير القانوني الثابت break the law يعني يخالف القانون، وتُكتب break هكذا: b-r-e-a-k.",
       errCat: "vocab"
     }
   ],
@@ -239,7 +239,7 @@ LESSONS.u1l4 = {
         '<div class="xbox"><span class="xtag s" dir="ltr">State · Present Simple (no -ing)</span><p class="xen">I like cooking.</p></div>' +
         '<div class="tip" dir="ltr"><p><b>Quick test · اختبار سريع:</b> Can you see it start and stop? Then it is an action. Is it in your mind or your heart? Then it is a state.</p></div>',
       arHtml:
-        '<p>الأفعال العادية (مثل <bdi class="en">cook, write, walk</bdi>) أعمال تبدأ وتنتهي، فإذا كانت تقع الآن وضعناها في المضارع المستمر: <bdi class="en">I\'m cooking dinner now</bdi>.</p>' +
+        '<p>أكثر الأفعال (مثل <bdi class="en">cook, write, walk</bdi>) أعمال تبدأ وتنتهي، فإذا كانت تقع الآن وضعناها في المضارع المستمر: <bdi class="en">I\'m cooking dinner now</bdi>.</p>' +
         '<p>أما الأفعال التي لا تأخذ ing (مثل <bdi class="en">know, like, want</bdi>) فتصف ما في العقل أو القلب أو الحاجة، وهي ثابتة لا تجري ثم تنتهي، فتبقى في المضارع البسيط حتى مع <bdi class="en">now</bdi>: <bdi class="en">I like cooking</bdi>.</p>'
     },
     {
@@ -269,7 +269,7 @@ LESSONS.u1l4 = {
         '<tr><td>he / she / it</td><td>She <span class="hs">needs</span> help.</td><td>She <span class="hs">doesn\'t need</span> help.</td><td><span class="hs">Does</span> she <span class="hs">need</span> help?</td></tr></tbody></table></div>' +
         '<div class="tip" dir="ltr"><p><b>Ask with Do / Does · اسأل بـ Do / Does:</b></p><div class="pairs"><span class="yes">Do you understand the question?</span><span class="no">Are you understanding the question?</span></div></div>',
       arHtml:
-        '<p>الأفعال التي لا تأخذ ing في المضارع البسيط، فنسأل عنها بـ <bdi class="en">Do / Does</bdi> وننفيها بـ <bdi class="en">don\'t / doesn\'t</bdi>، ونضيف <bdi class="en">s</bdi> مع <bdi class="en">he / she / it</bdi> في الإثبات (<bdi class="en">She needs</bdi>).</p>' +
+        '<p>هذه الأفعال تبقى في المضارع البسيط، فنسأل عنها بـ <bdi class="en">Do / Does</bdi> وننفيها بـ <bdi class="en">don\'t / doesn\'t</bdi>، ونضيف <bdi class="en">s</bdi> مع <bdi class="en">he / she / it</bdi> في الإثبات (<bdi class="en">She needs</bdi>).</p>' +
         '<p>فنقول <bdi class="en">Do you understand?</bdi> ولا نقول <bdi class="en">Are you understanding?</bdi>، ولا نضع <bdi class="en">am / is / are</bdi> قبلها أبدًا.</p>'
     },
     {
@@ -283,8 +283,8 @@ LESSONS.u1l4 = {
         '<tr><td>have</td><td>We <span class="hs">have</span> a big garden. <small>(own · نملك)</small></td><td>We<span class="hc">\'re having</span> lunch. <small>(eat · نتناول)</small></td></tr></tbody></table></div>' +
         '<div class="tip" dir="ltr"><p><b>Opinion = Present Simple · الرأي بالمضارع البسيط:</b></p><div class="pairs"><span class="yes">I think English is useful.</span><span class="no">I\'m thinking English is useful.</span></div></div>',
       arHtml:
-        '<p>الفعل <bdi class="en">think</bdi> بمعنى «أرى» حالة فيبقى بسيطًا: <bdi class="en">I think Abha is beautiful</bdi>، وبمعنى «أفكّر في أمر الآن» حدث فيأتي مستمرًا: <bdi class="en">I\'m thinking about my trip</bdi>.</p>' +
-        '<p>والفعل <bdi class="en">have</bdi> بمعنى «يملك» حالة: <bdi class="en">We have a big garden</bdi>، وبمعنى «يأكل أو يشرب أو يقضي وقتًا» حدث: <bdi class="en">We\'re having lunch</bdi>.</p>'
+        '<p>الفعل <bdi class="en">think</bdi> بمعنى «أرى» لا يأخذ ing فيبقى بسيطًا: <bdi class="en">I think Abha is beautiful</bdi>، وبمعنى «أفكّر في أمر الآن» يأخذها فيأتي مستمرًا: <bdi class="en">I\'m thinking about my trip</bdi>.</p>' +
+        '<p>والفعل <bdi class="en">have</bdi> بمعنى «يملك» لا يأخذ ing: <bdi class="en">We have a big garden</bdi>، وبمعنى «يأكل أو يشرب أو يقضي وقتًا» يأخذها: <bdi class="en">We\'re having lunch</bdi>.</p>'
     },
     {
       tEn: "Common Arab Mistakes",
@@ -312,7 +312,7 @@ LESSONS.u1l4 = {
         '<p class="en-p" dir="ltr">Now let\'s practice: 16 guided exercises with brand-new sentences.</p>',
       arHtml:
         '<p><b>الأفعال التي لا تأخذ ing</b> (المعرفة والمشاعر والرغبة والملكية) تبقى في المضارع البسيط حتى مع <bdi class="en">now</bdi>.</p>' +
-        '<p><b>الأفعال العادية</b> التي تقع الآن تأتي بـ <bdi class="en">am / is / are + ing</bdi>، و<bdi class="en">think</bdi> و<bdi class="en">have</bdi> يصلحان للأمرين بحسب المعنى.</p>'
+        '<p><b>وسائر الأفعال</b> إذا وقعت الآن تأتي بـ <bdi class="en">am / is / are + ing</bdi>، و<bdi class="en">think</bdi> و<bdi class="en">have</bdi> يصلحان للأمرين بحسب المعنى.</p>'
     }
   ],
 
@@ -490,7 +490,7 @@ LESSONS.u1l4 = {
       why: "believe فعل يدل على فكرة في الذهن، فلا يأخذ ing، والفاعل My teacher مفرد فنضيف s: believes.", errCat: "stative" },
     { s: "Please be quiet. Dad ___ to our relatives in Egypt on the phone.", opts: ["talks", "talk", "is talking"], a: 2, tag: "Grammar · قواعد",
       whyEn: "'Please be quiet' shows the action is happening now, and 'talk' is an action verb → is talking.",
-      why: "عبارة Please be quiet تدل على أن الحدث يقع الآن، وtalk فعل عادي، فنستعمل is talking.", errCat: "tense" },
+      why: "عبارة Please be quiet تدل على أن الحدث يقع الآن، وtalk فعل يأخذ ing، فنستعمل is talking.", errCat: "tense" },
     { s: "Which sentence uses 'think' correctly?", opts: ["I think Eid is the best holiday of the year.", "I'm thinking Eid is the best holiday of the year.", "I thinking Eid is the best holiday of the year."], a: 0, tag: "Grammar · قواعد",
       whyEn: "'think' for an opinion is a state verb, so it stays in Present Simple: I think…",
       why: "think بمعنى الرأي فعل لا يأخذ ing، فيبقى في المضارع البسيط: I think.", errCat: "stative" },

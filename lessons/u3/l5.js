@@ -243,7 +243,7 @@ LESSONS.u3l5 = {
     { en: "police officer", pos: "noun", ar: "شرطي / ضابط شرطة", say: "بَلِيس أُفِسَر",
       ex: "A police officer helped the old man cross the road.", exAr: "ساعد شرطيٌّ الرجلَ العجوز على عبور الطريق.",
       tipEn: "One person is a police officer. 'The police' means the whole group, and it takes a plural verb: The police are here. Spelling: officer has two f's: o-f-f-i-c-e-r. In police, the stress is on the second part: puh-LEES.",
-      tip: "الفرد الواحد a police officer، أما the police فتعني الجهاز كله، ويأتي بعدها فعل الجمع: The police are here. وتُكتب officer بحرفي f: o-f-f-i-c-e-r. والنبر في police على المقطع الثاني: «بَلِيس».",
+      tip: "الفرد الواحد a police officer، أما the police فتعني الجهاز كله، ويأتي بعدها فعل الجمع: The police are here. وتُكتب officer بحرفي f: o-f-f-i-c-e-r. ونضغط في نطق police على المقطع الثاني: «بَلِيس».",
       oxfordSlug: "police-officer",
       wikiFiles: ["En-uk-police.ogg", "LL-Q1860 (eng)-Vealhurl-officer.wav"],
       wikiCredit: "File:En-uk-police.ogg & File:LL-Q1860 (eng)-Vealhurl-officer.wav · Vealhurl (Lingua Libre) / Wikimedia Commons" },
@@ -264,7 +264,7 @@ LESSONS.u3l5 = {
     { en: "ambulance", pos: "noun", ar: "سيارة إسعاف", say: "أَمْبْيُلَنْس",
       ex: "When my grandfather felt very ill at night, we called an ambulance.", exAr: "حين شعر جدي بمرض شديد في الليل، اتصلنا بسيارة الإسعاف.",
       tipEn: "Collocations: call an ambulance, an ambulance came. Use 'an' because the word starts with a vowel sound. Spelling: the end is -ance, not -ence: a-m-b-u-l-a-n-c-e.",
-      tip: "من تعابيرها الثابتة: call an ambulance (يتصل بالإسعاف)، وan ambulance came (جاءت سيارة إسعاف). ونستعمل an لأن الكلمة تبدأ بصوت متحرك. وتنتهي بـ ance لا ence: a-m-b-u-l-a-n-c-e.",
+      tip: "من عباراتها الشائعة: call an ambulance (يتصل بالإسعاف)، وan ambulance came (جاءت سيارة إسعاف). ونستعمل an لأن الكلمة تبدأ بصوت متحرك. وتنتهي بـ ance لا ence: a-m-b-u-l-a-n-c-e.",
       oxfordSlug: "ambulance",
       wikiFile: "En-us-ambulance.ogg",
       wikiCredit: "File:En-us-ambulance.ogg · Wikimedia Commons" },
@@ -338,7 +338,7 @@ LESSONS.u3l5 = {
       arHtml:
         '<p>انظر إلى ما يأتي بعد كل كلمة: <bdi class="en">when</bdi> قبل الحدث القصير بالماضي البسيط (<bdi class="en">when my friend called my name</bdi>)، و<bdi class="en">while</bdi> قبل الحدث الطويل بالماضي المستمر (<bdi class="en">While I was paying for my coffee</bdi>).</p>' +
         '<p>وإذا جرى حدثان طويلان في وقت واحد، فـ <bdi class="en">while</bdi> تناسبهما: <bdi class="en">While the men were talking, the children were eating cake.</bdi></p>' +
-        '<p>ولا يأتي الحدث القصير بعد <bdi class="en">while</bdi>، فلا نقول <bdi class="en">while my friend called</bdi>. ويجوز أن تأتي <bdi class="en">when</bdi> قبل الحدث الطويل أيضًا، وأن تأتي <bdi class="en">while</bdi> قبل حالة (<bdi class="en">while I was at the bank</bdi>).</p>' +
+        '<p>ولا يأتي الحدث القصير بعد <bdi class="en">while</bdi>، فلا نقول <bdi class="en">while my friend called</bdi>. ويجوز أن تأتي <bdi class="en">when</bdi> قبل الحدث الطويل أيضًا، وأن تأتي <bdi class="en">while</bdi> قبل <bdi class="en">was / were</bdi> مع مكان أو صفة (<bdi class="en">while I was at the bank</bdi>).</p>' +
         '<p>وإذا بدأت الجملة بـ <bdi class="en">When</bdi> أو <bdi class="en">While</bdi>، وضعنا فاصلة بعد الجزء الأول.</p>'
     },
     {

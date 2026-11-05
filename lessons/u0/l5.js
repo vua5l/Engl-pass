@@ -299,7 +299,7 @@ LESSONS.u0l5 = {
       tEn: "Pattern 4: Adding '-s / -es / -ies' (Verbs & Plurals)",
       t: "النمط الرابع: إضافة s / es / ies للأفعال والأسماء الجمع",
       enHtml:
-        '<h2 class="bi-h"><span class="en" dir="ltr">Pattern 4: Spelling of -s / -es / -ies</span><small>قاعدة واحدة تجمع الأسماء الجمع وأفعال المفرد الغائب</small></h2>' +
+        '<h2 class="bi-h"><span class="en" dir="ltr">Pattern 4: Spelling of -s / -es / -ies</span><small>قاعدة واحدة تجمع الأسماء الجمع وأفعال he / she / it</small></h2>' +
         '<p class="en-p" dir="ltr">The exact same spelling rule works for <b>plural nouns</b> AND for <b>he / she / it verbs</b> in Present Simple:</p>' +
         '<ul class="spell" dir="ltr">' +
           '<li>1. Consonant + <b>y</b> → change <b>y</b> to <b>-ies</b>:<span class="s-en">study → he <b>studies</b> · city → two <b>cities</b> · company → <b>companies</b></span></li>' +
@@ -353,7 +353,7 @@ LESSONS.u0l5 = {
       why: "تُكتب beautiful وتنتهي بلام واحدة.", errCat: "spelling" },
     { s: "My sister ___ medicine at King Saud University.", opts: ["studys", "studies", "is study"], a: 1,
       whyEn: "'study' ends in consonant + y → change y to -ies with 'she' (studies).",
-      why: "الفعل study ينتهي بـ y مسبوقة بساكن، فتتحول مع المفرد الغائب إلى studies.", errCat: "spelling" }
+      why: "الفعل study ينتهي بـ y مسبوقة بساكن، فتتحول مع he / she / it إلى studies.", errCat: "spelling" }
   ],
 
   gB: [
@@ -508,7 +508,7 @@ LESSONS.u0l5 = {
       why: "نضاعف الحرف الأخير بعد حرف علة واحد (sit → sitting)، ولا نضاعفه بعد حرفي علة (rain → raining).", errCat: "spelling" },
     { s: "Review (L1): ___ you check the official documents every morning?", opts: ["Are", "Do", "Were"], a: 1, tag: "Foundation L1 · تأسيس ١",
       whyEn: "'check' is a base action verb + 'every morning' → Do you check…?",
-      why: "الفعل check فعل عادي في المضارع البسيط مع you، فنسأل بـ Do.", errCat: "be_verb" },
+      why: "check فعل عادي في المضارع البسيط مع you، فنسأل بـ Do.", errCat: "be_verb" },
     { s: "Review (L2): ___ there any free tables in the restaurant right now?", opts: ["Is", "Are", "Do"], a: 1, tag: "Foundation L2 · تأسيس ٢",
       whyEn: "'tables' is plural → Are there any free tables…?",
       why: "كلمة tables جمع، لذلك نسأل بـ Are there.", errCat: "agreement" },

@@ -208,7 +208,7 @@ LESSONS.u103l4 = {
     { en: "return", pos: "verb", ar: "يعود / يرجع", say: "رِتِيرْن",
       ex: "After a long trip, my father returned home with gifts for everyone.", exAr: "بعد رحلة طويلة عاد أبي إلى البيت ومعه هدايا للجميع.",
       tipEn: "Say return home, with no 'to', just like go home. With a place, use to: return to Riyadh. Stress the second part: re-TURN.",
-      tip: "نقول return home بلا to، كما نقول go home، ومع اسم المكان نستعمل to: return to Riyadh، والنبر على المقطع الثاني.",
+      tip: "نقول return home بلا to، كما نقول go home، ومع اسم المكان نستعمل to: return to Riyadh، ونضغط في نطقها على المقطع الثاني.",
       oxfordSlug: "return_1",
       wikiFile: "En-us-return.ogg",
       wikiCredit: "File:En-us-return.ogg · Wikimedia Commons" }
@@ -234,8 +234,8 @@ LESSONS.u103l4 = {
       whyEn: "We need an adjective before 'country', and 'foreign' means not your own. 'return' and 'stay' are verbs here.",
       why: "يلزم قبل country صفة، وforeign تعني غير بلدك، أما return وstay ففعلان هنا.", errCat: "vocab" },
     { s: "The rules of that country are clear: visitors need to ___ before the trip.", opts: ["stay in a hotel", "apply for a visa", "return to work"], a: 1,
-      whyEn: "To 'apply for a visa' is to ask for official permission to enter a country, and this comes before the trip. 'stay in a hotel' and 'return to work' come after you travel.",
-      why: "apply for a visa أن تطلب إذنًا رسميًا بدخول البلد، وهذا يكون قبل السفر، أما stay in a hotel وreturn to work فبعد السفر.", errCat: "vocab" },
+      whyEn: "To 'apply for a visa' is to ask for official permission to enter a country, and this comes before the trip. 'stay in a hotel' comes during the trip, and 'return to work' comes after it.",
+      why: "apply for a visa أن تطلب إذنًا رسميًا بدخول البلد، وهذا يكون قبل السفر، أما stay in a hotel فأثناء السفر، وreturn to work فبعده.", errCat: "vocab" },
     { s: "My brother missed his family, so he decided to ___ home after one year abroad.", opts: ["return", "island", "culture"], a: 0,
       whyEn: "He missed his family, so he wanted to go back. After 'to' we need a verb, and we say 'return home'. The other two are nouns.",
       why: "اشتاق إلى أسرته فأراد الرجوع، ويلزم بعد to فعل، ونقول return home، والخياران الآخران اسمان.", errCat: "vocab" }
@@ -278,7 +278,7 @@ LESSONS.u103l4 = {
         '<p>كلمة الوقت قرينة حسنة، لكنها لا تقطع دائمًا.</p>' +
         '<p><bdi class="en">every day</bdi> و<bdi class="en">usually</bdi> ترجّحان البسيط، أما <bdi class="en">yesterday</bdi> و<bdi class="en">ago</bdi> فتدلان على الماضي بنوعيه: البسيط والمستمر.</p>' +
         '<p><b>وليس للماضي المستمر كلمة خاصة به،</b> بل يقرره الحدث الآخر في الجملة أو الموقف: <bdi class="en">The guests were waiting in the garden when my father opened the door.</bdi> فالانتظار طويل، وفتح الباب حدث قصير وقع في أثنائه.</p>' +
-        '<p>وكلمتا <bdi class="en">now</bdi> و<bdi class="en">at the moment</bdi> تأتيان كثيرًا مع المضارع المستمر، لكن مع الفعل العادي فقط، أما الفعل الذي لا يأخذ ing فيبقى بسيطًا: <bdi class="en">I need a pen now.</bdi></p>'
+        '<p>وكلمتا <bdi class="en">now</bdi> و<bdi class="en">at the moment</bdi> تأتيان كثيرًا مع المضارع المستمر، أما الفعل الذي لا يأخذ ing فيبقى بسيطًا: <bdi class="en">I need a pen now.</bdi></p>'
     },
     {
       tEn: "Verbs That Stay Simple",
@@ -323,8 +323,8 @@ LESSONS.u103l4 = {
       enHtml:
         '<h2 class="bi-h"><span class="en" dir="ltr">Common Arab Mistakes</span><small>أخطاء يقع فيها كثير من العرب</small></h2>' +
         '<ul class="mist">' +
-          '<li><span class="no">Last night I don\'t understand the film.</span><span class="yes">Last night I didn\'t understand the film.</span><p class="en-m" dir="ltr">Last night is in the past, so the verb must be in the past: <b>didn\'t</b> + base verb.</p><p><bdi class="en">Last night</bdi> في الماضي، فيكون الفعل ماضيًا: <bdi class="en">didn\'t</bdi> مع الفعل الأصلي.</p></li>' +
-          '<li><span class="no">I am drive to college every day.</span><span class="yes">I drive to college every day.</span><p class="en-m" dir="ltr">This is a habit, so use the present simple. Do not put <b>am</b> before a base verb.</p><p>هذه عادة، فنستعمل المضارع البسيط، ولا نضع <bdi class="en">am</bdi> قبل الفعل الأصلي.</p></li>' +
+          '<li><span class="no">Last night I don\'t understand the film.</span><span class="yes">Last night I didn\'t understand the film.</span><p class="en-m" dir="ltr">Last night is in the past, so the verb must be in the past: <b>didn\'t</b> + base verb.</p><p><bdi class="en">Last night</bdi> في الماضي، فيكون الفعل ماضيًا: <bdi class="en">didn\'t</bdi> مع الفعل المجرد.</p></li>' +
+          '<li><span class="no">I am drive to college every day.</span><span class="yes">I drive to college every day.</span><p class="en-m" dir="ltr">This is a habit, so use the present simple. Do not put <b>am</b> before a base verb.</p><p>هذه عادة، فنستعمل المضارع البسيط، ولا نضع <bdi class="en">am</bdi> قبل الفعل المجرد.</p></li>' +
           '<li><span class="no">When I arrive at the hotel last night, my cousin was waiting outside.</span><span class="yes">When I arrived at the hotel last night, my cousin was waiting outside.</span><p class="en-m" dir="ltr">The short action is in the past too, so it takes the past simple: <b>arrived</b>.</p><p>الحدث القصير في الماضي أيضًا، فيأتي بالماضي البسيط: <bdi class="en">arrived</bdi>.</p></li>' +
           '<li><span class="no">We are wanting a bigger house.</span><span class="yes">We want a bigger house.</span><p class="en-m" dir="ltr"><b>want</b> is a state verb, so it stays simple.</p><p><bdi class="en">want</bdi> فعل لا يأخذ ing، فيبقى بسيطًا.</p></li>' +
         '</ul>'
@@ -363,10 +363,10 @@ LESSONS.u103l4 = {
   gB: [
     { s: "My uncle is sell dates at the market every Saturday.", ok: false, fix: "My uncle sells dates at the market every Saturday.",
       whyEn: "'every Saturday' shows a habit, so we use the present simple with -s for he: sells. We do not put 'is' before a base verb.",
-      why: "every Saturday تدل على عادة، فنستعمل المضارع البسيط بإضافة s مع المفرد الغائب: sells، ولا نضع is قبل الفعل الأصلي.", errCat: "be_verb" },
+      why: "every Saturday تدل على عادة، فنستعمل المضارع البسيط بإضافة s مع he / she / it: sells، ولا نضع is قبل الفعل المجرد.", errCat: "be_verb" },
     { s: "Two years ago, we don't have a car.", ok: false, fix: "Two years ago, we didn't have a car.",
       whyEn: "'Two years ago' is in the past, but 'don't have' is present. The past negative is didn't + base verb.",
-      why: "Two years ago في الماضي، أما don't have فمضارع، ونفي الماضي didn't مع الفعل الأصلي.", errCat: "tense" },
+      why: "Two years ago في الماضي، أما don't have فمضارع، ونفي الماضي didn't مع الفعل المجرد.", errCat: "tense" },
     { s: "My brothers were cleaning the garden when they were finding an old key.", ok: false, fix: "My brothers were cleaning the garden when they found an old key.",
       whyEn: "They found the key in one moment. A short action after 'when' takes the past simple, and the past of 'find' is irregular: found.",
       why: "وجدوا المفتاح في لحظة واحدة، والحدث القصير بعد when يأتي بالماضي البسيط، وماضي find شاذ: found.", errCat: "tense" },
@@ -378,7 +378,7 @@ LESSONS.u103l4 = {
   gC: [
     { pre: "These days, my sister", verb: "want", post: "a job in a foreign country.", ans: ["wants"],
       whyEn: "'These days' puts this in the present. 'want' is a state verb, so it stays simple, and 'my sister' takes -s: wants.",
-      why: "These days تجعل الجملة في الحاضر، وwant فعل لا يأخذ ing فيبقى بسيطًا، وmy sister مفرد غائب فنضيف s: wants.", errCat: "stative" },
+      why: "These days تجعل الجملة في الحاضر، وwant فعل لا يأخذ ing فيبقى بسيطًا، وmy sister مفرد مثل he أو she فنضيف s: wants.", errCat: "stative" },
     { pre: "Shh! My little brother", verb: "sleep", post: "on the sofa.", ans: ["is sleeping"],
       whyEn: "'Shh!' tells us to be quiet because the sleep is going on now. So we use the present continuous: is sleeping.",
       why: "Shh! تطلب الهدوء لأن النوم جارٍ الآن، فنستعمل المضارع المستمر: is sleeping.", errCat: "tense" },
@@ -456,7 +456,7 @@ LESSONS.u103l4 = {
       { tf: true, q: "Todd's job in Japan is different from his job in Thailand.", a: false,
         whyEn: "False. After the middle, Todd says that he is an English teacher in Japan, and that was his job in Thailand too.",
         why: "خطأ؛ بعد وسط المقطع يقول تود إنه معلم إنجليزية في اليابان، وكان هذا عمله في تايلاند أيضًا.", errCat: "reading" },
-      { q: "How can people move around Japan easily?", opts: ["By boat or ship", "By train and bus", "By taxi or car"], a: 1,
+      { q: "How can people move around Japan easily?", opts: ["By bike and boat", "By train and bus", "By taxi and car"], a: 1,
         whyEn: "Near the end, Todd says that going from place to place in Japan is easy on trains and buses.",
         why: "قرب آخر المقطع يقول تود إن التنقل في اليابان سهل بالقطارات والحافلات.", errCat: "reading" }
     ]
@@ -510,10 +510,10 @@ LESSONS.u103l4 = {
   quiz: [
     { s: "On a typical day, my friends and I ___ to college.", opts: ["am walk", "are walk", "walk"], a: 2, tag: "Grammar · قواعد",
       whyEn: "This is a habit, so we use the present simple: walk. We do not put 'am' or 'are' before a base verb.",
-      why: "هذه عادة، فنستعمل المضارع البسيط: walk، ولا نضع am ولا are قبل الفعل الأصلي.", errCat: "be_verb" },
+      why: "هذه عادة، فنستعمل المضارع البسيط: walk، ولا نضع am ولا are قبل الفعل المجرد.", errCat: "be_verb" },
     { s: "I ___ your sister, because we worked together last year.", opts: ["am knowing", "know", "was knowing"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'know' is a state verb, so it stays simple, and it takes no -ing in the present or in the past.",
-      why: "know فعل لا يأخذ ing فيبقى بسيطًا، ولا يأخذ ing في الحاضر ولا في الماضي.", errCat: "stative" },
+      why: "know فعل لا يأخذ ing في الحاضر ولا في الماضي، فيبقى بسيطًا.", errCat: "stative" },
     { s: "Please don't go in. At the moment, the doctor ___ to a patient.", opts: ["is talking", "talks", "talked"], a: 0, tag: "Grammar · قواعد",
       whyEn: "We can't go in because the talk is going on now. An action going on at this moment takes the present continuous.",
       why: "لا نستطيع الدخول لأن الحديث جارٍ الآن، والحدث الجاري في هذه اللحظة يأتي بالمضارع المستمر.", errCat: "tense" },

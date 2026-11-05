@@ -184,7 +184,7 @@ var ERR_CATS = {
     en: "Using 'be' & 'do' with Verbs",
     ar: "استعمال be و do مع الأفعال",
     whyEn: "Use am / is / are with a noun, an adjective or a place (I am busy), and do / does with an action verb (Do you work?). Never put am / is / are before a base verb (✗ She is go), and never drop it before an -ing verb (✗ She working).",
-    whyAr: "نستعمل am / is / are مع الاسم أو الصفة أو المكان (I am busy)، وdo / does مع الفعل العادي (Do you work?). ولا نضع am / is / are قبل الفعل الأصلي، ولا نحذفها قبل الفعل المنتهي بـ ing."
+    whyAr: "نستعمل am / is / are مع الاسم أو الصفة أو المكان (I am busy)، وdo / does مع الفعل العادي (Do you work?). ولا نضع am / is / are قبل الفعل المجرد، ولا نحذفها قبل الفعل المنتهي بـ ing."
   },
   agreement: {
     en: "Singular & Plural Agreement",
@@ -218,9 +218,9 @@ var ERR_CATS = {
   },
   vocab: {
     en: "Vocabulary Meaning & Collocations",
-    ar: "معاني المفردات والتعابير الثابتة اللفظية",
+    ar: "معاني المفردات والتعابير الثابتة",
     whyEn: "Check how each word fits the context and its natural partners (do research, collect data, measure temperature, sign a contract).",
-    whyAr: "راجع معنى الكلمة في السياق والكلمات التي تتلازم معها طبيعيًا."
+    whyAr: "راجع معنى الكلمة في السياق والكلمات التي تأتي معها عادةً."
   },
   reading: {
     en: "Reading Comprehension & Evidence",

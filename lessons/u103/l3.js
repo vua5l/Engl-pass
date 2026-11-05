@@ -242,7 +242,7 @@ LESSONS.u103l3 = {
         '<span class="xtag c" dir="ltr">In progress at that moment · جارٍ في تلك اللحظة</span><p class="xen">At ten last night, Reem was watching a film with her sister.</p></div>' +
         '<div class="tip" dir="ltr"><p><b>Be careful · انتبه:</b> yesterday, at ten and at that moment go with both past tenses, so a time word alone does not choose. Often both tenses are correct. In today\'s exercises, the sentence gives you a reason, or the task names the tense.</p></div>',
       arHtml:
-        '<p>تعرف الزمنين الماضيين من الوحدتين 2 و3، وهما هنا متقابلان: <b>الماضي البسيط</b> للحدث المكتمل أو الحالة الماضية، و<b>الماضي المستمر</b> <bdi class="en">was / were</bdi> مع الفعل وing لحدث كان جاريًا في لحظة من الماضي.</p>' +
+        '<p>تعرف الزمنين الماضيين من الوحدتين 2 و3، وهما هنا متقابلان: <b>الماضي البسيط</b> للحدث المكتمل أو لما كان ثابتًا في الماضي، و<b>الماضي المستمر</b> <bdi class="en">was / were</bdi> مع الفعل وing لحدث كان جاريًا في لحظة من الماضي.</p>' +
         '<p>وانتبه: <bdi class="en">yesterday</bdi> و<bdi class="en">at ten</bdi> و<bdi class="en">at that moment</bdi> تأتي مع الزمنين، فكلمة الوقت وحدها لا تختار الزمن، وكثيرًا ما يصح الزمنان معًا. وفي تمارين اليوم تعطيك الجملة سببًا، أو تذكر لك التعليمة اسم الزمن.</p>'
     },
     {
@@ -259,7 +259,7 @@ LESSONS.u103l3 = {
         '<div class="tip" dir="ltr"><p><b>while · مع الحدث الطويل:</b> don\'t put while before a short event.</p><div class="pairs"><span class="yes">The glass fell while Nawal was cleaning the table.</span><span class="no">Nawal was cleaning the table while the glass fell.</span></div></div>',
       arHtml:
         '<p>في القصة كثيرًا ما يكون حدث طويل جارٍ، ويقع في وسطه حدث قصير: فالطويل بالماضي المستمر، والقصير بالماضي البسيط، ومثاله <bdi class="en">Huda was making tea when the cup fell on the floor</bdi>.</p>' +
-        '<p>و<bdi class="en">while</bdi> تأتي مع الحدث الطويل، ومثالها <bdi class="en">While Khalid was opening the door, his key broke</bdi>، فلا نضعها قبل حدث قصير. والجزء القصير بالماضي البسيط وإن كان فعل لا يأخذ ing، مثل <bdi class="en">when he understood the problem</bdi>. وتأتي <bdi class="en">when</bdi> مع الحدث الطويل أيضًا: <bdi class="en">When Amal was leaving the bank, her phone rang</bdi>.</p>'
+        '<p>و<bdi class="en">while</bdi> تأتي مع الحدث الطويل، ومثالها <bdi class="en">While Khalid was opening the door, his key broke</bdi>، فلا نضعها قبل حدث قصير. والجزء القصير بالماضي البسيط وإن كان فعلًا لا يأخذ ing، مثل <bdi class="en">when he understood the problem</bdi>. وتأتي <bdi class="en">when</bdi> مع الحدث الطويل أيضًا: <bdi class="en">When Amal was leaving the bank, her phone rang</bdi>.</p>'
     },
     {
       tEn: "was / were, Negatives and Questions",
@@ -292,7 +292,7 @@ LESSONS.u103l3 = {
         '</ul>' +
         '<div class="tip" dir="ltr"><p><b>Good to know · للفائدة:</b> feel and hurt can take both tenses, so both of these are correct: My head hurt. · My head was hurting.</p></div>',
       arHtml:
-        '<p>الأفعال مثل <bdi class="en">know</bdi> و<bdi class="en">understand</bdi> و<bdi class="en">need</bdi> تصف حالة لا حدثًا، فتبقى بسيطة في الماضي: <bdi class="en">knew</bdi> و<bdi class="en">understood</bdi> و<bdi class="en">needed</bdi>.</p>' +
+        '<p>الأفعال مثل <bdi class="en">know</bdi> و<bdi class="en">understand</bdi> و<bdi class="en">need</bdi> لا تأخذ ing، فتبقى بسيطة في الماضي: <bdi class="en">knew</bdi> و<bdi class="en">understood</bdi> و<bdi class="en">needed</bdi>.</p>' +
         '<p>ولتختار الزمن في قصة ماضية اسأل نفسك: هل هو فعل لا يأخذ ing؟ فإن كان فالبسيط. وهل كان الحدث جاريًا في لحظة ماضية أو حين وقع حدث آخر؟ فإن كان فالمستمر. وهل هو حدث مكتمل أو واقعة في القصة؟ فإن كان فالبسيط. أما <bdi class="en">feel</bdi> و<bdi class="en">hurt</bdi> فيأتيان بالزمنين معًا.</p>'
     },
     {
@@ -321,7 +321,7 @@ LESSONS.u103l3 = {
         '</div>' +
         '<p class="en-p" dir="ltr">Now let\'s practise: 16 exercises with brand-new sentences. Each answer tells you what decides the tense.</p>',
       arHtml:
-        '<p><b>الماضي البسيط</b> للحدث المكتمل والواقعة في القصة والحالة الماضية، و<b>الماضي المستمر</b> لما كان جاريًا في لحظة من الماضي.</p>' +
+        '<p><b>الماضي البسيط</b> للحدث المكتمل والواقعة في القصة وما كان ثابتًا في الماضي، و<b>الماضي المستمر</b> لما كان جاريًا في لحظة من الماضي.</p>' +
         '<p>وإذا اجتمعا فالطويل بالمستمر والقصير بالبسيط مع <bdi class="en">when</bdi> أو <bdi class="en">while</bdi>، والأفعال التي لا تأخذ ing تبقى بسيطة: <bdi class="en">knew</bdi> و<bdi class="en">understood</bdi> و<bdi class="en">needed</bdi>.</p>'
     }
   ],
@@ -531,7 +531,7 @@ LESSONS.u103l3 = {
       why: "الانتظار حدث طويل كان جاريًا حين توقفت السيارة، فالطويل بالماضي المستمر، والقصير بالماضي البسيط.", errCat: "tense" },
     { s: "Maha ___ a new umbrella, so she bought one on the way home.", opts: ["was needing", "needs", "needed"], a: 2, tag: "Grammar · قواعد",
       whyEn: "'need' is a state verb, so it takes no -ing here. The story is in the past (bought), so we use needed.",
-      why: "need فعل لا يأخذ ing هنا، والقصة في الماضي (bought)، فنقول needed.", errCat: "stative" },
+      why: "need فعل لا يأخذ ing، والقصة في الماضي (bought)، فنقول needed.", errCat: "stative" },
     { s: "Which sentence uses while correctly?", opts: ["Lama was getting off the bus while her bag fell.", "Lama's bag fell while she was getting off the bus.", "Lama's bag fell while she getting off the bus."], a: 1, tag: "Grammar · قواعد",
       whyEn: "while goes with the long action (was getting off), not with the short event (fell). The long action also needs was before verb-ing.",
       why: "while تأتي مع الحدث الطويل was getting off لا مع الحدث القصير fell، والحدث الطويل يحتاج إلى was قبل الفعل وing.", errCat: "tense" },
