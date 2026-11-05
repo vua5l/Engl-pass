@@ -255,7 +255,7 @@ LESSONS.u0l5 = {
       tEn: "Pattern 1: Adding -ing (Keep 'y', Drop Silent '-e')",
       t: "النمط الإملائي الأول: قواعد إضافة ing للأفعال",
       enHtml:
-        '<h2 class="bi-h"><span class="en" dir="ltr">Pattern 1: Adding -ing Accurately</span><small>القاعدتان الذهبيتان لإضافة ing</small></h2>' +
+        '<h2 class="bi-h"><span class="en" dir="ltr">Pattern 1: Adding <span style="white-space:nowrap">-ing</span> Accurately</span><small>القاعدتان الذهبيتان لإضافة ing</small></h2>' +
         '<p class="en-p" dir="ltr">Let\'s fix two of the most common spelling mistakes from the diagnostic test:</p>' +
         '<div class="xbox"><span class="xtag s" dir="ltr">Rule A: NEVER drop \"y\" before -ing · لا تحذف y أبدًا قبل ing</span><p class="xen">study + ing → <b>studying</b> (✗ NOT studing)<br>play + ing → <b>playing</b> · try + ing → <b>trying</b></p></div>' +
         '<div class="xbox"><span class="xtag c" dir="ltr">Rule B: Drop silent \"-e\" before -ing · احذف الـ e الصامتة فقط</span><p class="xen">write + ing → <b>writing</b> (✗ NOT writeing / writting)<br>prepare + ing → <b>preparing</b> · make + ing → <b>making</b></p></div>' +
