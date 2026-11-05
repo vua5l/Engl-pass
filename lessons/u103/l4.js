@@ -233,9 +233,9 @@ LESSONS.u103l4 = {
     { s: "I can't read the signs here, because this is a ___ country for me.", opts: ["foreign", "return", "stay"], a: 0,
       whyEn: "We need an adjective before 'country', and 'foreign' means not your own. 'return' and 'stay' are verbs here.",
       why: "يلزم قبل country صفة، وforeign تعني غير بلدك، أما return وstay ففعلان هنا.", errCat: "vocab" },
-    { s: "The rules of that country are clear: visitors need to ___ before the trip.", opts: ["stay", "apply for a visa", "return"], a: 1,
-      whyEn: "To 'apply for a visa' is to ask for official permission to enter a country, and this comes before the trip. 'stay' and 'return' come after you travel.",
-      why: "apply for a visa أن تطلب إذنًا رسميًا بدخول البلد، وهذا يكون قبل السفر، أما stay وreturn فبعد السفر.", errCat: "vocab" },
+    { s: "The rules of that country are clear: visitors need to ___ before the trip.", opts: ["stay in a hotel", "apply for a visa", "return to work"], a: 1,
+      whyEn: "To 'apply for a visa' is to ask for official permission to enter a country, and this comes before the trip. 'stay in a hotel' and 'return to work' come after you travel.",
+      why: "apply for a visa أن تطلب إذنًا رسميًا بدخول البلد، وهذا يكون قبل السفر، أما stay in a hotel وreturn to work فبعد السفر.", errCat: "vocab" },
     { s: "My brother missed his family, so he decided to ___ home after one year abroad.", opts: ["return", "island", "culture"], a: 0,
       whyEn: "He missed his family, so he wanted to go back. After 'to' we need a verb, and we say 'return home'. The other two are nouns.",
       why: "اشتاق إلى أسرته فأراد الرجوع، ويلزم بعد to فعل، ونقول return home، والخياران الآخران اسمان.", errCat: "vocab" }
@@ -419,17 +419,9 @@ LESSONS.u103l4 = {
     predict: {
       qEn: "Stage 1 Main-Idea Question: What is the talk mainly about?",
       q: "سؤال الفكرة العامة: عمّ يدور الحديث أساسًا؟",
-      optsEn: [
-        "How to find a job in a new country",
-        "Todd's life in different countries, one after the other",
-        "A short holiday that Meg and Todd took together"
-      ],
-      opts: [
-        "كيف تجد عملًا في بلد جديد",
-        "حياة تود في بلدان مختلفة، بلدًا بعد بلد",
-        "إجازة قصيرة قضتها ميغ وتود معًا"
-      ],
-      a: 1,
+      optsEn: ["Todd's life in different countries", "How to find a job in a new country", "A short holiday that Meg and Todd took"],
+      opts: ["حياة تود في بلدان مختلفة", "كيف تجد عملًا في بلد جديد", "إجازة قصيرة قضتها ميغ وتود"],
+      a: 0,
       revealEn: "Meg's questions take Todd from one country to the next, so the talk follows his life in order. Listen again and follow him from place to place.",
       reveal: "تنقل أسئلة ميغ تودًا من بلد إلى بلد، فيسير الحديث مع حياته بالترتيب. استمع مرة أخرى وتابعه من مكان إلى مكان."
     },
@@ -458,13 +450,13 @@ LESSONS.u103l4 = {
       { q: "What was the reason for Todd's years in Thailand?", opts: ["A school there asked him to come.", "His family moved there.", "He needed money during a long trip."], a: 2,
         whyEn: "In the middle, Todd explains it: he was on a trip, his money was gone, and he wanted to stay, so he looked for work.",
         why: "في وسط المقطع يبيّن تود السبب: كان في رحلة ونفد ماله، وأراد البقاء، فبحث عن عمل.", errCat: "reading" },
-      { q: "What does Todd say is good about life in Thailand?", opts: ["Good weather, kind people and great food", "Big cities and good shops", "Cheap flats and quiet roads"], a: 0,
+      { q: "What does Todd say is good about life in Thailand?", opts: ["Good weather and great food", "Big cities and good shops", "Cheap flats and quiet roads"], a: 0,
         whyEn: "In the middle, after he talks about his students, Todd names three good things: the weather, the people and the food.",
         why: "في وسط المقطع، بعد حديثه عن طلابه، يذكر تود ثلاثة أمور حسنة: الطقس والناس والطعام.", errCat: "reading" },
       { tf: true, q: "Todd's job in Japan is different from his job in Thailand.", a: false,
         whyEn: "False. After the middle, Todd says that he is an English teacher in Japan, and that was his job in Thailand too.",
         why: "خطأ؛ بعد وسط المقطع يقول تود إنه معلم إنجليزية في اليابان، وكان هذا عمله في تايلاند أيضًا.", errCat: "reading" },
-      { q: "How can people move around Japan easily?", opts: ["By boat", "On trains and buses", "By taxi"], a: 1,
+      { q: "How can people move around Japan easily?", opts: ["By boat or ship", "By train and bus", "By taxi or car"], a: 1,
         whyEn: "Near the end, Todd says that going from place to place in Japan is easy on trains and buses.",
         why: "قرب آخر المقطع يقول تود إن التنقل في اليابان سهل بالقطارات والحافلات.", errCat: "reading" }
     ]
@@ -543,7 +535,7 @@ LESSONS.u103l4 = {
     { s: "We went to a small ___ with no cars, and we saw the sea all around us.", opts: ["culture", "nature", "island"], a: 2, tag: "Vocabulary · مفردات",
       whyEn: "The sea was all around the place, so it was an 'island'. 'a culture' and 'a nature' do not fit a place with no cars.",
       why: "كان البحر يحيط بالمكان، فهو جزيرة island، ولا يوصف culture ولا nature بأنهما مكان بلا سيارات.", errCat: "vocab" },
-    { s: "We want to visit a foreign country in May, so this month my father has to ___.", opts: ["pay a fine", "apply for a visa", "get a patent"], a: 1, tag: "Legal Track · المسار القانوني",
+    { s: "We want to visit a foreign country in May, so this month my father has to ___.", opts: ["pay a heavy fine", "apply for a visa", "get a new patent"], a: 1, tag: "Legal Track · المسار القانوني",
       whyEn: "To enter many countries, you need official permission first, so you 'apply for a visa'. A fine and a patent have nothing to do with this.",
       why: "دخول كثير من البلدان يحتاج أولًا إلى إذن رسمي، فتتقدّم بطلب تأشيرة apply for a visa، ولا صلة لهذا بالغرامة ولا ببراءة الاختراع.", errCat: "vocab" }
   ]

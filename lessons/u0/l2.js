@@ -409,17 +409,9 @@ LESSONS.u0l2 = {
     predict: {
       qEn: "Stage 1 Main-Idea Question: How are the two hometowns different?",
       q: "سؤال الفكرة العامة: ما الفرق بين المدينتين؟",
-      optsEn: [
-        "Both hometowns are big cities with a lot of nightlife",
-        "Sarah's hometown is a city, and John's hometown is a small town",
-        "Sarah and John live in the same small town"
-      ],
-      opts: [
-        "المدينتان كبيرتان وفيهما حياة ليلية كثيرة",
-        "موطن سارة مدينة، وموطن جون بلدة صغيرة",
-        "سارة وجون يسكنان البلدة الصغيرة نفسها"
-      ],
-      a: 1,
+      optsEn: ["Both are big cities with a lot of nightlife.", "They are the same small town in America.", "One is a city, and one is a small town."],
+      opts: ["المدينتان كبيرتان وفيهما حياة ليلية كثيرة", "هما البلدة الصغيرة نفسها في أمريكا", "إحداهما مدينة، والأخرى بلدة صغيرة"],
+      a: 2,
       revealEn: "Sarah's hometown is a city of about 80,000 people. John's hometown is a small town of about 5,000 people.",
       reveal: "مدينة سارة يسكنها نحو 80 ألف شخص، وبلدة جون يسكنها نحو 5 آلاف."
     },
@@ -433,7 +425,7 @@ LESSONS.u0l2 = {
       arHtml: "<p><b>انتبه:</b> بعد there is وthere isn't وis there يأتي اسم مفرد، وبعد there are وthere aren't وare there يأتي اسم جمع.</p><p>وقد تسمع في الكلام السريع there's مع اسم جمع، وهذا يقع في الحديث العفوي، أما في الكتابة فاكتب there are مع الجمع دائمًا.</p><p>وهذه جمل أمثلة كتبناها عن البلدتين، وليست كلام المتحدثين بنصه.</p>"
     },
     questions: [
-      { q: "Where is Sarah's hometown?", opts: ["London, England", "Dallas, Texas", "Eau Claire, Wisconsin"], a: 2,
+      { q: "Where is Sarah's hometown?", opts: ["Birmingham, England", "Dallas, Texas", "Eau Claire, Wisconsin"], a: 2,
         whyEn: "At the start, Sarah says her hometown is Eau Claire, in the state of Wisconsin.",
         why: "في أول المقطع تقول سارة إن مدينتها Eau Claire في ولاية Wisconsin.", errCat: "reading" },
       { q: "About how many people live in Sarah's hometown?", opts: ["About 8,000", "About 80,000", "About 800,000"], a: 1,
@@ -448,7 +440,7 @@ LESSONS.u0l2 = {
       { q: "Which of these is in John's hometown?", opts: ["A big shopping mall", "A bowling alley", "Mountains"], a: 1,
         whyEn: "John says there is a bowling alley. There isn't a shopping mall, and the land is flat, so there aren't any mountains.",
         why: "جون يقول إن في بلدته صالة بولينغ، وليس فيها مركز تسوق، وأرضها منبسطة فلا جبال فيها.", errCat: "reading" },
-      { q: "What is John's hometown known for?", opts: ["Its big lakes", "Its nightclubs", "The trees along its streets"], a: 2,
+      { q: "What is John's hometown known for?", opts: ["Its lakes", "Its nightclubs", "Its trees"], a: 2,
         whyEn: "At the end, John says his town is known for the trees along its streets. There are even trees on the town's sign.",
         why: "في آخر المقطع يقول جون إن بلدته معروفة بالأشجار على جانبي شوارعها، حتى إن لافتة البلدة عليها أشجار.", errCat: "reading" },
       { tf: true, q: "There is only one high school in John's hometown.", a: true,

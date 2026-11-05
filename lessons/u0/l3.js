@@ -410,8 +410,8 @@ LESSONS.u0l3 = {
     predict: {
       qEn: "Before you read: The traffic on King Fahd Road was heavy yesterday morning. Do you think Faisal was late for the hearing?",
       q: "توقّع قبل القراءة: كانت حركة المرور مزدحمة صباح أمس؛ هل تتوقع أن فيصل كان متأخرًا عن جلسة الاستماع؟",
-      optsEn: ["Yes, he was thirty minutes late", "No, he wasn't late—he was there thirty minutes early", "He was absent from the hearing"],
-      opts: ["نعم، كان متأخرًا ثلاثين دقيقة", "لا، لم يكن متأخرًا بل وصل قبل الموعد بثلاثين دقيقة", "كان غائبًا عن الجلسة"],
+      optsEn: ["Yes, he was thirty minutes late.", "No, he was thirty minutes early.", "He was absent from the hearing."],
+      opts: ["نعم، كان متأخرًا ثلاثين دقيقة", "لا، وصل قبل الموعد بثلاثين دقيقة", "كان غائبًا عن الجلسة"],
       a: 1,
       revealEn: "Faisal writes: 'I was at the building thirty minutes early. I wasn't late.'",
       reveal: "يقول فيصل إنه كان في المبنى قبل الموعد بثلاثين دقيقة ولم يكن متأخرًا (I wasn't late)."
@@ -426,7 +426,7 @@ LESSONS.u0l3 = {
       arHtml: "<p>لاحظ كيف استخدم فيصل <b style=\"color:var(--accent-ink)\">was / were</b> في كل الجمل التي تصف يوم أمس (<bdi class=\"en\">yesterday</bdi>)، ثم عاد إلى <b style=\"color:var(--dark)\">is / are</b> في الفقرة الأخيرة عندما تحدث عن اليوم (<bdi class=\"en\">Today … now</bdi>).</p>"
     },
     questions: [
-      { q: "Where was Faisal yesterday morning?", opts: ["At the university library", "At the commercial court for a hearing", "At home because he was sick"], a: 1,
+      { q: "Where was Faisal yesterday morning?", opts: ["At the university library", "At the commercial court", "At home because he was sick"], a: 1,
         ev: "I was at the commercial court in the morning for the Al-Amal Company hearing.",
         whyEn: "He was at the commercial court for the Al-Amal Company hearing.",
         why: "كان في المحكمة التجارية لحضور جلسة استماع شركة الأمل.", errCat: "reading" },
@@ -434,7 +434,7 @@ LESSONS.u0l3 = {
         ev: "The traffic on King Fahd Road was heavy, but I was at the building thirty minutes early. I wasn't late.",
         whyEn: "He wasn't late; he arrived thirty minutes early.",
         why: "لم يكن متأخرًا، بل وصل مبكرًا بثلاثين دقيقة.", errCat: "reading" },
-      { q: "Why were the two managers from Al-Amal Company worried at first?", opts: ["Because the folders weren't ready", "Because the other party decided to hire a lawyer last week", "Because the judge was angry"], a: 1,
+      { q: "Why were the two managers from Al-Amal Company worried at first?", opts: ["Because the folders weren't ready", "Because the other party hired a lawyer", "Because the judge was angry with them"], a: 1,
         ev: "At first, they were worried because the other party decided to hire a lawyer last week.",
         whyEn: "They were worried because the other party hired a lawyer last week.",
         why: "كانا قلقين لأن الطرف الآخر قرر توكيل محامٍ الأسبوع الماضي.", errCat: "reading" },
@@ -442,7 +442,7 @@ LESSONS.u0l3 = {
         ev: "However, our folders were ready, and all our financial numbers were clear.",
         whyEn: "The folders were ready and all the financial numbers were clear.",
         why: "كانت الملفات جاهزة وجميع الأرقام المالية واضحة.", errCat: "reading" },
-      { q: "How was the judge during the hearing in Courtroom 4?", opts: ["He was late and busy.", "He was very calm and fair.", "He was worried."], a: 1,
+      { q: "How was the judge during the hearing in Courtroom 4?", opts: ["He was late and very busy.", "He was very calm and fair.", "He was worried about the case."], a: 1,
         ev: "There was one main judge, and he was very calm and fair.",
         whyEn: "Faisal writes that the judge was very calm and fair.",
         why: "وصف فيصل القاضي بأنه كان هادئًا وعادلًا جدًا (very calm and fair).", errCat: "reading" },
@@ -454,7 +454,7 @@ LESSONS.u0l3 = {
         ev: "…but the other two witnesses were present.",
         whyEn: "Two witnesses were present (and one was absent).",
         why: "حضر شاهدان اثنان وتغيّب شاهد واحد.", errCat: "reading" },
-      { q: "Why does Faisal write 'The traffic was heavy' (with singular 'was')?", opts: ["Because 'traffic' is an uncountable singular noun in English.", "Because 'traffic' is a plural noun.", "Because 'heavy' is a verb."], a: 0,
+      { q: "Why does Faisal write 'The traffic was heavy' (with singular 'was')?", opts: ["Because 'traffic' is an uncountable noun.", "Because 'traffic' is a plural noun here.", "Because 'heavy' is a verb in this sentence."], a: 0,
         ev: "The traffic on King Fahd Road was heavy…",
         whyEn: "'traffic' is uncountable in English, so it always takes singular 'is / was'.",
         why: "لأن كلمة traffic غير معدودة في الإنجليزية فتعامل معاملة المفرد وتأخذ was.", errCat: "agreement" }

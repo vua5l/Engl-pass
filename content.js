@@ -756,9 +756,9 @@ var DATA = window.DATA = {
         { s: "The doctor wrote a long word on a piece of paper, and I asked him what it ___.", opts: ["was meaning", "meant", "meaned"], a: 1, errCat: "stative", lesson: "u3l5",
           whyEn: "'mean' (have as its meaning) is a state verb, so it doesn't take -ing, even in the past: we don't say 'was meaning'. It is irregular: its past is 'meant', so 'meaned' is not a word.",
           why: "mean بمعنى «يعني» فعل لا يأخذ ing حتى في الماضي، فلا نقول was meaning، وهو فعل شاذ ماضيه meant، فليست meaned كلمة." },
-        { s: "Your friend asks you to describe exactly what you saw in the street. Which answer tells only what you saw?", opts: ["A man in a blue shirt was carrying a big bag.", "I think he was going to the bank.", "Maybe he was looking for his friend."], a: 0, errCat: "vocab", lesson: "u3l5",
-          whyEn: "To describe exactly what you saw, you say only what your eyes saw: a man, a blue shirt, a big bag. 'I think' and 'Maybe' show a guess, not something that you saw.",
-          why: "أن تصف ما رأيته بالضبط يعني أن تذكر ما رأته عيناك: رجل وقميص أزرق وحقيبة كبيرة، أما I think وMaybe فتدلان على ظن لا على ما رأيته." },
+        { s: "Your friend asks you to describe exactly what you saw in the street. Which answer tells only what you saw?", opts: ["A man in a blue shirt was carrying a bag.", "I think he was going to the bank to pay.", "Maybe he was looking for his old friend."], a: 0, errCat: "vocab", lesson: "u3l5",
+          whyEn: "To describe exactly what you saw, you say only what your eyes saw: a man, a blue shirt, a bag. 'I think' and 'Maybe' show a guess, not something that you saw.",
+          why: "أن تصف ما رأيته بالضبط يعني أن تذكر ما رأته عيناك: رجل وقميص أزرق وحقيبة، أما I think وMaybe فتدلان على ظن لا على ما رأيته." },
         { s: "After the fire at the market, two workers ___ witness statements to the police.", opts: ["told", "did", "gave"], a: 2, errCat: "vocab", lesson: "u3l5",
           whyEn: "The collocation is 'give a witness statement', so the past is 'gave witness statements'. We don't say 'tell a statement' or 'do a statement'.",
           why: "التعبير الثابت give a witness statement، فماضيها gave witness statements، ولا نقول tell a statement ولا do a statement." }

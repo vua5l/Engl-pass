@@ -218,7 +218,7 @@ LESSONS.u1l3 = {
     { s: "Nobody wants to cook tonight, so let's get a ___ from the Indian restaurant.", opts: ["roommate", "canteen", "takeaway"], a: 2,
       whyEn: "A 'takeaway' is a cooked meal that you buy from a restaurant and eat at home. A canteen is a place, and a roommate is a person.",
       why: "takeaway وجبة مطبوخة تشتريها من مطعم وتأكلها في البيت، أما canteen فمكان، وroommate شخص.", errCat: "vocab" },
-    { s: "Sami often buys bread at the bakery ___ from football practice.", opts: ["on the way home", "takeaway", "roommate"], a: 0,
+    { s: "Sami often buys bread at the bakery ___ from football practice.", opts: ["on the way home", "by the front door", "in a small takeaway"], a: 0,
       whyEn: "'on the way home' means during the trip back to your house, so he stops at the bakery on that trip.",
       why: "on the way home تعني «في الطريق إلى البيت»، فهو يمر بالمخبز في طريق عودته.", errCat: "vocab" },
     { s: "I share a flat with Faisal near the university; he is my ___, and we often cook together.", opts: ["takeaway", "roommate", "canteen"], a: 1,
@@ -413,17 +413,9 @@ LESSONS.u1l3 = {
     predict: {
       qEn: "Stage 1 Main-Idea Question: How are Hana's and Daniel's eating habits different?",
       q: "سؤال الفكرة العامة: كيف تختلف عادات الأكل عند هانا ودانيال؟",
-      optsEn: [
-        "Hana and Daniel eat out every day because they don't like cooking",
-        "Hana cooks a lot, but Daniel cooks less, and their other eating habits are different too",
-        "Daniel cooks every day for his friends, and Hana usually buys takeaway"
-      ],
-      opts: [
-        "هانا ودانيال يأكلان خارج البيت كل يوم لأنهما لا يحبان الطبخ",
-        "هانا تطبخ كثيرًا، أما دانيال فيطبخ أقل منها، وتختلف عاداتهما الأخرى في الأكل أيضًا",
-        "دانيال يطبخ لأصدقائه كل يوم، وهانا تشتري الوجبات الجاهزة عادةً"
-      ],
-      a: 1,
+      optsEn: ["Hana cooks a lot, but Daniel cooks less.", "They both eat out because they hate cooking.", "Daniel cooks for friends, and Hana buys takeaway."],
+      opts: ["هانا تطبخ كثيرًا، أما دانيال فيطبخ أقل منها", "كلاهما يأكل خارج البيت لأنهما يكرهان الطبخ", "دانيال يطبخ لأصدقائه، وهانا تشتري وجبات جاهزة"],
+      a: 0,
       revealEn: "Hana cooks a lot, and Daniel cooks less. Their habits with eating out, takeaway and guests are different too. Listen again for the details: who does what, and how often?",
       reveal: "هانا تطبخ كثيرًا، ودانيال يطبخ أقل منها، وتختلف عاداتهما أيضًا في الأكل خارج البيت والوجبات الجاهزة واستقبال الضيوف. استمع مرة أخرى للتفاصيل: من يفعل ماذا، وكم مرة؟"
     },
@@ -452,7 +444,7 @@ LESSONS.u1l3 = {
       { q: "Who never buys takeaway?", opts: ["Daniel", "Neither of them", "Hana"], a: 2,
         whyEn: "In the middle, Hana says she never buys takeaway, because she likes to sit down and enjoy her food when she eats out.",
         why: "في وسط المقطع تقول هانا إنها لا تشتري الوجبات الجاهزة أبدًا، لأنها تحب أن تجلس وتستمتع بطعامها حين تأكل خارج البيت.", errCat: "reading" },
-      { q: "What does Daniel occasionally do when he comes home late from work?", opts: ["He buys takeaway and usually eats it on the way home.", "He invites a friend over and cooks pasta.", "He goes straight to bed without dinner."], a: 0,
+      { q: "What does Daniel occasionally do when he comes home late from work?", opts: ["He buys takeaway on the way home.", "He invites a friend over and cooks pasta.", "He goes straight to bed without dinner."], a: 0,
         whyEn: "In the middle, Daniel says he occasionally buys takeaway when he comes home late from work. He is so hungry that he usually eats it before he gets home.",
         why: "في وسط المقطع يقول دانيال إنه يشتري وجبة جاهزة من حين لآخر حين يعود متأخرًا من العمل، ويكون جائعًا جدًا فيأكلها غالبًا في الطريق قبل أن يصل إلى البيت.", errCat: "reading" },
       { q: "How often does Hana have people over for dinner?", opts: ["Every day", "Sometimes", "Never"], a: 1,

@@ -434,17 +434,9 @@ LESSONS.u2l4 = {
     predict: {
       qEn: "Stage 1 Main-Idea Question: What is the conversation mainly about?",
       q: "سؤال الفكرة العامة: عمّ يدور الحوار أساسًا؟",
-      optsEn: [
-        "Hana tells Daniel about her own trip to Taiwan.",
-        "Hana asks Daniel about his trip to Taiwan, and he answers her questions.",
-        "Hana and Daniel plan a trip to Taiwan together."
-      ],
-      opts: [
-        "هانا تحكي لدانيال عن رحلتها هي إلى تايوان",
-        "هانا تسأل دانيال عن رحلته إلى تايوان، وهو يجيب عن أسئلتها",
-        "هانا ودانيال يخططان معًا لرحلة إلى تايوان"
-      ],
-      a: 1,
+      optsEn: ["Hana tells Daniel about her own trip to Taiwan.", "Hana and Daniel plan a trip to Taiwan together.", "Hana asks Daniel questions about his trip."],
+      opts: ["هانا تحكي لدانيال عن رحلتها هي إلى تايوان", "هانا ودانيال يخططان معًا لرحلة إلى تايوان", "هانا تسأل دانيال عن رحلته"],
+      a: 2,
       revealEn: "Daniel is the traveller: Hana asks the questions, and he answers them. (The short description on the source page says that Hana travelled, but the conversation shows that it was Daniel.) Now listen again for the details.",
       reveal: "دانيال هو المسافر: هانا تسأل وهو يجيب. (يقول الوصف القصير في صفحة المصدر إن هانا هي التي سافرت، والحوار نفسه يبيّن أنه دانيال.) والآن استمع مرة أخرى للتفاصيل."
     },
@@ -464,7 +456,7 @@ LESSONS.u2l4 = {
       { tf: true, q: "Daniel says Taiwan's nature is very beautiful.", a: true,
         whyEn: "True. Near the beginning, Daniel talks about the beautiful places he visited, and he says the nature is very beautiful.",
         why: "صحيح؛ قرب البداية يتحدث دانيال عن الأماكن الجميلة التي زارها، ويقول إن طبيعة تايوان جميلة جدًا.", errCat: "reading" },
-      { q: "What does Daniel say about the food in Taiwan?", opts: ["It was good, but very expensive.", "It was too spicy for him.", "It was delicious, and it was cheap too."], a: 2,
+      { q: "What does Daniel say about the food in Taiwan?", opts: ["It was good, but very expensive.", "It was too spicy for him to eat.", "It was delicious and cheap."], a: 2,
         whyEn: "In the middle, Hana asks about the food. Daniel loved its taste, and he adds that it cost very little.",
         why: "في وسط المقطع تسأله هانا عن الطعام، فيثني دانيال على طعمه، ويضيف أن ثمنه كان قليلًا جدًا.", errCat: "reading" },
       { q: "Who did Daniel travel with?", opts: ["A friend from Taiwan", "His brother from Chile", "Hana and her family"], a: 0,
@@ -476,10 +468,10 @@ LESSONS.u2l4 = {
       { q: "How much time did Daniel spend in Taiwan?", opts: ["About three days", "About eight days", "About eight weeks"], a: 1,
         whyEn: "Just after the middle, Hana asks about the length of the trip. Daniel says it was about eight days, and that this gave him enough time for a short tour of the whole island.",
         why: "بعد منتصف المقطع بقليل تسأله هانا عن مدة الرحلة، فيقول دانيال إنها كانت نحو ثمانية أيام، وإنها كفته ليرى الجزيرة كلها في جولة سريعة.", errCat: "reading" },
-      { q: "Where did Daniel start his trip, and where did he go after that?", opts: ["He stayed in Taipei for the whole trip.", "He started in the south and finished in Taipei.", "He started in Taipei, in the north, and went to cities in the south."], a: 2,
+      { q: "Where did Daniel start his trip, and where did he go after that?", opts: ["He stayed in Taipei for the whole trip.", "He started in the south and finished in Taipei.", "He started in Taipei and went south."], a: 2,
         whyEn: "Near the end, Daniel describes his route: he began in Taipei, in the north of the island, and then travelled down to the south.",
         why: "قرب آخر المقطع يصف دانيال طريقه: بدأ من تايبيه في شمال الجزيرة، ثم سافر نزولًا إلى جنوبها.", errCat: "reading" },
-      { q: "Why did Daniel choose Taiwan for his trip?", opts: ["He wanted to learn about Asian cultures and how they are different.", "His friend invited him to a wedding there.", "The flights to Taiwan were very cheap."], a: 0,
+      { q: "Why did Daniel choose Taiwan for his trip?", opts: ["He wanted to learn about Asian cultures.", "His friend invited him to a wedding there.", "The flights to Taiwan were very cheap."], a: 0,
         whyEn: "At the end, Hana asks why he went. Daniel explains that Asia and its cultures interest him a lot: life there is very different from life in his own part of the world, and he wants to learn about those differences.",
         why: "في آخر المقطع تسأله هانا عن سبب رحلته، فيوضح دانيال أن آسيا وثقافاتها تشغله كثيرًا، فالحياة فيها مختلفة جدًا عن الحياة في بلاده، ويريد أن يتعرّف على هذه الفروق.", errCat: "reading" }
     ]

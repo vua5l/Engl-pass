@@ -417,9 +417,9 @@ LESSONS.u1l5 = {
     predict: {
       qEn: "Before you read: Saad is a new trainee, and this is his first email to his manager. What do you think he writes about?",
       q: "توقّع قبل القراءة: سعد متدرّب جديد، وهذا أول إيميل يرسله إلى مديرته؛ عمّ تتوقع أن يكتب؟",
-      optsEn: ["He asks for a job in another company", "He introduces himself, describes his week and asks two questions", "He says that he is ill today and can't come to work"],
-      opts: ["يطلب وظيفة في شركة أخرى", "يعرّف بنفسه ويصف أسبوعه ويسأل سؤالين", "يخبرها أنه مريض اليوم ولا يستطيع الحضور"],
-      a: 1,
+      optsEn: ["He asks for a job in another company.", "He says that he is ill today and can't come to work.", "He introduces himself and asks two questions."],
+      opts: ["يطلب وظيفة في شركة أخرى", "يخبرها أنه مريض اليوم ولا يستطيع الحضور", "يعرّف بنفسه ويسأل سؤالين"],
+      a: 2,
       revealEn: "Saad writes: 'I'm writing to introduce myself.' Then he describes his usual day and this week, and says: 'I have two short questions.'",
       reveal: "يقول سعد: I'm writing to introduce myself، ثم يصف يومه المعتاد وعمله هذا الأسبوع، ويقول: I have two short questions."
     },
@@ -457,11 +457,11 @@ LESSONS.u1l5 = {
         ev: "Second, if I am ill and need sick leave, who do I tell?",
         whyEn: "False: he is not ill now. 'If I am ill' talks about a possible day, so he only asks who to tell.",
         why: "خطأ؛ سعد ليس مريضًا الآن، وعبارة if I am ill تتحدث عن يوم محتمل، فهو يسأل فقط عمّن يُبلغه حينها.", errCat: "reading" },
-      { q: "What does Saad send with his email?", opts: ["The first draft of his report", "A contract from the supplier", "His training schedule for this month"], a: 2,
+      { q: "What does Saad send with his email?", opts: ["The first draft of his report", "A new contract from the supplier", "His training schedule"], a: 2,
         ev: "I'm attaching my training schedule for this month, and I hope it is clear.",
         whyEn: "'I'm attaching…' tells us what comes with the email: his training schedule. The report is still a draft that he is writing.",
         why: "عبارة I'm attaching تبيّن المرفق، وهو جدول تدريبه لهذا الشهر؛ أما التقرير فما زال مسودة يكتبها.", errCat: "reading" },
-      { q: "Why does Saad write 'I always check my inbox' but 'This week, I'm working with my colleague Sara'?", opts: ["Because checking his inbox is a habit, but working with Sara is only for this week", "Because 'always' is used only with Present Continuous", "Because Sara is a colleague and not his manager"], a: 0,
+      { q: "Why does Saad write 'I always check my inbox' but 'This week, I'm working with my colleague Sara'?", opts: ["Because one is a habit and one is only for this week", "Because 'always' is used only with Present Continuous", "Because Sara is a colleague and not his manager"], a: 0,
         ev: "I always check my inbox first. … This week, I'm working with my colleague Sara on a contract with a local supplier.",
         whyEn: "Habits and routines (always) take Present Simple; a temporary action around now (this week) takes Present Continuous.",
         why: "العادة والروتين (always) بالمضارع البسيط، والعمل المؤقت هذه الأيام (this week) بالمضارع المستمر.", errCat: "tense" }

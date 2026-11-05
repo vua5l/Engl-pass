@@ -415,17 +415,9 @@ LESSONS.u103l2 = {
     predict: {
       qEn: "Stage 1 Main-Idea Question: What are Todd and Katie mainly talking about?",
       q: "سؤال الفكرة العامة: عمّ يتحدث تود وكاتي أساسًا؟",
-      optsEn: [
-        "What each of them plans to do next weekend",
-        "What each of them did last weekend",
-        "The best places to eat in their city"
-      ],
-      opts: [
-        "ما ينوي كل منهما فعله في عطلة نهاية الأسبوع القادمة",
-        "ما فعله كل منهما في عطلة نهاية الأسبوع الماضية",
-        "أفضل أماكن الأكل في مدينتهما"
-      ],
-      a: 1,
+      optsEn: ["What each of them did last weekend", "What each of them plans to do next weekend", "The best places to eat in their city"],
+      opts: ["ما فعله كل منهما في عطلة نهاية الأسبوع الماضية", "ما ينوي كل منهما فعله في عطلة نهاية الأسبوع القادمة", "أفضل أماكن الأكل في مدينتهما"],
+      a: 0,
       revealEn: "They talk about last Saturday and last Sunday. First Todd asks Katie, and then Katie asks Todd. Listen again for the details.",
       reveal: "يتحدثان عن يومي السبت والأحد الماضيين، فيسأل تود كاتي أولًا، ثم تسأله كاتي. استمع مرة أخرى للتفاصيل."
     },
@@ -439,7 +431,7 @@ LESSONS.u103l2 = {
       arHtml: "<p><b>انتبه:</b> يتكرر الماضي البسيط في المقطع، وأفعال كثيرة فيه شاذة، ويأتي السؤال بـ Did وWhat did كما تعلمت.</p><p>ويعود المتحدثان إلى المضارع إذا ذكرا عادة أو حقيقة، فلاحظ هذا الانتقال بين الزمنين.</p><p>وقد تسمع haven't seen في المقطع، وهذه قاعدة ستأتي لاحقًا، فلا تشغل بها نفسك الآن.</p><p>والجمل المذكورة هنا أمثلة كتبناها عن المقطع، وليست كلام المتحدثين بنصه.</p>"
     },
     questions: [
-      { q: "Where did Katie go with her friends on Saturday?", opts: ["To a place full of books", "To a sports club", "To the beach"], a: 0,
+      { q: "Where did Katie go with her friends on Saturday?", opts: ["To a place full of books", "To a sports club in town", "To the beach near the city"], a: 0,
         whyEn: "At the start, Katie names the library, a place full of books. She read a lot there.",
         why: "في أول المقطع تذكر كاتي المكتبة، وهي مكان مليء بالكتب، وقد قرأت فيها كثيرًا.", errCat: "reading" },
       { tf: true, q: "Katie ate with people from her job on Saturday evening.", a: true,
@@ -460,7 +452,7 @@ LESSONS.u103l2 = {
       { q: "What did Todd do at the park on Sunday?", opts: ["He played football and then had lunch.", "He ran and took pictures.", "He sat and read a book."], a: 1,
         whyEn: "Near the end, Todd says that he went jogging, which means running slowly for exercise, and then he talks about his pictures.",
         why: "قرب آخر المقطع يقول تود إنه ركض في الحديقة (jogging أي الجري الخفيف للرياضة)، ثم يتحدث عن صوره.", errCat: "reading" },
-      { q: "Why did Todd take a lot of photos at the park?", opts: ["Katie asked him for some.", "He needed them for his work.", "The good weather made everything look great."], a: 2,
+      { q: "Why did Todd take a lot of photos at the park?", opts: ["Katie asked him for some of them.", "He needed them for his work at school.", "The good weather made it look great."], a: 2,
         whyEn: "Near the end, Todd gives the reason for his photos: the weather was very good that day, and the sky looked great.",
         why: "قرب آخر المقطع يذكر تود سبب تصويره: كان الجو جميلًا ذلك اليوم، والسماء بديعة.", errCat: "reading" }
     ]

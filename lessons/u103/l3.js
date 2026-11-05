@@ -414,9 +414,9 @@ LESSONS.u103l3 = {
     predict: {
       qEn: "Before you read: Turki told Oliver about an accident. Now Oliver is replying. What do you think his email is mainly about?",
       q: "توقّع قبل القراءة: حكى تركي لأوليفر عن حادث، وأوليفر يرد عليه الآن؛ عمّ تتوقع أن يكون إيميله في أغلبه؟",
-      optsEn: ["A small accident of his own", "His new job with the police", "A holiday in Saudi Arabia"],
-      opts: ["حادث صغير وقع له هو", "عمله الجديد مع الشرطة", "إجازة في السعودية"],
-      a: 0,
+      optsEn: ["His new job with the police", "A small accident of his own", "A holiday in Saudi Arabia"],
+      opts: ["عمله الجديد مع الشرطة", "حادث صغير وقع له هو", "إجازة في السعودية"],
+      a: 1,
       revealEn: "Turki's email made Oliver think of a small accident of his own, so he tells that story.",
       reveal: "ذكّره إيميل تركي بحادث صغير وقع له، فحكى قصته."
     },
@@ -442,11 +442,11 @@ LESSONS.u103l3 = {
         ev: "so I wasn't going fast.",
         whyEn: "False: there was a lot of rain, so Oliver wasn't going fast.",
         why: "خطأ؛ كان المطر غزيرًا، فلم يكن أوليفر يسير بسرعة.", errCat: "reading" },
-      { q: "What made Oliver fall off his bike?", opts: ["The truck in front of him stopped.", "A car hit him at the corner.", "He was looking at his phone."], a: 0,
+      { q: "What made Oliver fall off his bike?", opts: ["The truck in front stopped.", "A car hit him at the corner.", "He was looking at his phone."], a: 0,
         ev: "I was thinking about my first class when the truck suddenly stopped.",
         whyEn: "The truck in front of Oliver stopped suddenly, and then he lost control of his bike.",
         why: "توقفت الشاحنة التي أمامه فجأة، ففقد السيطرة على دراجته.", errCat: "reading" },
-      { q: "In the sentence 'I was thinking about my first class when the truck suddenly stopped', which action began first?", opts: ["The truck stopped.", "Oliver started thinking about his class.", "Oliver lost control of the bike."], a: 1,
+      { q: "In the sentence 'I was thinking about my first class when the truck suddenly stopped', which action began first?", opts: ["The truck stopped suddenly.", "Oliver started thinking.", "Oliver lost control of the bike."], a: 1,
         ev: "I was thinking about my first class when the truck suddenly stopped.",
         whyEn: "'was thinking' is the long action, and it was already going on. 'stopped' is the short event in the middle of it.",
         why: "was thinking هو الحدث الطويل وقد كان جاريًا، وstopped هو الحدث القصير في وسطه.", errCat: "tense" },
@@ -544,7 +544,7 @@ LESSONS.u103l3 = {
     { s: "I was standing on a chair to clean the window when I ___ it.", opts: ["fell off", "fell down", "fell out"], a: 0, tag: "Vocabulary · مفردات",
       whyEn: "The speaker was on the chair and came down from it, so the phrase is 'fall off' + the thing: fell off it.",
       why: "كان المتكلم فوق الكرسي ثم سقط عنه، فالعبارة fall off يتبعها الشيء: fell off it.", errCat: "vocab" },
-    { s: "The police asked Noura what she saw on the road, so she ___.", opts: ["got a patent", "paid a fine", "gave a witness statement"], a: 2, tag: "Legal Track · المسار القانوني",
+    { s: "The police asked Noura what she saw on the road, so she ___.", opts: ["got a driving licence", "paid a heavy fine", "gave a witness statement"], a: 2, tag: "Legal Track · المسار القانوني",
       whyEn: "A person who saw something tells the police about it in a witness statement. The collocation is 'give a witness statement'.",
       why: "من رأى شيئًا يخبر به الشرطة في إفادة شاهد، والتعبير الثابت give a witness statement.", errCat: "vocab" }
   ]

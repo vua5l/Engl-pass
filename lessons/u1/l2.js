@@ -223,7 +223,7 @@ LESSONS.u1l2 = {
     { s: "My alarm rings at six, but I usually ___ before it, at about ten to six.", opts: ["wake up", "get changed", "last"], a: 0,
       whyEn: "'wake up' means stop sleeping. You can wake up before your alarm rings.",
       why: "wake up تعني يستيقظ من النوم، وقد تستيقظ قبل أن يرنّ المنبّه.", errCat: "vocab" },
-    { s: "It is very cold this morning, so nobody in my family wants to ___.", opts: ["last", "canteen", "get out of bed"], a: 2,
+    { s: "It is very cold this morning, so nobody in my family wants to ___.", opts: ["last a long time", "eat in the canteen", "get out of bed"], a: 2,
       whyEn: "'get out of bed' means leave your bed. On a cold morning, people want to stay under the blanket.",
       why: "get out of bed تعني يقوم من فراشه، وفي الصباح البارد يفضّل الناس البقاء تحت الغطاء.", errCat: "vocab" },
     { s: "At lunchtime, the students buy sandwiches and juice in the school ___.", opts: ["timetable", "canteen", "bed"], a: 1,
@@ -419,17 +419,9 @@ LESSONS.u1l2 = {
     predict: {
       qEn: "Stage 1 Main-Idea Question: What is the conversation mainly about?",
       q: "سؤال الفكرة العامة: عمّ يدور الحوار أساسًا؟",
-      optsEn: [
-        "Todd's typical day as a teacher in the USA",
-        "Natalie's typical day: her morning, her school day and her evening",
-        "Natalie's favourite places to visit in England"
-      ],
-      opts: [
-        "يوم تود المعتاد معلمًا في الولايات المتحدة",
-        "يوم ناتالي المعتاد: صباحها ويومها في المدرسة ومساؤها",
-        "الأماكن التي تحب ناتالي زيارتها في إنجلترا"
-      ],
-      a: 1,
+      optsEn: ["Todd's typical day as a teacher in the USA", "Natalie's favourite places in England", "Natalie's typical day, from morning to evening"],
+      opts: ["يوم تود المعتاد معلمًا في الولايات المتحدة", "الأماكن التي تحبها ناتالي في إنجلترا", "يوم ناتالي المعتاد من الصباح إلى المساء"],
+      a: 2,
       revealEn: "Todd asks the questions and Natalie, a teacher, answers: she talks about her morning, her lessons and lunch at school, and her evening at home.",
       reveal: "تود يسأل وناتالي المعلمة تجيب: تتحدث عن صباحها، ودروسها وغدائها في المدرسة، ومسائها في البيت."
     },
@@ -446,7 +438,7 @@ LESSONS.u1l2 = {
       { q: "What time does Natalie usually wake up?", opts: ["At about 6:00 a.m.", "At about 9:00 a.m.", "At about 7:00 a.m."], a: 2,
         whyEn: "At the start, Natalie says she wakes up at about seven o'clock, and she says she is a morning person.",
         why: "في أول المقطع تقول ناتالي إنها تستيقظ نحو السابعة، وإنها تحب الصباح (a morning person).", errCat: "reading" },
-      { q: "What does Natalie do before she gets out of bed?", opts: ["She uses her phone: emails, Facebook and the news.", "She goes for a run near her house.", "She makes breakfast for her family."], a: 0,
+      { q: "What does Natalie do before she gets out of bed?", opts: ["She uses her phone.", "She goes for a run near her house.", "She makes breakfast for her family."], a: 0,
         whyEn: "Near the start, she says she stays in bed until about 7:30. First she uses her phone: she checks her emails and Facebook and reads the news.",
         why: "قرب البداية تقول إنها تبقى في السرير حتى نحو السابعة والنصف، وتستعمل هاتفها أولًا: تتفقد بريدها وفيسبوك وتقرأ الأخبار.", errCat: "reading" },
       { tf: true, q: "Natalie drinks coffee every morning.", a: false,
@@ -461,7 +453,7 @@ LESSONS.u1l2 = {
       { q: "What does Natalie say about lunch at her school?", opts: ["She goes home for lunch because the school food isn't good.", "She eats in the big school canteen, and lunch is cheap: about $3.", "She buys an expensive lunch at a café near the school."], a: 1,
         whyEn: "In the middle, she says the school has a very big canteen. The food is good, she likes eating with the students, and lunch costs only about three dollars.",
         why: "في وسط المقطع تقول إن في المدرسة مقصفًا كبيرًا جدًا، وطعامه جيد، وتحب الأكل مع الطلاب، والغداء بنحو ثلاثة دولارات فقط.", errCat: "reading" },
-      { q: "Natalie is usually tired when she gets home. What does she do first?", opts: ["She cooks a big dinner.", "She gets changed into her pajamas.", "She goes to the gym."], a: 1,
+      { q: "Natalie is usually tired when she gets home. What does she do first?", opts: ["She cooks a big dinner for everyone.", "She gets changed into her pajamas.", "She goes to the gym near her house."], a: 1,
         whyEn: "After the middle of the clip, Todd asks about her evening. Natalie says she gets changed into her pajamas first, and then she watches TV for about two hours.",
         why: "بعد وسط المقطع يسألها تود عن مسائها، فتقول إنها تبدّل ملابسها أولًا وتلبس ملابس النوم، ثم تشاهد التلفاز نحو ساعتين.", errCat: "reading" },
       { q: "What time does Natalie go to bed on most nights?", opts: ["At about 10:00 p.m.", "At about midnight", "At about 8:30 p.m."], a: 0,

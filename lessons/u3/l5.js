@@ -508,9 +508,9 @@ LESSONS.u3l5 = {
     predict: {
       qEn: "Before you read: Turki is a law student in Riyadh. He is writing to his British friend Oliver about yesterday evening. What do you think his email is mainly about?",
       q: "توقّع قبل القراءة: تركي طالب قانون في الرياض، يكتب إلى صديقه البريطاني أوليفر عن مساء أمس؛ عمّ تتوقع أن يكون إيميله في أغلبه؟",
-      optsEn: ["A new course at his university", "A road accident that he saw", "A problem with his own car"],
-      opts: ["مقرر جديد في جامعته", "حادث طريق رآه", "مشكلة في سيارته"],
-      a: 1,
+      optsEn: ["A road accident that he saw", "A new course at his university", "A problem with his own car"],
+      opts: ["حادث طريق رآه", "مقرر جديد في جامعته", "مشكلة في سيارته"],
+      a: 0,
       revealEn: "Turki tells Oliver about a road accident that he saw near his university, and about a lesson that he learned from it.",
       reveal: "يحكي تركي لأوليفر عن حادث طريق رآه قرب جامعته، وعن درس تعلّمه منه."
     },
@@ -544,7 +544,7 @@ LESSONS.u3l5 = {
         ev: "First, I called the police and lent the rider my umbrella.",
         whyEn: "'lent the rider my umbrella' means that he gave it to the rider for a short time. lent is the past of lend.",
         why: "lent the rider my umbrella تعني أنه أعطى مظلته لراكب الدراجة مدة قصيرة، وlent ماضي lend.", errCat: "reading" },
-      { q: "What did the officer do just before he asked Turki for a statement?", opts: ["He checked the driver's licence.", "He read Turki's statement.", "He called an ambulance."], a: 0,
+      { q: "What did the officer do just before he asked Turki for a statement?", opts: ["He checked the driver's licence.", "He read Turki's written statement.", "He called an ambulance for help."], a: 0,
         ev: "After that, the officer checked the driver's driving licence and asked me to give a witness statement.",
         whyEn: "The sentence gives the two actions in order: first he checked the licence, and then he asked Turki. He read the statement later, after Turki wrote it.",
         why: "تذكر الجملة الحدثين بترتيبهما: فحص الرخصة، ثم طلب من تركي الإفادة. أما قراءة الإفادة فجاءت بعد أن كتبها تركي.", errCat: "reading" },

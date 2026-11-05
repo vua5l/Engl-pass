@@ -272,9 +272,9 @@ LESSONS.u103l1 = {
     { s: "I can't go out tonight. The ___ for my project is tomorrow morning.", opts: ["colleague", "research", "deadline"], a: 2,
       whyEn: "The speaker has to finish by tomorrow morning: the last time to finish work is the 'deadline'. A colleague is a person, and research isn't a time.",
       why: "على المتحدث أن ينتهي قبل صباح الغد، وآخر وقت لإنهاء العمل deadline. أما colleague فشخص، وresearch ليس وقتًا.", errCat: "vocab" },
-    { s: "The team likes this young player, so it wants to ___ with him this week.", opts: ["sign a contract", "miss", "research"], a: 0,
-      whyEn: "A team and a new player agree in writing: they sign a contract. 'miss' and 'research' don't go with 'with him' here.",
-      why: "يتفق الفريق واللاعب الجديد كتابةً، أي يوقّعان عقدًا: sign a contract with. أما miss وresearch فلا يناسبان with him هنا.", errCat: "vocab" },
+    { s: "The team likes this young player, so it wants to ___ with him this week.", opts: ["sign a contract", "miss a deadline", "do some research"], a: 0,
+      whyEn: "A team and a new player agree in writing: they sign a contract. 'miss a deadline' and 'do some research' don't go with 'with him' here.",
+      why: "يتفق الفريق واللاعب الجديد كتابةً، أي يوقّعان عقدًا: sign a contract with. أما miss a deadline وdo some research فلا يناسبان with him هنا.", errCat: "vocab" },
     { s: "Faris is new at the bank, so his ___ are showing him the office today.", opts: ["deadlines", "colleagues", "schedules"], a: 1,
       whyEn: "Only people can show someone an office. 'colleagues' are the people who work with Faris. Deadlines and schedules are not people.",
       why: "لا يُري المكتب إلا أشخاص، وcolleagues هم من يعملون مع فارس، أما deadlines وschedules فليسا أشخاصًا.", errCat: "vocab" }
@@ -479,9 +479,9 @@ LESSONS.u103l1 = {
     predict: {
       qEn: "Before you read: Noor wrote her last email to Reem from Antarctica. Now she is writing to Reem again. What do you think this new email is mainly about?",
       q: "توقّع قبل القراءة: كتبت نور إيميلها السابق إلى ريم من القارة القطبية، وها هي تكتب إليها مرة أخرى؛ عمّ تتوقع أن يكون هذا الإيميل في أغلبه؟",
-      optsEn: ["A new trip to Japan with Kenji", "Her life and work at home now", "A problem with her flight"],
-      opts: ["رحلة جديدة إلى اليابان مع كينجي", "حياتها وعملها في بلدها الآن", "مشكلة في رحلتها الجوية"],
-      a: 1,
+      optsEn: ["A new trip to Japan with Kenji", "A problem with her flight", "Her life and work at home now"],
+      opts: ["رحلة جديدة إلى اليابان مع كينجي", "مشكلة في رحلتها الجوية", "حياتها وعملها في بلدها الآن"],
+      a: 2,
       revealEn: "Noor is back at home. She tells Reem about her normal days and about this busy week.",
       reveal: "عادت نور إلى بلدها، وهي تحدّث ريم عن أيامها المعتادة وعن هذا الأسبوع المزدحم."
     },
@@ -515,7 +515,7 @@ LESSONS.u103l1 = {
         ev: "This week, I'm reading the new contract, and I'm writing a report about our penguin data.",
         whyEn: "'This week' with 'I'm reading' tells us what is going on these days. Noor doesn't write about a class, and she only thinks about Kenji and Ana.",
         why: "This week مع I'm reading تخبرنا بما يجري هذه الأيام. ولا تذكر نور درسًا تعلّمه، وهي تفكر في كينجي وآنا فحسب.", errCat: "reading" },
-      { q: "What does the lab do every year?", opts: ["It sends a team to Antarctica.", "It writes a report for Reem.", "It signs a contract with a research centre."], a: 2,
+      { q: "What does the lab do every year?", opts: ["It sends a team to Antarctica.", "It writes a report for Reem.", "It signs a research contract."], a: 2,
         ev: "Our lab signs a contract with a research centre every year.",
         whyEn: "'every year' shows a habit of the lab, and the sentence tells us what it is: it signs a contract with a research centre.",
         why: "every year تدل على عادة المختبر، وتذكر الجملة هذه العادة: يوقّع عقدًا مع مركز أبحاث.", errCat: "reading" },
@@ -523,7 +523,7 @@ LESSONS.u103l1 = {
         ev: "The deadline is on Thursday, so I'm staying at the lab late these days.",
         whyEn: "'so' gives the result: the deadline is close, and that is why she is staying late.",
         why: "so تدل على النتيجة: الموعد النهائي قريب، ولذلك تبقى في المختبر إلى وقت متأخر.", errCat: "reading" },
-      { q: "What does Noor often think about?", opts: ["The food at her university", "Kenji's dinners and Ana's card games", "Her first day in Antarctica"], a: 1,
+      { q: "What does Noor often think about?", opts: ["The food and the people at her university", "Kenji's dinners and Ana's card games", "Her first day and her first job in Antarctica"], a: 1,
         ev: "I often think about Kenji's dinners and Ana's card games.",
         whyEn: "She misses the team, and the next sentence names what she thinks about: Kenji's dinners and Ana's card games.",
         why: "تشتاق إلى الفريق، وتذكر الجملة التالية ما تفكر فيه: عشاء كينجي وألعاب الورق عند آنا.", errCat: "reading" }

@@ -474,8 +474,8 @@ LESSONS.u2l5 = {
     predict: {
       qEn: "Before you read: Noura is a Saudi student. Her British friend Emma wrote to her about a holiday in Wales, and now Noura is writing back. What do you think her email is mainly about?",
       q: "توقّع قبل القراءة: نورة طالبة سعودية، كتبت إليها صديقتها البريطانية إيما عن عطلة في ويلز، والآن تردّ عليها نورة؛ عمّ تتوقع أن يكون إيميلها في أغلبه؟",
-      optsEn: ["Her new timetable at university", "A weekend trip with her family, told step by step", "A problem with a hotel booking"],
-      opts: ["جدولها الجديد في الجامعة", "رحلة نهاية أسبوع مع أسرتها، تحكيها خطوة خطوة", "مشكلة في حجز فندق"],
+      optsEn: ["Her new timetable at university", "A weekend trip with her family", "A problem with a hotel booking"],
+      opts: ["جدولها الجديد في الجامعة", "رحلة نهاية أسبوع مع أسرتها", "مشكلة في حجز فندق"],
       a: 1,
       revealEn: "Noura tells Emma about her family's weekend in AlUla, step by step, with First, Then, After that and Finally.",
       reveal: "تحكي نورة لإيما عن عطلة أسرتها في العُلا خطوة خطوة، بـ First وThen وAfter that وFinally."

@@ -215,9 +215,9 @@ LESSONS.u3l4 = {
     { s: "I was alone in the dark house, and the noise outside was ___.", opts: ["frightening", "flood", "smoke"], a: 0,
       whyEn: "'frightening' means it makes you afraid, like a noise in the dark. After 'was' we need an adjective here, and the other two are nouns.",
       why: "frightening تعني ما يخيفك، كصوت في الظلام، ويلزم بعد was هنا صفة، والخياران الآخران اسمان.", errCat: "vocab" },
-    { s: "The fire was very serious, so the president declared a ___ and sent soldiers to help.", opts: ["heavy", "state of emergency", "smoke"], a: 1,
-      whyEn: "A government 'declares a state of emergency' in a very serious situation. 'heavy' is an adjective, and nobody declares 'smoke'.",
-      why: "تعلن الحكومة state of emergency في ظرف بالغ الخطورة، أما heavy فصفة، وsmoke لا يُعلن.", errCat: "vocab" },
+    { s: "The fire was very serious, so the president declared a ___ and sent soldiers to help.", opts: ["week of holidays", "state of emergency", "day of heavy rain"], a: 1,
+      whyEn: "A government 'declares a state of emergency' in a very serious situation. Nobody declares a 'week of holidays' or a 'day of heavy rain' because of a fire.",
+      why: "تعلن الحكومة state of emergency في ظرف بالغ الخطورة، أما week of holidays وday of heavy rain فلا صلة لهما بالحريق.", errCat: "vocab" },
     { s: "The ___ snow closed the road to the mountains for two days.", opts: ["smoke", "state of emergency", "heavy"], a: 2,
       whyEn: "'heavy snow' means a lot of snow, and a lot of snow can close a road.",
       why: "heavy snow ثلج كثير، والثلج الكثير قد يقطع الطريق.", errCat: "vocab" }
@@ -400,17 +400,9 @@ LESSONS.u3l4 = {
     predict: {
       qEn: "Stage 1 Main-Idea Question: What are the six speakers mainly talking about?",
       q: "سؤال الفكرة العامة: عمّ يتحدث المتحدثون الستة أساسًا؟",
-      optsEn: [
-        "What people should do to stay safe in a natural disaster",
-        "The news about one big natural disaster in their country",
-        "Their own experiences of natural disasters and other dangerous events"
-      ],
-      opts: [
-        "ما ينبغي أن يفعله الناس ليبقوا آمنين في الكارثة الطبيعية",
-        "خبر كارثة طبيعية كبيرة وقعت في بلدهم",
-        "تجاربهم هم مع الكوارث الطبيعية وأحداث خطرة أخرى"
-      ],
-      a: 2,
+      optsEn: ["What people should do to stay safe in a disaster", "Dangerous events from their own lives", "The news about one big disaster in their country"],
+      opts: ["ما ينبغي أن يفعله الناس ليبقوا آمنين في الكارثة", "أحداث خطرة من حياتهم هم", "خبر كارثة كبيرة وقعت في بلدهم"],
+      a: 1,
       revealEn: "All six speakers answer one question about natural disasters in their own lives, and each person tells a short story. Listen again, one speaker at a time. The order is Tom, Jess, George, Pernais, Mike and Doron.",
       reveal: "يجيب الستة عن سؤال واحد عن الكوارث الطبيعية في حياتهم، ويحكي كل واحد قصة قصيرة. استمع مرة أخرى متحدثًا بعد متحدث، وترتيبهم: توم ثم جيس ثم جورج ثم Pernais ثم مايك ثم دورون."
     },
@@ -424,7 +416,7 @@ LESSONS.u3l4 = {
       arHtml: "<p><b>انتبه:</b> مايك وحده يقول while مع الماضي المستمر في المقطع، ويقولها مرتين. وفي قصة دورون حدثان طويلان موصولان بـ and، وهذا طبيعي في الكلام.</p><p>ويقول توم while مع الماضي البسيط لحدث طويل، وذلك صحيح أيضًا، فلا تعدّه خطأً.</p><p>وتأتي when في المقطع كما تعلمت: جيس تذكر بها عمرها، وجورج يذكر بها لحظة وصول الإعصار.</p><p>وهذه جمل أمثلة كتبناها عن المقطع، وليست كلام المتحدثين بنصه.</p>"
     },
     questions: [
-      { q: "A typhoon is a very big storm. What was the problem in the street in Tom's story?", opts: ["There was a lot of smoke.", "The water was getting higher.", "The lights went out."], a: 1,
+      { q: "A typhoon is a very big storm. What was the problem in the street in Tom's story?", opts: ["There was a lot of smoke.", "The water was getting higher.", "The lights went out at night."], a: 1,
         whyEn: "At the start, in the first story, Tom talks about a lot of water in the street. It was all around him, so he stayed in a phone box.",
         why: "في أول المقطع، في القصة الأولى، يتحدث توم عن ماء كثير في الشارع أحاط به، فبقي في كابينة هاتف.", errCat: "reading" },
       { tf: true, q: "Jess's story is about a natural disaster.", a: false,
@@ -436,16 +428,16 @@ LESSONS.u3l4 = {
       { q: "Why was it hard for Pernais to see in the fire?", opts: ["Because it was night", "Because of the heavy rain", "Because of the smoke"], a: 2,
         whyEn: "In the middle, in the fourth story, Pernais talks about a big fire, with smoke in every part of the place.",
         why: "في وسط المقطع، في القصة الرابعة، حريق كبير في قصة Pernais، والدخان يملأ المكان كله.", errCat: "reading" },
-      { q: "Who rescued Pernais from the fire?", opts: ["A neighbour", "A man who was going past", "A family member"], a: 1,
+      { q: "Who rescued Pernais from the fire?", opts: ["A neighbour", "A man going past", "A family member"], a: 1,
         whyEn: "In the middle, at the end of the fourth story, Pernais says that the person who helped was an old man who was going past the place.",
         why: "في وسط المقطع، في آخر القصة الرابعة، كان المنقذ في قصة Pernais رجلًا عجوزًا يمر بالمكان.", errCat: "reading" },
-      { q: "A landslide is when earth and rocks fall down a hill. Where was Mike when he saw one?", opts: ["On a train", "On a boat, at sea", "In a car, on the road"], a: 2,
+      { q: "A landslide is when earth and rocks fall down a hill. Where was Mike when he saw one?", opts: ["On a train, at a station", "On a boat, at sea", "In a car, on the road"], a: 2,
         whyEn: "Near the end, in the fifth story, Mike says that he was in his car on the road at that time. He says this twice. Later, it was on the news.",
         why: "قرب آخر المقطع، في القصة الخامسة، يقول مايك إنه رآه وهو يقود سيارته، ويذكر ذلك مرتين، ثم انتشر خبره في الأخبار.", errCat: "reading" },
-      { q: "What was the weather like on Doron's trip in Norway?", opts: ["Very cold, with a lot of snow", "Very hot, with no wind", "Warm, with heavy rain"], a: 0,
+      { q: "What was the weather like on Doron's trip in Norway?", opts: ["Very cold and snowy", "Very hot, with no wind", "Warm, with heavy rain"], a: 0,
         whyEn: "At the end, in the last story, Doron talks about a snowstorm: everything was white, and it was very cold.",
         why: "في آخر المقطع، في القصة الأخيرة، عاصفة ثلجية في قصة دورون: كل شيء أبيض، والبرد شديد.", errCat: "reading" },
-      { q: "Why was Doron lucky in the snow?", opts: ["The snow stopped quickly.", "A rescue team came quickly.", "Doron's friends from Norway could help."], a: 2,
+      { q: "Why was Doron lucky in the snow?", opts: ["The snow stopped very quickly.", "A rescue team came very quickly.", "His friends from Norway could help."], a: 2,
         whyEn: "At the end, in the last story, Doron talks about being with big men from Norway. They understood the situation well, and that was the good luck in this story.",
         why: "في آخر المقطع، في القصة الأخيرة، كان من حسن الحظ في قصة دورون وجود رجال أشداء من النرويج عرفوا كيف يتصرفون.", errCat: "reading" }
     ]

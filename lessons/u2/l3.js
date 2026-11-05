@@ -412,9 +412,9 @@ LESSONS.u2l3 = {
     predict: {
       qEn: "Before you read: Faisal is a Saudi student in London. Look at the subject of his email: 'Our Crazy Weekend in Edinburgh'. What do you think the email is mainly about?",
       q: "توقّع قبل القراءة: فيصل طالب سعودي في لندن، وعنوان إيميله «Our Crazy Weekend in Edinburgh»؛ عمّ تتوقع أن يكون الإيميل في أغلبه؟",
-      optsEn: ["His exam results this term", "A short trip where many things went wrong", "A new flat he wants to rent in Edinburgh"],
-      opts: ["نتائج اختباراته في هذا الفصل", "رحلة قصيرة لم تسر فيها أمور كثيرة كما أراد", "شقة جديدة يريد استئجارها في إدنبرة"],
-      a: 1,
+      optsEn: ["A short trip where many things went wrong", "His exam results this term", "A new flat he wants to rent in Edinburgh"],
+      opts: ["رحلة قصيرة لم تسر فيها أمور كثيرة كما أراد", "نتائج اختباراته في هذا الفصل", "شقة جديدة يريد استئجارها في إدنبرة"],
+      a: 0,
       revealEn: "The email is about a short trip with many problems. Faisal writes: 'We wanted to relax after our exams, but the trip didn't start well.'",
       reveal: "الإيميل عن رحلة قصيرة واجهت فيها مشكلات كثيرة؛ يقول فيصل: We wanted to relax after our exams, but the trip didn't start well."
     },
@@ -436,7 +436,7 @@ LESSONS.u2l3 = {
         ev: "The airline lost it!",
         whyEn: "They waited an hour for the luggage, but it didn't come, because the airline lost it.",
         why: "انتظرا الأمتعة ساعة فلم تخرج، لأن شركة الطيران أضاعتها.", errCat: "reading" },
-      { q: "Why did Faisal and Turki pay a fine?", opts: ["They were too noisy on the tram.", "They got on the tram without tickets.", "They didn't pay for their hotel."], a: 1,
+      { q: "Why did Faisal and Turki pay a fine?", opts: ["They were too noisy on the tram.", "They had no tickets on the tram.", "They didn't pay for their hotel."], a: 1,
         ev: "We didn't buy tickets before we got on, because we didn't know the rule.",
         whyEn: "They didn't buy tickets before they got on the tram, because they didn't know the rule. So they paid a fine when the ticket inspector came.",
         why: "لم يشتريا التذاكر قبل ركوب الترام لأنهما لم يعرفا النظام، فدفعا غرامة حين جاء مفتش التذاكر.", errCat: "reading" },
@@ -456,7 +456,7 @@ LESSONS.u2l3 = {
         ev: "But on Saturday, everything changed. The airline found my luggage, and it didn't rain all day!",
         whyEn: "True: on Saturday everything changed, and the airline found his luggage.",
         why: "صحيح؛ تغيّر كل شيء يوم السبت، ووجدت شركة الطيران أمتعته.", errCat: "reading" },
-      { q: "In 'I didn't sleep at all', why does Faisal write 'sleep' and not 'slept'?", opts: ["Because 'sleep' is a regular verb", "Because he is talking about tonight", "Because after didn't, every verb goes back to its base form"], a: 2,
+      { q: "In 'I didn't sleep at all', why does Faisal write 'sleep' and not 'slept'?", opts: ["Because 'sleep' is a regular verb", "Because he is talking about tonight", "Because didn't takes the base form"], a: 2,
         ev: "The heater made a strange noise all night, so I didn't sleep at all.",
         whyEn: "After didn't, we always use the base verb, even with irregular verbs like sleep (slept): didn't sleep, not didn't slept.",
         why: "بعد didn't نستعمل الفعل المجرد دائمًا حتى مع الأفعال الشاذة مثل sleep (ماضيه slept): didn't sleep لا didn't slept.", errCat: "tense" }

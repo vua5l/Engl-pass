@@ -395,17 +395,9 @@ LESSONS.u3l2 = {
     predict: {
       qEn: "Stage 1 Main-Idea Question: What are the six speakers mainly talking about?",
       q: "سؤال الفكرة العامة: عمّ يتحدث المتحدثون الستة أساسًا؟",
-      optsEn: [
-        "How to pass a driving test in their own countries",
-        "An accident with a car or a bike that happened to them",
-        "The news about one big accident in their city last year"
-      ],
-      opts: [
-        "كيف يجتاز المرء اختبار القيادة في بلده",
-        "حادث بسيارة أو دراجة وقع لكل واحد منهم",
-        "خبر حادث كبير وقع في مدينتهم في العام الماضي"
-      ],
-      a: 1,
+      optsEn: ["An accident that happened to them", "How to pass a driving test in their countries", "The news about one big accident last year"],
+      opts: ["حادث وقع لكل واحد منهم", "كيف يجتاز المرء اختبار القيادة في بلده", "خبر حادث كبير وقع في العام الماضي"],
+      a: 0,
       revealEn: "Each speaker tells a short story about an accident in their own life. Listen again, one speaker at a time. The order is Helen, Amir, Lindsay, Paul, Matthew and Shalini.",
       reveal: "يحكي كل متحدث قصة قصيرة عن حادث في حياته. استمع مرة أخرى متحدثًا بعد متحدث، وترتيبهم: هيلين، فأمير، فليندسي، فبول، فماثيو، فشاليني."
     },
@@ -431,7 +423,7 @@ LESSONS.u3l2 = {
       { q: "What did Lindsay decide after her accident?", opts: ["To sell her car and take the bus", "To drive carefully from then on", "To wait a year before she drove again"], a: 1,
         whyEn: "In the middle, at the end of the third story, Lindsay says she decided to be very careful when she drives.",
         why: "في وسط المقطع، في آخر القصة الثالثة، تقول ليندسي إنها قررت أن تكون حذرة جدًا في قيادتها.", errCat: "reading" },
-      { q: "Why did Paul and his girlfriend rent a motorbike?", opts: ["To go diving in another part of the island", "To visit a friend in the capital", "To take photos of the mountains"], a: 0,
+      { q: "Why did Paul and his girlfriend rent a motorbike?", opts: ["To go diving in another area", "To visit a friend in the capital", "To take photos of the mountains"], a: 0,
         whyEn: "In the middle, in the fourth story, Paul says they wanted to ride across the island in Thailand and go diving there.",
         why: "في وسط المقطع، في القصة الرابعة، يقول بول إنهما أرادا الذهاب إلى الجهة الأخرى من الجزيرة في تايلند ليمارسا الغوص.", errCat: "reading" },
       { q: "What does Paul say about the roads there?", opts: ["They were very busy.", "They were new and wide.", "They were a bit dangerous."], a: 2,
@@ -518,7 +510,7 @@ LESSONS.u3l2 = {
     { s: "The island is big, so we want to ___ a car for a week and see all of it.", opts: ["rent", "control", "fall off"], a: 0, tag: "Vocabulary · مفردات",
       whyEn: "'rent' means pay to use something for a time, like a car for one week.",
       why: "rent تعني أن تدفع لتنتفع بشيء مدة من الزمن، كسيارة لأسبوع واحد.", errCat: "vocab" },
-    { s: "By law, you need ___ to drive a car on the road.", opts: ["sick leave", "annual leave", "a driving licence"], a: 2, tag: "Legal Track · المسار القانوني",
+    { s: "By law, you need ___ to drive a car on the road.", opts: ["a sick leave note", "an annual leave form", "a driving licence"], a: 2, tag: "Legal Track · المسار القانوني",
       whyEn: "A 'driving licence' is the official document that gives you the right to drive. 'sick leave' and 'annual leave' are kinds of time off work.",
       why: "driving licence الوثيقة الرسمية التي تمنحك حق القيادة، أما sick leave وannual leave فنوعان من الإجازة من العمل.", errCat: "vocab" }
   ]

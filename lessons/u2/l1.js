@@ -477,7 +477,7 @@ LESSONS.u2l1 = {
       reveal: "سأل فهدٌ يوسفَ عن ابن بطوطة، فقرر يوسف أن يكتب إليه لأن فهدًا يحب التاريخ."
     },
     questions: [
-      { q: "Who talked about Ibn Battuta in class?", opts: ["Youssef's history teacher", "A writer from Cairo", "Fahad's father"], a: 0,
+      { q: "Who talked about Ibn Battuta in class?", opts: ["Youssef's history teacher", "A visiting writer from Cairo", "Fahad's father, a history fan"], a: 0,
         ev: "A week ago, our history teacher talked about him in class, and yesterday I borrowed his book from our local library.",
         whyEn: "Near the start, Youssef writes 'our history teacher talked about him in class'. The email doesn't say that a writer from Cairo or Fahad's father talked about him.",
         why: "يكتب يوسف في أول الإيميل أن معلم التاريخ تحدث عنه في الفصل، ولا يذكر الإيميل أن كاتبًا من القاهرة أو والد فهد تحدث عنه.", errCat: "reading" },
@@ -501,10 +501,10 @@ LESSONS.u2l1 = {
         ev: "The roads were often dangerous.",
         whyEn: "Youssef writes 'The roads were often dangerous'. 'were' goes with the plural 'roads'.",
         why: "يكتب يوسف The roads were often dangerous، أي أن الطرق كانت خطيرة في أحيان كثيرة، وwere تناسب الجمع roads.", errCat: "reading" },
-      { q: "Ibn Battuta worked as a judge in …", opts: ["Cairo and Makkah", "Tangier and Cairo", "Delhi and the Maldives"], a: 2,
+      { q: "Ibn Battuta worked as a judge in …", opts: ["Damascus and Makkah", "Tangier and Baghdad", "Delhi and the Maldives"], a: 2,
         ev: "In India, he stayed in Delhi and worked as a judge there. He worked as a judge in the Maldives, too.",
-        whyEn: "The email says that he worked as a judge in Delhi (India) and in the Maldives. It doesn't say that he worked in Cairo, Makkah or Tangier.",
-        why: "يذكر الإيميل أنه عمل قاضيًا في دلهي بالهند وفي جزر المالديف، ولا يذكر أنه عمل في القاهرة أو مكة أو طنجة.", errCat: "reading" },
+        whyEn: "The email says that he worked as a judge in Delhi (India) and in the Maldives. It doesn't say that he was a judge anywhere else.",
+        why: "يذكر الإيميل أنه عمل قاضيًا في دلهي بالهند وفي جزر المالديف، ولا يذكر أنه عمل قاضيًا في مكان آخر.", errCat: "reading" },
       { tf: true, q: "A writer helped Ibn Battuta with the book about his journey.", a: true,
         ev: "In the end, he returned to Morocco, and then he dictated the story of his journey to a writer.",
         whyEn: "True: to 'dictate' is to say words aloud while another person writes them. So a writer helped him with the book.",
