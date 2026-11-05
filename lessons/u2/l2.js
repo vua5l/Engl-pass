@@ -146,7 +146,7 @@ LESSONS.u2l2 = {
     ex: "My father took ten days of annual leave, and we travelled to Taif together.",
     exAr: "أخذ أبي عشرة أيام من إجازته السنوية، وسافرنا معًا إلى الطائف.",
     tipEn: "Legal collocation: take annual leave / be on annual leave. 'Annual' means every year. In Saudi labour law, a worker gets at least 21 days of paid annual leave a year, and at least 30 days after five years in a row with the same employer. Compare sick leave from Unit 1.",
-    tip: "متلازمة قانونية: take annual leave يأخذ إجازته السنوية، وbe on annual leave يكون في إجازته السنوية، وannual تعني سنوي. وفي نظام العمل السعودي (المادة 109) للعامل إجازة سنوية مدفوعة الأجر لا تقل عن 21 يومًا، ولا تقل عن 30 يومًا إذا أمضى خمس سنوات متصلة عند صاحب العمل نفسه. وقارنها بـ sick leave من الوحدة الأولى.",
+    tip: "تعبير قانوني ثابت: take annual leave يأخذ إجازته السنوية، وbe on annual leave يكون في إجازته السنوية، وannual تعني سنوي. وفي نظام العمل السعودي (المادة 109) للعامل إجازة سنوية مدفوعة الأجر لا تقل عن 21 يومًا، ولا تقل عن 30 يومًا إذا أمضى خمس سنوات متصلة عند صاحب العمل نفسه. وقارنها بـ sick leave من الوحدة الأولى.",
     legal: true,
     oxfordSlug: "leave_2",
     wikiFiles: ["En-us-annual.ogg", "En-us-leave.ogg"],

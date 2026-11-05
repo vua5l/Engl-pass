@@ -244,7 +244,7 @@ LESSONS.u0l5 = {
       why: "rain تعني تمطر.", errCat: "vocab" },
     { s: "Every Friday, I ___ a short summary of the week's lessons.", opts: ["arrive", "rain", "write"], a: 2,
       whyEn: "'write' is the action verb for producing text.",
-      why: "write فعل حدث بمعنى يكتب.", errCat: "vocab" },
+      why: "write فعل عادي بمعنى يكتب.", errCat: "vocab" },
     { s: "To travel to another country, you need ___ such as a passport.", opts: ["a beautiful photo", "an official document", "a useful dictionary"], a: 1,
       whyEn: "An 'official document', like a passport, is a formal paper from the government.",
       why: "official document مستند رسمي تصدره الجهات الحكومية، كجواز السفر.", errCat: "vocab" }
@@ -392,7 +392,7 @@ LESSONS.u0l5 = {
       why: "الفاعل My father ثم الفعل keeps ثم المفعول به his official documents ثم المكان.", errCat: "word_order" },
     { chips: ["careful", "Lawyers", "with numbers.", "are"], ans: "Lawyers are careful with numbers.",
       whyEn: "Plural subject (Lawyers) + are + adjective (careful) + with numbers.",
-      why: "الفاعل الجمع Lawyers ثم فعل الكون are ثم الصفة careful.", errCat: "word_order" },
+      why: "الفاعل الجمع Lawyers ثم are ثم الصفة careful.", errCat: "word_order" },
     { chips: ["are", "Riyadh", "beautiful.", "The parks in"], ans: "The parks in Riyadh are beautiful.",
       whyEn: "Plural subject (The parks in Riyadh) + are + adjective (beautiful, one 'l').",
       why: "الفاعل الجمع The parks in Riyadh ثم are ثم الصفة beautiful بلام واحدة.", errCat: "word_order" },
@@ -406,8 +406,8 @@ LESSONS.u0l5 = {
     from: "Faisal",
     fromMeta: "Faisal · Law Trainee, Riyadh",
     to: "Personal Study Log",
-    lg1: "be: is / was / were · فعل الكون",
-    lg2: "action verbs & -ing forms · أفعال الحدث وصيغة ing",
+    lg1: "be: is / was / were",
+    lg2: "action verbs & -ing forms",
     lg3: "Time words · كلمات الزمن",
     targetSeconds: 100,
     introEn: "At the end of his first week at Al-Noor Law Office, Faisal wrote this Friday reflection combining everything he learned.",
@@ -493,7 +493,7 @@ LESSONS.u0l5 = {
     modelMarked: "I <<c:{study}>> law in Riyadh, and I always <<c:{check}>> every {official document} at the office. [[Yesterday|أمس]], I <<s:was>> at the court with my supervisor, and our folders <<s:were>> [[ready|جاهزة]]. I <<s:am>> very {careful} with my spelling when I <<c:{write}>> in English. This month, I<<c:'m {studying|study}>> English every day, and my course <<s:is>> very {useful}.",
     model: "I study law in Riyadh, and I always check every official document at the office. Yesterday, I was at the court with my supervisor, and our folders were ready. I am very careful with my spelling when I write in English. This month, I'm studying English every day, and my course is very useful.",
     legendEn: "Light blue = am / is / was / were · Terracotta = action verbs and -ing forms (study, check, write, 'm studying)",
-    legendAr: "الأزرق الفاتح لـ am / is / was / were، والطوبي لأفعال الحدث وصيغة ing (study وcheck وwrite و'm studying)."
+    legendAr: "الأزرق الفاتح لـ am / is / was / were، والطوبي للأفعال العادية وصيغة ing (study وcheck وwrite و'm studying)."
   },
 
   quiz: [
@@ -508,7 +508,7 @@ LESSONS.u0l5 = {
       why: "نضاعف الحرف الأخير بعد حرف علة واحد (sit → sitting)، ولا نضاعفه بعد حرفي علة (rain → raining).", errCat: "spelling" },
     { s: "Review (L1): ___ you check the official documents every morning?", opts: ["Are", "Do", "Were"], a: 1, tag: "Foundation L1 · تأسيس ١",
       whyEn: "'check' is a base action verb + 'every morning' → Do you check…?",
-      why: "الفعل check فعل حدث في المضارع البسيط مع you، فنسأل بـ Do.", errCat: "be_verb" },
+      why: "الفعل check فعل عادي في المضارع البسيط مع you، فنسأل بـ Do.", errCat: "be_verb" },
     { s: "Review (L2): ___ there any free tables in the restaurant right now?", opts: ["Is", "Are", "Do"], a: 1, tag: "Foundation L2 · تأسيس ٢",
       whyEn: "'tables' is plural → Are there any free tables…?",
       why: "كلمة tables جمع، لذلك نسأل بـ Are there.", errCat: "agreement" },
@@ -517,7 +517,7 @@ LESSONS.u0l5 = {
       why: "الفاعل جمع (These sandwiches) فيأخذ are.", errCat: "agreement" },
     { s: "Review (L3): ___ your grandparents in Taif last summer?", opts: ["Was", "Were", "Did"], a: 1, tag: "Foundation L3 · تأسيس ٣",
       whyEn: "'your grandparents' is plural + 'last summer' (past) + no action verb → Were.",
-      why: "الفاعل جمع (your grandparents) والزمن ماضٍ ولا يوجد فعل حدث، فنسأل بـ Were.", errCat: "agreement" },
+      why: "الفاعل جمع (your grandparents) والزمن ماضٍ ولا يوجد فعل عادي، فنسأل بـ Were.", errCat: "agreement" },
     { s: "Review (L4): Choose the sentence with correct word order, capitals, and punctuation:", opts: ["on sunday, i visit my uncle in dammam.", "On Sunday, I visit my uncle in Dammam.", "On Sunday, Visit I my uncle in Dammam."], a: 1, tag: "Foundation L4 · تأسيس ٤",
       whyEn: "Capital 'On', 'Sunday', 'I' and 'Dammam', Subject + Verb order ('I visit'), and a period at the end.",
       why: "بداية الجملة ويوم Sunday والضمير I ومدينة Dammam بحرف كبير، والفاعل قبل الفعل، ونقطة في النهاية.", errCat: "word_order" },

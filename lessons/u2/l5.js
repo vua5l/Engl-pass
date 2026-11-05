@@ -196,26 +196,26 @@ LESSONS.u2l5 = {
     ex: "Students who want to study abroad usually apply for a visa a few months before they travel.",
     exAr: "الطلاب الذين يريدون الدراسة في الخارج يتقدّمون عادةً بطلب تأشيرة قبل سفرهم بأشهر قليلة.",
     tipEn: "A visa is official permission to enter a country, in your passport or online, and each country's laws decide who needs one. Collocations: apply for a visa (ask for one with a form), get a visa, a tourist visa, a student visa. Use 'for' after apply: apply for a visa / a job / a passport. Past: applied for (consonant + y → ied).",
-    tip: "visa إذن رسمي بدخول بلد، في جواز السفر أو إلكترونيًا، وقوانين كل بلد تحدد من يحتاج إليها. ومن متلازماتها: apply for a visa (يتقدّم بطلب تأشيرة)، وget a visa (يحصل على تأشيرة)، وa tourist visa (تأشيرة سياحية)، وa student visa (تأشيرة دراسية). وبعد apply نستعمل for: apply for a visa / a job / a passport. وماضيها applied for، لأن قبل y حرفًا ساكنًا فتتحول إلى ied.",
+    tip: "visa إذن رسمي بدخول بلد، في جواز السفر أو إلكترونيًا، وقوانين كل بلد تحدد من يحتاج إليها. ومن تعابيرها الثابتة: apply for a visa (يتقدّم بطلب تأشيرة)، وget a visa (يحصل على تأشيرة)، وa tourist visa (تأشيرة سياحية)، وa student visa (تأشيرة دراسية). وبعد apply نستعمل for: apply for a visa / a job / a passport. وماضيها applied for، لأن قبل y حرفًا ساكنًا فتتحول إلى ied.",
     legal: true,
     oxfordSlug: "visa",
     wikiFiles: ["En-us-apply.ogg", "LL-Q1860 (eng)-Pvanp7-for (unstressed).wav", "LL-Q1860 (eng)-Pvanp7-a (unstressed).wav", "LL-Q1860 (eng)-Vealhurl-visa.wav"],
     wikiCredit: "File:En-us-apply.ogg, File:LL-Q1860 (eng)-Pvanp7-for (unstressed).wav, File:LL-Q1860 (eng)-Pvanp7-a (unstressed).wav & File:LL-Q1860 (eng)-Vealhurl-visa.wav · Pvanp7 & Vealhurl (Lingua Libre) / Wikimedia Commons"
   },
 
-  /* ---------- المفردات (6 كلمات + العبارة القانونية = 7 عبارات، والمتلازمات في tipEn / tip) ---------- */
+  /* ---------- المفردات (6 كلمات + العبارة القانونية = 7 عبارات، والتعابير الثابتة في tipEn / tip) ---------- */
   vocab: [
     { en: "tour guide", pos: "noun", ar: "مرشد سياحي", say: "تُوَر قَايْد",
       ex: "A good tour guide tells interesting stories about every place.", exAr: "المرشد السياحي الجيد يحكي قصصًا ممتعة عن كل مكان.",
       tipEn: "A tour guide shows visitors a place and tells them about it. Collocations: a local tour guide, our tour guide told us …, go on a guided tour. Spelling: g-u-i-d-e, with a silent u.",
-      tip: "المرشد السياحي يرافق الزوار ويحدّثهم عن المكان. ومن متلازماتها: a local tour guide (مرشد من أهل المكان)، وour tour guide told us … (أخبرنا مرشدنا …)، وgo on a guided tour (يقوم بجولة مع مرشد). وتُكتب guide بحرف u صامت: g-u-i-d-e.",
+      tip: "المرشد السياحي يرافق الزوار ويحدّثهم عن المكان. ومن تعابيرها الثابتة: a local tour guide (مرشد من أهل المكان)، وour tour guide told us … (أخبرنا مرشدنا …)، وgo on a guided tour (يقوم بجولة مع مرشد). وتُكتب guide بحرف u صامت: g-u-i-d-e.",
       oxfordSlug: "guide",
       wikiFile: "LL-Q1860 (eng)-Vealhurl-tour guide.wav",
       wikiCredit: "File:LL-Q1860 (eng)-Vealhurl-tour guide.wav · Vealhurl (Lingua Libre) / Wikimedia Commons" },
     { en: "view", pos: "noun", ar: "منظر / مشهد (ما تراه أمامك من مكان ما)", say: "فْيُو",
       ex: "We had a great view of the mountains from the window of the train.", exAr: "كان أمامنا منظر رائع للجبال من نافذة القطار.",
       tipEn: "Collocations: a view of the sea / the mountains, a great / beautiful view, the view was amazing, a room with a view. Spelling: v-i-e-w ('iew' sounds like 'you').",
-      tip: "متلازمات: a view of the sea (منظر البحر)، وa beautiful view (منظر جميل)، وthe view was amazing (كان المنظر مذهلًا)، وa room with a view (غرفة تطل على منظر). وتُكتب v-i-e-w، وiew فيها تُنطق «يُو».",
+      tip: "تعابير ثابتة: a view of the sea (منظر البحر)، وa beautiful view (منظر جميل)، وthe view was amazing (كان المنظر مذهلًا)، وa room with a view (غرفة تطل على منظر). وتُكتب v-i-e-w، وiew فيها تُنطق «يُو».",
       oxfordSlug: "view_1",
       wikiFile: "En-us-view.ogg",
       wikiCredit: "File:En-us-view.ogg · Wikimedia Commons" },
@@ -236,7 +236,7 @@ LESSONS.u2l5 = {
     { en: "souvenir", pos: "noun", ar: "تذكار (شيء تشتريه أو تحتفظ به ليذكّرك بمكان زرته)", say: "سُوفَنِير",
       ex: "My grandmother keeps every souvenir that her children bring her.", exAr: "تحتفظ جدتي بكل تذكار يحضره لها أبناؤها.",
       tipEn: "A souvenir is something you buy or keep to remember a place. Collocations: buy a souvenir, a souvenir shop, a souvenir from Paris, a souvenir for my sister. It comes from French, so the end is -ir: s-o-u-v-e-n-i-r.",
-      tip: "souvenir شيء تشتريه أو تحتفظ به ليذكّرك بمكان زرته. ومن متلازماتها: buy a souvenir (يشتري تذكارًا)، وa souvenir shop (محل تذكارات)، وa souvenir from Paris (تذكار من باريس)، وa souvenir for my sister (تذكار لأختي). وأصلها فرنسي، فتنتهي بـ ir: s-o-u-v-e-n-i-r.",
+      tip: "souvenir شيء تشتريه أو تحتفظ به ليذكّرك بمكان زرته. ومن تعابيرها الثابتة: buy a souvenir (يشتري تذكارًا)، وa souvenir shop (محل تذكارات)، وa souvenir from Paris (تذكار من باريس)، وa souvenir for my sister (تذكار لأختي). وأصلها فرنسي، فتنتهي بـ ir: s-o-u-v-e-n-i-r.",
       oxfordSlug: "souvenir",
       wikiFile: "LL-Q1860 (eng)-Vealhurl-souvenir.wav",
       wikiCredit: "File:LL-Q1860 (eng)-Vealhurl-souvenir.wav · Vealhurl (Lingua Libre) / Wikimedia Commons" },
@@ -347,7 +347,7 @@ LESSONS.u2l5 = {
         '<div class="tip" dir="ltr"><div class="pairs"><span class="yes">Did she tell you the news?</span><span class="no">Did she told you the news?</span></div></div>',
       arHtml:
         '<p>القصة الجيدة تذكر أيضًا ما لم يحدث، والإيميل يسأل غالبًا سؤالًا. ومع <bdi class="en">did</bdi> يعود الفعل إلى صورته المجردة: <bdi class="en">didn\'t take</bdi> في النفي، و<bdi class="en">Did you call…?</bdi> في السؤال، و<bdi class="en">Where did you stay?</bdi> مع أداة الاستفهام.</p>' +
-        '<p>والإجابة القصيرة <bdi class="en">Yes, I did.</bdi> أو <bdi class="en">No, I didn\'t.</bdi> ومع فعل الكون نستعمل <bdi class="en">wasn\'t / weren\'t</bdi> في النفي، و<bdi class="en">Was / Were…?</bdi> أو <bdi class="en">How was…?</bdi> في السؤال.</p>'
+        '<p>والإجابة القصيرة <bdi class="en">Yes, I did.</bdi> أو <bdi class="en">No, I didn\'t.</bdi> ومع فعل be نستعمل <bdi class="en">wasn\'t / weren\'t</bdi> في النفي، و<bdi class="en">Was / Were…?</bdi> أو <bdi class="en">How was…?</bdi> في السؤال.</p>'
     },
     {
       tEn: "Common Arab Mistakes",
@@ -378,7 +378,7 @@ LESSONS.u2l5 = {
         '<p><b>الإيميل:</b> تحية في أوله (<bdi class="en">Hi …,</bdi>) وختام في آخره (<bdi class="en">Best wishes,</bdi>)، وبينهما الغرض والتفاصيل.</p>' +
         '<p><b>الترتيب والزمن:</b> <bdi class="en">First, Then, After that, Finally</bdi>، و<bdi class="en">last weekend</bdi> و<bdi class="en">two days ago</bdi>.</p>' +
         '<p><b>الأفعال:</b> المنتظم بـ <bdi class="en">ed</bdi>، والشاذ يُحفظ: <bdi class="en">wrote, sent, told, felt, gave, brought, began, became</bdi>.</p>' +
-        '<p><b>النفي والسؤال:</b> <bdi class="en">didn\'t</bdi> و<bdi class="en">Did</bdi> مع الفعل المجرد، و<bdi class="en">wasn\'t / weren\'t</bdi> مع فعل الكون.</p>' +
+        '<p><b>النفي والسؤال:</b> <bdi class="en">didn\'t</bdi> و<bdi class="en">Did</bdi> مع الفعل المجرد، و<bdi class="en">wasn\'t / weren\'t</bdi> مع فعل be.</p>' +
         '<p>والآن نتدرّب: 16 تمرينًا موجّهًا بجمل جديدة.</p>'
     }
   ],

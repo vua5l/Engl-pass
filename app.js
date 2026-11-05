@@ -163,7 +163,7 @@ var ERR_CATS = {
     en: "Using 'be' & 'do' with Verbs",
     ar: "استعمال be و do مع الأفعال",
     whyEn: "Use am / is / are with a noun, an adjective or a place (I am busy), and do / does with an action verb (Do you work?). Never put am / is / are before a base verb (✗ She is go), and never drop it before an -ing verb (✗ She working).",
-    whyAr: "نستعمل am / is / are مع الاسم أو الصفة أو المكان (I am busy)، وdo / does مع فعل الحدث (Do you work?). ولا نضع am / is / are قبل الفعل الأصلي، ولا نحذفها قبل الفعل المنتهي بـ ing."
+    whyAr: "نستعمل am / is / are مع الاسم أو الصفة أو المكان (I am busy)، وdo / does مع الفعل العادي (Do you work?). ولا نضع am / is / are قبل الفعل الأصلي، ولا نحذفها قبل الفعل المنتهي بـ ing."
   },
   agreement: {
     en: "Singular & Plural Agreement",
@@ -179,7 +179,7 @@ var ERR_CATS = {
   },
   stative: {
     en: "Stative Verbs (know / need / understand)",
-    ar: "أفعال الحالة والذهن والمشاعر",
+    ar: "الأفعال التي لا تأخذ ing",
     whyEn: "Verbs of thinking, feeling, and needing (know, understand, need, want, like) stay in Present Simple even when we mean right now.",
     whyAr: "أفعال التفكير والمشاعر والحاجة تبقى في المضارع البسيط ولا تأخذ ing حتى لو قصدنا اللحظة الحالية."
   },
@@ -197,7 +197,7 @@ var ERR_CATS = {
   },
   vocab: {
     en: "Vocabulary Meaning & Collocations",
-    ar: "معاني المفردات والمتلازمات اللفظية",
+    ar: "معاني المفردات والتعابير الثابتة اللفظية",
     whyEn: "Check how each word fits the context and its natural partners (do research, collect data, measure temperature, sign a contract).",
     whyAr: "راجع معنى الكلمة في السياق والكلمات التي تتلازم معها طبيعيًا."
   },

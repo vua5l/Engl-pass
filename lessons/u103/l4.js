@@ -33,7 +33,7 @@ LESSONS.u103l4 = {
   goals: [
     { en: "I can ask two questions before I choose a tense: present or past, and going on or not.", ar: "أقدر أن أسأل نفسي سؤالين قبل أن أختار الزمن: أهو في الحاضر أم في الماضي؟ وهل هو جارٍ أم لا؟" },
     { en: "I can use the other action in a sentence to choose between the past simple and the past continuous.", ar: "أقدر أن أستعمل الحدث الآخر في الجملة لأختار بين الماضي البسيط والماضي المستمر." },
-    { en: "I can keep state verbs simple, and move from the past to the present when I talk about my life.", ar: "أقدر أن أُبقي أفعال الحالة في البسيط، وأنتقل من الماضي إلى الحاضر حين أتكلم عن حياتي." },
+    { en: "I can keep state verbs simple, and move from the past to the present when I talk about my life.", ar: "أقدر أن أُبقي الأفعال التي لا تأخذ ing في البسيط، وأنتقل من الماضي إلى الحاضر حين أتكلم عن حياتي." },
     { en: "I can follow a real talk about life in different countries, and write at least 6 sentences about my life before and now.", ar: "أقدر أن أتابع حديثًا حقيقيًا عن الحياة في بلدان مختلفة، وأكتب 6 جمل على الأقل عن حياتي قبلُ والآن." }
   ],
   intro: {
@@ -57,7 +57,7 @@ LESSONS.u103l4 = {
     },
     grammar: {
       dEn: "The goal of the week: choose the right tense by yourself. Two questions, time words as clues, state verbs, and the move from the past to the present.",
-      d: "غاية الأسبوع: أن تختار الزمن الصحيح وحدك، بسؤالين، وبكلمات الوقت قرائن، وبأفعال الحالة، وبالانتقال من الماضي إلى الحاضر.",
+      d: "غاية الأسبوع: أن تختار الزمن الصحيح وحدك، بسؤالين، وبكلمات الوقت قرائن، وبالأفعال التي لا تأخذ ing، وبالانتقال من الماضي إلى الحاضر.",
       items: [
         ["book", "6 short review cards (English first, Arabic on tap)", "6 بطاقات مراجعة قصيرة (الإنجليزي أولًا، والعربي عند الطلب)"],
         ["quiz", "16 guided exercises on all four tenses (4 of each type), one per screen", "16 تمرينًا موجّهًا على الأزمنة الأربعة (4 من كل نمط)، سؤال في كل شاشة"]
@@ -278,13 +278,13 @@ LESSONS.u103l4 = {
         '<p>كلمة الوقت قرينة حسنة، لكنها لا تقطع دائمًا.</p>' +
         '<p><bdi class="en">every day</bdi> و<bdi class="en">usually</bdi> ترجّحان البسيط، أما <bdi class="en">yesterday</bdi> و<bdi class="en">ago</bdi> فتدلان على الماضي بنوعيه: البسيط والمستمر.</p>' +
         '<p><b>وليس للماضي المستمر كلمة خاصة به،</b> بل يقرره الحدث الآخر في الجملة أو الموقف: <bdi class="en">The guests were waiting in the garden when my father opened the door.</bdi> فالانتظار طويل، وفتح الباب حدث قصير وقع في أثنائه.</p>' +
-        '<p>وكلمتا <bdi class="en">now</bdi> و<bdi class="en">at the moment</bdi> تأتيان كثيرًا مع المضارع المستمر، لكن مع فعل الحدث فقط، أما فعل الحالة فيبقى بسيطًا: <bdi class="en">I need a pen now.</bdi></p>'
+        '<p>وكلمتا <bdi class="en">now</bdi> و<bdi class="en">at the moment</bdi> تأتيان كثيرًا مع المضارع المستمر، لكن مع الفعل العادي فقط، أما الفعل الذي لا يأخذ ing فيبقى بسيطًا: <bdi class="en">I need a pen now.</bdi></p>'
     },
     {
       tEn: "Verbs That Stay Simple",
       t: "أفعال تبقى بسيطة",
       enHtml:
-        '<h2 class="bi-h"><span class="en" dir="ltr">Verbs That Stay Simple</span><small>أفعال الحالة تبقى بسيطة</small></h2>' +
+        '<h2 class="bi-h"><span class="en" dir="ltr">Verbs That Stay Simple</span><small>الأفعال التي لا تأخذ ing تبقى بسيطة</small></h2>' +
         '<p class="en-p" dir="ltr">State verbs do not need the second question. They stay simple in the present and in the past:</p>' +
         '<div class="formula">know · understand · believe · want · need · prefer</div>' +
         '<div class="tbl"><table><thead><tr><th>Time · الزمن</th><th>Example · المثال</th></tr></thead><tbody>' +
@@ -294,7 +294,7 @@ LESSONS.u103l4 = {
         '<p class="en-p" dir="ltr"><b>have</b> is a state verb too when it means own: My aunt has a small garden.</p>' +
         '<div class="tip" dir="ltr"><p><b>Do not say · لا تقل:</b> I am knowing · she is preferring · I was knowing · I was understanding · I was needing</p></div>',
       arHtml:
-        '<p>أفعال الحالة لا تحتاج إلى السؤال الثاني، فهي تبقى بسيطة في الحاضر والماضي، ومنها <bdi class="en">know</bdi> و<bdi class="en">understand</bdi> و<bdi class="en">believe</bdi> و<bdi class="en">want</bdi> و<bdi class="en">need</bdi> و<bdi class="en">prefer</bdi>.</p>' +
+        '<p>الأفعال التي لا تأخذ ing لا تحتاج إلى السؤال الثاني، فهي تبقى بسيطة في الحاضر والماضي، ومنها <bdi class="en">know</bdi> و<bdi class="en">understand</bdi> و<bdi class="en">believe</bdi> و<bdi class="en">want</bdi> و<bdi class="en">need</bdi> و<bdi class="en">prefer</bdi>.</p>' +
         '<p><bdi class="en">My cousin prefers a quiet life.</bdi> في الحاضر، و<bdi class="en">At that time, I knew only ten English words.</bdi> في الماضي.</p>' +
         '<p>وكذلك <bdi class="en">have</bdi> بمعنى «يملك»: <bdi class="en">My aunt has a small garden.</bdi></p>' +
         '<p>فلا تقل <bdi class="en">I am knowing</bdi> ولا <bdi class="en">she is preferring</bdi> ولا <bdi class="en">I was knowing</bdi> ولا <bdi class="en">I was understanding</bdi> ولا <bdi class="en">I was needing</bdi>.</p>'
@@ -326,7 +326,7 @@ LESSONS.u103l4 = {
           '<li><span class="no">Last night I don\'t understand the film.</span><span class="yes">Last night I didn\'t understand the film.</span><p class="en-m" dir="ltr">Last night is in the past, so the verb must be in the past: <b>didn\'t</b> + base verb.</p><p><bdi class="en">Last night</bdi> في الماضي، فيكون الفعل ماضيًا: <bdi class="en">didn\'t</bdi> مع الفعل الأصلي.</p></li>' +
           '<li><span class="no">I am drive to college every day.</span><span class="yes">I drive to college every day.</span><p class="en-m" dir="ltr">This is a habit, so use the present simple. Do not put <b>am</b> before a base verb.</p><p>هذه عادة، فنستعمل المضارع البسيط، ولا نضع <bdi class="en">am</bdi> قبل الفعل الأصلي.</p></li>' +
           '<li><span class="no">When I arrive at the hotel last night, my cousin was waiting outside.</span><span class="yes">When I arrived at the hotel last night, my cousin was waiting outside.</span><p class="en-m" dir="ltr">The short action is in the past too, so it takes the past simple: <b>arrived</b>.</p><p>الحدث القصير في الماضي أيضًا، فيأتي بالماضي البسيط: <bdi class="en">arrived</bdi>.</p></li>' +
-          '<li><span class="no">We are wanting a bigger house.</span><span class="yes">We want a bigger house.</span><p class="en-m" dir="ltr"><b>want</b> is a state verb, so it stays simple.</p><p><bdi class="en">want</bdi> فعل حالة، فيبقى بسيطًا.</p></li>' +
+          '<li><span class="no">We are wanting a bigger house.</span><span class="yes">We want a bigger house.</span><p class="en-m" dir="ltr"><b>want</b> is a state verb, so it stays simple.</p><p><bdi class="en">want</bdi> فعل لا يأخذ ing، فيبقى بسيطًا.</p></li>' +
         '</ul>'
     },
     {
@@ -341,7 +341,7 @@ LESSONS.u103l4 = {
         '<p class="en-p" dir="ltr">Now let\'s practise: 16 guided exercises on all four tenses.</p>',
       arHtml:
         '<p><b>السؤالان:</b> أفي الحاضر أم في الماضي؟ وهل هو جارٍ الآن أو هذه الأيام، أو كان جاريًا في تلك اللحظة؟ فإن كان جاريًا فالمستمر، وإلا فالبسيط للعادة والحقيقة والحدث المكتمل.</p>' +
-        '<p><b>القرائن:</b> كلمات الوقت تساعد ولا تقطع، والماضي المستمر يقرره الحدث الآخر، وأفعال الحالة بسيطة دائمًا، وبعد <bdi class="en">ago</bdi> الماضي، ومع <bdi class="en">now</bdi> الحاضر.</p>'
+        '<p><b>القرائن:</b> كلمات الوقت تساعد ولا تقطع، والماضي المستمر يقرره الحدث الآخر، والأفعال التي لا تأخذ ing بسيطة دائمًا، وبعد <bdi class="en">ago</bdi> الماضي، ومع <bdi class="en">now</bdi> الحاضر.</p>'
     }
   ],
 
@@ -378,7 +378,7 @@ LESSONS.u103l4 = {
   gC: [
     { pre: "These days, my sister", verb: "want", post: "a job in a foreign country.", ans: ["wants"],
       whyEn: "'These days' puts this in the present. 'want' is a state verb, so it stays simple, and 'my sister' takes -s: wants.",
-      why: "These days تجعل الجملة في الحاضر، وwant فعل حالة فيبقى بسيطًا، وmy sister مفرد غائب فنضيف s: wants.", errCat: "stative" },
+      why: "These days تجعل الجملة في الحاضر، وwant فعل لا يأخذ ing فيبقى بسيطًا، وmy sister مفرد غائب فنضيف s: wants.", errCat: "stative" },
     { pre: "Shh! My little brother", verb: "sleep", post: "on the sofa.", ans: ["is sleeping"],
       whyEn: "'Shh!' tells us to be quiet because the sleep is going on now. So we use the present continuous: is sleeping.",
       why: "Shh! تطلب الهدوء لأن النوم جارٍ الآن، فنستعمل المضارع المستمر: is sleeping.", errCat: "tense" },
@@ -521,7 +521,7 @@ LESSONS.u103l4 = {
       why: "هذه عادة، فنستعمل المضارع البسيط: walk، ولا نضع am ولا are قبل الفعل الأصلي.", errCat: "be_verb" },
     { s: "I ___ your sister, because we worked together last year.", opts: ["am knowing", "know", "was knowing"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'know' is a state verb, so it stays simple, and it takes no -ing in the present or in the past.",
-      why: "know فعل حالة فيبقى بسيطًا، ولا يأخذ ing في الحاضر ولا في الماضي.", errCat: "stative" },
+      why: "know فعل لا يأخذ ing فيبقى بسيطًا، ولا يأخذ ing في الحاضر ولا في الماضي.", errCat: "stative" },
     { s: "Please don't go in. At the moment, the doctor ___ to a patient.", opts: ["is talking", "talks", "talked"], a: 0, tag: "Grammar · قواعد",
       whyEn: "We can't go in because the talk is going on now. An action going on at this moment takes the present continuous.",
       why: "لا نستطيع الدخول لأن الحديث جارٍ الآن، والحدث الجاري في هذه اللحظة يأتي بالمضارع المستمر.", errCat: "tense" },

@@ -209,7 +209,7 @@ LESSONS.u3l5 = {
       isLegal: true,
       hint: "s _ _ _ _ _ _ _ _ _ _ _ _ _ _ y (16 letters, 3 words)",
       spellNoteEn: "Three words: state + of + emergency. emergency has three e's: e-m-e-r-g-e-n-c-y. We usually say 'declare a state of emergency'.",
-      spellNote: "ثلاث كلمات: state ثم of ثم emergency. وفي emergency ثلاثة أحرف e: e-m-e-r-g-e-n-c-y. والمتلازمة declare a state of emergency (يعلن حالة الطوارئ).",
+      spellNote: "ثلاث كلمات: state ثم of ثم emergency. وفي emergency ثلاثة أحرف e: e-m-e-r-g-e-n-c-y. والتعبير الثابت declare a state of emergency (يعلن حالة الطوارئ).",
       errCat: "vocab"
     }
   ],
@@ -224,7 +224,7 @@ LESSONS.u3l5 = {
     ex: "My neighbour saw the thief's face, so he gave a witness statement to the police.",
     exAr: "رأى جاري وجه اللص، فقدّم إفادة شاهد إلى الشرطة.",
     tipEn: "A witness statement is a report from a person who saw or heard something. It says what that person really saw or heard. Collocations: give a witness statement (the witness does this), take a witness statement (the police do this). You know 'witness' from Unit 0. Spelling: state + ment, with the e in the middle: s-t-a-t-e-m-e-n-t.",
-    tip: "إفادة الشاهد تقرير من شخص رأى شيئًا أو سمعه، يذكر فيه ما رآه أو سمعه حقًّا. ومن متلازماتها: give a witness statement (يقدّم إفادة شاهد، وهذا فعل الشاهد)، وtake a witness statement (يأخذ إفادة شاهد، وهذا فعل الشرطة). وقد عرفت witness في الوحدة 0. وتُكتب statement من state ثم ment، وتبقى e في وسطها: s-t-a-t-e-m-e-n-t.",
+    tip: "إفادة الشاهد تقرير من شخص رأى شيئًا أو سمعه، يذكر فيه ما رآه أو سمعه حقًّا. ومن تعابيرها الثابتة: give a witness statement (يقدّم إفادة شاهد، وهذا فعل الشاهد)، وtake a witness statement (يأخذ إفادة شاهد، وهذا فعل الشرطة). وقد عرفت witness في الوحدة 0. وتُكتب statement من state ثم ment، وتبقى e في وسطها: s-t-a-t-e-m-e-n-t.",
     legal: true,
     oxfordSlug: "statement_2",
     wikiFiles: ["En-us-witness.ogg", "En-us-statement.ogg"],
@@ -257,14 +257,14 @@ LESSONS.u3l5 = {
     { en: "exactly", pos: "adverb", ar: "بالضبط", say: "إِقْزَاكْتْلِي",
       ex: "I can't remember exactly where I parked my car.", exAr: "لا أتذكر بالضبط أين أوقفت سيارتي.",
       tipEn: "exactly = with no small mistakes, not more and not less. Collocations: exactly what I saw, exactly where, at exactly five o'clock. With time, 'about' is the opposite: at about 6 pm means that you don't know the exact time. The x sounds like 'gz': ig-ZAKT-lee.",
-      tip: "exactly تعني بالضبط، بلا زيادة ولا نقص. ومن متلازماتها: exactly what I saw (ما رأيته بالضبط)، وexactly where (أين بالضبط)، وat exactly five o'clock (في الخامسة تمامًا). وعكسها في الوقت about: فـ at about 6 pm تعني نحو السادسة، حين لا تعرف الوقت بالضبط. وحرف x فيها يُنطق «قز»: «إِقْزَاكْتْلِي».",
+      tip: "exactly تعني بالضبط، بلا زيادة ولا نقص. ومن تعابيرها الثابتة: exactly what I saw (ما رأيته بالضبط)، وexactly where (أين بالضبط)، وat exactly five o'clock (في الخامسة تمامًا). وعكسها في الوقت about: فـ at about 6 pm تعني نحو السادسة، حين لا تعرف الوقت بالضبط. وحرف x فيها يُنطق «قز»: «إِقْزَاكْتْلِي».",
       oxfordSlug: "exactly",
       wikiFile: "En-us-exactly.ogg",
       wikiCredit: "File:En-us-exactly.ogg · Wikimedia Commons" },
     { en: "ambulance", pos: "noun", ar: "سيارة إسعاف", say: "أَمْبْيُلَنْس",
       ex: "When my grandfather felt very ill at night, we called an ambulance.", exAr: "حين شعر جدي بمرض شديد في الليل، اتصلنا بسيارة الإسعاف.",
       tipEn: "Collocations: call an ambulance, an ambulance came. Use 'an' because the word starts with a vowel sound. Spelling: the end is -ance, not -ence: a-m-b-u-l-a-n-c-e.",
-      tip: "من متلازماتها: call an ambulance (يتصل بالإسعاف)، وan ambulance came (جاءت سيارة إسعاف). ونستعمل an لأن الكلمة تبدأ بصوت متحرك. وتنتهي بـ ance لا ence: a-m-b-u-l-a-n-c-e.",
+      tip: "من تعابيرها الثابتة: call an ambulance (يتصل بالإسعاف)، وan ambulance came (جاءت سيارة إسعاف). ونستعمل an لأن الكلمة تبدأ بصوت متحرك. وتنتهي بـ ance لا ence: a-m-b-u-l-a-n-c-e.",
       oxfordSlug: "ambulance",
       wikiFile: "En-us-ambulance.ogg",
       wikiCredit: "File:En-us-ambulance.ogg · Wikimedia Commons" },
@@ -320,7 +320,7 @@ LESSONS.u3l5 = {
         '<p><b>الخلفية</b> بالماضي المستمر، وهي ما كان جاريًا حين بدأت القصة: <bdi class="en">The sun was going down.</bdi></p>' +
         '<p><b>الأحداث</b> بالماضي البسيط، وهي ما وقع واحدًا بعد واحد، ونرتبها بـ <bdi class="en">First</bdi> و<bdi class="en">Then</bdi> و<bdi class="en">After that</bdi> و<bdi class="en">Finally</bdi>.</p>' +
         '<p>فجملة <bdi class="en">The boys were running.</bdi> تعني أنهم كانوا يركضون من قبل، وجملة <bdi class="en">The boys ran.</bdi> حدث جديد في القصة.</p>' +
-        '<p>وقد تأتي الخلفية أيضًا بـ <bdi class="en">was / were</bdi> مع الصفة، أو بفعل حالة في الماضي البسيط: <bdi class="en">It was cold. I knew the man.</bdi></p>'
+        '<p>وقد تأتي الخلفية أيضًا بـ <bdi class="en">was / were</bdi> مع الصفة، أو بفعل لا يأخذ ing في الماضي البسيط: <bdi class="en">It was cold. I knew the man.</bdi></p>'
     },
     {
       tEn: "when and while in a Story",
@@ -378,7 +378,7 @@ LESSONS.u3l5 = {
       arHtml:
         '<p>الشاهد يذكر ما رآه حقًّا. أما <bdi class="en">I think</bdi> فتدل على فكرة في ذهنه فحسب، فافصل بينهما: <bdi class="en">I saw a woman leave the shop.</bdi> هذا ما رأيته، و<bdi class="en">I think she was angry.</bdi> هذا ما تظنه.</p>' +
         '<p>وأفعال اليوم الأربعة: <bdi class="en">set → set</bdi> (يضبط أو يحدد، بلا تغيير في الماضي)، و<bdi class="en">sell → sold</bdi> (يبيع، على وزن <bdi class="en">told</bdi>)، و<bdi class="en">lend → lent</bdi> (يعير، أي يعطي شيئًا مدة قصيرة، وينتهي بـ <bdi class="en">t</bdi> مثل <bdi class="en">sent</bdi>)، و<bdi class="en">mean → meant</bdi> (يعني، وينتهي بـ <bdi class="en">t</bdi>، ويقصر فيه الصوت).</p>' +
-        '<p>و<bdi class="en">mean</bdi> بمعنى «يعني» فعل حالة، فلا يأخذ <bdi class="en">ing</bdi>: نقول <bdi class="en">Her smile meant yes.</bdi> ولا نقول <bdi class="en">was meaning</bdi>.</p>'
+        '<p>و<bdi class="en">mean</bdi> بمعنى «يعني» فعل لا يأخذ ing: نقول <bdi class="en">Her smile meant yes.</bdi> ولا نقول <bdi class="en">was meaning</bdi>.</p>'
     },
     {
       tEn: "Common Arab Mistakes",
@@ -427,7 +427,7 @@ LESSONS.u3l5 = {
       why: "سقط الهاتف في أثناء الاستماع، فـ fell حدث قصير، والحدث القصير يأتي بعد when، أما while فتأتي قبل الحدث الطويل.", errCat: "tense" },
     { s: "Nobody replied to Hind because nobody knew what her message ___.", opts: ["was meaning", "meant"], a: 1,
       whyEn: "Here 'mean' tells us what the message says, so it is a state verb. State verbs take no -ing, so we use the past form 'meant'.",
-      why: "mean هنا تدل على ما تقوله الرسالة، فهي فعل حالة، وأفعال الحالة لا تأخذ ing، فنستعمل صيغة الماضي meant.", errCat: "stative" },
+      why: "mean هنا تدل على ما تقوله الرسالة، فهي فعل لا يأخذ ing، فنستعمل صيغة الماضي meant.", errCat: "stative" },
     { s: "I didn't see the man's face, so I told my brother: '___ he was young.'", opts: ["I think", "I saw"], a: 0,
       whyEn: "The speaker didn't see the face, so this is only an idea in his head, and 'I think' shows that. 'I saw' is only for what a witness really saw.",
       why: "لم ير المتحدث وجه الرجل، فهذه فكرة في ذهنه فحسب، وتدل عليها I think. أما I saw فلما رآه الشاهد حقًّا.", errCat: "vocab" }
@@ -607,7 +607,7 @@ LESSONS.u3l5 = {
       why: "came حدث قصير وقع في أثناء سقي النباتات، والحدث القصير يأتي بعد when، أما while فتأتي قبل الحدث الطويل، وduring تأتي قبل الاسم.", errCat: "tense" },
     { s: "The red light in my car ___ that the engine was too hot.", opts: ["was meaning", "was mean", "meant"], a: 2, tag: "Grammar · قواعد",
       whyEn: "Here 'mean' tells us what the light shows, so it is a state verb with no -ing: meant. We also don't put 'was' before a base verb.",
-      why: "mean هنا تدل على ما يبيّنه الضوء، فهي فعل حالة لا يأخذ ing، فنقول meant، ولا نضع was قبل الفعل المجرد.", errCat: "stative" },
+      why: "mean هنا تدل على ما يبيّنه الضوء، فهي فعل لا يأخذ ing، فنقول meant، ولا نضع was قبل الفعل المجرد.", errCat: "stative" },
     { s: "Last Sunday, Ahmed ___ me his notes for the exam.", opts: ["lended", "lent", "was lend"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'Last Sunday' shows a finished event, and lend is irregular: lent. 'lended' is not a word, and we don't put 'was' before a base verb.",
       why: "Last Sunday تدل على حدث انتهى، وlend فعل شاذ ماضيه lent، أما lended فليست كلمة، ولا نضع was قبل الفعل المجرد.", errCat: "tense" },

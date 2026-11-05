@@ -45,7 +45,7 @@ LESSONS.u3l1 = {
   goals: [
     { en: "I can form the Past Continuous in the affirmative: was / were + verb-ing, with the right spelling (making, sitting, lying).", ar: "أقدر أن أكوّن الماضي المستمر في الإثبات: was / were مع الفعل وing، بالإملاء الصحيح (making وsitting وlying)." },
     { en: "I can use it for an action in progress at an exact past time and for the scene in a story, with time words (at midnight, at that moment, this time last year).", ar: "أقدر أن أستعمله لحدث جارٍ في وقت محدد من الماضي ولوصف المشهد في القصة، مع كلمات الزمن (at midnight وat that moment وthis time last year)." },
-    { en: "I can choose between the Past Continuous and the Past Simple, use sat, stood, held, wore, drank and read, and keep state verbs without -ing (knew).", ar: "أقدر أن أختار بين الماضي المستمر والماضي البسيط، وأستعمل sat وstood وheld وwore وdrank وread، ولا أضيف ing إلى أفعال الحالة (knew)." },
+    { en: "I can choose between the Past Continuous and the Past Simple, use sat, stood, held, wore, drank and read, and keep state verbs without -ing (knew).", ar: "أقدر أن أختار بين الماضي المستمر والماضي البسيط، وأستعمل sat وstood وheld وwore وdrank وread، ولا أضيف ing إلى الأفعال التي لا تأخذها (knew)." },
     { en: "I can read an email for the main idea and details, use 6 words and the legal phrase 'international law', and write at least 4 separate sentences about a special moment.", ar: "أقدر أن أفهم الفكرة العامة والتفاصيل في إيميل، وأستعمل 6 كلمات والعبارة القانونية international law، وأكتب 4 جمل منفصلة على الأقل عن لحظة مميزة." }
   ],
   intro: {
@@ -177,26 +177,26 @@ LESSONS.u3l1 = {
     ex: "Under international law, countries must keep their agreements.",
     exAr: "يوجب القانون الدولي على الدول أن تفي باتفاقاتها.",
     tipEn: "International law is the law between countries. Collocations: under international law (according to it), study international law. There is no 'the' before it, and the adjective comes first (not 'law international'). 'under' here means 'according to', and it has nothing to do with place.",
-    tip: "international law هو القانون بين الدول. ومن متلازماته under international law (بموجب القانون الدولي) وstudy international law (يدرس القانون الدولي). ولا نضع قبله the، وتأتي الصفة قبل الاسم فلا نقول law international. وunder هنا بمعنى «بموجب»، لا بمعنى «تحت» المكانية.",
+    tip: "international law هو القانون بين الدول. ومن تعابيره الثابتة under international law (بموجب القانون الدولي) وstudy international law (يدرس القانون الدولي). ولا نضع قبله the، وتأتي الصفة قبل الاسم فلا نقول law international. وunder هنا بمعنى «بموجب»، لا بمعنى «تحت» المكانية.",
     legal: true,
     oxfordSlug: "international_1",
     wikiFiles: ["En-us-international.ogg", "En-uk-law.ogg"],
     wikiCredit: "File:En-us-international.ogg & File:En-uk-law.ogg · Wikimedia Commons"
   },
 
-  /* ---------- المفردات (6 كلمات + العبارة القانونية = 7 عبارات، والمتلازمات في tipEn / tip) ---------- */
+  /* ---------- المفردات (6 كلمات + العبارة القانونية = 7 عبارات، والتعابير الثابتة في tipEn / tip) ---------- */
   vocab: [
     { en: "space", pos: "noun", ar: "الفضاء", say: "سْبَيْس",
       ex: "Not many people go into space, because the journey is very expensive.", exAr: "لا يذهب إلى الفضاء إلا قليل من الناس، لأن الرحلة غالية جدًّا.",
       tipEn: "Collocations: go into space, travel in space. With this meaning there is no 'the' before it: we say 'in space', not 'in the space'. space has another meaning too: an empty place, as in 'a parking space'.",
-      tip: "متلازمات: go into space (يذهب إلى الفضاء) وtravel in space (يسافر في الفضاء). ولا نضع قبلها the بهذا المعنى، فنقول in space لا in the space. ولها معنى آخر هو المكان الفارغ، كما في a parking space (موقف سيارة).",
+      tip: "تعابير ثابتة: go into space (يذهب إلى الفضاء) وtravel in space (يسافر في الفضاء). ولا نضع قبلها the بهذا المعنى، فنقول in space لا in the space. ولها معنى آخر هو المكان الفارغ، كما في a parking space (موقف سيارة).",
       oxfordSlug: "space_1",
       wikiFile: "En-us-space.ogg",
       wikiCredit: "File:En-us-space.ogg · Wikimedia Commons" },
     { en: "experiment", pos: "noun", ar: "تجربة علمية", say: "إِكْسْبِيرِمَنْت",
       ex: "Our chemistry teacher did an experiment in front of the whole class.", exAr: "أجرى معلم الكيمياء تجربة أمام الصف كله.",
       tipEn: "Collocation: do an experiment (not 'make an experiment'). Use it for a test in science. For your own life, say 'experience': a good experience. The two words look alike, but their meanings are different.",
-      tip: "متلازمة: do an experiment (يجري تجربة)، ولا نقول make an experiment. وتُستعمل للتجربة العلمية، أما تجربة الحياة فهي experience: a good experience. والكلمتان متشابهتان في الشكل مختلفتان في المعنى.",
+      tip: "تعبير ثابت: do an experiment (يجري تجربة)، ولا نقول make an experiment. وتُستعمل للتجربة العلمية، أما تجربة الحياة فهي experience: a good experience. والكلمتان متشابهتان في الشكل مختلفتان في المعنى.",
       oxfordSlug: "experiment_1",
       wikiFile: "En-us-experiment.ogg",
       wikiCredit: "File:En-us-experiment.ogg · Wikimedia Commons" },
@@ -210,14 +210,14 @@ LESSONS.u3l1 = {
     { en: "proud", pos: "adjective", ar: "فخور", say: "بْرَاوْد",
       ex: "My parents are very proud of my sister's grades.", exAr: "والداي فخوران جدًّا بدرجات أختي.",
       tipEn: "Collocation: proud of + a person or a thing (not 'proud from' or 'proud with'): proud of my country. The noun is pride. ou sounds like the 'ow' in 'now'.",
-      tip: "متلازمة: proud of + شخص أو شيء (لا proud from ولا proud with): proud of my country (فخور ببلدي). والاسم منها pride (فخر). ويُنطق ou فيها كصوت ow في now.",
+      tip: "تعبير ثابت: proud of + شخص أو شيء (لا proud from ولا proud with): proud of my country (فخور ببلدي). والاسم منها pride (فخر). ويُنطق ou فيها كصوت ow في now.",
       oxfordSlug: "proud",
       wikiFile: "En-us-proud.ogg",
       wikiCredit: "File:En-us-proud.ogg · Wikimedia Commons" },
     { en: "screen", pos: "noun", ar: "شاشة", say: "سْكْرِين",
       ex: "My brother spends hours in front of the screen every evening.", exAr: "يقضي أخي ساعات أمام الشاشة كل مساء.",
       tipEn: "Collocations: in front of the screen (where you sit), on the screen (what you see there), a phone screen, a big screen. Say 'in front of', not 'in the front of'.",
-      tip: "متلازمات: in front of the screen (أمام الشاشة، حيث تجلس) وon the screen (على الشاشة، ما تراه فيها) وa phone screen (شاشة الهاتف) وa big screen (شاشة كبيرة). ونقول in front of لا in the front of.",
+      tip: "تعابير ثابتة: in front of the screen (أمام الشاشة، حيث تجلس) وon the screen (على الشاشة، ما تراه فيها) وa phone screen (شاشة الهاتف) وa big screen (شاشة كبيرة). ونقول in front of لا in the front of.",
       oxfordSlug: "screen_1",
       wikiFile: "En-us-screen.ogg",
       wikiCredit: "File:En-us-screen.ogg · Wikimedia Commons" },
@@ -334,11 +334,11 @@ LESSONS.u3l1 = {
         '<tr><td>wear</td><td><span class="hs">wore</span></td><td>was wearing</td></tr>' +
         '<tr><td>drink</td><td><span class="hs">drank</span></td><td>was drinking</td></tr>' +
         '<tr><td>read</td><td><span class="hs">read</span> (say: red)</td><td>was reading</td></tr></tbody></table></div>' +
-        '<div class="tip" dir="ltr"><p><b>State verbs don\'t take -ing · أفعال الحالة لا تأخذ ing:</b> know, want, like, need. It is the same in the past as in the present.</p><div class="pairs"><span class="yes">She knew my name.</span><span class="no">She was knowing my name.</span></div></div>',
+        '<div class="tip" dir="ltr"><p><b>State verbs don\'t take -ing:</b> know, want, like, need. It is the same in the past as in the present.</p><div class="pairs"><span class="yes">She knew my name.</span><span class="no">She was knowing my name.</span></div></div>',
       arHtml:
         '<p>نقول <bdi class="en">I watched the match</bdi> إذا أخبرنا عن <b>الحدث كله</b> من أوله إلى آخره، ونقول <bdi class="en">I was watching the match at seven</bdi> إذا وضعنا السامع <b>في وسط الحدث</b> وهو جارٍ.</p>' +
         '<p>ولهذه الأفعال الستة صيغة ماضٍ شاذة: <bdi class="en">sat</bdi> و<bdi class="en">stood</bdi> و<bdi class="en">held</bdi> و<bdi class="en">wore</bdi> و<bdi class="en">drank</bdi> و<bdi class="en">read</bdi>، وتُكتب الأخيرة كمضارعها وتُنطق «رِد». أما في الماضي المستمر فلا شذوذ: <bdi class="en">was / were</bdi> مع <bdi class="en">ing</bdi>.</p>' +
-        '<p>وأفعال الحالة مثل <bdi class="en">know</bdi> و<bdi class="en">want</bdi> و<bdi class="en">like</bdi> و<bdi class="en">need</bdi> لا تأخذ <bdi class="en">ing</bdi> في الماضي، كما لا تأخذها في المضارع: نقول <bdi class="en">She knew my name</bdi> ولا نقول <bdi class="en">She was knowing my name</bdi>.</p>'
+        '<p>والأفعال التي لا تأخذ ing مثل <bdi class="en">know</bdi> و<bdi class="en">want</bdi> و<bdi class="en">like</bdi> و<bdi class="en">need</bdi> لا تأخذ <bdi class="en">ing</bdi> في الماضي، كما لا تأخذها في المضارع: نقول <bdi class="en">She knew my name</bdi> ولا نقول <bdi class="en">She was knowing my name</bdi>.</p>'
     },
     {
       tEn: "Common Arab Mistakes",
@@ -368,7 +368,7 @@ LESSONS.u3l1 = {
       arHtml:
         '<p><b>التركيب:</b> <bdi class="en">was</bdi> مع المفرد و<bdi class="en">were</bdi> مع <bdi class="en">you</bdi> والجمع، ثم الفعل مع <bdi class="en">ing</bdi>.</p>' +
         '<p><b>الاستعمال:</b> لحدث جارٍ في وقت محدد من الماضي، ولوصف المشهد في القصة.</p>' +
-        '<p><b>ولا يأتي</b> للحدث المكتمل، ولا لعادة زمن طويل، ولا مع أفعال الحالة، فهذه كلها بالماضي البسيط.</p>' +
+        '<p><b>ولا يأتي</b> للحدث المكتمل، ولا لعادة زمن طويل، ولا مع الأفعال التي لا تأخذ ing، فهذه كلها بالماضي البسيط.</p>' +
         '<p>والآن نتدرّب: 16 تمرينًا موجّهًا (4 من كل نمط)، سؤال في كل شاشة.</p>'
     }
   ],
@@ -386,7 +386,7 @@ LESSONS.u3l1 = {
       why: "the whole novel وgave it to me تدلان على حدث اكتمل، فنستعمل الماضي البسيط read وتُنطق «رِد»؛ أما الماضي المستمر فلحدث كان ما يزال جاريًا.", errCat: "tense" },
     { s: "I ___ all the answers in yesterday's test.", opts: ["was knowing", "knew"], a: 1,
       whyEn: "know is a state verb, so it doesn't take -ing in the past: knew. It is the same rule as in the present.",
-      why: "know فعل حالة فلا يأخذ ing في الماضي: knew، وهي القاعدة نفسها في المضارع.", errCat: "stative" }
+      why: "know فعل لا يأخذ ing في الماضي: knew، وهي القاعدة نفسها في المضارع.", errCat: "stative" }
   ],
 
   gB: [
@@ -563,7 +563,7 @@ LESSONS.u3l1 = {
       why: "When … was young وevery afternoon تدلان على عادة سنوات طويلة، فنستعمل الماضي البسيط drank (ماضي drink)، أما drinks فللمضارع.", errCat: "tense" },
     { s: "Ali ___ the way to the court, so we followed him.", opts: ["was knowing", "knew", "knowing"], a: 1, tag: "Grammar · قواعد",
       whyEn: "know is a state verb, so it doesn't take -ing: knew. We don't say 'was knowing'.",
-      why: "know فعل حالة فلا يأخذ ing: knew، ولا نقول was knowing.", errCat: "stative" },
+      why: "know فعل لا يأخذ ing: knew، ولا نقول was knowing.", errCat: "stative" },
     { s: "Which sentence tells us that the action was in progress at 9 p.m.?", opts: ["I study in my room at 9 p.m.", "I studied in my room last year.", "At 9 p.m., I was studying in my room."], a: 2, tag: "Grammar · قواعد",
       whyEn: "was + -ing shows an action in progress at an exact past time. 'I study' is a present habit, and 'I studied … last year' is a finished past action with no exact time.",
       why: "تدل was مع ing على حدث جارٍ في وقت محدد من الماضي؛ أما I study فعادة في الحاضر، وI studied … last year حدث ماضٍ مكتمل بلا وقت محدد.", errCat: "tense" },

@@ -159,14 +159,14 @@ LESSONS.u3l3 = {
     { en: "discover", pos: "verb", ar: "يكتشف (شيئًا موجودًا لم يكن معروفًا)", say: "دِسْكَفَر",
       ex: "A farmer in our village discovered some old coins under a tree.", exAr: "اكتشف مزارع في قريتنا قطعًا نقدية قديمة تحت شجرة.",
       tipEn: "discover = find something that was already there, but nobody knew about it. Collocations: discover a new medicine, discover penicillin. Regular verb: discover → discovered. The noun is 'a discovery'.",
-      tip: "discover أن تجد شيئًا كان موجودًا ولم يعرفه أحد، ومن متلازماتها discover a new medicine وdiscover penicillin. والفعل منتظم ماضيه discovered، والاسم منه a discovery.",
+      tip: "discover أن تجد شيئًا كان موجودًا ولم يعرفه أحد، ومن تعابيرها الثابتة discover a new medicine وdiscover penicillin. والفعل منتظم ماضيه discovered، والاسم منه a discovery.",
       oxfordSlug: "discover",
       wikiFile: "En-us-discover.ogg",
       wikiCredit: "File:En-us-discover.ogg · Wikimedia Commons" },
     { en: "invent", pos: "verb", ar: "يخترع (يصنع شيئًا جديدًا لم يكن موجودًا)", say: "إِنْفِنْت",
       ex: "My grandfather invented a simple tool for picking dates.", exAr: "اخترع جدي أداة بسيطة لجني التمر.",
       tipEn: "invent = make something new that was not there before. Compare: people discover what already exists, and invent what is new. Collocation: invent the microwave oven. Regular verb: invent → invented. The noun is 'an invention'.",
-      tip: "invent أن تصنع شيئًا جديدًا لم يكن موجودًا، فنكتشف discover ما هو موجود، ونخترع invent ما هو جديد، ومن متلازماتها invent the microwave oven. والفعل منتظم ماضيه invented، والاسم منه an invention.",
+      tip: "invent أن تصنع شيئًا جديدًا لم يكن موجودًا، فنكتشف discover ما هو موجود، ونخترع invent ما هو جديد، ومن تعابيرها الثابتة invent the microwave oven. والفعل منتظم ماضيه invented، والاسم منه an invention.",
       oxfordSlug: "invent",
       wikiFile: "En-us-invent.ogg",
       wikiCredit: "File:En-us-invent.ogg · Wikimedia Commons" },
@@ -298,11 +298,11 @@ LESSONS.u3l3 = {
         '<tr><td>teach <small>يعلّم</small></td><td><span class="hc">taught</span></td><td>teaching</td></tr>' +
         '<tr><td>understand <small>يفهم</small></td><td><span class="hc">understood</span></td><td>no -ing</td></tr></tbody></table></div>' +
         '<p class="en-p" dir="ltr"><b>Sound and spelling:</b> taught has the same ending sound as bought and thought · won sounds like one · put does not change in the past · double the last letter in forgetting, putting and winning.</p>' +
-        '<div class="tip" dir="ltr"><p><b>State verb · فعل حالة:</b> understand is like know: it takes no -ing in the past.</p><div class="pairs"><span class="yes">Sami understood the lesson.</span><span class="no">Sami was understanding the lesson.</span></div></div>',
+        '<div class="tip" dir="ltr"><p><b>State verb:</b> understand is like know: it takes no -ing in the past.</p><div class="pairs"><span class="yes">Sami understood the lesson.</span><span class="no">Sami was understanding the lesson.</span></div></div>',
       arHtml:
         '<p><bdi class="en">Did</bdi> مع الفعل المجرد تسأل عن حدث مكتمل أو حالة ماضية (<bdi class="en">Did you see the new film last week?</bdi>)، و<bdi class="en">Was / Were</bdi> مع الفعل وing تسأل عن حدث كان جاريًا في لحظة من الماضي (<bdi class="en">Were you watching the news at eight?</bdi>).</p>' +
         '<p>واحفظ أفعال اليوم الستة: <bdi class="en">forget / forgot</bdi> و<bdi class="en">keep / kept</bdi> و<bdi class="en">put / put</bdi> (لا يتغير في الماضي) و<bdi class="en">win / won</bdi> (تُنطق كـ <bdi class="en">one</bdi>) و<bdi class="en">teach / taught</bdi> و<bdi class="en">understand / understood</bdi>. ويتضاعف الحرف الأخير في <bdi class="en">forgetting</bdi> و<bdi class="en">putting</bdi> و<bdi class="en">winning</bdi>.</p>' +
-        '<p>أما <bdi class="en">understand</bdi> ففعل حالة مثل <bdi class="en">know</bdi>، فنقول <bdi class="en">understood</bdi> ولا نقول <bdi class="en">was understanding</bdi>.</p>'
+        '<p>أما <bdi class="en">understand</bdi> ففعل لا يأخذ ing مثل <bdi class="en">know</bdi>، فنقول <bdi class="en">understood</bdi> ولا نقول <bdi class="en">was understanding</bdi>.</p>'
     },
     {
       tEn: "Common Arab Mistakes",
@@ -314,7 +314,7 @@ LESSONS.u3l3 = {
           '<li><span class="no">Did you was working at six?</span><span class="yes">Were you working at six?</span><p class="en-m" dir="ltr">Don\'t put <b>did</b> and <b>was</b> together. The question starts with <b>Was / Were</b>, and <b>you</b> takes <b>were</b>.</p><p>لا نجمع <bdi class="en">did</bdi> و<bdi class="en">was</bdi> في سؤال واحد، فالسؤال يبدأ بـ <bdi class="en">Was / Were</bdi>، ومع <bdi class="en">you</bdi> نقول <bdi class="en">were</bdi>.</p></li>' +
           '<li><span class="no">Were you work on Friday night?</span><span class="yes">Were you working on Friday night?</span><p class="en-m" dir="ltr">After <b>Was / Were</b> and the subject, the verb needs <b>-ing</b>. The base verb goes with <b>Did</b>.</p><p>بعد <bdi class="en">Was / Were</bdi> والفاعل يأتي الفعل مع ing، أما الفعل المجرد فمع <bdi class="en">Did</bdi>.</p></li>' +
           '<li><span class="no">I didn\'t was sleeping at ten.</span><span class="yes">I wasn\'t sleeping at ten.</span><p class="en-m" dir="ltr">The negative comes from was / were: <b>wasn\'t / weren\'t</b>. Don\'t add <b>didn\'t</b>.</p><p>النفي يكون بـ was / were نفسها: <bdi class="en">wasn\'t / weren\'t</bdi>، فلا نضيف <bdi class="en">didn\'t</bdi>.</p></li>' +
-          '<li><span class="no">We weren\'t understanding the lecture.</span><span class="yes">We didn\'t understand the lecture.</span><p class="en-m" dir="ltr"><b>understand</b> is a state verb, so we use the Past Simple: <b>understood</b>, or <b>didn\'t understand</b> in the negative.</p><p><bdi class="en">understand</bdi> فعل حالة، فنستعمل الماضي البسيط: <bdi class="en">understood</bdi>، ونفيه <bdi class="en">didn\'t understand</bdi>.</p></li>' +
+          '<li><span class="no">We weren\'t understanding the lecture.</span><span class="yes">We didn\'t understand the lecture.</span><p class="en-m" dir="ltr"><b>understand</b> is a state verb, so we use the Past Simple: <b>understood</b>, or <b>didn\'t understand</b> in the negative.</p><p><bdi class="en">understand</bdi> فعل لا يأخذ ing، فنستعمل الماضي البسيط: <bdi class="en">understood</bdi>، ونفيه <bdi class="en">didn\'t understand</bdi>.</p></li>' +
         '</ul>'
     },
     {
@@ -362,7 +362,7 @@ LESSONS.u3l3 = {
       why: "صحيحة: weren't مع الفعل وing تناسب we، وkept ماضي keep.", errCat: "tense" },
     { s: "I wasn't understanding the doctor, so I asked her to explain it again.", ok: false, fix: "I didn't understand the doctor, so I asked her to explain it again.",
       whyEn: "'understand' is a state verb, so it doesn't take -ing here. Use the Past Simple negative: didn't understand.",
-      why: "understand فعل حالة، فلا يأتي مع ing هنا، ونستعمل نفي الماضي البسيط: didn't understand.", errCat: "stative" }
+      why: "understand فعل لا يأخذ ing هنا، ونستعمل نفي الماضي البسيط: didn't understand.", errCat: "stative" }
   ],
 
   gC: [
@@ -532,7 +532,7 @@ LESSONS.u3l3 = {
       why: "doing فيها ing، فالسؤال بـ be، ومع you نقول were: What were you doing…?", errCat: "be_verb" },
     { s: "I ___ the last question in the exam, so I left it empty.", opts: ["wasn't understanding", "didn't understand", "didn't understood"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'understand' is a state verb, so we use the Past Simple, not -ing. After didn't comes the base verb: understand, not understood.",
-      why: "understand فعل حالة، فنستعمل الماضي البسيط لا ing، ويأتي بعد didn't الفعل المجرد understand لا understood.", errCat: "stative" },
+      why: "understand فعل لا يأخذ ing، فنستعمل الماضي البسيط لا ing، ويأتي بعد didn't الفعل المجرد understand لا understood.", errCat: "stative" },
     { s: "Which sentence has the correct past forms?", opts: ["My uncle teached me to swim, and I won a race.", "My uncle taught me to swim, and I won a race.", "My uncle taught me to swim, and I winned a race."], a: 1, tag: "Grammar · قواعد",
       whyEn: "teach and win are irregular: their past forms are taught and won, not 'teached' or 'winned'.",
       why: "teach وwin فعلان شاذان، ماضيهما taught وwon، لا teached ولا winned.", errCat: "tense" },
@@ -547,7 +547,7 @@ LESSONS.u3l3 = {
       why: "العبارة by accident بحرف by وبلا an، ومعناها دون تخطيط.", errCat: "vocab" },
     { s: "A small company invented a new kind of lock and wanted to protect it by law, so it ___.", opts: ["did a patent", "got a patent", "made a patent"], a: 1, tag: "Legal Track · المسار القانوني",
       whyEn: "The collocation is 'get a patent' (past: got a patent); we don't say 'do a patent' or 'make a patent'. A patent protects an invention by law.",
-      why: "المتلازمة الصحيحة get a patent وماضيها got a patent، ولا نقول do a patent ولا make a patent، والبراءة تحمي الاختراع بالقانون.", errCat: "vocab" }
+      why: "التعبير الثابت الصحيح get a patent وماضيها got a patent، ولا نقول do a patent ولا make a patent، والبراءة تحمي الاختراع بالقانون.", errCat: "vocab" }
   ]
 };
 })();

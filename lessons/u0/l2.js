@@ -2,16 +2,16 @@
 (function(){
 var AGREE_SVG = '<svg class="tl" viewBox="0 0 340 168" role="img" aria-label="Diagram comparing Singular (1 item: There is, Is there, This is, These phones -> wrong) vs Plural (2+ items: There are, Are there, These are)" direction="ltr">' +
   '<rect x="10" y="12" width="154" height="144" rx="16" fill="#E8EEF5" stroke="#2C4A6E" stroke-width="1.8"/>' +
-  '<text x="87" y="34" text-anchor="middle" font-family="Quicksand, sans-serif" font-weight="700" font-size="13" fill="#2C4A6E">SINGULAR · المفرد (1)</text>' +
+  '<text x="87" y="34" text-anchor="middle" font-family="Quicksand, sans-serif" font-weight="700" font-size="13" fill="#2C4A6E">SINGULAR (1)</text>' +
   '<text x="87" y="52" text-anchor="middle" font-family="Readex Pro, sans-serif" font-weight="600" font-size="10.5" fill="#5A6B7C">is · was · does · this / that</text>' +
   '<text x="20" y="78" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">+ : There is one judge.</text>' +
   '<text x="20" y="102" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">? : Is there a witness?</text>' +
   '<text x="20" y="126" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">• : This case is clear.</text>' +
   '<rect x="176" y="12" width="154" height="144" rx="16" fill="#F9EBE7" stroke="#B94A33" stroke-width="1.8"/>' +
-  '<text x="253" y="34" text-anchor="middle" font-family="Quicksand, sans-serif" font-weight="700" font-size="13" fill="#A8432E">PLURAL · الجمع (2+)</text>' +
+  '<text x="253" y="34" text-anchor="middle" font-family="Quicksand, sans-serif" font-weight="700" font-size="13" fill="#A8432E">PLURAL (2+)</text>' +
   '<text x="253" y="52" text-anchor="middle" font-family="Readex Pro, sans-serif" font-weight="600" font-size="10.5" fill="#A8432E">are · were · do · these / those</text>' +
   '<text x="186" y="78" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">+ : There are two judges.</text>' +
-  '<text x="186" y="102" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">? : Are there any witnesses?</text>' +
+  '<text x="186" y="102" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">? : Are there any judges?</text>' +
   '<text x="186" y="126" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">• : These cases are clear.</text>' +
   '</svg>';
 
@@ -102,7 +102,7 @@ LESSONS.u0l2 = {
     },
     {
       id: "rc-1",
-      promptAr: "يجهّز / يُعدّ (فعل حدث من الدرس السابق يبدأ بحرف p)",
+      promptAr: "يجهّز / يُعدّ (فعل عادي من الدرس السابق يبدأ بحرف p)",
       promptEn: "Action verb meaning to get something ready",
       sentPre: "My sisters",
       sentPost: "breakfast for everyone before school.",
@@ -139,7 +139,7 @@ LESSONS.u0l2 = {
     },
     {
       id: "rc-4",
-      promptAr: "فعل السؤال المساعد مع you قبل فعل الحدث agree (تذكّر: agree فعل وليست صفة!)",
+      promptAr: "فعل السؤال المساعد مع you قبل الفعل العادي agree (تذكّر: agree فعل وليست صفة!)",
       promptEn: "Helper verb to start a question with 'you' + the action verb 'agree'",
       sentPre: "",
       sentPost: "you agree with our plan for the weekend?",
@@ -160,7 +160,7 @@ LESSONS.u0l2 = {
     ex: "The two lawyers go to court every Tuesday morning.",
     exAr: "يذهب المحاميان إلى المحكمة كل صباح ثلاثاء.",
     tipEn: "Legal collocation: 'go to court' (without 'the' when talking about attending a legal hearing or trial).",
-    tip: "متلازمة قانونية شائعة: نقول go to court (بدون the) عندما نقصد الذهاب للترافع أو حضور جلسة قضائية.",
+    tip: "تعبير قانوني ثابت شائع: نقول go to court (بدون the) عندما نقصد الذهاب للترافع أو حضور جلسة قضائية.",
     legal: true,
     oxfordSlug: "court_1",
     wikiFiles: ["En-us-go.ogg", "En-us-court.ogg"],
@@ -171,7 +171,7 @@ LESSONS.u0l2 = {
     { en: "case", pos: "noun", ar: "قضية / دعوى", say: "كَيْس",
       ex: "There are two important cases today.", exAr: "توجد قضيتان مهمتان اليوم.",
       tipEn: "Countable noun: one case (singular) → two cases (plural). Collocation: win a case / handle a case.",
-      tip: "اسم معدود: مفرده a case وجمعه cases، ومن متلازماته القانونية handle a case (يتولى قضية).",
+      tip: "اسم معدود: مفرده a case وجمعه cases، ومن تعابيره القانونية الثابتة handle a case (يتولى قضية).",
       oxfordSlug: "case_1",
       wikiFile: "En-us-case.ogg",
       wikiCredit: "File:En-us-case.ogg · Dvortygirl / Wikimedia Commons (CC BY-SA 3.0)" },
@@ -206,7 +206,7 @@ LESSONS.u0l2 = {
     { en: "mistake", pos: "noun", ar: "خطأ", say: "مِسْتَيْك",
       ex: "There aren't any mistakes in these pages.", exAr: "لا توجد أي أخطاء في هذه الصفحات.",
       tipEn: "Collocation: 'make a mistake' (never 'do a mistake'). Plural: mistakes.",
-      tip: "متلازمة شائعة جدًا: نقول make a mistake (يرتكب خطأ) ولا نقول do a mistake.",
+      tip: "تعبير ثابت شائع جدًا: نقول make a mistake (يرتكب خطأ) ولا نقول do a mistake.",
       oxfordSlug: "mistake_1",
       wikiFile: "En-us-mistake.ogg",
       wikiCredit: "File:En-us-mistake.ogg · Dvortygirl / Wikimedia Commons (CC BY-SA 3.0)" },

@@ -2,10 +2,10 @@
 (function(){
 var SENT_SVG = '<svg class="tl" viewBox="0 0 340 168" role="img" aria-label="Diagram of 4 Clear Sentences: Subject + Verb + Object + Period, and Capitalization rules (Start of sentence, pronoun I, Names/Cities/Days/Languages)" direction="ltr">' +
   '<rect x="10" y="12" width="320" height="68" rx="14" fill="#E8EEF5" stroke="#2C4A6E" stroke-width="1.8"/>' +
-  '<text x="22" y="34" font-family="Quicksand, sans-serif" font-weight="700" font-size="12.5" fill="#2C4A6E">SENTENCE ORDER · ترتيب الجملة الإنجليزية وفصلها بنقطة</text>' +
+  '<text x="22" y="34" font-family="Quicksand, sans-serif" font-weight="700" font-size="12.5" fill="#2C4A6E">SENTENCE ORDER</text>' +
   '<text x="22" y="58" font-family="Quicksand, sans-serif" font-weight="700" font-size="12" fill="#1E2A33">[Capital] Subject + Verb + Object/Place + [Period .]</text>' +
   '<rect x="10" y="90" width="320" height="68" rx="14" fill="#F9EBE7" stroke="#B94A33" stroke-width="1.8"/>' +
-  '<text x="22" y="112" font-family="Quicksand, sans-serif" font-weight="700" font-size="12.5" fill="#A8432E">ALWAYS CAPITALIZE · متى نكتب الحرف الكبير دائماً؟</text>' +
+  '<text x="22" y="112" font-family="Quicksand, sans-serif" font-weight="700" font-size="12.5" fill="#A8432E">ALWAYS CAPITALIZE</text>' +
   '<text x="22" y="136" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.5" fill="#1E2A33">1) First word   2) Pronoun "I"   3) Riyadh · Sunday · English</text>' +
   '</svg>';
 
@@ -116,12 +116,12 @@ LESSONS.u0l4 = {
       isLegal: true,
       hint: "h _ _ e (4 letters)",
       spellNoteEn: "Collocation: 'hire a lawyer' (h-i-r-e).",
-      spellNote: "المتلازمة القانونية: hire a lawyer (يوكّل محاميًا).",
+      spellNote: "التعبير القانوني الثابت: hire a lawyer (يوكّل محاميًا).",
       errCat: "vocab"
     },
     {
       id: "rc-3",
-      promptAr: "فعل الكون في الماضي مع الضمير you في بداية السؤال",
+      promptAr: "فعل be في الماضي مع الضمير you في بداية السؤال",
       promptEn: "Past form of 'be' with 'you' (to start a question)",
       sentPre: "",
       sentPost: "you at home when I called yesterday?",
@@ -207,7 +207,7 @@ LESSONS.u0l4 = {
     { en: "explain", pos: "verb", ar: "يشرح / يوضّح", say: "إِكْسْبْلَيْن",
       ex: "Lawyers explain the rules to their clients.", exAr: "يشرح المحامون الأنظمة لموكّليهم.",
       tipEn: "Action verb: say 'explain something TO someone' (explain the rule to the client).",
-      tip: "فعل حدث؛ نقول explain the contract to the client (نضع حرف الجر to قبل الشخص).",
+      tip: "فعل عادي؛ نقول explain the contract to the client (نضع حرف الجر to قبل الشخص).",
       oxfordSlug: "explain",
       wikiFile: "En-us-explain.ogg",
       wikiCredit: "File:En-us-explain.ogg · Dvortygirl / Wikimedia Commons (CC BY-SA 3.0)" }

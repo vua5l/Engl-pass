@@ -329,7 +329,7 @@ LESSONS.u103l5 = {
         '<p><b>المضارع المستمر</b> لما تفعله هذه الأيام: <bdi class="en">This month, I am learning to drive.</bdi></p>' +
         '<p><b>الماضي المستمر</b> لخلفية القصة: <bdi class="en">Last winter, I was driving home late.</bdi></p>' +
         '<p><b>الماضي البسيط</b> لأحداثها: <bdi class="en">A dog ran into the road, and I stopped.</bdi></p>' +
-        '<p>وكلمات الوقت تدل على التغيّر: <bdi class="en">now, these days, last winter, two years ago</bdi>. وتبقى أفعال الحالة بسيطة: <bdi class="en">I know, I want, I need</bdi>.</p>'
+        '<p>وكلمات الوقت تدل على التغيّر: <bdi class="en">now, these days, last winter, two years ago</bdi>. وتبقى الأفعال التي لا تأخذ ing بسيطة: <bdi class="en">I know, I want, I need</bdi>.</p>'
     },
     {
       tEn: "Words That Join Your Ideas",
@@ -581,7 +581,7 @@ LESSONS.u103l5 = {
       why: "الأفكار الثلاث تحتاج ثلاث جمل منفصلة، كل جملة بحرف كبير ونقطة. والفواصل لا تنهي الجملة، وتُكتب Fridays بحرف كبير.", errCat: "word_order" },
     { s: "I ___ more English for my job now.", opts: ["need", "am needing", "needed"], a: 0, tag: "Grammar · قواعد",
       whyEn: "'need' is a state verb, so it stays simple even with 'now'. 'needed' is the past, and 'now' shows the present.",
-      why: "need فعل حالة، فيبقى بسيطًا حتى مع now. أما needed فماضٍ، وnow تدل على الحاضر.", errCat: "stative" },
+      why: "need فعل لا يأخذ ing، فيبقى بسيطًا حتى مع now. أما needed فماضٍ، وnow تدل على الحاضر.", errCat: "stative" },
     { s: "Last year, my family ___ to Khobar, and now we live near the sea.", opts: ["move", "is moving", "moved"], a: 2, tag: "Grammar · قواعد",
       whyEn: "'Last year' is a finished time, so the event takes the Past Simple. Then 'now' brings the sentence back to the present: we live.",
       why: "Last year وقت انتهى، فيأتي الحدث بالماضي البسيط، ثم تعيد now الجملة إلى الحاضر: we live.", errCat: "tense" },

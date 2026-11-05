@@ -158,19 +158,19 @@ LESSONS.u2l4 = {
     ex: "You can report a crime at the nearest police station or by phone.",
     exAr: "تستطيع أن تبلّغ عن جريمة في أقرب مركز شرطة أو بالهاتف.",
     tipEn: "Legal collocation: report a crime (to the police); we also say report a theft or report a lost passport. A crime is an act against the law that the police deal with, like stealing. Breaking a small rule, like parking in the wrong place, usually ends with a fine (pay a fine, Lesson 3). report is regular: reported. In a question: Did you report it to the police?",
-    tip: "متلازمة قانونية: report a crime (to the police) أي يبلّغ الشرطة عن جريمة، ومثلها report a theft (يبلّغ عن سرقة) وreport a lost passport (يبلّغ عن ضياع جواز سفر). والجريمة crime فعل يخالف القانون وتتولاه الشرطة، كالسرقة، أما مخالفة نظام صغير كالوقوف في مكان ممنوع فتنتهي في الغالب بغرامة (pay a fine من الدرس الثالث). والفعل report منتظم ماضيه reported، وفي السؤال نقول: Did you report it to the police?",
+    tip: "تعبير قانوني ثابت: report a crime (to the police) أي يبلّغ الشرطة عن جريمة، ومثلها report a theft (يبلّغ عن سرقة) وreport a lost passport (يبلّغ عن ضياع جواز سفر). والجريمة crime فعل يخالف القانون وتتولاه الشرطة، كالسرقة، أما مخالفة نظام صغير كالوقوف في مكان ممنوع فتنتهي في الغالب بغرامة (pay a fine من الدرس الثالث). والفعل report منتظم ماضيه reported، وفي السؤال نقول: Did you report it to the police?",
     legal: true,
     oxfordSlug: "crime",
     wikiFiles: ["En-us-report.ogg", "En-us-a-unstressed.ogg", "En-us-crime.ogg"],
     wikiCredit: "File:En-us-report.ogg, File:En-us-a-unstressed.ogg & File:En-us-crime.ogg · Wikimedia Commons"
   },
 
-  /* ---------- المفردات (6 كلمات من المقطع + العبارة القانونية = 7 عبارات، والمتلازمات في tipEn / tip) ---------- */
+  /* ---------- المفردات (6 كلمات من المقطع + العبارة القانونية = 7 عبارات، والتعابير الثابتة في tipEn / tip) ---------- */
   vocab: [
     { en: "island", pos: "noun", ar: "جزيرة", say: "آيْلَنْد",
       ex: "Last spring, we took a boat to a small island near Jazan.", exAr: "في الربيع الماضي ركبنا قاربًا إلى جزيرة صغيرة قرب جازان.",
       tipEn: "The s in island is silent: say EYE-land. Collocations: a small island, a desert island (with no people on it), on an island (not in an island). Taiwan is an island, and Bahrain is a country of islands.",
-      tip: "حرف s في island صامت لا يُنطق: «آيْلَنْد». ومن متلازماتها a small island (جزيرة صغيرة) وa desert island (جزيرة لا يسكنها أحد)، ونقول on an island لا in an island. وتايوان جزيرة، والبحرين بلد من جزر.",
+      tip: "حرف s في island صامت لا يُنطق: «آيْلَنْد». ومن تعابيرها الثابتة a small island (جزيرة صغيرة) وa desert island (جزيرة لا يسكنها أحد)، ونقول on an island لا in an island. وتايوان جزيرة، والبحرين بلد من جزر.",
       oxfordSlug: "island",
       wikiFile: "En-uk-island.ogg",
       wikiCredit: "File:En-uk-island.ogg · Wikimedia Commons" },
@@ -191,7 +191,7 @@ LESSONS.u2l4 = {
     { en: "choose", pos: "verb", ar: "يختار", say: "تْشُوز",
       ex: "Last summer, my uncle chose a quiet hotel far from the city centre.", exAr: "في الصيف الماضي اختار عمي فندقًا هادئًا بعيدًا عن وسط المدينة.",
       tipEn: "Collocations: choose a place, choose a hotel, choose between A and B. Irregular: choose → chose → chosen. choose has two o's (it sounds like 'shoes'); chose has one o (it sounds like 'nose'). After did, use choose: Why did you choose this hotel?",
-      tip: "متلازمات: choose a place (يختار مكانًا) وchoose a hotel (يختار فندقًا) وchoose between A and B (يختار بين أمرين). وهو فعل شاذ: choose ثم chose ثم chosen. وتُكتب choose بحرفي o وتُنطق كـ shoes، وchose بحرف o واحد وتُنطق كـ nose. وبعد did نعود إلى choose: Why did you choose this hotel?",
+      tip: "تعابير ثابتة: choose a place (يختار مكانًا) وchoose a hotel (يختار فندقًا) وchoose between A and B (يختار بين أمرين). وهو فعل شاذ: choose ثم chose ثم chosen. وتُكتب choose بحرفي o وتُنطق كـ shoes، وchose بحرف o واحد وتُنطق كـ nose. وبعد did نعود إلى choose: Why did you choose this hotel?",
       oxfordSlug: "choose",
       wikiFile: "En-us-choose.ogg",
       wikiCredit: "File:En-us-choose.ogg · Wikimedia Commons" },
@@ -205,7 +205,7 @@ LESSONS.u2l4 = {
     { en: "vacation", pos: "noun", ar: "إجازة / عطلة (بالأمريكية، وتقابلها holiday بالبريطانية)", say: "فَيْكَيْشَن",
       ex: "In the USA, schools close for a long summer vacation.", exAr: "تُغلق المدارس في الولايات المتحدة أبوابها في إجازة صيفية طويلة.",
       tipEn: "American English says vacation; British English usually says holiday. Collocations: go on vacation, a summer vacation, be on vacation. In Lesson 2 you learned the British phrase 'go on holiday'. Stress: va-CA-tion.",
-      tip: "يقول الأمريكيون vacation ويقول البريطانيون غالبًا holiday. ومن متلازماتها go on vacation (يسافر في إجازة) وa summer vacation (إجازة صيفية) وbe on vacation (يكون في إجازة)، وقد تعلمت في الدرس الثاني العبارة البريطانية go on holiday. والنبر على مقطعها الثاني: va-CA-tion.",
+      tip: "يقول الأمريكيون vacation ويقول البريطانيون غالبًا holiday. ومن تعابيرها الثابتة go on vacation (يسافر في إجازة) وa summer vacation (إجازة صيفية) وbe on vacation (يكون في إجازة)، وقد تعلمت في الدرس الثاني العبارة البريطانية go on holiday. والنبر على مقطعها الثاني: va-CA-tion.",
       oxfordSlug: "vacation_1",
       wikiFile: "En-us-vacation.ogg",
       wikiCredit: "File:En-us-vacation.ogg · Wikimedia Commons" }
@@ -347,7 +347,7 @@ LESSONS.u2l4 = {
         '<h2 class="bi-h"><span class="en" dir="ltr">Quick Summary</span><small>الخلاصة</small></h2>' +
         '<div class="sumc" dir="ltr"><h3>In Three Lines · في ثلاثة أسطر</h3>' +
           '<p><b>Main verbs · الأفعال الأساسية</b><span>Did + subject + base verb? → Yes, I did. / No, she didn\'t. · Wh- word + did + subject + base verb?</span></p>' +
-          '<p><b>be · فعل الكون</b><span>Was / Were + subject + adjective, place or noun? → Yes, it was. / No, they weren\'t. · Wh- word + was / were …?</span></p>' +
+          '<p><b>فعل be</b><span>Was / Were + subject + adjective, place or noun? → Yes, it was. / No, they weren\'t. · Wh- word + was / were …?</span></p>' +
           '<p><b>Today\'s verbs · أفعال اليوم</b><span>do · hear · choose · spend · fly · drive · meet · speak: the base verb after did</span></p>' +
         '</div>' +
         '<p class="en-p" dir="ltr">Time to practise: 16 exercises with Did, Wh- words, was / were and short answers.</p>',

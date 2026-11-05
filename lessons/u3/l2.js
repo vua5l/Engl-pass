@@ -144,7 +144,7 @@ LESSONS.u3l2 = {
     ex: "My sister got her driving licence last year, and now she drives to work every day.",
     exAr: "حصلت أختي على رخصة القيادة في العام الماضي، وهي الآن تذهب إلى عملها بسيارتها كل يوم.",
     tipEn: "Legal collocation: get a driving licence / have a driving licence. A licence is an official document that gives you the right to do something. British English writes the noun with c: licence. North Americans say driver's, not driving, and you will hear this in the clip. In the USA, the noun is written with s: driver's license.",
-    tip: "متلازمة قانونية: get a driving licence يحصل على رخصة قيادة، وhave a driving licence يحمل رخصة قيادة، وlicence وثيقة رسمية تمنحك حق القيام بأمر ما. وتُكتب في البريطانية بحرف c. ويقول أهل أمريكا الشمالية driver's بدل driving، وستسمعها في المقطع، وتُكتب في الولايات المتحدة بحرف s: driver's license.",
+    tip: "تعبير قانوني ثابت: get a driving licence يحصل على رخصة قيادة، وhave a driving licence يحمل رخصة قيادة، وlicence وثيقة رسمية تمنحك حق القيام بأمر ما. وتُكتب في البريطانية بحرف c. ويقول أهل أمريكا الشمالية driver's بدل driving، وستسمعها في المقطع، وتُكتب في الولايات المتحدة بحرف s: driver's license.",
     legal: true,
     oxfordSlug: "driving-licence",
     wikiFiles: ["En-us-driving.ogg", "LL-Q1860 (eng)-Vealhurl-licence.wav"],

@@ -44,7 +44,7 @@ LESSONS.u1l2 = {
       items: [
         ["review", "5 active recall items from Unit 1 · Lesson 1", "5 عناصر استرجاع نشط من الدرس الأول في الوحدة"],
         ["pen", "Type from memory (scientist, research, measure, strange, sign)", "كتابة من الذاكرة لتثبيت الإملاء (scientist وresearch وmeasure وstrange وsign)"],
-        ["spark", "Includes the collocation 'do research' and the legal phrase 'sign a contract'", "تشمل المتلازمة do research والعبارة القانونية sign a contract"]
+        ["spark", "Includes the collocation 'do research' and the legal phrase 'sign a contract'", "تشمل التعبير الثابت do research والعبارة القانونية sign a contract"]
       ]
     },
     vocab: {
@@ -106,7 +106,7 @@ LESSONS.u1l2 = {
     },
     {
       id: "rc-1",
-      promptAr: "بحث علمي (من المتلازمة do ___ في الدرس السابق، وهي غير معدودة)",
+      promptAr: "بحث علمي (من التعبير الثابت do ___ في الدرس السابق، وهي غير معدودة)",
       promptEn: "Collocation from the last lesson: do ___ (careful study to find new facts)",
       sentPre: "Our professor does",
       sentPost: "on water use on Saudi farms.",
@@ -324,7 +324,7 @@ LESSONS.u1l2 = {
         '<h2 class="bi-h"><span class="en" dir="ltr">Common Arab Mistakes</span><small>أخطاء يقع فيها كثير من العرب (من التشخيص)</small></h2>' +
         '<ul class="mist">' +
           '<li><span class="no">Does your father works on Fridays?</span><span class="yes">Does your father work on Fridays?</span><p class="en-m" dir="ltr"><b>Does</b> already has the -s, so the main verb stays in the base form: <b>work</b>.</p><p>الـ s موجودة في <bdi class="en">Does</bdi>، فيبقى الفعل الأساسي مجردًا: <bdi class="en">work</bdi> لا <bdi class="en">works</bdi>.</p></li>' +
-          '<li><span class="no">Are you go to the gym every day?</span><span class="yes">Do you go to the gym every day?</span><p class="en-m" dir="ltr">A habit with an action verb needs <b>Do</b>. <b>Are</b> never comes before a base verb (the same mistake as "I am work").</p><p>العادة مع فعل حدث تحتاج <bdi class="en">Do</bdi>، ولا يأتي <bdi class="en">Are</bdi> قبل فعل مجرد، وهو الخطأ نفسه في <bdi class="en">I am work</bdi>.</p></li>' +
+          '<li><span class="no">Are you go to the gym every day?</span><span class="yes">Do you go to the gym every day?</span><p class="en-m" dir="ltr">A habit with an action verb needs <b>Do</b>. <b>Are</b> never comes before a base verb (the same mistake as "I am work").</p><p>العادة مع فعل عادي تحتاج <bdi class="en">Do</bdi>، ولا يأتي <bdi class="en">Are</bdi> قبل فعل مجرد، وهو الخطأ نفسه في <bdi class="en">I am work</bdi>.</p></li>' +
           '<li><span class="no">Where your sister studies?</span><span class="yes">Where does your sister study?</span><p class="en-m" dir="ltr">Arabic «أين تدرس أختك؟» has no helper, but English needs <b>does</b> after the question word, and then the base verb.</p><p>لا نحتاج في العربية فعلًا مساعدًا، أما في الإنجليزية فلا بد من <bdi class="en">does</bdi> بعد كلمة الاستفهام، ثم الفعل مجردًا.</p></li>' +
           '<li><span class="no">Do you walk to class? Yes, I walk.</span><span class="yes">Do you walk to class? Yes, I do.</span><p class="en-m" dir="ltr">In a short answer, repeat the helper (<b>do</b>), not the main verb.</p><p>في الإجابة القصيرة نكرر المساعد (<bdi class="en">do</bdi>) لا الفعل الأساسي.</p></li>' +
         '</ul>'

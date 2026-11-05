@@ -175,26 +175,26 @@ LESSONS.u2l1 = {
     ex: "Judges in Saudi courts use Islamic law to decide cases.",
     exAr: "يحكم القضاة في المحاكم السعودية في القضايا بالشريعة الإسلامية.",
     tipEn: "Islamic law (Sharia) is based on the Quran and the Sunnah. Collocations: study Islamic law, a professor of Islamic law. 'Islamic' is the adjective from 'Islam': write it with a capital I, and put it before the noun (never 'law Islamic').",
-    tip: "Islamic law تقابل «الفقه الإسلامي» و«الشريعة الإسلامية»، ومصدرها القرآن والسنة. ومن متلازماتها study Islamic law (يدرس الفقه الإسلامي) وa professor of Islamic law (أستاذ الفقه الإسلامي). وIslamic صفة من Islam، تُكتب بحرف I كبير وتأتي قبل الاسم، فلا نقول law Islamic.",
+    tip: "Islamic law تقابل «الفقه الإسلامي» و«الشريعة الإسلامية»، ومصدرها القرآن والسنة. ومن تعابيرها الثابتة study Islamic law (يدرس الفقه الإسلامي) وa professor of Islamic law (أستاذ الفقه الإسلامي). وIslamic صفة من Islam، تُكتب بحرف I كبير وتأتي قبل الاسم، فلا نقول law Islamic.",
     legal: true,
     oxfordSlug: "islamic",
     wikiFiles: ["LL-Q1860 (eng)-Vealhurl-Islamic.wav", "En-uk-law.ogg"],
     wikiCredit: "File:LL-Q1860 (eng)-Vealhurl-Islamic.wav (Vealhurl / Lingua Libre) & File:En-uk-law.ogg · Wikimedia Commons"
   },
 
-  /* ---------- المفردات (7 كلمات + العبارة القانونية = 8 عبارات، والمتلازمات في tipEn / tip) ---------- */
+  /* ---------- المفردات (7 كلمات + العبارة القانونية = 8 عبارات، والتعابير الثابتة في tipEn / tip) ---------- */
   vocab: [
     { en: "journey", pos: "noun", ar: "رحلة (طويلة غالبًا)", say: "جِيرْنِي",
       ex: "Our journey across Europe by train was long but beautiful.", exAr: "كانت رحلتنا عبر أوروبا بالقطار طويلة لكنها جميلة.",
       tipEn: "Collocations: a long journey, a journey from … to …, go on a journey. A journey is travel from one place to another, often far; a trip is often short, and you come back. Plural: journeys (vowel + y, so just add -s).",
-      tip: "متلازمات: a long journey (رحلة طويلة) وa journey from … to … (رحلة من … إلى …) وgo on a journey (يخرج في رحلة). وjourney انتقال من مكان إلى آخر يكون بعيدًا غالبًا، أما trip فرحلة قصيرة غالبًا يعود منها المسافر. وجمعها journeys بإضافة s فقط لأن قبل y حرف علة.",
+      tip: "تعابير ثابتة: a long journey (رحلة طويلة) وa journey from … to … (رحلة من … إلى …) وgo on a journey (يخرج في رحلة). وjourney انتقال من مكان إلى آخر يكون بعيدًا غالبًا، أما trip فرحلة قصيرة غالبًا يعود منها المسافر. وجمعها journeys بإضافة s فقط لأن قبل y حرف علة.",
       oxfordSlug: "journey_1",
       wikiFile: "En-uk-a journey.ogg",
       wikiCredit: "File:En-uk-a journey.ogg · Wikimedia Commons" },
     { en: "decide", pos: "verb", ar: "يقرّر", say: "دِسَايْد",
       ex: "Last spring, my parents decided to travel to Jordan by car.", exAr: "في الربيع الماضي قرّر والداي أن يسافرا إلى الأردن بالسيارة.",
       tipEn: "Collocation: decide to + verb (decide to travel). decide ends in -e, so the past adds only -d: decided. We say it with an extra syllable, /ɪd/, because it ends in a 'd' sound.",
-      tip: "متلازمة: decide to + فعل (decide to travel، أي يقرّر أن يسافر). وتنتهي decide بحرف e فنضيف d وحدها في الماضي: decided، وتُنطق بمقطع زائد /ɪd/ لأن آخرها صوت d.",
+      tip: "تعبير ثابت: decide to + فعل (decide to travel، أي يقرّر أن يسافر). وتنتهي decide بحرف e فنضيف d وحدها في الماضي: decided، وتُنطق بمقطع زائد /ɪd/ لأن آخرها صوت d.",
       oxfordSlug: "decide",
       wikiFile: "En-us-decide.ogg",
       wikiCredit: "File:En-us-decide.ogg · Wikimedia Commons" },
@@ -208,7 +208,7 @@ LESSONS.u2l1 = {
     { en: "cross", pos: "verb", ar: "يعبُر (طريقًا أو صحراء أو بحرًا)", say: "كْرُوس",
       ex: "The children crossed the road with their teacher.", exAr: "عبر الأطفال الطريق مع معلمتهم.",
       tipEn: "Collocations: cross the desert, cross the road, cross the sea: go from one side to the other. Past: crossed, with a /t/ sound at the end (no extra syllable).",
-      tip: "متلازمات: cross the desert (يعبر الصحراء) وcross the road (يعبر الطريق) وcross the sea (يعبر البحر)، أي ينتقل من جانب إلى جانب. وماضيها crossed، وتُنطق بصوت t في آخرها دون مقطع زائد.",
+      tip: "تعابير ثابتة: cross the desert (يعبر الصحراء) وcross the road (يعبر الطريق) وcross the sea (يعبر البحر)، أي ينتقل من جانب إلى جانب. وماضيها crossed، وتُنطق بصوت t في آخرها دون مقطع زائد.",
       oxfordSlug: "cross_1",
       wikiFile: "LL-Q1860 (eng)-Vealhurl-cross.wav",
       wikiCredit: "File:LL-Q1860 (eng)-Vealhurl-cross.wav · Vealhurl / Lingua Libre, Wikimedia Commons" },
@@ -222,14 +222,14 @@ LESSONS.u2l1 = {
     { en: "stay", pos: "verb", ar: "يمكث / يقيم (مدة من الزمن)", say: "سْتَيْ",
       ex: "We stayed with my aunt in Tabuk for a week.", exAr: "أقمنا عند خالتي في تبوك أسبوعًا.",
       tipEn: "Collocations: stay for two years, stay with a friend, stay in a hotel, stay at home. Spelling: there is a vowel before y, so just add -ed: stayed (not 'staied').",
-      tip: "متلازمات: stay for two years (يمكث سنتين) وstay with a friend (يقيم عند صديق) وstay in a hotel (يقيم في فندق) وstay at home (يبقى في البيت). وقبل y حرف علة، فنضيف ed مباشرة: stayed، ولا نكتب staied.",
+      tip: "تعابير ثابتة: stay for two years (يمكث سنتين) وstay with a friend (يقيم عند صديق) وstay in a hotel (يقيم في فندق) وstay at home (يبقى في البيت). وقبل y حرف علة، فنضيف ed مباشرة: stayed، ولا نكتب staied.",
       oxfordSlug: "stay_1",
       wikiFile: "En-us-stay.ogg",
       wikiCredit: "File:En-us-stay.ogg · Wikimedia Commons" },
     { en: "return", pos: "verb", ar: "يعود / يرجع", say: "رِتِيرْن",
       ex: "My sister returned from Malaysia last month.", exAr: "عادت أختي من ماليزيا الشهر الماضي.",
       tipEn: "Collocations: return home (no 'to' before home), return to + a place (return to Morocco), return from + a place. Past: returned, with a /d/ sound.",
-      tip: "متلازمات: return home (يعود إلى بيته أو بلده، بلا to قبل home)، وreturn to + مكان (return to Morocco)، وreturn from + مكان (يعود من). وماضيها returned، وتُنطق بصوت d في آخرها.",
+      tip: "تعابير ثابتة: return home (يعود إلى بيته أو بلده، بلا to قبل home)، وreturn to + مكان (return to Morocco)، وreturn from + مكان (يعود من). وماضيها returned، وتُنطق بصوت d في آخرها.",
       oxfordSlug: "return_1",
       wikiFile: "En-us-return.ogg",
       wikiCredit: "File:En-us-return.ogg · Wikimedia Commons" }
@@ -301,7 +301,7 @@ LESSONS.u2l1 = {
       arHtml:
         '<p>في الماضي البسيط يبقى الفعل <b>واحدًا مع كل الضمائر</b>: <bdi class="en">I played</bdi> و<bdi class="en">she played</bdi> و<bdi class="en">they played</bdi>، فلا نضيف <bdi class="en">s</bdi> مع <bdi class="en">he / she / it</bdi>.</p>' +
         '<p>ولا نضع <bdi class="en">was / were</bdi> قبل الفعل: نقول <bdi class="en">My sister cleaned her room</bdi> ولا نقول <bdi class="en">My sister was clean her room</bdi>.</p>' +
-        '<p>أما فعل الكون <bdi class="en">be</bdi> فله صيغتان: <b>was</b> مع <bdi class="en">I / he / she / it</bdi> والمفرد، و<b>were</b> مع <bdi class="en">you / we / they</bdi> والجمع، ونستعملهما مع الصفة والمكان والعمر والاسم.</p>'
+        '<p>أما فعل <bdi class="en">be</bdi> فله صيغتان: <b>was</b> مع <bdi class="en">I / he / she / it</bdi> والمفرد، و<b>were</b> مع <bdi class="en">you / we / they</bdi> والجمع، ونستعملهما مع الصفة والمكان والعمر والاسم.</p>'
     },
     {
       tEn: "Spelling of -ed",
@@ -366,7 +366,7 @@ LESSONS.u2l1 = {
         '<p class="en-p" dir="ltr">Now let\'s practise: 16 guided exercises (4 of each type), one question per screen.</p>',
       arHtml:
         '<p><b>الاستعمال:</b> لحدث انتهى في الماضي، مع كلمات مثل <bdi class="en">yesterday</bdi> و<bdi class="en">ago</bdi> و<bdi class="en">in 1325</bdi>.</p>' +
-        '<p><b>التركيب:</b> الفعل + <bdi class="en">ed</bdi> بصيغة واحدة مع كل الضمائر، و<bdi class="en">was / were</bdi> لفعل الكون.</p>' +
+        '<p><b>التركيب:</b> الفعل + <bdi class="en">ed</bdi> بصيغة واحدة مع كل الضمائر، و<bdi class="en">was / were</bdi> لفعل be.</p>' +
         '<p><b>الإملاء والنطق:</b> <bdi class="en">arrived, studied, stayed, stopped, travelled</bdi>، وتُنطق <bdi class="en">ed</bdi> مقطعًا زائدًا بعد <bdi class="en">t</bdi> و<bdi class="en">d</bdi> وحدهما.</p>' +
         '<p>والآن نتدرّب: 16 تمرينًا موجّهًا (4 من كل نمط)، سؤال في كل شاشة.</p>'
     }
@@ -442,7 +442,7 @@ LESSONS.u2l1 = {
     targetSeconds: 130,
     // أسماء ألوان التظليل في القراءة الثانية
     lg1: "Regular past: verb + -ed · الماضي المنتظم",
-    lg2: "was / were · فعل الكون في الماضي",
+    lg2: "was / were · فعل be في الماضي",
     lg3: "Time words · كلمات الزمن",
     hlLabel: "Highlight the past · إظهار الماضي",
     insight: {
@@ -452,7 +452,7 @@ LESSONS.u2l1 = {
       ex1: "I loved your photos · I borrowed his book · he crossed North Africa · he travelled · I decided to write",
       l2En: "For the past of be, he uses was, and time words show when each action happened:",
       ex2: "that was only the beginning · A week ago · In 1325 · Later · then",
-      arHtml: '<p>لاحظ أن يوسف أضاف <b style="color:var(--dark)">ed</b> أو <b style="color:var(--dark)">d</b> إلى الأفعال المنتظمة لكل حدث انتهى (<bdi class="en">loved, borrowed, crossed, travelled, decided</bdi>)، بالصيغة نفسها مع <bdi class="en">I</bdi> و<bdi class="en">he</bdi>، واستعمل <b style="color:var(--accent-ink)">was</b> ماضيًا لفعل الكون (<bdi class="en">was only the beginning</bdi>)، ودلّت كلمات الزمن على وقت كل حدث (<bdi class="en">A week ago, In 1325, Later, then</bdi>).</p>'
+      arHtml: '<p>لاحظ أن يوسف أضاف <b style="color:var(--dark)">ed</b> أو <b style="color:var(--dark)">d</b> إلى الأفعال المنتظمة لكل حدث انتهى (<bdi class="en">loved, borrowed, crossed, travelled, decided</bdi>)، بالصيغة نفسها مع <bdi class="en">I</bdi> و<bdi class="en">he</bdi>، واستعمل <b style="color:var(--accent-ink)">was</b> ماضيًا لفعل be (<bdi class="en">was only the beginning</bdi>)، ودلّت كلمات الزمن على وقت كل حدث (<bdi class="en">A week ago, In 1325, Later, then</bdi>).</p>'
     },
     introEn: "Youssef is a student in Tangier, Morocco. He is writing to his Saudi friend Fahad about Ibn Battuta, a famous traveller who was born in his city.",
     intro: "يوسف طالب في طنجة بالمغرب، ويكتب إلى صديقه السعودي فهد عن ابن بطوطة، الرحالة المشهور الذي وُلد في مدينته.",

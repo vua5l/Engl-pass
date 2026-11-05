@@ -2,13 +2,13 @@
 (function(){
 var WAS_WERE_SVG = '<svg class="tl" viewBox="0 0 340 168" role="img" aria-label="Diagram of Past of Be: I/he/she/it was (wasn\'t, Was...?) vs you/we/they were (weren\'t, Were...?)" direction="ltr">' +
   '<rect x="10" y="12" width="154" height="144" rx="16" fill="#E8EEF5" stroke="#2C4A6E" stroke-width="1.8"/>' +
-  '<text x="87" y="34" text-anchor="middle" font-family="Quicksand, sans-serif" font-weight="700" font-size="13" fill="#2C4A6E">WAS · المفرد في الماضي</text>' +
+  '<text x="87" y="34" text-anchor="middle" font-family="Quicksand, sans-serif" font-weight="700" font-size="13" fill="#2C4A6E">WAS (past singular)</text>' +
   '<text x="87" y="52" text-anchor="middle" font-family="Quicksand, sans-serif" font-weight="700" font-size="10.8" fill="#5A6B7C">I · he · she · it (singular)</text>' +
-  '<text x="20" y="78" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">+ : I was in court yesterday.</text>' +
+  '<text x="20" y="78" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">+ : I was in court.</text>' +
   '<text x="20" y="102" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">− : She wasn\'t late.</text>' +
   '<text x="20" y="126" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">? : Was the hearing long?</text>' +
   '<rect x="176" y="12" width="154" height="144" rx="16" fill="#F9EBE7" stroke="#B94A33" stroke-width="1.8"/>' +
-  '<text x="253" y="34" text-anchor="middle" font-family="Quicksand, sans-serif" font-weight="700" font-size="13" fill="#A8432E">WERE · الجمع و you</text>' +
+  '<text x="253" y="34" text-anchor="middle" font-family="Quicksand, sans-serif" font-weight="700" font-size="13" fill="#A8432E">WERE (plural &amp; you)</text>' +
   '<text x="253" y="52" text-anchor="middle" font-family="Quicksand, sans-serif" font-weight="700" font-size="10.8" fill="#A8432E">you · we · they (plural)</text>' +
   '<text x="186" y="78" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">+ : We were at the library.</text>' +
   '<text x="186" y="102" font-family="Quicksand, sans-serif" font-weight="700" font-size="11.2" fill="#1E2A33">− : They weren\'t ready.</text>' +
@@ -114,7 +114,7 @@ LESSONS.u0l3 = {
     },
     {
       id: "rc-2",
-      promptAr: "فعل الكون للجمع في سؤال: ___ there any free seats?",
+      promptAr: "فعل be للجمع في سؤال: ___ there any free seats?",
       promptEn: "Plural question word before 'there any free seats?'",
       sentPre: "",
       sentPost: "there any free seats on the train to Dammam?",
@@ -160,7 +160,7 @@ LESSONS.u0l3 = {
     ex: "The company decided to hire a lawyer yesterday.",
     exAr: "قررت الشركة توكيل محامٍ يوم أمس.",
     tipEn: "Collocation: 'hire a lawyer' = pay a lawyer to represent you or your company in a legal matter.",
-    tip: "متلازمة قانونية مهمة: hire a lawyer تعني يوكّل محاميًا لتمثيله في قضية أو عقد، ولا تنسَ الأداة a قبل lawyer.",
+    tip: "تعبير قانوني ثابت مهم: hire a lawyer تعني يوكّل محاميًا لتمثيله في قضية أو عقد، ولا تنسَ الأداة a قبل lawyer.",
     legal: true,
     oxfordSlug: "hire_1",
     wikiFiles: ["En-us-hire.ogg", "En-us-lawyer.ogg"],
@@ -185,7 +185,7 @@ LESSONS.u0l3 = {
     { en: "absent", pos: "adjective", ar: "غائب / متغيّب", say: "أَبْسَنْت",
       ex: "One witness was absent yesterday morning.", exAr: "كان أحد الشهود غائبًا صباح أمس.",
       tipEn: "Adjective (needs am/is/are/was/were). Preposition: 'absent from' work or class.",
-      tip: "صفة بمعنى غائب، وتحتاج قبلها فعل كون (was absent)، وحرف الجر معها from.",
+      tip: "صفة بمعنى غائب، وتحتاج قبلها فعل be (was absent)، وحرف الجر معها from.",
       oxfordSlug: "absent_1",
       wikiFile: "En-us-absent.ogg",
       wikiCredit: "File:En-us-absent.ogg · Dvortygirl / Wikimedia Commons (CC BY-SA 3.0)" },
@@ -249,9 +249,9 @@ LESSONS.u0l3 = {
   gCards: [
     {
       tEn: "Present vs. Past of 'Be'",
-      t: "فعل الكون بين المضارع (am/is/are) والماضي (was/were)",
+      t: "فعل be بين المضارع (am/is/are) والماضي (was/were)",
       enHtml:
-        '<h2 class="bi-h"><span class="en" dir="ltr">Present vs. Past of \'Be\'</span><small>فعل الكون بين المضارع والماضي</small></h2>' +
+        '<h2 class="bi-h"><span class="en" dir="ltr">Present vs. Past of \'Be\'</span><small>فعل be بين المضارع والماضي</small></h2>' +
         '<p class="en-p" dir="ltr">Just like we use <b>am / is / are</b> for nouns, adjectives, and places today, we use <b>was / were</b> for the past (<b>yesterday, last night, last week, two days ago</b>):</p>' +
         '<div class="xbox"><span class="xtag s" dir="ltr">Today · Present (am / is / are)</span><p class="xen">I am in the office today. · The files are ready now.</p></div>' +
         '<div class="xbox"><span class="xtag c" dir="ltr">Yesterday · Past (was / were)</span><p class="xen">I was in court yesterday. · The files were ready last night.</p></div>' +
@@ -347,7 +347,7 @@ LESSONS.u0l3 = {
   gB: [
     { s: "Yesterday, the office is very quiet.", ok: false, fix: "Yesterday, the office was very quiet.",
       whyEn: "'Yesterday' is in the past, so change 'is' to 'was'.",
-      why: "وجود كلمة Yesterday يتطلب فعل الكون في الماضي was وليس المضارع is.", errCat: "tense" },
+      why: "وجود كلمة Yesterday يتطلب فعل be في الماضي was وليس المضارع is.", errCat: "tense" },
     { s: "Were there any mistakes in the final report?", ok: true,
       whyEn: "Plural question in the past: 'Were there any mistakes…?' is correct.",
       why: "سؤال صحيح عن الجمع في الماضي باستخدام Were there.", errCat: "agreement" },
@@ -394,8 +394,8 @@ LESSONS.u0l3 = {
     from: "Faisal",
     fromMeta: "Faisal · Law Trainee, Riyadh",
     to: "Mr. Salman",
-    lg1: "Today: is / are · فعل الكون في المضارع",
-    lg2: "Yesterday: was / were · فعل الكون في الماضي",
+    lg1: "Today: is / are · فعل be في المضارع",
+    lg2: "Yesterday: was / were · فعل be في الماضي",
     targetSeconds: 95,
     introEn: "Faisal sent this morning update to his supervisor Mr. Salman about yesterday's commercial hearing at the court.",
     intro: "أرسل فيصل هذا التقرير الصباحي إلى مشرفه الأستاذ سلمان عن جلسة الاستماع التجارية التي عُقدت يوم أمس في المحكمة.",
@@ -477,7 +477,7 @@ LESSONS.u0l3 = {
     modelMarked: "{Yesterday}, I <<c:was>> at the law office for a [[training|تدريبية]] [[session|جلسة]]. The {traffic} <<c:was>> [[heavy|مزدحم]] in the morning, [[but|لكن]] I <<c:wasn't>> {late}. <<c:There were>> five [[students|طلاب]] in our [[group|مجموعة]], and nobody <<c:was>> {absent}. The [[supervisor|المشرف]] <<c:was>> very {calm}, and all the [[examples|الأمثلة]] about when to {hire a lawyer} <<c:were>> {clear}.",
     model: "Yesterday, I was at the law office for a training session. The traffic was heavy in the morning, but I wasn't late. There were five students in our group, and nobody was absent. The supervisor was very calm, and all the examples about when to hire a lawyer were clear.",
     legendEn: "Terracotta = was / were / wasn't / There were (the past of be)",
-    legendAr: "الطوبي لـ was وwere وwasn't وThere were (فعل الكون في الماضي)."
+    legendAr: "الطوبي لـ was وwere وwasn't وThere were (فعل be في الماضي)."
   },
 
   quiz: [
@@ -495,7 +495,7 @@ LESSONS.u0l3 = {
       why: "last night تدل على الماضي، والفاعل مفرد (the restaurant)، فنستخدم was.", errCat: "tense" },
     { s: "___ the client folders on your desk last night?", opts: ["Was", "Were", "Did"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'the client folders' is plural + no action verb → Were.",
-      why: "الفاعل جمع (the client folders) بلا فعل حدث، فنسأل بـ Were.", errCat: "agreement" },
+      why: "الفاعل جمع (the client folders) بلا فعل عادي، فنسأل بـ Were.", errCat: "agreement" },
     { s: "The trains ___ late yesterday, so we arrived in Dammam on time.", opts: ["wasn't", "weren't", "didn't"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'The trains' is plural → weren't (not 'didn't', because 'late' is an adjective).",
       why: "الفاعل جمع (The trains) فننفي بـ weren't، ولا نستخدم didn't لأن late صفة.", errCat: "agreement" },

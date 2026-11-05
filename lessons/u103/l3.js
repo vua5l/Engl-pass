@@ -15,7 +15,7 @@ LESSONS.u103l3 = {
   goals: [
     { en: "I can use the Past Continuous for an action in progress at a moment in the past, and the Past Simple for a finished action.", ar: "أقدر أن أستعمل الماضي المستمر لحدث كان جاريًا في لحظة من الماضي، والماضي البسيط للحدث المكتمل." },
     { en: "I can join a long action and a short event with when and while, in the right tenses.", ar: "أقدر أن أصل الحدث الطويل بالحدث القصير بـ when وwhile، بالزمن الصحيح لكل منهما." },
-    { en: "I can make Past Continuous negatives and questions, choose was or were, and keep state verbs simple: I knew, not I was knowing.", ar: "أقدر أن أنفي الماضي المستمر وأسأل به، وأختار was أو were، وأبقي أفعال الحالة بسيطة: I knew لا I was knowing." },
+    { en: "I can make Past Continuous negatives and questions, choose was or were, and keep state verbs simple: I knew, not I was knowing.", ar: "أقدر أن أنفي الماضي المستمر وأسأل به، وأختار was أو were، وأبقي الأفعال التي لا تأخذ ing بسيطة: I knew لا I was knowing." },
     { en: "I can use the returning words and the legal phrase 'witness statement' in 6 separate sentences about a small accident.", ar: "أقدر أن أستعمل الكلمات العائدة والعبارة القانونية witness statement في 6 جمل منفصلة عن حادث صغير." }
   ],
   intro: {
@@ -259,7 +259,7 @@ LESSONS.u103l3 = {
         '<div class="tip" dir="ltr"><p><b>while · مع الحدث الطويل:</b> don\'t put while before a short event.</p><div class="pairs"><span class="yes">The glass fell while Nawal was cleaning the table.</span><span class="no">Nawal was cleaning the table while the glass fell.</span></div></div>',
       arHtml:
         '<p>في القصة كثيرًا ما يكون حدث طويل جارٍ، ويقع في وسطه حدث قصير: فالطويل بالماضي المستمر، والقصير بالماضي البسيط، ومثاله <bdi class="en">Huda was making tea when the cup fell on the floor</bdi>.</p>' +
-        '<p>و<bdi class="en">while</bdi> تأتي مع الحدث الطويل، ومثالها <bdi class="en">While Khalid was opening the door, his key broke</bdi>، فلا نضعها قبل حدث قصير. والجزء القصير بالماضي البسيط وإن كان فعل حالة، مثل <bdi class="en">when he understood the problem</bdi>. وتأتي <bdi class="en">when</bdi> مع الحدث الطويل أيضًا: <bdi class="en">When Amal was leaving the bank, her phone rang</bdi>.</p>'
+        '<p>و<bdi class="en">while</bdi> تأتي مع الحدث الطويل، ومثالها <bdi class="en">While Khalid was opening the door, his key broke</bdi>، فلا نضعها قبل حدث قصير. والجزء القصير بالماضي البسيط وإن كان فعل لا يأخذ ing، مثل <bdi class="en">when he understood the problem</bdi>. وتأتي <bdi class="en">when</bdi> مع الحدث الطويل أيضًا: <bdi class="en">When Amal was leaving the bank, her phone rang</bdi>.</p>'
     },
     {
       tEn: "was / were, Negatives and Questions",
@@ -279,7 +279,7 @@ LESSONS.u103l3 = {
     },
     {
       tEn: "State Verbs, and How to Choose",
-      t: "أفعال الحالة وكيف تختار",
+      t: "الأفعال التي لا تأخذ ing وكيف تختار",
       enHtml:
         '<h2 class="bi-h"><span class="en" dir="ltr">State Verbs, and How to Choose</span><small>ثلاث خطوات لاختيار الزمن</small></h2>' +
         '<p class="en-p" dir="ltr">Verbs like <b>know</b>, <b>understand</b> and <b>need</b> describe a state, not an action, so they stay simple in the past: knew, understood, needed.</p>' +
@@ -293,7 +293,7 @@ LESSONS.u103l3 = {
         '<div class="tip" dir="ltr"><p><b>Good to know · للفائدة:</b> feel and hurt can take both tenses, so both of these are correct: My head hurt. · My head was hurting.</p></div>',
       arHtml:
         '<p>الأفعال مثل <bdi class="en">know</bdi> و<bdi class="en">understand</bdi> و<bdi class="en">need</bdi> تصف حالة لا حدثًا، فتبقى بسيطة في الماضي: <bdi class="en">knew</bdi> و<bdi class="en">understood</bdi> و<bdi class="en">needed</bdi>.</p>' +
-        '<p>ولتختار الزمن في قصة ماضية اسأل نفسك: هل هو فعل حالة؟ فإن كان فالبسيط. وهل كان الحدث جاريًا في لحظة ماضية أو حين وقع حدث آخر؟ فإن كان فالمستمر. وهل هو حدث مكتمل أو واقعة في القصة؟ فإن كان فالبسيط. أما <bdi class="en">feel</bdi> و<bdi class="en">hurt</bdi> فيأتيان بالزمنين معًا.</p>'
+        '<p>ولتختار الزمن في قصة ماضية اسأل نفسك: هل هو فعل لا يأخذ ing؟ فإن كان فالبسيط. وهل كان الحدث جاريًا في لحظة ماضية أو حين وقع حدث آخر؟ فإن كان فالمستمر. وهل هو حدث مكتمل أو واقعة في القصة؟ فإن كان فالبسيط. أما <bdi class="en">feel</bdi> و<bdi class="en">hurt</bdi> فيأتيان بالزمنين معًا.</p>'
     },
     {
       tEn: "Common Arab Mistakes",
@@ -305,7 +305,7 @@ LESSONS.u103l3 = {
           '<li><span class="no">Dana was study when her mother came in.</span><span class="yes">Dana was studying when her mother came in.</span><p class="en-m" dir="ltr">After <b>was / were</b>, the verb needs <b>-ing</b>. It was a long action, and the short event happened in the middle of it.</p><p>بعد <bdi class="en">was / were</bdi> يأتي الفعل مع ing، فهو حدث طويل وقع في وسطه الحدث القصير.</p></li>' +
           '<li><span class="no">My friends was watching the match.</span><span class="yes">My friends were watching the match.</span><p class="en-m" dir="ltr">A plural subject takes <b>were</b>, even if it is not the word they.</p><p>الفاعل الجمع يأخذ <bdi class="en">were</bdi> وإن لم يكن لفظ <bdi class="en">they</bdi>.</p></li>' +
           '<li><span class="no">Did you was sleeping when I called?</span><span class="yes">Were you sleeping when I called?</span><p class="en-m" dir="ltr">Don\'t use <b>did</b> and <b>was</b> together. With <b>you</b>, start the question with <b>Were</b>.</p><p>لا نجمع <bdi class="en">did</bdi> و<bdi class="en">was</bdi>، ومع <bdi class="en">you</bdi> يبدأ السؤال بـ <bdi class="en">Were</bdi>.</p></li>' +
-          '<li><span class="no">I was knowing his phone number.</span><span class="yes">I knew his phone number.</span><p class="en-m" dir="ltr"><b>know</b> is a state verb, so it stays in the Past Simple: <b>knew</b>.</p><p><bdi class="en">know</bdi> فعل حالة، فيبقى بالماضي البسيط: <bdi class="en">knew</bdi>.</p></li>' +
+          '<li><span class="no">I was knowing his phone number.</span><span class="yes">I knew his phone number.</span><p class="en-m" dir="ltr"><b>know</b> is a state verb, so it stays in the Past Simple: <b>knew</b>.</p><p><bdi class="en">know</bdi> فعل لا يأخذ ing، فيبقى بالماضي البسيط: <bdi class="en">knew</bdi>.</p></li>' +
         '</ul>'
     },
     {
@@ -322,7 +322,7 @@ LESSONS.u103l3 = {
         '<p class="en-p" dir="ltr">Now let\'s practise: 16 exercises with brand-new sentences. Each answer tells you what decides the tense.</p>',
       arHtml:
         '<p><b>الماضي البسيط</b> للحدث المكتمل والواقعة في القصة والحالة الماضية، و<b>الماضي المستمر</b> لما كان جاريًا في لحظة من الماضي.</p>' +
-        '<p>وإذا اجتمعا فالطويل بالمستمر والقصير بالبسيط مع <bdi class="en">when</bdi> أو <bdi class="en">while</bdi>، وأفعال الحالة تبقى بسيطة: <bdi class="en">knew</bdi> و<bdi class="en">understood</bdi> و<bdi class="en">needed</bdi>.</p>'
+        '<p>وإذا اجتمعا فالطويل بالمستمر والقصير بالبسيط مع <bdi class="en">when</bdi> أو <bdi class="en">while</bdi>، والأفعال التي لا تأخذ ing تبقى بسيطة: <bdi class="en">knew</bdi> و<bdi class="en">understood</bdi> و<bdi class="en">needed</bdi>.</p>'
     }
   ],
 
@@ -336,7 +336,7 @@ LESSONS.u103l3 = {
       why: "was relaxing هو الحدث الطويل، وانكسار الكرسي واقعة قصيرة في وسطه، والحدث القصير بالماضي البسيط: broke.", errCat: "tense" },
     { s: "We ___ the bus number, so we asked a police officer.", opts: ["weren't knowing", "didn't know"], a: 1,
       whyEn: "'know' is a state verb, so it takes no -ing in the past. The negative is didn't know.",
-      why: "know فعل حالة، فلا يأتي مع ing في الماضي، ونفيه didn't know.", errCat: "stative" },
+      why: "know فعل لا يأخذ ing في الماضي، ونفيه didn't know.", errCat: "stative" },
     { s: "My brother fell off his bike ___ Monday morning.", opts: ["on", "in"], a: 0,
       whyEn: "We use 'on' with days, and also with a day + morning: on Monday morning. We say 'in the morning' only without a day.",
       why: "نستعمل on مع الأيام، ومع اليوم وبعده morning: on Monday morning، ونقول in the morning إذا لم يُذكر اليوم.", errCat: "articles_prep" }
@@ -531,7 +531,7 @@ LESSONS.u103l3 = {
       why: "الانتظار حدث طويل كان جاريًا حين توقفت السيارة، فالطويل بالماضي المستمر، والقصير بالماضي البسيط.", errCat: "tense" },
     { s: "Maha ___ a new umbrella, so she bought one on the way home.", opts: ["was needing", "needs", "needed"], a: 2, tag: "Grammar · قواعد",
       whyEn: "'need' is a state verb, so it takes no -ing here. The story is in the past (bought), so we use needed.",
-      why: "need فعل حالة، فلا يأتي مع ing هنا، والقصة في الماضي (bought)، فنقول needed.", errCat: "stative" },
+      why: "need فعل لا يأخذ ing هنا، والقصة في الماضي (bought)، فنقول needed.", errCat: "stative" },
     { s: "Which sentence uses while correctly?", opts: ["Lama was getting off the bus while her bag fell.", "Lama's bag fell while she was getting off the bus.", "Lama's bag fell while she getting off the bus."], a: 1, tag: "Grammar · قواعد",
       whyEn: "while goes with the long action (was getting off), not with the short event (fell). The long action also needs was before verb-ing.",
       why: "while تأتي مع الحدث الطويل was getting off لا مع الحدث القصير fell، والحدث الطويل يحتاج إلى was قبل الفعل وing.", errCat: "tense" },
@@ -546,7 +546,7 @@ LESSONS.u103l3 = {
       why: "كان المتكلم فوق الكرسي ثم سقط عنه، فالعبارة fall off يتبعها الشيء: fell off it.", errCat: "vocab" },
     { s: "The police asked Noura what she saw on the road, so she ___.", opts: ["got a patent", "paid a fine", "gave a witness statement"], a: 2, tag: "Legal Track · المسار القانوني",
       whyEn: "A person who saw something tells the police about it in a witness statement. The collocation is 'give a witness statement'.",
-      why: "من رأى شيئًا يخبر به الشرطة في إفادة شاهد، والمتلازمة give a witness statement.", errCat: "vocab" }
+      why: "من رأى شيئًا يخبر به الشرطة في إفادة شاهد، والتعبير الثابت give a witness statement.", errCat: "vocab" }
   ]
 };
 })();

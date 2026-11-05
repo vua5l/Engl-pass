@@ -171,14 +171,14 @@ LESSONS.u1l1 = {
     ex: "When my father buys a car, he signs a contract with the seller.",
     exAr: "حين يشتري أبي سيارة يوقّع عقدًا مع البائع.",
     tipEn: "Legal collocation: sign a contract (verb + a + noun). With he / she / it: signs a contract. The 'g' in 'sign' is silent.",
-    tip: "متلازمة قانونية أساسية: sign a contract (يوقّع عقدًا)، ومع he / she / it تصبح signs a contract، وحرف g في sign صامت لا يُنطق.",
+    tip: "تعبير قانوني ثابت أساسي: sign a contract (يوقّع عقدًا)، ومع he / she / it تصبح signs a contract، وحرف g في sign صامت لا يُنطق.",
     legal: true,
     oxfordSlug: "contract_1",
     wikiFiles: ["En-us-sign.ogg", "En-uk-contract (noun).ogg"],
     wikiCredit: "File:En-us-sign.ogg & File:En-uk-contract (noun).ogg · Wikimedia Commons"
   },
 
-  /* ---------- المفردات (7 كلمات + العبارة القانونية = 8 عبارات، والمتلازمات في tipEn / tip) ---------- */
+  /* ---------- المفردات (7 كلمات + العبارة القانونية = 8 عبارات، والتعابير الثابتة في tipEn / tip) ---------- */
   vocab: [
     { en: "scientist", pos: "noun", ar: "عالِم / عالِمة", say: "سَايِنْتِسْت",
       ex: "My aunt is a scientist, and she works with sea animals.", exAr: "عمتي عالِمة، وتعمل مع الحيوانات البحرية.",
@@ -197,14 +197,14 @@ LESSONS.u1l1 = {
     { en: "data", pos: "noun", ar: "بيانات", say: "دَيْتَا",
       ex: "Please check the data again before you send the report.", exAr: "من فضلك راجع البيانات مرة أخرى قبل أن ترسل التقرير.",
       tipEn: "Collocations: collect data (gather facts and numbers) and check the data (look at it carefully). It is usually uncountable: the data is ready.",
-      tip: "متلازمتان: collect data (يجمع البيانات) وcheck the data (يراجع البيانات)، وهي غالبًا غير معدودة: the data is ready.",
+      tip: "تعبيران ثابتان: collect data (يجمع البيانات) وcheck the data (يراجع البيانات)، وهي غالبًا غير معدودة: the data is ready.",
       oxfordSlug: "data",
       wikiFile: "En-us-data1.ogg",
       wikiCredit: "File:En-us-data1.ogg · Wikimedia Commons" },
     { en: "measure", pos: "verb", ar: "يقيس", say: "مِيجَر",
       ex: "This small machine measures the temperature in our garden every hour.", exAr: "يقيس هذا الجهاز الصغير درجة الحرارة في حديقتنا كل ساعة.",
       tipEn: "Collocation: measure the temperature (find how hot or cold something is). The 's' in measure sounds like the 's' in 'television'.",
-      tip: "متلازمة: measure the temperature (يقيس درجة الحرارة). وحرف s فيها يُنطق صوتًا قريبًا من الجيم الشامية الخفيفة، كما في television.",
+      tip: "تعبير ثابت: measure the temperature (يقيس درجة الحرارة). وحرف s فيها يُنطق صوتًا قريبًا من الجيم الشامية الخفيفة، كما في television.",
       oxfordSlug: "measure_1",
       wikiFile: "En-us-measure.ogg",
       wikiCredit: "File:En-us-measure.ogg · Dvortygirl / Wikimedia Commons (CC BY-SA 3.0)" },
@@ -225,7 +225,7 @@ LESSONS.u1l1 = {
     { en: "miss", pos: "verb", ar: "يشتاق إلى / يفتقد", say: "مِس",
       ex: "When I travel for work, I miss my family a lot.", exAr: "حين أسافر للعمل أشتاق إلى عائلتي كثيرًا.",
       tipEn: "Collocation: miss my family / miss home (feel sad because they are far away). With he / she / it, add -es: she misses. Second meaning: miss the bus = be too late for it.",
-      tip: "متلازمة: miss my family أو miss home (يشتاق إلى أهله أو بيته لبُعدهم)، ومع he / she / it نضيف es: she misses. ولها معنى ثانٍ: miss the bus أي تفوته الحافلة.",
+      tip: "تعبير ثابت: miss my family أو miss home (يشتاق إلى أهله أو بيته لبُعدهم)، ومع he / she / it نضيف es: she misses. ولها معنى ثانٍ: miss the bus أي تفوته الحافلة.",
       oxfordSlug: "miss_1",
       wikiFile: "En-us-miss.ogg",
       wikiCredit: "File:En-us-miss.ogg · Wikimedia Commons (CC BY-SA 3.0)" }
@@ -237,7 +237,7 @@ LESSONS.u1l1 = {
       why: "collect data تعني يجمع البيانات من أرقام ومعلومات، ومحطة الطقس تفعل ذلك طوال اليوم؛ ولا تصح research ولا scientist بعد collects.", errCat: "vocab" },
     { s: "My sister is doing ___ on desert plants for her master's degree.", opts: ["research", "data", "scientist"], a: 0,
       whyEn: "The collocation is 'do research' (here: is doing research). We don't say 'do data' or 'do scientist'.",
-      why: "المتلازمة الصحيحة do research (وهنا بالمستمر is doing research)، ولا نقول do data ولا do scientist.", errCat: "vocab" },
+      why: "التعبير الثابت الصحيح do research (وهنا بالمستمر is doing research)، ولا نقول do data ولا do scientist.", errCat: "vocab" },
     { s: "Dr. Huda studies stars and planets at the university. She is a ___.", opts: ["data", "research", "scientist"], a: 2,
       whyEn: "A 'scientist' is a person who works in science. 'data' and 'research' are things, not people.",
       why: "scientist هو الشخص الذي يعمل في العلوم، أما data وresearch فأشياء لا أشخاص.", errCat: "vocab" },
@@ -255,7 +255,7 @@ LESSONS.u1l1 = {
       why: "miss تعني يشتاق إلى من يحب لبُعده، ومع he تصبح misses بإضافة es بعد ss.", errCat: "vocab" },
     { s: "Before my brother moves into his new apartment, he has to ___ with the owner.", opts: ["miss a contract", "sign a contract", "measure a contract"], a: 1,
       whyEn: "The legal collocation is 'sign a contract': write your name on an official agreement. We don't 'miss' or 'measure' a contract.",
-      why: "المتلازمة القانونية sign a contract تعني يوقّع اتفاقًا رسميًا باسمه، ولا يصح miss ولا measure مع contract.", errCat: "vocab" }
+      why: "التعبير القانوني الثابت sign a contract تعني يوقّع اتفاقًا رسميًا باسمه، ولا يصح miss ولا measure مع contract.", errCat: "vocab" }
   ],
 
   /* ---------- المرحلة 3: بطاقات الشرح (6 بطاقات: 4 شرح + الأخطاء + الخلاصة) ---------- */
@@ -551,7 +551,7 @@ LESSONS.u1l1 = {
       why: "المضارع البسيط لا يأخذ are قبل الفعل، والفاعل الجمع (my cousins) يأخذ الفعل المجرد بلا s: live.", errCat: "be_verb" },
     { s: "Our professor and his students ___ research on clean water.", opts: ["do", "make", "measure"], a: 0, tag: "Vocabulary · مفردات",
       whyEn: "The collocation is 'do research'. We don't say 'make research', and 'measure' does not go with research.",
-      why: "المتلازمة الصحيحة do research، ولا نقول make research، وmeasure لا تأتي مع research.", errCat: "vocab" },
+      why: "التعبير الثابت الصحيح do research، ولا نقول make research، وmeasure لا تأتي مع research.", errCat: "vocab" },
     { s: "This app can ___ the size of your room with your phone's camera.", opts: ["miss", "measure", "sign"], a: 1, tag: "Vocabulary · مفردات",
       whyEn: "'measure' means find the size or amount of something, like the size of a room.",
       why: "measure تعني يقيس حجم الشيء أو مقداره، كمساحة الغرفة.", errCat: "vocab" },
@@ -560,7 +560,7 @@ LESSONS.u1l1 = {
       why: "strange تعني غريبًا غير مألوف، فالرائحة الغريبة توحي بأن شيئًا ما يحترق.", errCat: "vocab" },
     { s: "My sister got a new job, and right now she ___ at the company office.", opts: ["is measuring a contract", "is signing a contract", "is missing a contract"], a: 1, tag: "Legal Track · المسار القانوني",
       whyEn: "The legal collocation is 'sign a contract' (here: is signing, because it is happening right now). We don't 'measure' or 'miss' a contract.",
-      why: "المتلازمة القانونية sign a contract (وهنا is signing لأنه يحدث الآن)، ولا يصح measure ولا miss مع contract.", errCat: "vocab" }
+      why: "التعبير القانوني الثابت sign a contract (وهنا is signing لأنه يحدث الآن)، ولا يصح measure ولا miss مع contract.", errCat: "vocab" }
   ]
 };
 })();

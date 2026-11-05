@@ -159,7 +159,7 @@ LESSONS.u2l3 = {
     { en: "flight", pos: "noun", ar: "رحلة جوية (بالطائرة)", say: "فْلَايْت",
       ex: "Long flights make me very tired, so I always take a small pillow.", exAr: "الرحلات الجوية الطويلة تتعبني كثيرًا، فآخذ معي دائمًا وسادة صغيرة.",
       tipEn: "Collocations: book a flight, take a flight, a long / short flight, a flight to Jeddah. A 'flight' is only the time on the plane; a 'trip' is the whole visit.",
-      tip: "متلازمات: book a flight وtake a flight وa long / short flight وa flight to Jeddah. وflight هي الرحلة بالطائرة وحدها، أما trip فالرحلة كلها بما فيها الزيارة.",
+      tip: "تعابير ثابتة: book a flight وtake a flight وa long / short flight وa flight to Jeddah. وflight هي الرحلة بالطائرة وحدها، أما trip فالرحلة كلها بما فيها الزيارة.",
       oxfordSlug: "flight",
       wikiFile: "En-us-flight.ogg",
       wikiCredit: "File:En-us-flight.ogg · Wikimedia Commons" },
@@ -194,7 +194,7 @@ LESSONS.u2l3 = {
     { en: "book", pos: "verb", ar: "يحجز (غرفة أو تذكرة أو طاولة)", say: "بُك",
       ex: "My sister booked a table for six at a seafood restaurant.", exAr: "حجزت أختي طاولة لستة أشخاص في مطعم مأكولات بحرية.",
       tipEn: "Collocations: book a room, book a flight, book a table, book a ticket. Regular verb: book → booked (the -ed sounds like /t/). The noun is 'a booking'.",
-      tip: "متلازمات: book a room وbook a flight وbook a table وbook a ticket. والفعل منتظم ماضيه booked وتُنطق ed فيه /t/، والاسم منه a booking.",
+      tip: "تعابير ثابتة: book a room وbook a flight وbook a table وbook a ticket. والفعل منتظم ماضيه booked وتُنطق ed فيه /t/، والاسم منه a booking.",
       oxfordSlug: "book_2",
       wikiFile: "En-uk-book.ogg",
       wikiCredit: "File:En-uk-book.ogg · Wikimedia Commons" }
@@ -315,7 +315,7 @@ LESSONS.u2l3 = {
         '<h2 class="bi-h"><span class="en" dir="ltr">Quick Summary</span><small>الخلاصة</small></h2>' +
         '<div class="sumc" dir="ltr"><h3>In Three Lines · في ثلاثة أسطر</h3>' +
           '<p><b>Main verbs · الأفعال الأساسية</b><span>didn\'t + base verb, for every person and every verb: didn\'t arrive · didn\'t go · didn\'t pay</span></p>' +
-          '<p><b>be · فعل الكون</b><span>wasn\'t (I, he, she, it) · weren\'t (you, we, they) + adjective, place or noun</span></p>' +
+          '<p><b>فعل be</b><span>wasn\'t (I, he, she, it) · weren\'t (you, we, they) + adjective, place or noun</span></p>' +
           '<p><b>but · الربط</b><span>positive, but negative · negative, but positive</span></p>' +
         '</div>' +
         '<p class="en-p" dir="ltr">Now let\'s practise: 16 guided exercises with brand-new sentences.</p>',
@@ -537,7 +537,7 @@ LESSONS.u2l3 = {
       why: "book a room تعني أن تحجز الغرفة لإقامتك، وكانت في الفندق غرفة واحدة شاغرة فحجزها الكاتب، وماضي book هو booked.", errCat: "vocab" },
     { s: "The driver didn't stop at the red light, so he ___.", opts: ["made a fine", "paid a fine", "did a fine"], a: 1, tag: "Legal Track · المسار القانوني",
       whyEn: "The collocation is 'pay a fine' (past: paid a fine); we don't say 'make a fine' or 'do a fine'. Not stopping at a red light breaks the traffic rules, so the driver pays money as a punishment.",
-      why: "المتلازمة الصحيحة pay a fine وماضيها paid a fine، ولا نقول make a fine ولا do a fine، وتجاوز الإشارة الحمراء مخالفة لنظام المرور فيدفع السائق غرامة.", errCat: "vocab" }
+      why: "التعبير الثابت الصحيح pay a fine وماضيها paid a fine، ولا نقول make a fine ولا do a fine، وتجاوز الإشارة الحمراء مخالفة لنظام المرور فيدفع السائق غرامة.", errCat: "vocab" }
   ]
 };
 })();

@@ -161,7 +161,7 @@ LESSONS.u1l3 = {
     ex: "My uncle is a careful driver, and he never breaks the law.",
     exAr: "عمي سائق حذر، ولا يخالف القانون أبدًا.",
     tipEn: "Legal collocation: break the law (opposite: obey the law). With he / she: he breaks the law. A person who breaks the law may have to pay a fine.",
-    tip: "متلازمة قانونية: break the law يخالف القانون، وعكسها obey the law يلتزم به، ومن يخالف القانون قد يدفع غرامة (fine).",
+    tip: "تعبير قانوني ثابت: break the law يخالف القانون، وعكسها obey the law يلتزم به، ومن يخالف القانون قد يدفع غرامة (fine).",
     legal: true,
     oxfordSlug: "law",
     wikiFiles: ["En-us-break.ogg", "En-us-the-unstressed.ogg", "En-us-law.ogg"],
@@ -276,7 +276,7 @@ LESSONS.u1l3 = {
       tEn: "Rule 2: After am / is / are, and Negatives",
       t: "القاعدة الثانية: بعد am / is / are، ومع النفي",
       enHtml:
-        '<h2 class="bi-h"><span class="en" dir="ltr">Rule 2: After am / is / are</span><small>بعد فعل الكون، ومع النفي</small></h2>' +
+        '<h2 class="bi-h"><span class="en" dir="ltr">Rule 2: After am / is / are</span><small>بعد فعل be، ومع النفي</small></h2>' +
         '<p class="en-p" dir="ltr">With the verb <b>be</b> (am / is / are), the frequency word comes <b>after</b> the verb:</p>' +
         '<div class="xbox"><div class="pairs">' +
           '<span class="yes">The canteen is usually quiet at ten.</span>' +
@@ -289,7 +289,7 @@ LESSONS.u1l3 = {
           '<tr><td>isn\'t / aren\'t + <span class="hs">usually</span></td><td>The shops aren\'t usually open before nine.</td></tr>' +
         '</tbody></table></div>',
       arHtml:
-        '<p>مع فعل الكون <bdi class="en">am / is / are</bdi> تأتي كلمة التكرار <b>بعده</b> لا قبله: <bdi class="en">The canteen is usually quiet</bdi>.</p>' +
+        '<p>مع <bdi class="en">am / is / are</bdi> تأتي كلمة التكرار <b>بعده</b> لا قبله: <bdi class="en">The canteen is usually quiet</bdi>.</p>' +
         '<p>وفي النفي تأتي بعد <bdi class="en">don\'t / doesn\'t</bdi> وقبل الفعل: <bdi class="en">I don\'t usually drink…</bdi>.</p>' +
         '<p>أما <bdi class="en">never</bdi> فمنفية بنفسها، فلا نجمع بينها وبين <bdi class="en">don\'t</bdi>.</p>'
     },
@@ -351,7 +351,7 @@ LESSONS.u1l3 = {
       why: "never منفية بنفسها، فإضافة don't تجمع نفيين في جملة واحدة.", errCat: "word_order" },
     { s: "___ you ever buy snacks from the canteen?", opts: ["Do", "Are"], a: 0,
       whyEn: "'buy' is an action verb, so the question starts with Do. 'Are + base verb' is wrong.",
-      why: "buy فعل حدث، فيبدأ السؤال بـ Do، ولا يصح Are مع الفعل المجرد.", errCat: "be_verb" }
+      why: "buy فعل عادي، فيبدأ السؤال بـ Do، ولا يصح Are مع الفعل المجرد.", errCat: "be_verb" }
   ],
 
   gB: [
@@ -378,7 +378,7 @@ LESSONS.u1l3 = {
       why: "في النفي: don't ثم usually ثم الفعل المجرد، ويصح أيضًا I usually don't eat.", errCat: "word_order" },
     { pre: "Our coach", verb: "be / never", post: "late for training.", ans: ["is never"],
       whyEn: "With the verb be, the frequency word comes after the verb: is never late.",
-      why: "مع فعل الكون تأتي كلمة التكرار بعده: is never late.", errCat: "word_order" },
+      why: "مع فعل be تأتي كلمة التكرار بعده: is never late.", errCat: "word_order" },
     { pre: "How often", verb: "you / eat out", post: "with your friends?", ans: ["do you eat out"],
       whyEn: "A question with How often needs do / does before the subject: How often do you eat out…?",
       why: "السؤال بـ How often يحتاج do / does قبل الفاعل: How often do you eat out…؟", errCat: "word_order" }
@@ -514,13 +514,13 @@ LESSONS.u1l3 = {
       why: "never منفية بنفسها، فلا نقول don't never ولا doesn't never.", errCat: "word_order" },
     { s: "Choose the correct question:", opts: ["Are you ever play tennis?", "Do you ever play tennis?", "You ever play tennis?"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'play' is an action verb, so the question needs Do before the subject: Do you ever play tennis?",
-      why: "play فعل حدث، فيحتاج السؤال إلى Do قبل الفاعل: Do you ever play tennis؟", errCat: "be_verb" },
+      why: "play فعل عادي، فيحتاج السؤال إلى Do قبل الفاعل: Do you ever play tennis؟", errCat: "be_verb" },
     { s: "Which sentence has the correct word order?", opts: ["We visit once a month our grandparents.", "We once a month visit our grandparents.", "We visit our grandparents once a month."], a: 2, tag: "Grammar · قواعد",
       whyEn: "Time expressions like 'once a month' go at the end of the sentence, after the object.",
       why: "عبارة الزمن once a month تأتي في آخر الجملة بعد المفعول به.", errCat: "word_order" },
     { s: "___ your sister ever bake cakes?", opts: ["Is", "Does", "Do"], a: 1, tag: "Grammar · قواعد",
       whyEn: "'your sister' is she and 'bake' is an action verb, so we ask with Does + the base verb.",
-      why: "your sister مفرد غائب، وbake فعل حدث، فنسأل بـ Does مع الفعل المجرد.", errCat: "agreement" },
+      why: "your sister مفرد غائب، وbake فعل عادي، فنسأل بـ Does مع الفعل المجرد.", errCat: "agreement" },
     { s: "My ___ always leaves dirty dishes in the kitchen of our flat.", opts: ["roommate", "takeaway", "canteen"], a: 0, tag: "Vocabulary · مفردات",
       whyEn: "A 'roommate' is a person who lives in the same room or flat as you, so he can leave dishes in your kitchen.",
       why: "roommate هو من يشاركك الغرفة أو الشقة، فيصح أن يترك الأطباق في مطبخكما.", errCat: "vocab" },

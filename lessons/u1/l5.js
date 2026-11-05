@@ -11,11 +11,11 @@ LESSONS.u1l5 = {
   canDoEn: "I can write a short, polite email to a manager or a professor about my routine, my week and a question.",
   canDoAr: "أقدر أن أكتب إيميلًا قصيرًا مهذبًا إلى مدير أو أستاذ عن روتيني وأسبوعي وسؤال عندي.",
   descEn: "I can read a new trainee's first work email and write my own, using Present Simple, Present Continuous, stative verbs and frequency words.",
-  descAr: "أقدر أن أقرأ أول إيميل عمل يكتبه متدرّب جديد، ثم أكتب إيميلي بالمضارع البسيط والمستمر وأفعال الحالة وكلمات التكرار.",
+  descAr: "أقدر أن أقرأ أول إيميل عمل يكتبه متدرّب جديد، ثم أكتب إيميلي بالمضارع البسيط والمستمر والأفعال التي لا تأخذ ing وكلمات التكرار.",
   goals: [
     { en: "I can use the four parts of a short email: greeting, purpose, details and closing (Dear Ms Collins, … Best regards,).", ar: "أقدر أن أستعمل أجزاء الإيميل القصير الأربعة: التحية والغرض والتفاصيل والختام (Dear Ms Collins, … Best regards,)." },
     { en: "I can give the purpose with 'I'm writing to + verb' and separate my usual routine (Present Simple) from this week (Present Continuous).", ar: "أقدر أن أذكر الغرض بـ I'm writing to + فعل، وأفرّق بين روتيني المعتاد (المضارع البسيط) وما أعمله هذا الأسبوع (المضارع المستمر)." },
-    { en: "I can make polite requests with stative verbs (I need… / I want to know… / I hope…) and put frequency words in the right place.", ar: "أقدر أن أطلب بأدب بأفعال الحالة (I need… / I want to know… / I hope…)، وأضع كلمات التكرار في موضعها الصحيح." },
+    { en: "I can make polite requests with stative verbs (I need… / I want to know… / I hope…) and put frequency words in the right place.", ar: "أقدر أن أطلب بأدب بالأفعال التي لا تأخذ ing (I need… / I want to know… / I hope…)، وأضع كلمات التكرار في موضعها الصحيح." },
     { en: "I can write my own first email to a manager or a professor with at least 4 separate sentences, using lesson words and the legal phrase 'sick leave' when I need it.", ar: "أقدر أن أكتب أول إيميل لي إلى مدير أو أستاذ في 4 جمل منفصلة على الأقل، بكلمات الدرس والعبارة القانونية sick leave عند الحاجة." }
   ],
   intro: {
@@ -39,7 +39,7 @@ LESSONS.u1l5 = {
     },
     grammar: {
       dEn: "Review the whole unit inside a work email: I'm writing to + verb, habit vs. this week, stative verbs in requests, frequency words, and the four parts of an email.",
-      d: "راجع قاعدة الوحدة كلها داخل إيميل العمل: I'm writing to + فعل، والعادة مقابل هذا الأسبوع، وأفعال الحالة في الطلب، وكلمات التكرار، وأجزاء الإيميل الأربعة.",
+      d: "راجع قاعدة الوحدة كلها داخل إيميل العمل: I'm writing to + فعل، والعادة مقابل هذا الأسبوع، والأفعال التي لا تأخذ ing في الطلب، وكلمات التكرار، وأجزاء الإيميل الأربعة.",
       items: [
         ["book", "6 short cards: 4 explanations, Common Arab Mistakes, and a Summary", "6 بطاقات: 4 شروح، وأخطاء العرب الشائعة، والخلاصة"],
         ["quiz", "16 guided exercises (4 of each type), one per screen", "16 تمرينًا موجّهًا (4 من كل نمط)، سؤال في كل شاشة"]
@@ -147,7 +147,7 @@ LESSONS.u1l5 = {
     ex: "In Saudi Arabia, workers can take paid sick leave with a medical report.",
     exAr: "في المملكة العربية السعودية يحق للعامل أن يأخذ إجازة مرضية مدفوعة الأجر بتقرير طبي.",
     tipEn: "Collocations: take sick leave, be on sick leave. Here 'leave' is an uncountable noun (time away from work), so never 'a sick leave' or 'sick leaves'.",
-    tip: "متلازمات مهمة: take sick leave (يأخذ إجازة مرضية) وbe on sick leave (يكون في إجازة مرضية). وكلمة leave هنا اسم غير معدود بمعنى الإجازة من العمل، فلا نقول a sick leave ولا sick leaves.",
+    tip: "تعابير ثابتة مهمة: take sick leave (يأخذ إجازة مرضية) وbe on sick leave (يكون في إجازة مرضية). وكلمة leave هنا اسم غير معدود بمعنى الإجازة من العمل، فلا نقول a sick leave ولا sick leaves.",
     legal: true,
     oxfordSlug: "sick-leave",
     wikiFiles: ["En-us-sick.ogg", "En-us-leave.ogg"],
@@ -166,7 +166,7 @@ LESSONS.u1l5 = {
     { en: "schedule", pos: "noun", ar: "جدول (مواعيد أو أعمال)", say: "سْكِيجُول / شِيدْيُول",
       ex: "Can you send me the schedule for the conference?", exAr: "هل يمكنك أن ترسل لي جدول المؤتمر؟",
       tipEn: "Collocations: a busy / full schedule, change my schedule. British speakers often say 'SHED-yool' and Americans 'SKED-jool'; both are correct.",
-      tip: "متلازمات: a busy schedule (جدول مزدحم) وchange my schedule (أغيّر جدولي). وينطقها البريطانيون غالبًا «شِيدْيُول» والأمريكيون «سْكِيجُول»، وكلاهما صحيح.",
+      tip: "تعابير ثابتة: a busy schedule (جدول مزدحم) وchange my schedule (أغيّر جدولي). وينطقها البريطانيون غالبًا «شِيدْيُول» والأمريكيون «سْكِيجُول»، وكلاهما صحيح.",
       oxfordSlug: "schedule_1",
       wikiFile: "En-us-schedule.ogg",
       wikiCredit: "File:En-us-schedule.ogg · Wikimedia Commons" },
@@ -187,14 +187,14 @@ LESSONS.u1l5 = {
     { en: "deadline", pos: "noun", ar: "الموعد النهائي (لتسليم عمل)", say: "دِدْلَايْن",
       ex: "The deadline for the essay is next Sunday.", exAr: "الموعد النهائي لتسليم المقال يوم الأحد القادم.",
       tipEn: "Collocations: the deadline FOR something, meet a deadline (finish on time), miss a deadline (finish too late).",
-      tip: "متلازمات: the deadline for the report (الموعد النهائي للتقرير)، وmeet a deadline (يسلّم في الموعد)، وmiss a deadline (يفوته الموعد).",
+      tip: "تعابير ثابتة: the deadline for the report (الموعد النهائي للتقرير)، وmeet a deadline (يسلّم في الموعد)، وmiss a deadline (يفوته الموعد).",
       oxfordSlug: "deadline",
       wikiFile: "LL-Q1860 (eng)-Back ache-deadline.wav",
       wikiCredit: "File:LL-Q1860 (eng)-Back ache-deadline.wav · Lingua Libre (Back ache) / Wikimedia Commons" },
     { en: "introduce", pos: "verb", ar: "يعرّف بـ / يقدّم (شخصًا)", say: "إِنْتْرُودْيُوس",
       ex: "At the first meeting, each new member introduces himself to the group.", exAr: "في الاجتماع الأول يعرّف كل عضو جديد بنفسه أمام المجموعة.",
       tipEn: "Collocations: introduce myself (tell people who I am), introduce somebody TO somebody. Many emails begin: 'I'm writing to introduce myself.'",
-      tip: "متلازمات: introduce myself (أعرّف بنفسي)، وintroduce Ali to Sara (أعرّف عليًّا بسارة). وكثير من الإيميلات تبدأ بـ I'm writing to introduce myself.",
+      tip: "تعابير ثابتة: introduce myself (أعرّف بنفسي)، وintroduce Ali to Sara (أعرّف عليًّا بسارة). وكثير من الإيميلات تبدأ بـ I'm writing to introduce myself.",
       oxfordSlug: "introduce",
       wikiFile: "En-us-introduce.ogg",
       wikiCredit: "File:En-us-introduce.ogg · Wikimedia Commons" }
@@ -283,9 +283,9 @@ LESSONS.u1l5 = {
     },
     {
       tEn: "Stative Verbs and Polite Requests",
-      t: "أفعال الحالة والطلب المهذب",
+      t: "الأفعال التي لا تأخذ ing والطلب المهذب",
       enHtml:
-        '<h2 class="bi-h"><span class="en" dir="ltr">Stative Verbs in Requests</span><small>أفعال الحالة في الطلب والمشاعر</small></h2>' +
+        '<h2 class="bi-h"><span class="en" dir="ltr">Stative Verbs in Requests</span><small>الأفعال التي لا تأخذ ing في الطلب والمشاعر</small></h2>' +
         '<p class="en-p" dir="ltr">Verbs for needs, wants, knowledge and feelings are <b>stative</b>. They usually stay in the <b>Present Simple</b>, even when you mean "now", and they never take <b>am / is / are</b> before the base verb:</p>' +
         '<ul class="vlist"><li>need</li><li>want</li><li>know</li><li>understand</li><li>hope</li><li>prefer</li></ul>' +
         '<div class="xbox"><div class="pairs">' +
@@ -295,7 +295,7 @@ LESSONS.u1l5 = {
         '</div></div>' +
         '<div class="tip" dir="ltr"><p><b>Polite requests in emails:</b> start with <b>Could you …?</b> and add <b>please</b>, or say what you need with <b>I want to know …</b> / <b>I need …</b>.</p><div class="pairs"><span class="yes">Could you send me the file, please?</span></div></div>',
       arHtml:
-        '<p>أفعال الحالة تدل على الحاجة والرغبة والمعرفة والشعور (<bdi class="en">need, want, know, understand, hope, prefer</bdi>)، ولا تأتي عادةً بصيغة <bdi class="en">ing</bdi>، فتبقى في المضارع البسيط حتى لو قصدنا «الآن»: <bdi class="en">I need…</bdi> لا <bdi class="en">I\'m needing…</bdi>.</p>' +
+        '<p>الأفعال التي لا تأخذ ing تدل على الحاجة والرغبة والمعرفة والشعور (<bdi class="en">need, want, know, understand, hope, prefer</bdi>)، ولا تأتي عادةً بصيغة <bdi class="en">ing</bdi>، فتبقى في المضارع البسيط حتى لو قصدنا «الآن»: <bdi class="en">I need…</bdi> لا <bdi class="en">I\'m needing…</bdi>.</p>' +
         '<p>ولا نضع <bdi class="en">am / is / are</bdi> قبلها: <bdi class="en">I hope</bdi> لا <bdi class="en">I am hope</bdi>. وللطلب المهذب في الإيميل نقول <bdi class="en">Could you…, please?</bdi> أو <bdi class="en">I want to know…</bdi>.</p>'
     },
     {
@@ -306,7 +306,7 @@ LESSONS.u1l5 = {
         '<h2 class="bi-h"><span class="en" dir="ltr">Common Arab Mistakes</span><small>أخطاء يقع فيها كثير من العرب في إيميل العمل</small></h2>' +
         '<ul class="mist">' +
           '<li><span class="no">I write to ask about the training.</span><span class="yes">I\'m writing to ask about the training.</span><p class="en-m" dir="ltr">The purpose of an email is happening now: use <b>I\'m writing to</b> + verb.</p><p>غرض الإيميل يحدث الآن، فنقول <bdi class="en">I\'m writing to</bdi> ثم الفعل.</p></li>' +
-          '<li><span class="no">I am need a new password. / I\'m knowing the plan.</span><span class="yes">I need a new password. / I know the plan.</span><p class="en-m" dir="ltr">Stative verbs take no <b>am / is / are</b> and no <b>-ing</b>.</p><p>أفعال الحالة لا تسبقها <bdi class="en">am / is / are</bdi> ولا تأخذ <bdi class="en">ing</bdi>.</p></li>' +
+          '<li><span class="no">I am need a new password. / I\'m knowing the plan.</span><span class="yes">I need a new password. / I know the plan.</span><p class="en-m" dir="ltr">Stative verbs take no <b>am / is / are</b> and no <b>-ing</b>.</p><p>هذه الأفعال لا تسبقها <bdi class="en">am / is / are</bdi> ولا تأخذ <bdi class="en">ing</bdi>.</p></li>' +
           '<li><span class="no">She check always her email.</span><span class="yes">She always checks her email.</span><p class="en-m" dir="ltr">Put the frequency word <b>before the main verb</b>, and add <b>-s</b> with he / she / it.</p><p>كلمة التكرار قبل الفعل الأساسي، ونضيف <bdi class="en">s</bdi> للفعل مع <bdi class="en">he / she / it</bdi>.</p></li>' +
           '<li><span class="no">dear ms collins, i am trainee and my meeting is in monday</span><span class="yes">Dear Ms Collins,<br>I am a trainee. My meeting is on Monday.</span><p class="en-m" dir="ltr">Capital letters for <b>Dear</b>, names and <b>I</b>; <b>a</b> before a job; <b>on</b> + a day; and a period at the end of each sentence.</p><p>الحرف الكبير لـ <bdi class="en">Dear</bdi> والأسماء و<bdi class="en">I</bdi>، و<bdi class="en">a</bdi> قبل المهنة، و<bdi class="en">on</bdi> مع الأيام، ونقطة في آخر كل جملة.</p></li>' +
         '</ul>'
@@ -326,7 +326,7 @@ LESSONS.u1l5 = {
       arHtml:
         '<p><b>التحية ثم الختام:</b> <bdi class="en">Dear …,</bdi> في أول الإيميل و<bdi class="en">Best regards,</bdi> في آخره.</p>' +
         '<p><b>المضارع المستمر:</b> لغرض الإيميل (<bdi class="en">I\'m writing to…</bdi>) ولما هو مؤقت هذا الأسبوع.</p>' +
-        '<p><b>المضارع البسيط:</b> للروتين مع كلمة التكرار قبل الفعل الأساسي، ولأفعال الحالة (<bdi class="en">need, want, know, hope</bdi>).</p>' +
+        '<p><b>المضارع البسيط:</b> للروتين مع كلمة التكرار قبل الفعل الأساسي، وللأفعال التي لا تأخذ ing (<bdi class="en">need, want, know, hope</bdi>).</p>' +
         '<p>واكتب 4 جمل منفصلة على الأقل، تبدأ كل منها بحرف كبير وتنتهي بنقطة.</p>'
     }
   ],
@@ -341,7 +341,7 @@ LESSONS.u1l5 = {
       why: "كلمة التكرار تأتي قبل الفعل الأساسي: always starts، ولا تأتي بعده.", errCat: "word_order" },
     { s: "We ___ the exact time of the meeting.", opts: ["are wanting to know", "want to know"], a: 1,
       whyEn: "'want' and 'know' are stative verbs, so they stay in Present Simple: we want to know (not 'are wanting').",
-      why: "want وknow من أفعال الحالة، فتبقى في المضارع البسيط: we want to know، ولا نقول are wanting.", errCat: "stative" },
+      why: "want وknow من الأفعال التي لا تأخذ ing، فتبقى في المضارع البسيط: we want to know، ولا نقول are wanting.", errCat: "stative" },
     { s: "I usually work in the main office, but this week I ___ at the new branch in Dammam.", opts: ["am working", "work"], a: 0,
       whyEn: "'usually' describes the habit, but 'this week' is a temporary change, so we use Present Continuous: I am working.",
       why: "usually تصف العادة، أما this week فتدل على تغيّر مؤقت، فنستعمل المضارع المستمر: I am working.", errCat: "tense" }
@@ -353,7 +353,7 @@ LESSONS.u1l5 = {
       why: "لا نضع am قبل الفعل المجرد، وعبارة this month تدل على أمر مؤقت، فنستعمل المضارع المستمر: I'm working.", errCat: "be_verb" },
     { s: "We're knowing the date of the exam, but not the room.", ok: false, fix: "We know the date of the exam, but not the room.",
       whyEn: "'know' is a stative verb, so it takes no -ing: We know.",
-      why: "know من أفعال الحالة فلا تأخذ ing، والصواب We know.", errCat: "stative" },
+      why: "know من الأفعال التي لا تأخذ ing، والصواب We know.", errCat: "stative" },
     { s: "Our lecturer always replies to student emails within a day.", ok: true,
       whyEn: "Correct: 'always' comes before the main verb, 'replies' has -ies with he / she (consonant + y), and we say 'reply to'.",
       why: "جملة صحيحة: always قبل الفعل الأساسي، وreplies بـ ies مع المفرد الغائب لأن قبل y حرفًا ساكنًا، ونقول reply to.", errCat: "word_order" },
@@ -374,7 +374,7 @@ LESSONS.u1l5 = {
       why: "this week تدل على عمل مؤقت يجري هذه الأيام، فنكتب المضارع المستمر: she is preparing أو she's preparing.", errCat: "tense" },
     { pre: "I", verb: "not / know", post: "the room number for tomorrow's lecture.", ans: ["don't know", "do not know"],
       whyEn: "'know' is a stative verb, so the negative is don't + know (never 'am not knowing').",
-      why: "know من أفعال الحالة، فننفيها بـ don't ثم know، ولا نقول am not knowing.", errCat: "stative" }
+      why: "know من الأفعال التي لا تأخذ ing، فننفيها بـ don't ثم know، ولا نقول am not knowing.", errCat: "stative" }
   ],
 
   gD: [
@@ -430,7 +430,7 @@ LESSONS.u1l5 = {
       ex1: "I always check my inbox first · I usually have a short meeting with the team at ten · The team often invites new trainees to lunch",
       l2En: "For the purpose of the email and for this week only, he uses Present Continuous:",
       ex2: "I'm writing to introduce myself · This week, I'm working with my colleague Sara · I'm attaching my training schedule",
-      arHtml: '<p>لاحظ أن سعدًا استعمل <b style="color:var(--dark)">المضارع البسيط</b> مع كلمات التكرار لروتينه المعتاد (<bdi class="en">always check, usually have</bdi>)، واستعمل <b style="color:var(--accent-ink)">المضارع المستمر</b> لغرض الإيميل ولما يعمله هذا الأسبوع فقط (<bdi class="en">I\'m writing, I\'m working</bdi>). وبقيت أفعال الحالة في المضارع البسيط حتى في الطلب: <bdi class="en">I want to know, I need, I hope</bdi>.</p>'
+      arHtml: '<p>لاحظ أن سعدًا استعمل <b style="color:var(--dark)">المضارع البسيط</b> مع كلمات التكرار لروتينه المعتاد (<bdi class="en">always check, usually have</bdi>)، واستعمل <b style="color:var(--accent-ink)">المضارع المستمر</b> لغرض الإيميل ولما يعمله هذا الأسبوع فقط (<bdi class="en">I\'m writing, I\'m working</bdi>). وبقيت الأفعال التي لا تأخذ ing في المضارع البسيط حتى في الطلب: <bdi class="en">I want to know, I need, I hope</bdi>.</p>'
     },
     questions: [
       { q: "Why is Saad writing to Ms Collins?", opts: ["To ask for a day off", "To introduce himself", "To invite her to lunch"], a: 1,
@@ -452,7 +452,7 @@ LESSONS.u1l5 = {
       { q: "What does Saad want to know?", opts: ["The deadline for the report", "The time of the team lunch", "The name of the supplier"], a: 0,
         ev: "First, I want to know the deadline for the report.",
         whyEn: "His first question uses the stative verb 'want': 'I want to know the deadline for the report.'",
-        why: "سؤاله الأول بفعل الحالة want: يريد أن يعرف الموعد النهائي للتقرير.", errCat: "reading" },
+        why: "سؤاله الأول بالفعل want: يريد أن يعرف الموعد النهائي للتقرير.", errCat: "reading" },
       { tf: true, q: "Saad is ill today, so he needs sick leave.", a: false,
         ev: "Second, if I am ill and need sick leave, who do I tell?",
         whyEn: "False: he is not ill now. 'If I am ill' talks about a possible day, so he only asks who to tell.",
@@ -471,7 +471,7 @@ LESSONS.u1l5 = {
   /* ---------- المرحلة 5: الكتابة الختامية للوحدة (إيميل المتعلم الأول) ---------- */
   writing: {
     taskEn: "Write your own first email to a manager or a professor. Start with a greeting (Dear Dr …, / Hi …,) and finish with a closing (Best regards,) and your name. Between them, write at least 4 separate sentences: why you are writing (I'm writing to + verb), your usual week with a frequency word (I usually …), what you are doing this week (Present Continuous), and a polite request with a stative verb (I need … / I want to know … / I hope …).",
-    task: "اكتب أول إيميل لك إلى مديرك في العمل أو أستاذك في الجامعة: ابدأ بتحية (Dear Dr …, أو Hi …,) واختم بعبارة ختام (Best regards,) ثم اسمك، واكتب بينهما 4 جمل منفصلة على الأقل: سبب كتابتك (I'm writing to + فعل)، وروتينك المعتاد بكلمة تكرار (I usually …)، وما تعمله هذا الأسبوع بالمضارع المستمر، وطلبًا مهذبًا بفعل حالة (I need … / I want to know … / I hope …).",
+    task: "اكتب أول إيميل لك إلى مديرك في العمل أو أستاذك في الجامعة: ابدأ بتحية (Dear Dr …, أو Hi …,) واختم بعبارة ختام (Best regards,) ثم اسمك، واكتب بينهما 4 جمل منفصلة على الأقل: سبب كتابتك (I'm writing to + فعل)، وروتينك المعتاد بكلمة تكرار (I usually …)، وما تعمله هذا الأسبوع بالمضارع المستمر، وطلبًا مهذبًا بفعل لا يأخذ ing (I need … / I want to know … / I hope …).",
     placeholder: "Dear Dr …,\nI'm writing to …",
     checks: [
       { k: "sentences", tEn: "At least 4 separate sentences between the greeting and the closing (end each with . or ?)", t: "4 جمل منفصلة على الأقل بين التحية والختام (تنتهي كل جملة بنقطة أو علامة استفهام)",
@@ -490,7 +490,7 @@ LESSONS.u1l5 = {
           var purpose = /\b(?:i'm|i\s+am)\s+writing\s+(?:(?:this|an?)\s+(?:email|message|letter)\s+|(?:to\s+)?you\s+)?(?:to|because|about)\b/i.test(s);
           var close = /\b(?:best\s+regards|kind\s+regards|warm\s+regards|regards|best\s+wishes|many\s+thanks|thanks|thank\s+you|yours\s+sincerely|yours\s+faithfully|sincerely)\b/i.test(s);
           return greet && purpose && close; } },
-      { k: "grammar", tEn: "A routine with a frequency word (I usually …) and a stative verb (I need … / I want to know … / I hope …), with no 'am need' or 'am knowing'", t: "عادة بكلمة تكرار (I usually …) وفعل حالة (I need … / I want to know … / I hope …) دون am need أو am knowing", ex: "I usually start at nine. · I want to know the date.",
+      { k: "grammar", tEn: "A routine with a frequency word (I usually …) and a stative verb (I need … / I want to know … / I hope …), with no 'am need' or 'am knowing'", t: "عادة بكلمة تكرار (I usually …) وفعل لا يأخذ ing (I need … / I want to know … / I hope …) دون am need أو am knowing", ex: "I usually start at nine. · I want to know the date.",
         ok: function(a, text){ var s = String(text || '').replace(/[’‘]/g, "'");
           var freq = /\b(?:always|usually|normally|often|sometimes|rarely|never|every\s+(?:day|morning|afternoon|evening|night|week|weekend|month|year|sunday|monday|tuesday|wednesday|thursday|friday|saturday)|once\s+a\s+(?:day|week|month)|twice\s+a\s+(?:day|week|month)|on\s+(?:sundays|mondays|tuesdays|wednesdays|thursdays|fridays|saturdays|weekends))\b/i.test(s);
           var stative = /\b(?:need|needs|want|wants|hope|hopes|know|knows|understand|understands|prefer|prefers|believe|believes|(?:would|i'd|we'd)\s+like)\b/i.test(s);
@@ -502,7 +502,7 @@ LESSONS.u1l5 = {
     modelMarked: "Dear Dr Nasser,<br>I<<c:'m writing>> to {introduce myself|introduce} and to ask about our group project. I<<s:'m>> Majed, a law student in your Tuesday lecture. I <<t:usually>> <<s:go>> to the library after my lectures. <<t:This week>>, I<<c:'m collecting>> information for the project with two classmates. I <<s:want>> to know the {deadline} for the first draft, because I <<s:need>> to plan my {schedule}. I <<s:hope>> you can {reply} before the weekend.<br>Best regards,<br>Majed",
     model: "Dear Dr Nasser,\nI'm writing to introduce myself and to ask about our group project. I'm Majed, a law student in your Tuesday lecture. I usually go to the library after my lectures. This week, I'm collecting information for the project with two classmates. I want to know the deadline for the first draft, because I need to plan my schedule. I hope you can reply before the weekend.\nBest regards,\nMajed",
     legendEn: "Light blue = Present Simple (routines, facts, stative verbs) · Terracotta = Present Continuous (I'm writing to…, this week) · Dashed = frequency and time words",
-    legendAr: "الأزرق الفاتح للمضارع البسيط (الروتين وأفعال الحالة)، والطوبي للمضارع المستمر (I'm writing to… وهذا الأسبوع)، والإطار المنقّط لكلمات التكرار والزمن."
+    legendAr: "الأزرق الفاتح للمضارع البسيط (الروتين والأفعال التي لا تأخذ ing)، والطوبي للمضارع المستمر (I'm writing to… وهذا الأسبوع)، والإطار المنقّط لكلمات التكرار والزمن."
   },
 
   /* ---------- المرحلة 6: الاختبار القصير (10 أسئلة: 7 قواعد، 2 مفردات، 1 قانوني · النجاح من 80%) ---------- */
@@ -518,13 +518,13 @@ LESSONS.u1l5 = {
       why: "this month تدل على عمل مؤقت يجري هذه الفترة، فنستعمل المضارع المستمر: is testing.", errCat: "tense" },
     { s: "Which sentence is correct?", opts: ["I want a different topic for my presentation.", "I'm wanting a different topic for my presentation.", "I am want a different topic for my presentation."], a: 0, tag: "Grammar · قواعد",
       whyEn: "'want' is a stative verb: it stays in Present Simple (no -ing), and it never takes 'am' before it.",
-      why: "want من أفعال الحالة: تبقى في المضارع البسيط فلا تأخذ ing، ولا نضع قبلها am.", errCat: "stative" },
+      why: "want من الأفعال التي لا تأخذ ing: تبقى في المضارع البسيط، ولا نضع قبلها am.", errCat: "stative" },
     { s: "Choose the correct sentence:", opts: ["She answers always the phone politely.", "She always answers the phone politely.", "She answers the phone always politely."], a: 1, tag: "Grammar · قواعد",
       whyEn: "A frequency word goes before the main verb: She always answers.",
       why: "كلمة التكرار تأتي قبل الفعل الأساسي: She always answers.", errCat: "word_order" },
     { s: "___ your lecturer usually share the slides after class?", opts: ["Is", "Do", "Does"], a: 2, tag: "Grammar · قواعد",
       whyEn: "A routine question with an action verb (share) and a singular subject (your lecturer) → Does + base verb. 'Is' would need an -ing verb.",
-      why: "سؤال عن عادة بفعل حدث (share) وفاعل مفرد (your lecturer)، فنبدأ بـ Does ثم الفعل المجرد، أما Is فتحتاج فعلًا بـ ing.", errCat: "be_verb" },
+      why: "سؤال عن عادة بفعل عادي (share) وفاعل مفرد (your lecturer)، فنبدأ بـ Does ثم الفعل المجرد، أما Is فتحتاج فعلًا بـ ing.", errCat: "be_verb" },
     { s: "'Are you working on the presentation this week?' 'Yes, I ___.'", opts: ["do", "am", "is"], a: 1, tag: "Grammar · قواعد",
       whyEn: "A question with 'Are you …?' gets a short answer with 'am': Yes, I am. (We don't use 'do' because the question has no do.)",
       why: "السؤال بـ Are you يُجاب بـ am: Yes, I am، ولا نستعمل do لأن السؤال ليس فيه do.", errCat: "be_verb" },

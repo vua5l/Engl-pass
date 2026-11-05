@@ -144,7 +144,7 @@ LESSONS.u3l4 = {
     ex: "After three days of floods, the government declared a state of emergency in the south of the country.",
     exAr: "بعد ثلاثة أيام من السيول، أعلنت الحكومة حالة الطوارئ في جنوب البلاد.",
     tipEn: "Legal collocation: declare a state of emergency. A government does this in a very serious situation, like a natural disaster or a war. In many countries, it then has special powers for a limited time. This is a subject in constitutional law.",
-    tip: "متلازمة قانونية: declare a state of emergency أي تعلن الحكومة حالة الطوارئ، وذلك في ظرف بالغ الخطورة ككارثة طبيعية أو حرب، وتكون لها في بلدان كثيرة سلطات خاصة مدة محددة. وهذا من موضوعات القانون الدستوري.",
+    tip: "تعبير قانوني ثابت: declare a state of emergency أي تعلن الحكومة حالة الطوارئ، وذلك في ظرف بالغ الخطورة ككارثة طبيعية أو حرب، وتكون لها في بلدان كثيرة سلطات خاصة مدة محددة. وهذا من موضوعات القانون الدستوري.",
     legal: true,
     oxfordSlug: "emergency",
     wikiFiles: ["En-uk-state.ogg", "En-us-of.ogg", "En-us-emergency.ogg"],
@@ -293,7 +293,7 @@ LESSONS.u3l4 = {
         '<p>احفظ أفعال اليوم الخمسة في مجموعتين:</p>' +
         '<p><b>لا تتغير في الماضي:</b> <bdi class="en">shut</bdi> يغلق، و<bdi class="en">let</bdi> يدع أو يسمح، و<bdi class="en">cost</bdi> يكلّف.</p>' +
         '<p><b>تتغير صيغتها في الماضي:</b> <bdi class="en">catch → caught</bdi> يمسك أو يلحق، و<bdi class="en">build → built</bdi> يبني.</p>' +
-        '<p><bdi class="en">cost</bdi> في ذكر الثمن فعل حالة لا يأخذ <bdi class="en">ing</bdi>: <bdi class="en">The new road cost a lot of money.</bdi> ولا نقول <bdi class="en">was costing</bdi>.</p>' +
+        '<p><bdi class="en">cost</bdi> في ذكر الثمن فعل لا يأخذ ing: <bdi class="en">The new road cost a lot of money.</bdi> ولا نقول <bdi class="en">was costing</bdi>.</p>' +
         '<p>و<bdi class="en">catch</bdi> كثيرة الاستعمال: <bdi class="en">catch a ball</bdi> يمسك كرة، و<bdi class="en">catch a bus</bdi> يلحق بحافلة، و<bdi class="en">catch a cold</bdi> يصاب بالزكام. وعنوان درسنا <bdi class="en">Caught in a Storm</bdi> معناه أن عاصفة جاءت ولم تستطع الابتعاد عنها.</p>' +
         '<p>ويُضاعف الحرف الأخير قبل <bdi class="en">ing</bdi> في <bdi class="en">shutting</bdi> و<bdi class="en">letting</bdi>.</p>'
     },
@@ -306,7 +306,7 @@ LESSONS.u3l4 = {
         '<ul class="mist">' +
           '<li><span class="no">We was camping in the desert while the wind was blowing.</span><span class="yes">We were camping in the desert while the wind was blowing.</span><p class="en-m" dir="ltr"><b>we</b> takes <b>were</b>, not was. Check the subject of each part.</p><p><bdi class="en">we</bdi> تأخذ <bdi class="en">were</bdi> لا <bdi class="en">was</bdi>، فانظر إلى فاعل كل جزء.</p></li>' +
           '<li><span class="no">We were watching the news while the lights went out.</span><span class="yes">We were watching the news when the lights went out.</span><p class="en-m" dir="ltr">The lights went out in one moment. A short action takes <b>when</b>, not while.</p><p>انطفأت الأنوار في لحظة، والحدث القصير يأتي مع <bdi class="en">when</bdi> لا <bdi class="en">while</bdi>.</p></li>' +
-          '<li><span class="no">The tickets were costing 300 riyals.</span><span class="yes">The tickets cost 300 riyals.</span><p class="en-m" dir="ltr"><b>cost</b> is a state verb, so it takes no -ing, and it does not change in the past.</p><p><bdi class="en">cost</bdi> فعل حالة لا يأخذ <bdi class="en">ing</bdi>، ولا يتغير في الماضي.</p></li>' +
+          '<li><span class="no">The tickets were costing 300 riyals.</span><span class="yes">The tickets cost 300 riyals.</span><p class="en-m" dir="ltr"><b>cost</b> is a state verb, so it takes no -ing, and it does not change in the past.</p><p><bdi class="en">cost</bdi> فعل لا يأخذ ing، ولا يتغير في الماضي.</p></li>' +
           '<li><span class="no">While my aunt was cook, I was cleaning the floor.</span><span class="yes">While my aunt was cooking, I was cleaning the floor.</span><p class="en-m" dir="ltr">After <b>was</b>, the verb needs <b>-ing</b> here: was cooking.</p><p>بعد <bdi class="en">was</bdi> يأخذ الفعل هنا <bdi class="en">ing</bdi>: <bdi class="en">was cooking</bdi>.</p></li>' +
         '</ul>'
     },
@@ -353,7 +353,7 @@ LESSONS.u3l4 = {
       why: "ضرب الطائر النافذة في لحظة، والحدث القصير يأتي مع when، أما while فمع الحدث الطويل.", errCat: "tense" },
     { s: "How much was your flight to Jeddah costing?", ok: false, fix: "How much did your flight to Jeddah cost?",
       whyEn: "For a price, 'cost' is a state verb, so it takes no -ing. In a past question, we use did: How much did your flight to Jeddah cost?",
-      why: "cost في ذكر الثمن فعل حالة لا يأخذ ing، وفي السؤال عن الماضي نستعمل did: How much did your flight to Jeddah cost؟", errCat: "stative" }
+      why: "cost في ذكر الثمن فعل لا يأخذ ing، وفي السؤال عن الماضي نستعمل did: How much did your flight to Jeddah cost؟", errCat: "stative" }
   ],
 
   gC: [
@@ -368,7 +368,7 @@ LESSONS.u3l4 = {
       why: "the workers جمع فنستعمل were لا was: were building.", errCat: "agreement" },
     { pre: "The bus ticket", verb: "not / cost · Past Simple", post: "much, so we bought two.", ans: ["didn't cost", "did not cost"],
       whyEn: "'bought' shows the story is in the past. 'cost' is a state verb, so the negative is didn't cost, not wasn't costing.",
-      why: "bought تدل على أن القصة في الماضي، وcost فعل حالة، فنفيه didn't cost لا wasn't costing.", errCat: "stative" }
+      why: "bought تدل على أن القصة في الماضي، وcost فعل لا يأخذ ing، فنفيه didn't cost لا wasn't costing.", errCat: "stative" }
   ],
 
   gD: [
@@ -515,7 +515,7 @@ LESSONS.u3l4 = {
       why: "my grandfather was ten تحدد العمر، ومع العمر نستعمل when لا while، وDuring يأتي بعدها اسم.", errCat: "tense" },
     { s: "The trip to the mountains ___ us 900 riyals last month.", opts: ["costed", "was costing", "cost"], a: 2, tag: "Grammar · قواعد",
       whyEn: "'cost' is a state verb, so it takes no -ing, and it does not change in the past. 'costed' is wrong here.",
-      why: "cost فعل حالة لا يأخذ ing، ولا يتغير في الماضي، وcosted خطأ هنا.", errCat: "stative" },
+      why: "cost فعل لا يأخذ ing، ولا يتغير في الماضي، وcosted خطأ هنا.", errCat: "stative" },
     { s: "My parents ___ me go camping with my friends last weekend.", opts: ["let", "letted", "letting"], a: 0, tag: "Grammar · قواعد",
       whyEn: "'last weekend' is in the past, and 'let' does not change in the past. 'letted' is not a word.",
       why: "last weekend في الماضي، وlet لا يتغير في الماضي، أما letted فليست كلمة.", errCat: "tense" },
