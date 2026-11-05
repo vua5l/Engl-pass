@@ -74,6 +74,18 @@ jobs:
             echo "tools/register-lessons.js is not in this commit; skipped."
           fi
 
+      - name: Word bank check (tools/word-bank.js --check)
+        if: >-
+          (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+          (github.event_name == 'pull_request' && github.base_ref == 'main' && !startsWith(github.head_ref, 'claude/night-'))
+        # Every word a learner can tap has a checked sound file and Oxford page, or none on purpose. The coordinator runs the tool at publish time.
+        run: |
+          if [ -f tools/word-bank.js ]; then
+            node tools/word-bank.js --check
+          else
+            echo "tools/word-bank.js is not in this commit; skipped."
+          fi
+
   links:
     name: Links and audio
     if: >-

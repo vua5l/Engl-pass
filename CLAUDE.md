@@ -30,4 +30,5 @@
 - لا يتغيّر شكل الموقع ولا تصميمه إلا بإذن صاحب الموقع.
 - فرع `progress` للتقدم وحده، لا يُمس.
 - عند النشر: `node tools/register-lessons.js` يكتب سطور الدروس وأرقام الإصدار في `index.html`، ويُوثَّق كل تعديل منشور في `CHANGELOG.md`.
-- الفحوص: `node tests/content-check.js`، و`node tests/map-check.js`، و`node tools/register-lessons.js --check`، والاختبار الشامل في المتصفح كما في `README.md`.
+- الفحوص: `node tests/content-check.js`، و`node tests/map-check.js`، و`node tools/register-lessons.js --check`، و`node tools/word-bank.js --check`، والاختبار الشامل وفحص الشاشات `tests/screen-check.test.js` في المتصفح كما في `README.md`.
+- لا يكتشف المتعلم عيوب الشاشة بنفسه: لا يُنشر درس قبل أن يمر فحص الشاشات بعرض 375، وقبل أن يكتمل بنك الكلمات بـ `node tools/word-bank.js`.

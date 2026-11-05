@@ -23,8 +23,9 @@
  *      findVocabEntry are cut out of app.js and run in a vm sandbox (as content-check.js does with the answer
  *      checker). resolveFile asks the Wikimedia Commons API about the file and plays its MP3 transcode, else the
  *      original file, else (unknown file, or the API failed) https://commons.wikimedia.org/wiki/Special:FilePath/<file>.
- *   Not checked: generated links (Oxford dictionary links built from oxfordSlug, the Commons file pages of the
- *   credits sheet) and the En-us-<word>.ogg names the engine guesses for words that have no wikiFile.
+ *      The word bank of content.js (DATA.wordBank) is checked here too: each entry has the same wikiFile field.
+ *   Not checked: generated links (Oxford dictionary links built from oxfordSlug, which tools/word-bank.js checks when
+ *   it writes them; Oxford refuses this script's User-Agent), and the Commons file pages of the credits sheet.
  *   Lessons come from the content.js lists unit<N>Lessons (entries with test:true are skipped):
  *   id u<U>l<N> -> lessons/u<U>/l<N>.js, run in a vm sandbox after content.js.
  *
@@ -389,6 +390,10 @@ async function loadAudio(root) {
   try { single = await withHelpers(() => vm.runInContext("AUDIO.filesFor({ en: 'x', wikiFile: 'A.ogg' })", ctx)); }
   catch (e) { throw new Fatal(`AUDIO.filesFor from app.js does not run in the sandbox: ${e.message} (${MOVED})`); }
   if (!Array.isArray(single) || single.join('|') !== 'A.ogg') throw new Fatal(`AUDIO.filesFor no longer returns the wikiFile of an entry (dry run gave ${JSON.stringify(single)}; ${MOVED})`);
+  // An entry without a file is looked up by its word in the whole course, so that path needs its helpers too.
+  ctx.ALL_VOCAB = [];
+  try { await withHelpers(() => vm.runInContext("AUDIO.filesFor({ en: 'x' })", ctx)); }
+  catch (e) { throw new Fatal(`AUDIO.filesFor from app.js does not run on an entry without a file: ${e.message} (${MOVED})`); }
   // resolveFile with a canned Commons answer: when it asks the API, it must return one of the canned files.
   // Getting the Special:FilePath fallback instead would mean an error was swallowed inside its promise chain.
   const DRY = 'Link-check dry run.ogg';
