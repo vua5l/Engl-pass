@@ -944,7 +944,8 @@ function readingTarget(r){ var t = Number(r && r.targetSeconds); return t > 0 ? 
 function arMinutes(n){ return n === 1 ? 'دقيقة' : n === 2 ? 'دقيقتين' : arDigits(n) + (n <= 10 ? ' دقائق' : ' دقيقة'); }
 var dictT;
 function showWord(el){ var en, ar, tag = '', v = null;
-  if (el.classList.contains('core')) { v = ALL_VOCAB.filter(function(x){ return String(x.en || '').toLowerCase() === el.getAttribute('data-k'); })[0]; en = v ? v.en : el.textContent; ar = v ? v.ar : ''; tag = v ? ('Lesson word · ' + v.pos) : ''; }
+  /* الكلمة الأساسية قد تكون من درس سابق، فتُطلب من مفردات الكورس كله. */
+  if (el.classList.contains('core')) { v = findVocabEntry(el.getAttribute('data-k')); if (v && !v.ar) v = null; en = v ? v.en : el.textContent; ar = v ? v.ar : ''; tag = v ? ('Lesson word · ' + v.pos) : ''; }
   else { en = el.getAttribute('data-en') || el.textContent; ar = el.getAttribute('data-ar') || ''; }
   $('#dEn').textContent = en; $('#dAr').textContent = ar; $('#dTag').textContent = tag; $('#dTag').hidden = !tag;
   var entry = v || findVocabEntry(en), dOx = $('#dOx'), dSay = $('#dSay');
