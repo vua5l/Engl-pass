@@ -17,13 +17,27 @@ function h(tag, attrs){
   if (attrs) for (k in attrs){ if (!Object.prototype.hasOwnProperty.call(attrs, k)) continue; v = attrs[k];
     if (v == null || v === false) continue;
     if (k === 'class') el.className = v;
-    else if (k === 'html') el.innerHTML = v;
+    else if (k === 'html') { el.innerHTML = v; polishHtml(el); }
     else if (k === 'on'){ for (var ev in v) el.addEventListener(ev, v[ev]); }
     else if (v === true) el.setAttribute(k, '');
     else el.setAttribute(k, v);
   }
   for (var i = 2; i < arguments.length; i++) addKid(el, arguments[i]);
   return el;
+}
+/* الصفحة من اليسار منذ 2 نوفمبر 2026، و<p> في نص الدرس الجاهز لا يمر بـ h()، فكانت الفقرة العربية تترتب من اليسار وتنعكس جملها.
+   فكل نص جاهز يمر هنا: الفقرة التي لغتها العربية تأخذ dir="rtl" (ولو بدأت بكلمة إنجليزية)، وما سواها كما هو. */
+var RE_AR = /[\u0600-\u06FF]/g, RE_LAT = /[A-Za-z]/g, RE_STARTS_AR = /^[^A-Za-z\u0600-\u06FF]*[\u0600-\u06FF]/;
+function isArabicText(t){ t = String(t || ''); var ar = (t.match(RE_AR) || []).length; if (!ar) return false;
+  return RE_STARTS_AR.test(t) || ar >= (t.match(RE_LAT) || []).length * 2; }
+var INNER_BLOCK = { P:1, UL:1, OL:1, LI:1, DIV:1, TABLE:1, SMALL:1, H1:1, H2:1, H3:1, H4:1 };
+function ownLine(el){ var t = ''; el.childNodes.forEach(function(n){ if (n.nodeType === 3) t += n.nodeValue; else if (n.nodeType === 1 && !INNER_BLOCK[n.tagName]) t += n.textContent; }); return t; }
+function polishHtml(root){
+  $$('p,li,small,h1,h2,h3,h4,td,th,label,summary,blockquote', root).forEach(function(el){ if (!el.hasAttribute('dir') && isArabicText(ownLine(el))) el.setAttribute('dir', 'rtl'); });
+  /* رأس الجدول عنوان، والعناوين بالإنجليزي وحده (قرار 1 نوفمبر 2026)، وبالعربي كان يدفع العمود الأخير خارج الشاشة. */
+  $$('th', root).forEach(function(th){ if (!th.children.length) th.textContent = enOnly(th.textContent); });
+  /* .yes و.no مرنتان، فكل قطعة نص فيهما تصير عمودًا مستقلًا إن كان فيهما <b> أو <br>، فتُجمع القطع في عنصر واحد. */
+  $$('.yes,.no', root).forEach(function(el){ if (el.childNodes.length < 2) return; var wrap = doc.createElement('span'); while (el.firstChild) wrap.appendChild(el.firstChild); el.appendChild(wrap); });
 }
 function addKid(el, kid){ if (kid == null || kid === false) return; if (Array.isArray(kid)) { kid.forEach(function(x){ addKid(el, x); }); return; } el.append(kid.nodeType ? kid : String(kid)); }
 function put(el){ var kids = []; for (var i = 1; i < arguments.length; i++) kids.push(arguments[i]); var flat = []; (function walk(a){ a.forEach(function(x){ if (Array.isArray(x)) walk(x); else if (x != null && x !== false) flat.push(x.nodeType ? x : doc.createTextNode(String(x))); }); })(kids); el.replaceChildren.apply(el, flat); }
@@ -397,19 +411,40 @@ function reloadState(keepUi){
 }
 
 /* ---------- Human Pronunciation (Wikimedia Commons + Oxford Learner's Dictionary, NO Robotic TTS) ---------- */
+/* كل كلمة في الكورس: مفردات كل الدروس، ثم بنك الكلمات في content.js (كلمات المراجعة والنصوص والأفعال الشاذة)،
+   فكلمة مراجعة من درس سابق تجد ملف نطقها ورابطها، ولا يُخمَّن اسم ملف قد لا يكون موجودًا. */
+var COURSE_WORDS = null;
+function wordFiles(v){ return !v ? [] : (Array.isArray(v.wikiFiles) && v.wikiFiles.length) ? v.wikiFiles.slice() : v.wikiFile ? [v.wikiFile] : []; }
+function courseWords(){
+  if (COURSE_WORDS) return COURSE_WORDS;
+  var map = {};
+  function add(v){ if (!v || !v.en) return; var k = String(v.en).toLowerCase().trim(); if (!map[k] || (!wordFiles(map[k]).length && wordFiles(v).length)) map[k] = v; }
+  if (typeof LESSONS !== 'undefined') Object.keys(LESSONS).forEach(function(id){ var L = LESSONS[id]; (L.vocab || []).forEach(add); add(L.legalPhrase); });
+  var bank = (typeof DATA !== 'undefined' && DATA.wordBank) || {};
+  Object.keys(bank).forEach(function(k){ add(bank[k]); });
+  COURSE_WORDS = map;
+  return map;
+}
 function findVocabEntry(wordOrObj){
   if (!wordOrObj) return null;
   if (typeof wordOrObj === 'object') return wordOrObj;
   var k = String(wordOrObj).toLowerCase().trim();
-  return ALL_VOCAB.filter(function(v){ return v.en.toLowerCase() === k; })[0] || null;
+  return ALL_VOCAB.filter(function(v){ return v.en.toLowerCase() === k; })[0] || courseWords()[k] || null;
 }
+/* رابط أكسفورد: صفحة الكلمة إن عُرفت، وإلا بحث أكسفورد نفسه، وهو يصل من studying إلى study (كانت definition/studying تعطي 404).
+   والعبارة التي لا صفحة لها تُبحث بأطول كلماتها، لا بأولها: on the way home كانت تفتح on. */
 function oxUrl(wordOrObj){
   var v = findVocabEntry(wordOrObj);
-  var slug = v && v.oxfordSlug ? v.oxfordSlug : String(v ? v.en : (wordOrObj || '')).toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').split(/\s+/)[0];
-  if (!slug) return 'https://www.oxfordlearnersdictionaries.com/';
-  return 'https://www.oxfordlearnersdictionaries.com/definition/english/' + encodeURIComponent(slug);
+  /* #: موضع التعبير داخل الصفحة، كما في all_2#all_idmg_11 لـ at all. */
+  if (v && v.oxfordSlug) return 'https://www.oxfordlearnersdictionaries.com/definition/english/' + String(v.oxfordSlug).split('#').map(encodeURIComponent).join('#');
+  var words = String(v ? v.en : (wordOrObj || '')).toLowerCase().trim().replace(/[^a-z0-9\s'-]/g, '').split(/\s+/).filter(Boolean);
+  if (!words.length) return 'https://www.oxfordlearnersdictionaries.com/';
+  var main = words.reduce(function(a, b){ return b.length > a.length ? b : a; });
+  return 'https://www.oxfordlearnersdictionaries.com/search/english/direct/?q=' + encodeURIComponent(main);
 }
 function oxBtn(wordOrObj, label){
+  var entry = findVocabEntry(wordOrObj);
+  if (entry && entry.noOxford) return null;
   var a = h('a', { class:'ox-link', href:oxUrl(wordOrObj), target:'_blank', rel:'noopener noreferrer', 'aria-label':(label || 'Oxford Dictionary') }, 'Oxford ↗');
   a.addEventListener('click', function(e){ e.stopPropagation(); });
   return a;
@@ -433,19 +468,11 @@ var AUDIO = {
       return url;
     }).catch(function(){ AUDIO.cache[file] = fallback; return fallback; });
   },
+  /* لا تخمين لاسم ملف: الزر يظهر لكلمة لها تسجيل حقيقي معروف، وإلا فلا زر (sayBtn). */
   filesFor: function(target){
-    var v = findVocabEntry(target);
-    if (v) {
-      if (Array.isArray(v.wikiFiles) && v.wikiFiles.length) return v.wikiFiles.slice();
-      if (v.wikiFile) return [v.wikiFile];
-    }
-    if (typeof target === 'string') {
-      var words = target.toLowerCase().trim().replace(/[^a-z\s-]/g, '').split(/\s+/).filter(Boolean);
-      if (words.length >= 1 && words.length <= 4) {
-        return words.map(function(w){ return 'En-us-' + w + '.ogg'; });
-      }
-    }
-    return [];
+    var v = findVocabEntry(target), files = wordFiles(v);
+    if (files.length || !v || typeof target === 'string') return files;
+    return wordFiles(findVocabEntry(v.en));
   },
   playSeq: function(files, idx, onFail){
     if (idx >= files.length) return;
@@ -473,6 +500,7 @@ var AUDIO = {
   }
 };
 function sayBtn(target, label, cls){
+  if (typeof target !== 'function' && !AUDIO.filesFor(target).length) return null;
   var b = h('button', { class:'ib say ' + (cls || 'sm light'), type:'button', 'aria-label':label || 'Human Pronunciation' }, ico('speaker'));
   b.addEventListener('click', function(e){ e.stopPropagation(); AUDIO.play(typeof target === 'function' ? target() : target); });
   return b;
@@ -898,8 +926,10 @@ function showWord(el){ var en, ar, tag = '', v = null;
   if (el.classList.contains('core')) { v = ALL_VOCAB.filter(function(x){ return String(x.en || '').toLowerCase() === el.getAttribute('data-k'); })[0]; en = v ? v.en : el.textContent; ar = v ? v.ar : ''; tag = v ? ('Lesson word · ' + v.pos) : ''; }
   else { en = el.getAttribute('data-en') || el.textContent; ar = el.getAttribute('data-ar') || ''; }
   $('#dEn').textContent = en; $('#dAr').textContent = ar; $('#dTag').textContent = tag; $('#dTag').hidden = !tag;
-  var dOx = $('#dOx'); if (dOx) dOx.href = oxUrl(v || en);
-  $('#dSay').onclick = function(){ AUDIO.play(v || en); };
+  var entry = v || findVocabEntry(en), dOx = $('#dOx'), dSay = $('#dSay');
+  if (dOx) { dOx.href = oxUrl(entry || en); dOx.hidden = !!(entry && entry.noOxford); }
+  dSay.hidden = !AUDIO.filesFor(v || en).length;
+  dSay.onclick = function(){ AUDIO.play(v || en); };
   $$('.w.on').forEach(function(x){ x.classList.remove('on'); }); el.classList.add('on');
   $('#dict').hidden = false; clearTimeout(dictT); dictT = setTimeout(hideDict, 7000); }
 function hideDict(){ var d = $('#dict'); if (d) d.hidden = true; $$('.w.on').forEach(function(x){ x.classList.remove('on'); }); }
