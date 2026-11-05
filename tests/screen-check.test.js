@@ -10,7 +10,7 @@
     text      عنصر خارج الشاشة
     svg       نص في رسم خارج مربعه أو خارج الرسم، أو نصان متداخلان
     dir       فقرة عربية مرتبة من اليسار، فتظهر جملها معكوسة
-    pair      جملة في .yes أو .no مقسومة أعمدة
+    pair      جملة مقسومة أعمدة في .yes أو .no أو أي حاوية مرنة في الشرح
   ويخرج برمز 1 إن وُجد خطأ. الرسم والخط يُحمَّلان كما في الموقع، فالخطوط تأتي من Google إن توفر الاتصال.
 */
 const { chromium } = require('playwright');
@@ -79,6 +79,13 @@ function measure() {
     if (getComputedStyle(el).direction !== 'rtl') say('dir', clip(t));
   });
   document.querySelectorAll('#screen .yes, #screen .no').forEach(el => { if (visible(el) && el.childNodes.length > 1) say('pair', clip(el.textContent)); });
+  /* حاوية مرنة فيها نص حر مع عناصر مضمَّنة: كل قطعة تصير عمودًا مستقلًا، كما حدث في الدرس الرابع. */
+  document.querySelectorAll('#screen .xp *').forEach(el => {
+    if (el.closest('svg') || !visible(el) || !/flex|grid/.test(getComputedStyle(el).display)) return;
+    const free = [...el.childNodes].some(n => n.nodeType === 3 && n.nodeValue.trim());
+    const inline = [...el.children].some(c => /^(B|I|EM|STRONG|BDI|A|CODE|U)$/.test(c.tagName) || (c.tagName === 'SPAN' && getComputedStyle(c).display === 'inline'));
+    if (free && inline) say('pair', `split into columns: ${clip(el.textContent)}`);
+  });
   document.querySelectorAll('#screen svg').forEach(svg => {
     const vb = svg.viewBox && svg.viewBox.baseVal; if (!vb || !vb.width || !visible(svg)) return;
     const boxes = [...svg.querySelectorAll('rect')].map(r => r.getBBox()).filter(b => b.width > 30 && b.height > 14 && b.width < vb.width * 0.98);

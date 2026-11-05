@@ -750,6 +750,27 @@ function fakeGitHub(token) {
     await second.ctx.close();
   }
 
+  /* ---------------- 5 نوفمبر 2026: لا زر ميت في النطق والقاموس، ولا فقرة عربية معكوسة ---------------- */
+  {
+    const { ctx, page } = await newPage(null);
+    const asked = [];
+    await ctx.route(/commons\.wikimedia\.org/, r => { asked.push(decodeURIComponent(r.request().url())); return r.fulfill({ status: 200, contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': '*' }, body: '{}' }); });
+    await startApp(page);
+    await page.locator('.tp-card .btn').filter({ hasText: /Start|Continue/ }).first().click(); await sleep(250);
+    const words = [];
+    for (const w of ['studying', 'raining']) {
+      await page.locator('.gap-in:enabled').fill(w); await page.locator('.gap-in:enabled').press('Enter'); await sleep(200);
+      words.push({ ox: await page.locator('#screen .ox-link').first().getAttribute('href'), say: await page.locator('#screen .say').count() });
+      await page.locator('#screen .say').first().click(); await sleep(200);
+      await cta(page);
+    }
+    ok(words[0].ox.endsWith('/definition/english/study_2') && words[1].ox.endsWith('/definition/english/rain_2'), 'studying and raining open their real Oxford pages: ' + JSON.stringify(words));
+    ok(words.every(w => w.say === 1) && asked.some(u => u.includes('Sapaa-studying.wav')) && asked.some(u => u.includes('Vealhurl-raining.wav')), 'studying and raining play their real recordings: ' + asked.length);
+    ok(!asked.some(u => /En-us-(studying|raining)\.ogg/.test(u)), 'the engine no longer guesses a file name');
+    ok(page.errors.length === 0, 'no page errors (pronunciation): ' + page.errors.join(' | '));
+    await ctx.close();
+  }
+
   await browser.close(); srv.close();
   console.log(results.join('\n'));
   console.log('\n' + (results.length - fails) + '/' + results.length + ' passed');
