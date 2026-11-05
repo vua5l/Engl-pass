@@ -108,6 +108,7 @@ function serve(root) {
       await page.goto(URL0); await sleep(300);
       await page.evaluate(s => {
         localStorage.clear();
+        localStorage.setItem('ep4.reset', '2026-11-05');   // تصفير 5 نوفمبر تم، وإلا مسح المحرك الحالة التي يزرعها الاختبار
         const t = Date.now();
         localStorage.setItem('ep4.course', JSON.stringify({ v: 4, startedAt: t, cur: s.cur, ui: { view: 'home', welcomed: true } }));
         if (s.doneUnit1) DATA.unit1Lessons.filter(l => !l.test).forEach(l => localStorage.setItem('ep4.lesson.' + l.id, JSON.stringify({ v: 4, stamps: { recall: t, vocab: t, grammar: t, reading: t, writing: t, quiz: t } })));
