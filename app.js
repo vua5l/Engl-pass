@@ -27,17 +27,38 @@ function h(tag, attrs){
 }
 /* الصفحة من اليسار منذ 2 نوفمبر 2026، و<p> في نص الدرس الجاهز لا يمر بـ h()، فكانت الفقرة العربية تترتب من اليسار وتنعكس جملها.
    فكل نص جاهز يمر هنا: الفقرة التي لغتها العربية تأخذ dir="rtl" (ولو بدأت بكلمة إنجليزية)، وما سواها كما هو. */
-var RE_AR = /[\u0600-\u06FF]/g, RE_LAT = /[A-Za-z]/g, RE_STARTS_AR = /^[^A-Za-z\u0600-\u06FF]*[\u0600-\u06FF]/;
+var RE_ARABIC_ONE = /[\u0600-\u06FF]/, RE_AR = /[\u0600-\u06FF]/g, RE_LAT = /[A-Za-z]/g, RE_STARTS_AR = /^[^A-Za-z\u0600-\u06FF]*[\u0600-\u06FF]/;
 function isArabicText(t){ t = String(t || ''); var ar = (t.match(RE_AR) || []).length; if (!ar) return false;
   return RE_STARTS_AR.test(t) || ar >= (t.match(RE_LAT) || []).length * 2; }
+function isMixedLabel(t){ return /\s·\s/.test(t) && /[A-Za-z]/.test(t) && RE_ARABIC_ONE.test(t) && !RE_STARTS_AR.test(t); }
 var INNER_BLOCK = { P:1, UL:1, OL:1, LI:1, DIV:1, TABLE:1, SMALL:1, H1:1, H2:1, H3:1, H4:1 };
 function ownLine(el){ var t = ''; el.childNodes.forEach(function(n){ if (n.nodeType === 3) t += n.nodeValue; else if (n.nodeType === 1 && !INNER_BLOCK[n.tagName]) t += n.textContent; }); return t; }
+/* كلمات اللغة الأخرى داخل السطر تُعزل بـ <bdi>، وإلا انتقلت علامة السؤال في «Are you busy?» إلى أول الجملة،
+   وانعكس ترتيب عبارتين عربيتين متتاليتين داخل فقرة إنجليزية. */
+var AR_RUN = /[\u0600-\u06FF][\u0600-\u06FF\u064B-\u0652\s،؛؟]*[\u0600-\u06FF]|[\u0600-\u06FF]/g;
+function isolateRuns(root){
+  var walker = doc.createTreeWalker(root, NodeFilter.SHOW_TEXT), nodes = [], n;
+  while ((n = walker.nextNode())) nodes.push(n);
+  nodes.forEach(function(t){ var host = t.parentNode;
+    if (!host.closest || host.closest('bdi,svg,button,.w') || !t.nodeValue.trim()) return;
+    var mark = host.closest('[dir]'), rtl = !!mark && mark.getAttribute('dir') === 'rtl';
+    if (mark && mark.getAttribute('dir') === 'auto') return;
+    var re = rtl ? LAT : AR_RUN, s = t.nodeValue, last = 0, m, frag = null; re.lastIndex = 0;
+    while ((m = re.exec(s))) { frag = frag || doc.createDocumentFragment();
+      if (m.index > last) frag.append(s.slice(last, m.index));
+      var b = doc.createElement('bdi'); if (rtl) b.className = 'en'; else b.setAttribute('dir', 'rtl'); b.textContent = m[0]; frag.append(b);
+      last = m.index + m[0].length; }
+    if (frag) { if (last < s.length) frag.append(s.slice(last)); host.replaceChild(frag, t); } });
+}
 function polishHtml(root){
   $$('p,li,small,h1,h2,h3,h4,td,th,label,summary,blockquote', root).forEach(function(el){ if (!el.hasAttribute('dir') && isArabicText(ownLine(el))) el.setAttribute('dir', 'rtl'); });
-  /* رأس الجدول عنوان، والعناوين بالإنجليزي وحده (قرار 1 نوفمبر 2026)، وبالعربي كان يدفع العمود الأخير خارج الشاشة. */
-  $$('th', root).forEach(function(th){ if (!th.children.length) th.textContent = enOnly(th.textContent); });
+  /* العناوين بالإنجليزي وحده (قرار 1 نوفمبر 2026): كان «Question · السؤال» في رأس الجدول يدفع العمود الأخير خارج الشاشة،
+     وعنوان مثل «The -s moves to Does · الـ s تنتقل إلى Does:» يُعكس ترتيب جزئه العربي داخل سطر إنجليزي. */
+  $$('th,b,h3,h4,.xtag', root).forEach(function(el){ if (el.children.length || !isMixedLabel(el.textContent)) return;
+    var t = el.textContent; el.textContent = enOnly(t.replace(/:\s*$/, '')) + (/:\s*$/.test(t) ? ':' : ''); });
   /* .yes و.no مرنتان، فكل قطعة نص فيهما تصير عمودًا مستقلًا إن كان فيهما <b> أو <br>، فتُجمع القطع في عنصر واحد. */
   $$('.yes,.no', root).forEach(function(el){ if (el.childNodes.length < 2) return; var wrap = doc.createElement('span'); while (el.firstChild) wrap.appendChild(el.firstChild); el.appendChild(wrap); });
+  isolateRuns(root);
 }
 function addKid(el, kid){ if (kid == null || kid === false) return; if (Array.isArray(kid)) { kid.forEach(function(x){ addKid(el, x); }); return; } el.append(kid.nodeType ? kid : String(kid)); }
 function put(el){ var kids = []; for (var i = 1; i < arguments.length; i++) kids.push(arguments[i]); var flat = []; (function walk(a){ a.forEach(function(x){ if (Array.isArray(x)) walk(x); else if (x != null && x !== false) flat.push(x.nodeType ? x : doc.createTextNode(String(x))); }); })(kids); el.replaceChildren.apply(el, flat); }
@@ -61,7 +82,7 @@ function arRevealNodes(nodes){ var box = arReveal(' ', false); var inner = box.q
 function arReveal(arContent, isHtml){
   if (!arContent) return null;
   var box = h('div', { class:'ar-box', hidden:true, dir:'rtl', lang:'ar' });
-  if (isHtml) box.innerHTML = arContent; else box.innerHTML = '<p>' + arHTML(arContent) + '</p>';
+  if (isHtml) { box.innerHTML = arContent; isolateRuns(box); } else box.innerHTML = '<p>' + arHTML(arContent) + '</p>';
   var btn = h('button', { class:'ar-btn', type:'button', 'aria-expanded':'false' }, 'اعرض بالعربي');
   btn.addEventListener('click', function(e){
     e.stopPropagation();

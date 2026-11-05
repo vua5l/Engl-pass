@@ -258,8 +258,8 @@ LESSONS.u0l1 = {
       enHtml:
         '<h2 class="bi-h"><span class="en" dir="ltr">The Golden Rule: Be vs. Action Verbs</span><small>القاعدة الذهبية: متى نضع am / is / are؟</small></h2>' +
         '<p class="en-p" dir="ltr">In English, every sentence needs a verb. We use <b>am / is / are</b> when there is <b>no other verb</b> (with a noun, an adjective, or a place). Never put <b>am / is / are</b> before a base verb (✗ I am work).</p>' +
-        '<div class="xbox"><span class="xtag s" dir="ltr">BE · Noun / Adjective / Place (بلا فعل عادي)</span><p class="xen">I am a student. · She is tired. · We are in Riyadh.</p></div>' +
-        '<div class="xbox"><span class="xtag c" dir="ltr">DO · Action Verb (مع فعل عادي)</span><p class="xen">I study law. · She works here. · We live in Riyadh.</p></div>' +
+        '<div class="xbox"><span class="xtag s" dir="ltr">BE · Noun / Adjective / Place</span><p class="xen">I am a student. · She is tired. · We are in Riyadh.</p></div>' +
+        '<div class="xbox"><span class="xtag c" dir="ltr">DO · Action Verb</span><p class="xen">I study law. · She works here. · We live in Riyadh.</p></div>' +
         BE_DO_SVG,
       arHtml:
         '<p>الجملة الاسمية في العربية (مثل: «أنا طالب»، «هي متعبة»، «نحن في الرياض») ليس فيها فعل، لكن الإنجليزية لا تقبل جملة بلا فعل، فنضع فيها <b>am / is / are</b>، وهذه صيغ <b>فعل <bdi class="en">be</bdi></b>.</p>' +
@@ -317,7 +317,7 @@ LESSONS.u0l1 = {
         '<h2 class="bi-h"><span class="en" dir="ltr">Common Arab Mistakes</span><small>أخطاء يقع فيها كثير من العرب (من التشخيص)</small></h2>' +
         '<ul class="mist">' +
           '<li><span class="no">I am study law at university.</span><span class="yes">I study law at university.</span><p class="en-m" dir="ltr">Never put <b>am / is / are</b> before a base verb in Present Simple.</p><p>لا نضع <bdi class="en">am / is / are</bdi> قبل الفعل الأصلي في المضارع البسيط.</p></li>' +
-          '<li><span class="no">Are you agree with this point?</span><span class="yes">Do you agree with this point?</span><p class="en-m" dir="ltr"><b>agree</b> is a verb (not an adjective), so we ask with <b>Do / Does</b>.</p><p>كلمة <bdi class="en">agree</bdi> فعل بمعنى «يوافق» وليست صفة، لذلك نسأل عنها بـ <bdi class="en">Do you agree?</bdi> لا بـ <bdi class="en">Are you agree?</bdi>.</p></li>' +
+          '<li><span class="no">Are you agree with this point?</span><span class="yes">Do you agree with this point?</span><p class="en-m" dir="ltr"><b>agree</b> is a verb (not an adjective), so we ask with <b>Do / Does</b>.</p><p>كلمة <bdi class="en">agree</bdi> فعل بمعنى «يوافق» وليست صفة، لذلك نسأل عنها بـ <bdi class="en">Do you agree?</bdi> لا بـ <bdi class="en">Are you agree?</bdi></p></li>' +
           '<li><span class="no">My brother lawyer in Jeddah.</span><span class="yes">My brother is a lawyer in Jeddah.</span><p class="en-m" dir="ltr">English sentences cannot omit <b>is</b>, and singular jobs need <b>a / an</b>.</p><p>لا بد من <bdi class="en">is</bdi> في الجملة الاسمية، ولا بد من <bdi class="en">a</bdi> قبل المهنة المفردة.</p></li>' +
           '<li><span class="no">Where you work?</span><span class="yes">Where do you work?</span><p class="en-m" dir="ltr">Questions with action verbs need the helper verb <b>do / does</b> before the subject.</p><p>السؤال بفعل عادي يحتاج <bdi class="en">do</bdi> أو <bdi class="en">does</bdi> قبل الفاعل.</p></li>' +
         '</ul>'

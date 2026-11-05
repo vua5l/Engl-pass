@@ -273,7 +273,7 @@ LESSONS.u0l2 = {
         '<tr><td>Question (?)</td><td><span class="hs">Is there</span> a witness?</td><td><span class="hc">Are there</span> any witnesses?</td></tr>' +
         '<tr><td>Short Answer</td><td>Yes, <span class="hs">there is</span>. / No, <span class="hs">there isn\'t</span>.</td><td>Yes, <span class="hc">there are</span>. / No, <span class="hc">there aren\'t</span>.</td></tr></tbody></table></div>',
       arHtml:
-        '<p>عند السؤال بكلمة <bdi class="en">any</bdi> مع اسم جمع (مثل <bdi class="en">restaurants, witnesses, mistakes</bdi>) يجب أن نسأل بـ <b>Are there any…?</b> وليس <bdi class="en">Is there any…?</bdi>.</p>'
+        '<p>عند السؤال بكلمة <bdi class="en">any</bdi> مع اسم جمع (مثل <bdi class="en">restaurants, witnesses, mistakes</bdi>) يجب أن نسأل بـ <b>Are there any…?</b> وليس <bdi class="en">Is there any…?</bdi></p>'
     },
     {
       tEn: "This / That vs. These / Those",

@@ -52,6 +52,11 @@
  *   Wiring (content.js lists and lessons/): a lesson file that no unit list mentions (ERROR), an open:true entry whose
  *   file or data is missing (ERROR), lesson data that is not open:true or not listed (WARN).
  *   Extras: errCat names, hint-vs-answer, word-order chips, emoji.
+ *   Multiple choice, the answer must not stand out by length: a correct option of 3 words or more (or 18 characters or
+ *   more) that is both 15% longer and 4 characters longer than the longest wrong option (ERROR, in every MCQ of the
+ *   course); a lesson whose correct option is the longest in more than 5 of its comprehension questions (WARN); a
+ *   predict question whose correct option sits in one position in more than half of the lessons (WARN).
+ *   Arabic terms: words the learner did not understand and replaced on 5 Nov 2026 (OLD_TERMS) must not come back (ERROR).
  */
 const fs = require('fs');
 const path = require('path');
@@ -80,6 +85,12 @@ const LEGAL_RE = new RegExp('\\b(?:laws?|legal(?:ly)?|illegal|lawyers?|attorneys
 const NOT_LEGAL_SIGN_RE = /\b(?:road|traffic|street|stop|warning|exit|shop)\s+signs?\b|\bsign\s+(?:up|in|out|language)\b/gi;
 const LEGAL_CASE_RE = /\b(?:court|legal|criminal|civil|law|lawyer's|client's)\s+cases?\b|\bcases?\s+(?:file|number|against)\b/i;
 const EMOJI_RE = /\p{Emoji_Presentation}|\p{Extended_Pictographic}\uFE0F/u;
+
+/* Arabic terms replaced on 5 Nov 2026 by the learner's choice: be -> فعل be, action verb -> فعل عادي,
+   collocation -> تعبير ثابت, state verb -> فعل لا يأخذ ing. */
+const OLD_TERMS = /فعل الكون|فعل كون|فعل حدث|فعل الحدث|أفعال الحدث|أفعال حدث|فعل حالة|فعل الحالة|أفعال الحالة|متلازم/;
+/* Multiple choice: the correct option may exceed the longest wrong option by less than this. */
+const LENGTH_CUE = { ratio: 1.15, chars: 4, minWords: 3, minChars: 18, lessonLongest: 5 };
 
 // ------------------------------------------------------------------ CLI
 const USAGE = 'Usage: node content-check.js [siteRoot] [--unit N] [--quiet]\n' +
@@ -465,8 +476,16 @@ function checkMcq(log, field, x, keys) {
     if (seen.has(key)) log.error(field, `options ${seen.get(key)} and ${i} are identical (${q(o)})`);
     else seen.set(key, i);
   });
+  if (Number.isInteger(x.a) && lengthCue(opts, x.a)) log.error(field, `the correct option stands out by length: ${q(clip(opts[x.a], 50))} has ${opts[x.a].length} characters, the longest wrong option ${longestWrong(opts, x.a)}; shorten it or lengthen the others`);
   return true;
 }
+const longestWrong = (opts, a) => Math.max(...opts.filter((_, i) => i !== a).map(o => o.length));
+function lengthCue(opts, a) {
+  const o = String(opts[a] || ''), w = longestWrong(opts, a);
+  return o.length > w * LENGTH_CUE.ratio && o.length - w >= LENGTH_CUE.chars &&
+    (o.trim().split(/\s+/).length >= LENGTH_CUE.minWords || o.length >= LENGTH_CUE.minChars);
+}
+const correctIsLongest = (opts, a) => opts[a] != null && opts[a].length > longestWrong(opts, a);
 
 // ------------------------------------------------------------------ typed items (checks 4, 5, 6)
 /* Typed entry: {x, field, recall}. Recall items only compare the typed word (no pre/post stripping), so they are
@@ -762,6 +781,9 @@ function checkComprehension(log, part, name) {                           // read
     needWhy(log, f, x);
   });
   const p = part.predict;
+  const longest = (isArr(part.questions) ? part.questions : []).concat(p ? [{ opts: p.optsEn, a: p.a }] : [])
+    .filter(x => !x.tf && strList(x.opts, 2) && Number.isInteger(x.a) && correctIsLongest(x.opts, x.a)).length;
+  if (longest > LENGTH_CUE.lessonLongest) log.warn(`${name}.questions`, `the correct option is the longest in ${longest} questions; a learner can guess by length`);
   if (!p) log.warn(`${name}.predict`, 'missing the main-idea (predict) question');
   else {
     checkMcq(log, `${name}.predict`, { s: p.qEn, opts: p.optsEn, a: p.a });
@@ -1300,6 +1322,31 @@ function sanitizeItems(S) {
 }
 
 // ------------------------------------------------------------------ main
+/* The words the learner did not understand must not come back, in any lesson or in the course data. */
+function checkOldTerms(S, ids) {
+  const files = new Set([S.dataFile, S.engine]);
+  ids.forEach(id => files.add(S.lessonFile[id]));
+  for (const f of files) {
+    if (!f) continue;
+    let text = '';
+    try { text = fs.readFileSync(path.join(ROOT, f), 'utf8'); } catch (_) { continue; }
+    text.split('\n').forEach((line, i) => {
+      const m = OLD_TERMS.exec(line);
+      if (m) logger(f, '').error(`line ${i + 1}`, `old Arabic term "${m[0]}": write فعل be، فعل عادي، تعبير ثابت، or فعل لا يأخذ ing`);
+    });
+  }
+}
+/* Predict questions: the correct option must not sit in the same place in most lessons. */
+function checkPredictSpread(S, ids) {
+  const seats = [];
+  ids.forEach(id => { const L = S.LESSONS[id], p = (L.reading || L.listening || {}).predict; if (p && Number.isInteger(p.a)) seats.push(p.a); });
+  if (seats.length < 6) return;
+  [0, 1, 2].forEach(a => {
+    const n = seats.filter(x => x === a).length;
+    if (n > seats.length / 2) logger('', '').warn('predict', `the correct option is option ${a + 1} in ${n} of ${seats.length} predict questions`);
+  });
+}
+
 function main() {
   const S = loadSite(ROOT);
   loadChecker(S);
@@ -1314,6 +1361,8 @@ function main() {
   checkWiring(S);
   const ids = S.cross.order.filter(id => inScope(S.LESSONS[id].unit));
   ids.forEach(id => checkLesson(id, S.LESSONS[id], S));
+  checkOldTerms(S, ids);
+  checkPredictSpread(S, ids);
   const ut = (S.DATA && S.DATA.unitTests) || {}, pre = (S.DATA && S.DATA.preTests) || {};
   const uKeys = Object.keys(ut).filter(inScope), pKeys = Object.keys(pre).filter(inScope);
   uKeys.forEach(u => checkUnitTest(S, u, ut[u]));
