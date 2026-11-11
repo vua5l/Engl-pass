@@ -1158,7 +1158,8 @@ function fakeGitHub(token, opts) {
         if (f === 'story') { const p = el.querySelector('.rf-body p:first-child'); return { ok: t('.rf-k') === 'A SHORT STORY' && q('.rf-sep') === 1 && !!p && getComputedStyle(p, '::first-letter').float === 'left' && !/\*\*\*/.test(el.textContent), sep: q('.rf-sep') }; }
         const outs = el.querySelectorAll('.msg.out'), ins = el.querySelectorAll('.msg.in');
         const gl = el.querySelector('.msg.out .w.gl'), glc = gl ? getComputedStyle(gl).borderBottomColor : '';
-        return { ok: !!gl && glc !== 'rgb(90, 107, 124)' && t('.rf-chead b') === 'Lama & Sophie' && t('.rf-chead small') === 'A special night' && t('.rf-chead .av') === 'LS' && t('.day') === 'TODAY' && outs.length > 0 && ins.length > 0 &&
+        const glIn = el.querySelector('.msg.out .ps .w.gl, .msg.out .pc .w.gl');
+        return { ok: !!gl && glc !== 'rgb(90, 107, 124)' && (!glIn || getComputedStyle(glIn).borderBottomColor === 'rgb(90, 107, 124)') && t('.rf-chead b') === 'Lama & Sophie' && t('.rf-chead small') === 'A special night' && t('.rf-chead .av') === 'LS' && t('.day') === 'TODAY' && outs.length > 0 && ins.length > 0 &&
           [...outs].every(m => !m.querySelector('.who')) && [...ins].every(m => (m.querySelector('.who') || {}).textContent === 'Lama') && q('.msg .t') === outs.length + ins.length && !/(Lama|Sophie):/.test(el.textContent), outs: outs.length, ins: ins.length, glc };
       }, f);
       ok(s.ok, f + ': the card has the parts of the approved sample: ' + JSON.stringify(s));

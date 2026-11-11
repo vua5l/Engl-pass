@@ -876,3 +876,6 @@ a.btn{text-decoration:none}
 .rf-chat .out .w.on{background:var(--honey);color:var(--dark-deep)}
 .rf-chat.hl-on .out .pt{outline-color:var(--on-dark-2)}
 .gap-in.fix-in{display:block;resize:none;line-height:1.4;overflow:hidden;min-height:2.8em}
+/* داخل العبارة الملونة في فقاعة المتعلم الداكنة يعود خط الكلمة إلى لونه، لأن خلفية العبارة فاتحة. */
+.rf-chat.hl-on .out .ps .w,.rf-chat.hl-on .out .pc .w{border-bottom-color:var(--muted)}
+.rf-chat.hl-on .out .ps .w.core,.rf-chat.hl-on .out .pc .w.core{border-bottom-color:var(--dark)}

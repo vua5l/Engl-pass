@@ -2982,7 +2982,7 @@ function stUnitTestQ(st, ctl){
   return head.concat(nodes);
 }
 /* ما كتبه المتعلم خطأً في سؤال كتابة، مثالًا لنمطه في مختبر الأخطاء (يظهر فيه مشطوبًا). */
-function typedWhole(q, v){ var nv = norm(v), np = norm(q.pre), nq = norm(q.post); return !!((np && nv.indexOf(np + ' ') === 0) || (nq && nv.length > nq.length && nv.slice(-nq.length) === nq)); }
+function typedWhole(q, v){ var nv = norm(v), np = norm(q.pre), nq = norm(q.post); return !!((np && nv.indexOf(np + ' ') === 0) || (nq && nv.length > nq.length + 1 && nv.slice(-(nq.length + 1)) === ' ' + nq)); }
 function writeSample(q, v){ var k = writeKind(q);
   if (k === 'order') return Array.isArray(v) ? v.map(function(i){ return (q.chips || [])[i]; }).join(' ') : writeText(q);
   /* من كتب الجملة كلها: تبقى كما كتبها، فلا يتكرر ما قبل الفراغ وما بعده. */
