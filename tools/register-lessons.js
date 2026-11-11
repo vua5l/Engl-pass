@@ -22,6 +22,8 @@
  *      characters of the SHA-256 of the file>: an edited file always gets a new version, and an unchanged
  *      file keeps its version, so the phone downloads only what changed.
  * Nothing else in index.html changes, and a second run changes nothing.
+ *   5. map.html, the build map the learner opens on his phone (what is built and what is left), is written from
+ *      the same data by tests/course-map.js --page, so it is never older than the site (since 11 Nov 2026).
  *
  * Plain Node (22), no npm packages. Exit code: 0 written or up to date, 1 --check found differences, 2 error.
  * Other scripts: require('../tools/register-lessons.js').generateIndexHtml(root) returns the text this tool
@@ -158,7 +160,9 @@ function main(argv) {
   let r;
   try { r = build(root); } catch (e) { console.error(`ERROR ${e.message}`); return 2; }
   for (const w of r.warnings) console.error(`WARN  ${w}`);
-  if (r.html === r.before) { console.log(`index.html is up to date (${r.lessons.length} lessons)`); return 0; }
+  const mapCode = mapPage(root, check);
+  if (mapCode === 2) return 2;
+  if (r.html === r.before) { console.log(`index.html is up to date (${r.lessons.length} lessons)`); return mapCode; }
   const diff = lineDiff(r.before, r.html);
   if (check) {
     console.log(`index.html is not up to date (${diff.length} lines differ); run: node tools/register-lessons.js`);
@@ -168,6 +172,21 @@ function main(argv) {
   fs.writeFileSync(r.indexPath, r.html);
   console.log(`index.html updated (${r.lessons.length} lessons, ${diff.length} lines changed):`);
   diff.forEach(d => console.log('  ' + d));
+  return 0;
+}
+
+/* map.html from tests/course-map.js --page: written on a normal run, compared on --check (0 same or written, 1 differs, 2 error). */
+function mapPage(root, check) {
+  const tool = path.join(root, 'tests', 'course-map.js'), out = path.join(root, 'map.html');
+  if (!fs.existsSync(tool)) return 0;
+  let page;
+  try { page = require('child_process').execFileSync(process.execPath, [tool, root, '--page'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }); }
+  catch (e) { console.error(`ERROR map.html: tests/course-map.js failed (${(e.message || '').split('\n')[0]})`); return 2; }
+  const before = fs.existsSync(out) ? fs.readFileSync(out, 'utf8') : '';
+  if (before === page) return 0;
+  if (check) { console.log('map.html is not up to date; run: node tools/register-lessons.js'); return 1; }
+  fs.writeFileSync(out, page);
+  console.log('map.html updated');
   return 0;
 }
 

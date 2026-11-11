@@ -312,7 +312,7 @@ function seedErrorLab(){
   });
   return lab;
 }
-function GDEFAULT(){ return { v:4, updatedAt:0, startedAt:0, cur:null, ui:{ view:'home', welcomed:false, part:null, wordsTab:'vocab', irrGroup:'all', reviewTab:'lab' }, mistakes:{}, errorLab:seedErrorLab(), irrSr:{}, expressSessions:0, practiceMins:0, camblyLogs:[], unitTests:{}, preTests:{} }; }
+function GDEFAULT(){ return { v:4, updatedAt:0, startedAt:0, cur:null, ui:{ view:'home', welcomed:false, part:null, wordsTab:'vocab', irrGroup:'all', reviewTab:'lab' }, mistakes:{}, errorLab:seedErrorLab(), irrSr:{}, expressSessions:0, practiceMins:0, camblyLogs:[], freeLogs:[], unitTests:{}, preTests:{} }; }
 function LDEFAULT(){ return { v:4, updatedAt:0, cards:{}, match:false, read1Done:false, listen1Done:false, ans:{}, stamps:{}, quiz:{ best:null, attempts:0, last:null }, writing:{ text:'', fb:null }, writingDone:false, predict:null, revealed:false, hl:false, step:{} }; }
 function normalizeG(o){ var r = Object.assign(GDEFAULT(), isObj(o) ? o : {});
   ['mistakes','errorLab','irrSr','unitTests','preTests'].forEach(function(k){ if (!isObj(r[k])) r[k] = {}; });
@@ -322,6 +322,7 @@ function normalizeG(o){ var r = Object.assign(GDEFAULT(), isObj(o) ? o : {});
   if (typeof r.expressSessions !== 'number' || r.expressSessions < 0) r.expressSessions = 0;
   if (typeof r.practiceMins !== 'number' || r.practiceMins < 0) r.practiceMins = 0;
   if (!Array.isArray(r.camblyLogs)) r.camblyLogs = [];
+  if (!Array.isArray(r.freeLogs)) r.freeLogs = [];
   var ui = Object.assign({ view:'home', welcomed:false, part:null, wordsTab:'vocab', irrGroup:'all', reviewTab:'lab' }, isObj(r.ui) ? r.ui : {});
   if (ui.wordsTab !== 'vocab' && ui.wordsTab !== 'irregular') ui.wordsTab = 'vocab';
   if (!ui.irrGroup) ui.irrGroup = 'all';
@@ -704,7 +705,8 @@ function todayTools(){
   return h('div', { class:'tools' },
     h('button', { class:'tool', type:'button', on:{ click:function(){ openSession('express'); } } }, ico('clock'), h('span', {}, 'Express 15 min')),
     h('button', { class:'tool', type:'button', on:{ click:openCambly } }, ico('chat'), h('span', {}, 'Cambly card')),
-    SAMPLE ? h('button', { class:'tool', type:'button', on:{ click:openAsk } }, ico('help'), h('span', {}, 'Ask the teacher')) : null);
+    h('button', { class:'tool', type:'button', on:{ click:openFreeLog } }, ico('book'), h('span', {}, 'Free reading')),
+    h('button', { class:'tool', type:'button', on:{ click:openAsk } }, ico('help'), h('span', {}, 'Ask the teacher')));
 }
 function vHome(){
   return h('section', { class:'scr gut today' }, header(), journeyCard(), todayLesson(), unitTestBanner(), weekMistakeBanner(), todayTools());
@@ -1498,7 +1500,7 @@ function stExplain(i, ctl){ var c = GCARDS[i];
   return [
     label('Grammar Explanation · ' + (i + 1) + ' of ' + GCARDS.length, 'شرح القاعدة · ' + (i + 1) + ' من ' + GCARDS.length),
     box,
-    SAMPLE ? h('button', { class:'link', type:'button', style:'align-self:flex-start;color:var(--dark);font-weight:700', on:{ click:function(){ openAsk(); } } }, 'Need help? Ask the Teacher') : null
+    h('button', { class:'link', type:'button', style:'align-self:flex-start;color:var(--dark);font-weight:700', on:{ click:function(){ openAsk(); } } }, 'Need help? Ask the Teacher')
   ];
 }
 
@@ -1922,16 +1924,17 @@ function localWritingCheck(text){
     sMist.push({ wrong:'One long connected sentence', right:minSentences() + ' separate sentences with periods (.)', why:'Split long sentences with a period (.) and start the next sentence with a capital letter.' });
   }
   var activeCks = (D.writing && Array.isArray(D.writing.checks)) ? D.writing.checks : CHECKS;
-  var met = activeCks.filter(function(c){ return c.ok(a, text); }).length, all = met >= activeCks.length, four = activeCks.length === 4;
-  var score = Math.max(4, Math.min(10, 6 + met - gMist.length - Math.min(2, sMist.length)));
+  var met = activeCks.filter(function(c){ return c.ok(a, text); }).length, all = met >= activeCks.length;
+  /* فحص محدود بلا درجة: درجته القديمة كانت تعطي 10 من 10 لفقرة لم يصححها أحد. */
   return {
-    score: score,
-    praise: all ? (four ? 'Great job meeting all 4 task criteria!' : 'Great job meeting all the task criteria!') : 'Good effort practicing today\'s grammar and vocabulary!',
+    src: 'local',
+    score: null,
+    praise: all ? 'All the task checks are met.' : 'Some task checks are not met yet: see the list above.',
     grammarMistakes: gMist,
     spellingMistakes: sMist,
     mistakes: gMist.concat(sMist),
     corrected: '',
-    next: !all ? (four ? 'Try to complete all 4 checklist items above for a higher score.' : 'Try to complete all the checklist items above for a higher score.') : 'Keep separating each sentence clearly with a period and capital letter.'
+    next: 'For a real correction, use Copy for Correction, then paste the reply below.'
   };
 }
 
@@ -1949,12 +1952,28 @@ function stWriting(ctl){
     return a; }
   var t1, t2;
   ta.addEventListener('input', function(){ clearTimeout(t1); t1 = setTimeout(paint, 120); clearTimeout(t2); t2 = setTimeout(function(){ S.writing.text = ta.value; touch(); }, 900); });
-  var fix = h('button', { class:'btn', type:'button' }, ico('spark'), biBtn('Instant Check (Grammar vs. Spelling)', 'تصحيح فوري (يفصل القواعد عن الإملاء)'));
-  var copy = h('button', { class:'btn out', type:'button' }, ico('copy'), biBtn('Copy for Chat', 'نسخ للمحادثة'));
+  var fix = h('button', { class:'btn', type:'button', id:'wCheck' }, ico('spark'), biBtn(SAMPLE ? 'Correct My Paragraph' : 'Quick Check', SAMPLE ? 'صحّح فقرتي' : 'فحص سريع'));
+  var copy = h('button', { class:'btn out', type:'button', id:'wCopy' }, ico('copy'), biBtn('Copy for Correction', 'نسخ للتصحيح'));
   fix.addEventListener('click', function(){ correctWriting(ta, fix, fbBox); });
-  copy.addEventListener('click', function(){ var text = ta.value.trim(); if (!text) { toast('Paragraph is empty.'); return; }
-    var payload = 'صحّح لي فقرة درس «' + (D.en || lessonTag(curLessonId)) + '» من جواز الإنجليزية (مع فصل أخطاء الإملاء عن القواعد):\n\n' + text, fallback = function(){ ta.focus(); ta.select(); toast('Text selected — copy from your device menu.'); };
-    try { navigator.clipboard.writeText(payload).then(function(){ toast('Copied! Paste it in chat.'); }, fallback); } catch (e) { fallback(); } });
+  /* التصحيح الحقيقي خارج claude.ai: تُنسخ الفقرة مع طلب ثابت إلى Gemini، ويُلصق رده هنا فيُعرض ويُسجَّل في مختبر الأخطاء. */
+  var pasteIn = h('textarea', { class:'paste-in', id:'wPaste', rows:'4', dir:'ltr', placeholder:'Paste the whole reply here…', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', 'aria-label':'The reply you copied · الرد الذي نسخته' });
+  var pasteGo = h('button', { class:'btn sm', type:'button', id:'wPasteGo' }, ico('check'), biBtn('Show Correction', 'اعرض التصحيح'));
+  var pasteBox = h('details', { class:'model paste' },
+    h('summary', {}, 'Paste the Correction'),
+    instr('Tap Copy for Correction, paste it in Gemini and send. Then copy the whole reply and paste it here.', 'اضغط «نسخ للتصحيح»، والصقه في Gemini وأرسله، ثم انسخ رده كله والصقه هنا.'),
+    h('a', { class:'btn out sm', href:GEMINI_URL, target:'_blank', rel:'noopener noreferrer' }, 'Open Gemini ↗'),
+    pasteIn, pasteGo);
+  copy.addEventListener('click', function(){ var text = ta.value.trim(); if (analyze(text).words < 12) { toast('Paragraph is too short to correct.'); return; }
+    S.writing.text = ta.value; S.writing.sent = text; touch(); pasteBox.open = true;
+    copyText(WPROMPT(fixQuotes(text)), 'Copied! Paste it in Gemini, then paste the reply below.'); });
+  pasteGo.addEventListener('click', function(){
+    var fb = parsePastedFeedback(pasteIn.value);
+    if (!fb) { toast('Could not read this reply. Copy all of it, from { to }.'); return; }
+    var n = labFromFeedback(fb, S.writing.sent || ta.value);
+    S.writing.fb = fb; S.writing.text = ta.value; touch(); updateProgress(); SYNC.soon();
+    pasteIn.value = ''; pasteBox.open = false; fbBox.hidden = false; paintFeedback(fbBox, fb);
+    toast(n ? 'Correction saved: ' + n + ' mistake(s) added to your Error Lab.' : 'Correction saved.');
+    try { fbBox.scrollIntoView({ block:'start', behavior:RM ? 'auto' : 'smooth' }); } catch (e) {} });
   ctl.set(S.writingDone ? 'التالي' : 'إنهاء المهمة', true, function(){ var a = analyze(ta.value); if (a.sentences < minSentences()) { toast('Write at least ' + minSentences() + ' separate sentences ending with a period (.).'); return; } S.writing.text = ta.value; S.writingDone = true; touch(); updateProgress(); nextStep(); });
   if (S.writing.fb) { fbBox.hidden = false; paintFeedback(fbBox, S.writing.fb); }
   paint();
@@ -1967,7 +1986,8 @@ function stWriting(ctl){
       checks),
     ta, count, runOnWarn,
     h('div', { class:'wbtns' }, fix, copy),
-    SAMPLE ? h('p', { class:'fine' }, 'Instant check separates Grammar & Usage from Spelling mistakes.') : null,
+    SAMPLE ? h('p', { class:'fine' }, 'Correction separates Grammar & Usage from Spelling mistakes.') : null,
+    pasteBox,
     fbBox,
     h('details', { class:'model' },
       h('summary', {}, 'Model Answer'),
@@ -1981,6 +2001,7 @@ function writingModelLegend(W, src){
   if (W.legendEn || W.legendAr) return W.legendEn || W.legendAr;
   return /<<[sc]:/.test(src || '') ? 'Highlighted words show today\'s grammar and lesson words' : '';
 }
+function isLocalFb(fb){ return !fb || fb.src === 'local' || (!fb.src && !fb.at); }
 function paintFeedback(box, fb){
   var gMist = Array.isArray(fb.grammarMistakes) ? fb.grammarMistakes : (Array.isArray(fb.mistakes) ? fb.mistakes.filter(function(m){ return m.kind !== 'spelling'; }) : []);
   var sMist = Array.isArray(fb.spellingMistakes) ? fb.spellingMistakes : (Array.isArray(fb.mistakes) ? fb.mistakes.filter(function(m){ return m.kind === 'spelling'; }) : []);
@@ -1991,16 +2012,24 @@ function paintFeedback(box, fb){
       return h('li', {}, h('p', { class:'fx' }, h('s', {}, m.wrong), h('span', { 'aria-hidden':'true' }, '←'), h('b', {}, m.right)), whyNode);
     }));
   }
+  /* الفحص الآلي يقول ما هو، بلا درجة. ورد قديم محفوظ بلا مصدر ولا وقت كان من الفحص الآلي. */
+  var local = isLocalFb(fb);
+  var praiseNode = String(fb.praise || '').indexOf(' · ') >= 0 ? biNode(fb.praise.split(' · ')[0], fb.praise.split(' · ')[1]) : h('p', { style:'font-weight:600', html:arHTML(fb.praise) });
+  var top = local
+    ? h('div', { class:'fbk-top' }, h('div', {}, h('p', { class:'st-lbl' }, 'Quick Check'), biNode('Automatic and limited: it finds a few common mistakes only. It is not a correction.', 'فحص آلي محدود: يكشف بعض الأخطاء الشائعة فقط، وليس تصحيحًا.'), praiseNode))
+    : h('div', { class:'fbk-top' }, typeof fb.score === 'number' ? ring(fb.score, 10) : null, h('div', {}, h('p', { class:'st-lbl' }, 'Feedback from ' + (fb.by || 'AI')), praiseNode));
+  var okStyle = 'font-weight:600;color:var(--ok-ink);font-size:13.5px';
   put(box, h('div', { class:'fbk' },
-    h('div', { class:'fbk-top' }, ring(fb.score, 10), h('div', {}, h('p', { class:'st-lbl' }, 'Teacher Feedback'), (String(fb.praise || '').indexOf(' · ') >= 0 ? biNode(fb.praise.split(' · ')[0], fb.praise.split(' · ')[1]) : h('p', { style:'font-weight:600', html:arHTML(fb.praise) })))),
+    top,
     h('div', { class:'fbk-sec' },
       h('h3', {}, '1. Grammar and usage (' + gMist.length + ')'),
-      gMist.length ? renderList(gMist) : h('p', { style:'font-weight:600;color:var(--ok-ink);font-size:13.5px' }, 'No grammar mistakes found!')),
+      gMist.length ? renderList(gMist) : h('p', { style:okStyle }, local ? 'The quick check found none of its common mistakes.' : 'No grammar mistakes found!')),
     h('div', { class:'fbk-sec spell' },
       h('h3', {}, '2. Spelling and punctuation (' + sMist.length + ')'),
-      sMist.length ? renderList(sMist) : h('p', { style:'font-weight:600;color:var(--ok-ink);font-size:13.5px' }, 'Clean spelling and punctuation!')),
+      sMist.length ? renderList(sMist) : h('p', { style:okStyle }, local ? 'The quick check found no common spelling mistakes.' : 'Clean spelling and punctuation!')),
     fb.corrected ? h('div', { class:'fbk-corr' }, h('h3', {}, 'Corrected Paragraph'), h('p', { dir:'ltr' }, fb.corrected)) : null,
-    fb.next ? h('p', { class:'fbk-next', html:'<b>Next step: </b>' + arHTML(fb.next) }) : null));
+    /* «الخطوة التالية» من التصحيح الحقيقي قد تكون عربية فيها كلمات إنجليزية، فتُعزل في سطرها لتُقرأ من اليمين بترتيبها. */
+    fb.next ? h('p', { class:'fbk-next' }, h('b', {}, 'Next step: '), h('span', { dir:'auto', style:'unicode-bidi:isolate', html:arHTML(fb.next) })) : null));
 }
 
 /* done screens */
@@ -2009,7 +2038,7 @@ var PART_SCORE = {
   vocab:function(){ return scoreOf(IDS.vg); },
   grammar:function(){ return scoreOf([].concat(IDS.gA, IDS.gB, IDS.gC, IDS.gD)); },
   reading:function(){ return scoreOf((D.listening && !D.reading) ? IDS.lq : IDS.rq); },
-  writing:function(){ return S.writing.fb ? 'Paragraph score: ' + S.writing.fb.score + '/10' : 'Paragraph saved'; },
+  writing:function(){ var fb = S.writing.fb; return fb && !isLocalFb(fb) && typeof fb.score === 'number' ? 'Paragraph score: ' + fb.score + '/10 (' + (fb.by || 'AI') + ')' : 'Paragraph saved'; },
   quiz:function(){ return S.quiz.best != null ? S.quiz.best + ' of ' + D.quiz.length : ''; }
 };
 function scoreOf(ids){ var c = (ids || []).filter(function(id){ return S.ans[id] && S.ans[id].c; }).length, a = (ids || []).filter(function(id){ return S.ans[id]; }).length; return c + ' correct of ' + a; }
@@ -2175,12 +2204,13 @@ function openCredits(){
 function allLessonStates(){ var out = {}; courseOrder().forEach(function(id){ out[id] = id === curLessonId ? S : normalizeL(readJSON(KEY_L(id))); }); return out; }
 /* أرقام اللوحة من إجاباتك الفعلية في كل الدروس، ولا رقم مفترض: المهارة بلا بيانات تظهر «لا بيانات بعد». */
 function computeDashboardStats(){
-  var states = allLessonStates(), stageMins = 0, lessonsDone = 0, writingDone = 0;
+  var states = allLessonStates(), stageMins = 0, lessonsDone = 0, writingDone = 0, wScores = [];
   var tally = { rq:[0, 0], lq:[0, 0], g:[0, 0], v:[0, 0] };
   Object.keys(states).forEach(function(id){ var st = states[id];
     PARTS.forEach(function(p){ if (st.stamps[p.k]) stageMins += p.min; });
     if (PARTS.every(function(p){ return !!st.stamps[p.k]; })) lessonsDone++;
     if (st.writingDone) writingDone++;
+    if (st.writing && st.writing.fb && !isLocalFb(st.writing.fb) && typeof st.writing.fb.score === 'number') wScores.push(st.writing.fb.score);
     Object.keys(st.ans).forEach(function(qid){ var a = st.ans[qid], pre = qid.split('-')[0];
       var b = pre === 'rq' ? 'rq' : pre === 'lq' ? 'lq' : (pre === 'gA' || pre === 'gB' || pre === 'gC' || pre === 'gD') ? 'g' : (pre === 'rc' || pre === 'vg') ? 'v' : null;
       if (b) { tally[b][1]++; if (a && a.c) tally[b][0]++; } });
@@ -2189,15 +2219,17 @@ function computeDashboardStats(){
   var expMins = (G.expressSessions || 0) * 15;
   var camblyMins = (G.camblyLogs || []).reduce(function(acc, l){ return acc + (Number(l.mins) || 0); }, 0);
   var practiceMins = G.practiceMins || 0;
-  var totalMins = stageMins + expMins + camblyMins + practiceMins;
+  var freeMins = (G.freeLogs || []).reduce(function(acc, l){ return acc + (Number(l.mins) || 0); }, 0);
+  var totalMins = stageMins + expMins + camblyMins + practiceMins + freeMins;
   var hours = totalMins / 60, a2TargetHrs = 90;
   var irr = G.irrSr || {};
   return {
-    totalMins:totalMins, stageMins:stageMins, expMins:expMins, camblyMins:camblyMins, practiceMins:practiceMins,
+    totalMins:totalMins, stageMins:stageMins, expMins:expMins, camblyMins:camblyMins, practiceMins:practiceMins, freeMins:freeMins,
     hoursStr:hours.toFixed(1), a2TargetHrs:a2TargetHrs, hoursPct:Math.min(100, Math.round(hours / a2TargetHrs * 100)),
     readPct:pct(tally.rq), readN:tally.rq[1], listenPct:pct(tally.lq), listenN:tally.lq[1],
     gramPct:pct(tally.g), gramN:tally.g[1], vocPct:pct(tally.v), vocN:tally.v[1],
     writingDone:writingDone, lessonsDone:lessonsDone,
+    writePct:wScores.length ? Math.round(wScores.reduce(function(a, b){ return a + b; }, 0) / wScores.length * 10) : null, writeN:wScores.length,
     speakSessions:(G.camblyLogs || []).length,
     speakPhrases:(G.camblyLogs || []).reduce(function(a, l){ return a + (Number(l.phrases) || 0); }, 0),
     irrPracticed:Object.keys(irr).length,
@@ -2210,7 +2242,7 @@ function openDashboard(){
   var skills = [
     { en:'Reading', pct:st.readPct, cls:'ok', subEn:st.readN ? nAns(st.readN) : 'Comprehension questions in reading lessons', subAr:st.readN ? '' : 'أسئلة الفهم في دروس القراءة' },
     { en:'Listening', pct:st.listenPct, cls:'ok', subEn:st.listenN ? nAns(st.listenN) : 'Questions in listening lessons', subAr:st.listenN ? '' : 'أسئلة دروس الاستماع' },
-    { en:'Writing', pct:null, cls:'acc', subEn:st.writingDone + ' writing task(s) done. A score appears once real correction is available.', subAr:'أنجزت ' + st.writingDone + ' من مهام الكتابة، وتظهر الدرجة حين يتوفر تصحيح حقيقي.' },
+    { en:'Writing', pct:st.writePct, cls:'acc', subEn:st.writeN ? st.writeN + ' paragraph(s) corrected by AI · ' + st.writingDone + ' task(s) done' : st.writingDone + ' writing task(s) done. A score appears once a paragraph gets a real correction.', subAr:st.writeN ? '' : 'أنجزت ' + st.writingDone + ' من مهام الكتابة، وتظهر الدرجة حين تُصحَّح فقرة تصحيحًا حقيقيًا.' },
     { en:'Speaking (Cambly)', pct:null, cls:'acc',
       subEn: st.speakSessions ? (st.speakSessions + ' Cambly session(s) · ' + st.speakPhrases + ' card phrases used') : 'Measured by your Cambly tutor in the first session',
       subAr: st.speakSessions ? (st.speakSessions + ' جلسات كامبلي · استُخدمت ' + st.speakPhrases + ' عبارة') : 'يقيسه معلم كامبلي في أول جلسة' },
@@ -2228,7 +2260,8 @@ function openDashboard(){
         h('div', { class:'dash-m' }, h('b', {}, st.stageMins + 'm'), h('span', {}, 'Lessons')),
         h('div', { class:'dash-m' }, h('b', {}, (G.expressSessions || 0) + ' (' + st.expMins + 'm)'), h('span', {}, 'Express')),
         h('div', { class:'dash-m' }, h('b', {}, st.practiceMins + 'm'), h('span', {}, 'Practice')),
-        h('div', { class:'dash-m' }, h('b', {}, st.camblyMins + 'm'), h('span', {}, 'Cambly')))),
+        h('div', { class:'dash-m' }, h('b', {}, st.camblyMins + 'm'), h('span', {}, 'Cambly')),
+        h('div', { class:'dash-m' }, h('b', {}, st.freeMins + 'm'), h('span', {}, 'Free')))),
     h('h3', { class:'bi-h', style:'font-size:15.5px' }, h('span', { class:'en', dir:'ltr' }, '4 Skills & Foundation Indicators'), h('small', {}, 'مؤشرات المهارات الأربع والأساس اللغوي')),
     h('div', { class:'skill-list' }, skills.map(function(sk){
       return h('div', { class:'skill-card' },
@@ -2621,6 +2654,48 @@ function buildCamblyCardText(unitNum){
   return lines.join("\n");
 }
 
+/* ---------- القراءة والاستماع الحر (11 نوفمبر 2026) ----------
+   دقائق يقرأ فيها المتعلم أو يستمع خارج الدروس بمستواه، وتُحسب في ساعات الدراسة كجلسات كامبلي. */
+var FREE_SOURCES = [
+  { name:'ELLLO', url:'https://elllo.org/', what:'Listening · real conversations by level' },
+  { name:'LearnEnglish · British Council', url:'https://learnenglish.britishcouncil.org/', what:'Reading and listening by level' },
+  { name:'News in Levels', url:'https://www.newsinlevels.com/', what:'Short news at three levels' },
+  { name:'ER-Central', url:'https://www.er-central.com/', what:'Graded reading' },
+  { name:'VOA Learning English', url:'https://learningenglish.voanews.com/', what:'Slow news with audio' }
+];
+function openFreeLog(){
+  var inMins = h('input', { class:'c-in free-in', type:'number', min:'5', max:'180', value:'15', 'aria-label':'Minutes · الدقائق' });
+  var logsBox = h('div', { class:'c-logs' }), sumLine = h('p', { class:'muted sm' });
+  function drawLogs(){
+    var weekAgo = Date.now() - 7 * 864e5, wk = (G.freeLogs || []).filter(function(l){ return (l.at || 0) >= weekAgo; });
+    var rd = wk.filter(function(l){ return l.kind === 'read'; }).reduce(function(a, l){ return a + (Number(l.mins) || 0); }, 0);
+    var ls = wk.filter(function(l){ return l.kind === 'listen'; }).reduce(function(a, l){ return a + (Number(l.mins) || 0); }, 0);
+    sumLine.textContent = 'Last 7 days: ' + rd + ' min reading · ' + ls + ' min listening';
+    var logs = (G.freeLogs || []).slice(-5).reverse();
+    put(logsBox, logs.length ? logs.map(function(l){
+      return h('div', { class:'c-log' }, h('span', {}, h('b', { class:'en', dir:'ltr' }, (l.kind === 'listen' ? 'Listening' : 'Reading') + ' · ' + new Date(l.at || Date.now()).toLocaleDateString('en-GB'))),
+        h('span', { class:'qtile-badge' }, l.mins + ' min'));
+    }) : h('p', { class:'muted sm' }, 'Nothing logged yet.'));
+  }
+  function logIt(kind){
+    var mins = Math.max(5, Math.min(180, Math.round(Number(inMins.value) || 15)));
+    G.freeLogs.push({ at:Date.now(), kind:kind, mins:mins });
+    touch(); SYNC.soon(); drawLogs(); render();
+    toast((kind === 'listen' ? 'Listening' : 'Reading') + ' logged (+' + mins + ' min).');
+  }
+  drawLogs();
+  openSheet('Free Reading & Listening', 'القراءة والاستماع الحر', [
+    instr('Read or listen to something at your level for 10 to 15 minutes a day, outside the lessons. Then log it here: it counts in your study hours.', 'اقرأ أو استمع إلى شيء بمستواك 10 إلى 15 دقيقة في اليوم خارج الدروس، ثم سجّله هنا، فيُحسب في ساعات دراستك.'),
+    h('ul', { class:'free-src' }, FREE_SOURCES.map(function(s){
+      return h('li', {}, h('a', { href:s.url, target:'_blank', rel:'noopener noreferrer' }, s.name + ' ↗'), h('span', { class:'muted sm' }, s.what)); })),
+    h('label', { class:'sync-lbl' }, 'Minutes'), inMins,
+    h('div', { class:'wbtns' },
+      h('button', { class:'btn sm', type:'button', id:'freeRead', on:{ click:function(){ logIt('read'); } } }, ico('book'), biBtn('Log Reading', 'سجّل القراءة')),
+      h('button', { class:'btn light sm', type:'button', id:'freeListen', on:{ click:function(){ logIt('listen'); } } }, ico('speaker'), biBtn('Log Listening', 'سجّل الاستماع'))),
+    sumLine, logsBox
+  ]);
+}
+
 /* بطاقة كامبلي لوحدة درس اليوم (G.cur): الأسبوع التأسيسي له بطاقته، والوحدة 1 إن لم تكن للوحدة بطاقة. */
 function camblyUnitNow(){ var u = unitOfLesson(G.cur || curLessonId); return (D.camblyUnits && D.camblyUnits[u]) ? u : 1; }
 function openCambly(){
@@ -2778,7 +2853,7 @@ function openAbout(){
       return typeof g === 'string' ? h('li', {}, g) : h('li', {}, biNode(g.en, g.ar));
     })),
     h('button', { class:'btn out sm', type:'button', on:{ click:function(){ closeSheet(); openCredits(); } } }, biBtn('Wikimedia Commons Audio Credits', 'أصحاب التسجيلات الصوتية البشرية')),
-    SAMPLE ? h('button', { class:'btn', type:'button', on:{ click:function(){ closeSheet(); openAsk(); } } }, ico('spark'), biBtn('Ask the Teacher', 'اسأل المعلم')) : null
+    h('button', { class:'btn', type:'button', on:{ click:function(){ closeSheet(); openAsk(); } } }, ico('spark'), biBtn('Ask the Teacher', 'اسأل المعلم'))
   ]);
 }
 
@@ -2794,17 +2869,64 @@ function aiErr(code){
   if (code === 'prompt_too_large') return 'Text is too long. A shorter paragraph works best.';
   return 'Teacher is unavailable right now. Try again in a moment.'; }
 function thinking(t){ return h('div', { class:'thinking' }, h('span', { class:'dots', 'aria-hidden':'true' }, h('i'), h('i'), h('i')), h('span', {}, t)); }
+/* طلب التصحيح نفسه في الطريقين: داخل claude.ai، وبالنسخ إلى Gemini أو أي مساعد ثم لصق الرد في الموقع.
+   ولكل خطأ قواعد فئة من فئات مختبر الأخطاء، فتدخل الأخطاء المختبر وبطاقة كامبلي. */
 function WPROMPT(text){ return 'أنت معلم لغة إنجليزية خبير، تصحح فقرة كتبها متعلم عربي مستواه بداية A2.\n' +
-  'الدرس: ' + (D.en || 'Hello from Antarctica') + ' — ' + (D.ar || 'المضارع البسيط والمضارع المستمر') + '.\n' +
+  'الدرس: ' + (D.en || '') + ' — ' + (D.ar || '') + '.\n' +
   'كلمات الدرس والعبارة القانونية: ' + VOCAB_LIST + '.\n' +
   'المهمة المطلوبة من المتعلم: ' + D.writing.task + '\n\n' +
   'صحّح الفقرة بدقة ولطف، وافصل أخطاء الإملاء وعلامات الترقيم عن أخطاء القواعد والاستخدام:\n' +
-  '- ركّز في grammarMistakes على الأزمنة، وتركيب الجملة، وتصريف الفعل مع he/she/it، واستخدام الكلمات.\n' +
-  '- ركّز في spellingMistakes على الإملاء، والحرف الكبير للضمير I وبداية الجملة، وفصل الجمل بنقطة.\n' +
+  '- في grammarMistakes: الأزمنة، وتركيب الجملة، وتصريف الفعل مع he/she/it، واستخدام الكلمات. ولكل خطأ cat واحدة من: tense (اختيار الزمن)، be_verb (am/is/are/was/were أو do مع الفعل)، agreement (المطابقة مع المفرد والجمع)، articles_prep (أدوات التعريف وحروف الجر)، word_order (ترتيب الكلمات وفصل الجمل)، comparative (المقارنة والتفضيل)، vocab (اختيار الكلمة).\n' +
+  '- في spellingMistakes: الإملاء، والحرف الكبير للضمير I وبداية الجملة، وفصل الجمل بنقطة.\n' +
+  '- لا تعدّ الصحيح خطأً، ولا تغيّر عبارة صحيحة لأنك تفضّل غيرها.\n' +
+  '- score من 10 لصحة اللغة وإنجاز المهمة معًا.\n' +
   '- كل شرح بالعربية الفصحى المبسطة في جملة قصيرة، بصيغة محايدة لا تخاطب مذكرًا ولا مؤنثًا.\n\n' +
-  'أعد JSON فقط بهذا الشكل:\n' +
-  '{"score": 7, "praise": "جملة تشجيع قصيرة عن نقطة قوة حقيقية في الفقرة", "grammarMistakes": [{"wrong": "النص الخاطئ", "right": "النص الصحيح", "why": "سبب قصير"}], "spellingMistakes": [{"wrong": "الكلمة الخاطئة إملائيًا", "right": "الإملاء الصحيح", "why": "القاعدة الإملائية"}], "corrected": "الفقرة كاملة بعد التصحيح", "next": "نصيحة واحدة قصيرة للتحسن"}\n\n' +
+  'أعد JSON وحده بهذا الشكل، بلا كلام قبله ولا بعده:\n' +
+  '{"by": "اسمك، مثل Gemini", "score": 7, "praise": "جملة تشجيع قصيرة عن نقطة قوة حقيقية في الفقرة", "grammarMistakes": [{"wrong": "النص الخاطئ", "right": "النص الصحيح", "why": "سبب قصير", "cat": "tense"}], "spellingMistakes": [{"wrong": "الكلمة الخاطئة إملائيًا", "right": "الإملاء الصحيح", "why": "القاعدة الإملائية"}], "corrected": "الفقرة كاملة بعد التصحيح", "next": "نصيحة واحدة قصيرة للتحسن"}\n\n' +
   'الفقرة:\n---\n' + text + '\n---'; }
+var GEMINI_URL = 'https://gemini.google.com/app';
+var AI_CATS = ['tense', 'be_verb', 'agreement', 'articles_prep', 'word_order', 'comparative', 'vocab'];
+/* رد التصحيح الحقيقي في صورة واحدة، من Claude داخل claude.ai أو من رد ملصوق. ولا يُقبل رد بلا محتوى. */
+function aiFeedback(r, by){
+  if (!r || typeof r !== 'object' || Array.isArray(r)) return null;
+  var mapM = function(arr, gram){ return Array.isArray(arr) ? arr.slice(0, 8).map(function(m){ m = isObj(m) ? m : {}; var c = String(m.cat || '').trim().toLowerCase();
+    return { wrong:String(m.wrong || ''), right:String(m.right || ''), why:String(m.why || ''), cat:gram ? (AI_CATS.indexOf(c) >= 0 ? c : '') : 'spelling' }; })
+    .filter(function(m){ return m.wrong || m.right; }) : []; };
+  var gM = mapM(r.grammarMistakes, true), sM = mapM(r.spellingMistakes, false);
+  if (!gM.length && !sM.length && Array.isArray(r.mistakes)) gM = mapM(r.mistakes, true);
+  var hasScore = r.score != null && r.score !== '' && isFinite(Number(r.score));
+  if (!gM.length && !sM.length && !hasScore && !String(r.corrected || '').trim()) return null;
+  return { src:'ai', by:String(r.by || by || 'AI').replace(/[<>]/g, '').trim().slice(0, 24) || 'AI', score:hasScore ? Math.max(0, Math.min(10, Math.round(Number(r.score)))) : null,
+    praise:String(r.praise || ''), grammarMistakes:gM, spellingMistakes:sM, mistakes:gM.concat(sM),
+    corrected:String(r.corrected || ''), next:String(r.next || ''), at:Date.now() };
+}
+/* يقرأ الرد الملصوق: كتلة ```json إن وُجدت، ثم من أول { إلى آخر }، ولو جاءت علامات التنصيص منحنية. */
+function parsePastedFeedback(raw){
+  var s = String(raw || '').trim(); if (!s) return null;
+  var fence = s.match(/```(?:json)?\s*([\s\S]*?)```/i); if (fence && fence[1].indexOf('{') >= 0) s = fence[1];
+  var a = s.indexOf('{'), b = s.lastIndexOf('}'); if (a < 0 || b <= a) return null;
+  s = s.slice(a, b + 1);
+  var r = null;
+  try { r = JSON.parse(s); } catch (e) { try { r = JSON.parse(s.replace(/[“”„‟″]/g, '"')); } catch (e2) { r = null; } }
+  return aiFeedback(r, '');
+}
+function textKey(t){ var s = fixQuotes(String(t || '')).replace(/\s+/g, ' ').trim(), x = 5381; for (var i = 0; i < s.length; i++) x = ((x << 5) + x + s.charCodeAt(i)) | 0; return x + ':' + s.length; }
+/* أخطاء التصحيح الحقيقي تدخل مختبر الأخطاء مرة واحدة لكل فقرة، فلا يتضاعف العدّ إن لُصق رد ثانٍ للفقرة نفسها. */
+function labFromFeedback(fb, text){
+  if (!fb || fb.src !== 'ai') return 0;
+  var key = textKey(text); if (!key || S.writing.labbed === key) return 0;
+  var n = 0;
+  (fb.grammarMistakes || []).forEach(function(m){ if (m.cat && m.cat !== 'vocab') { bumpErrorLab(m.cat, m.wrong + ' → ' + m.right); n++; } });
+  (fb.spellingMistakes || []).forEach(function(m){ bumpErrorLab('spelling', m.wrong + ' → ' + m.right); n++; });
+  S.writing.labbed = key; return n;
+}
+/* نسخ نص طويل: بالحافظة إن سمح المتصفح، وإلا نافذة فيها النص محدَّدًا لينسخه المتعلم بيده. */
+function copyText(txt, okMsg){
+  function manual(){ var area = h('textarea', { class:'paste-in copy-area', rows:'8', readonly:'readonly', dir:'auto', 'aria-label':'Text to copy · النص المطلوب نسخه' }); area.value = txt;
+    openSheet('Copy This Text', 'انسخ هذا النص', [instr('Select all the text, then copy it.', 'حدّد النص كله ثم انسخه.'), area]);
+    setTimeout(function(){ try { area.focus(); area.select(); } catch (e) {} }, 80); }
+  try { navigator.clipboard.writeText(txt).then(function(){ toast(okMsg); }, manual); } catch (e) { manual(); }
+}
 function correctWriting(ta, btn, box){
   var text = ta.value.trim(), a = analyze(text);
   if (a.words < 12) { toast('Paragraph is too short to check.'); return; }
@@ -2817,14 +2939,8 @@ function correctWriting(ta, btn, box){
   btn.disabled = true; box.hidden = false; put(box, thinking('Teacher is reading your paragraph…'));
   try { box.scrollIntoView({ block:'nearest', behavior:RM ? 'auto' : 'smooth' }); } catch (e) {}
   SAMPLE.json(WPROMPT(text), { modelTier:'default' }).then(function(r){
-    if (!r || typeof r !== 'object' || Array.isArray(r)) throw { code:'invalid_json' };
-    var mapM = function(arr){ return Array.isArray(arr) ? arr.slice(0, 6).map(function(m){ m = m || {}; return { wrong:String(m.wrong || ''), right:String(m.right || ''), why:String(m.why || '') }; }) : []; };
-    var gM = mapM(r.grammarMistakes), sM = mapM(r.spellingMistakes);
-    if (!gM.length && !sM.length && Array.isArray(r.mistakes)) gM = mapM(r.mistakes);
-    var fb = { score:Math.max(0, Math.min(10, Math.round(Number(r.score) || 0))), praise:String(r.praise || ''),
-      grammarMistakes:gM, spellingMistakes:sM, mistakes:gM.concat(sM),
-      corrected:String(r.corrected || ''), next:String(r.next || ''), at:Date.now() };
-    S.writing.fb = fb; S.writing.text = ta.value; touch(); paintFeedback(box, fb);
+    var fb = aiFeedback(r, 'Claude'); if (!fb) throw { code:'invalid_json' };
+    S.writing.fb = fb; S.writing.text = ta.value; labFromFeedback(fb, text); touch(); paintFeedback(box, fb);
   }).catch(function(e){ var code = e && e.code;
     if (code === 'cancelled') { box.hidden = true; return; }
     var localFb = localWritingCheck(text);
@@ -2833,7 +2949,7 @@ function correctWriting(ta, btn, box){
   }).then(function(){ btn.disabled = false; }); }
 
 var askTurns = [], askCtl = null, askBusy = false;
-var ASK_CHIPS = ['متى نستخدم am / is / are مع الفعل؟', 'ليش نقول He works وليس He work؟', 'ما الفرق بين usually و always؟', 'أعطني 3 جمل جديدة بالمضارع المستمر'];
+var ASK_CHIPS = ['متى نستخدم am / is / are مع الفعل؟', 'لماذا نقول He works وليس He work؟', 'ما الفرق بين usually و always؟', 'أعطني 3 جمل جديدة بالمضارع المستمر'];
 /* أسئلة «اسأل المعلم» المقترحة: من الدرس الحالي إن كتب askChips (حتى أربعة)، وإلا الأسئلة القديمة عن المضارع البسيط والمستمر. */
 function askChipsNow(){ var c = D && D.askChips; return Array.isArray(c) && c.length ? c.slice(0, 4) : ASK_CHIPS; }
 function stepName(){ if (G.ui.view === 'player' && P) { var p = partOf(P.part); return p ? p.fullAr : 'المراجعة'; } return 'صفحة الدرس'; }
@@ -2856,7 +2972,19 @@ function mdLite(text){ var html = '', list = null;
   if ((m = t.match(/^#{1,6}\s+(.*)$/))) { close(); html += '<p dir="auto"><strong>' + inlineMD(m[1]) + '</strong></p>'; return; }
   close(); html += '<p dir="auto">' + inlineMD(t) + '</p>'; });
   close(); return html; }
-function openAsk(){ if (!SAMPLE) return;
+/* «اسأل المعلم» خارج claude.ai: يُنسخ السؤال مع سياق الدرس، ويُلصق في Gemini ويُقرأ الجواب هناك. */
+function openAskCopy(){
+  var input = h('textarea', { class:'paste-in ask-copy-in', id:'askInput', rows:'3', dir:'auto', placeholder:'Write your question here…', 'aria-label':'Question · السؤال' });
+  var chips = h('div', { class:'ask-chips' }, askChipsNow().map(function(c){ return h('button', { class:'ask-chip', type:'button', on:{ click:function(){ input.value = c; } } }, c); }));
+  var copyQ = h('button', { class:'btn', type:'button', id:'askCopy', on:{ click:function(){ var q = input.value.trim(); if (!q) { toast('Write or choose a question first.'); return; }
+    copyText(RULES() + '\n\nسؤال المتعلم: ' + q, 'Copied! Paste it in Gemini.'); } } }, ico('copy'), biBtn('Copy Question', 'نسخ السؤال'));
+  openSheet('Ask the Teacher', 'اسأل المعلم', [
+    instr('Write a question about this lesson or choose one. Copy it, paste it in Gemini, and read the answer there.', 'اكتب سؤالك عن الدرس أو اختر واحدًا، ثم انسخه والصقه في Gemini، واقرأ الجواب هناك.'),
+    chips, input,
+    h('div', { class:'wbtns' }, copyQ, h('a', { class:'btn out', href:GEMINI_URL, target:'_blank', rel:'noopener noreferrer' }, 'Open Gemini ↗'))
+  ]);
+}
+function openAsk(){ if (!SAMPLE) { openAskCopy(); return; }
   var log = h('div', { class:'ask-log', 'aria-live':'polite' }), chips = h('div', { class:'ask-chips' }), input = h('textarea', { id:'askInput', rows:'2', placeholder:'Ask your question here…', 'aria-label':'Question · السؤال' });
   var send = h('button', { class:'btn', type:'submit' }, biBtn('Send', 'إرسال')), stop = h('button', { class:'btn out', type:'button', hidden:true }, biBtn('Stop', 'إيقاف'));
   var form = h('form', { class:'ask-form' }, input, h('div', { class:'row' }, send, stop));
@@ -2888,8 +3016,9 @@ function openAsk(){ if (!SAMPLE) return;
 }
 
 /* ---------- المزامنة السحابية عبر GitHub ----------
-   - يُحفظ التقدم في الجهاز أولًا، ثم يُرفع بصمت إلى فرع "progress" في مستودع الموقع نفسه،
-     فلا يُعاد نشر الموقع مع كل حفظ، ويبقى سجل تعديلات الموقع (فرع main) نظيفًا.
+   - يُحفظ التقدم في الجهاز أولًا، ثم يُرفع بصمت إلى فرع "progress" في مستودع خاص بالتقدم
+     (المقترح: engl-pass-progress)، لأن مستودع الموقع عام يقرؤه أي أحد، وفيه كتابة المتعلم.
+     وكان التقدم في مستودع الموقع نفسه حتى 11 نوفمبر 2026، فإن بقي الربط عليه ظهر في الترس تنبيه.
    - ملف لكل حالة: progress/course.json وprogress/lesson-<id>.json، ولا يُرفع إلا ما تغيّر.
    - متى يُرفع: عند إنهاء أي مرحلة أو جلسة، وعند مغادرة الموقع، واحتياطًا إن بقي تغيير
      لم يُرفع أكثر من 3 دقائق. وعند فتح الموقع يُسحب ما تغيّر في السحابة دون إعادة تحميل.
@@ -2910,10 +3039,12 @@ function createSync(){
   function meta(){ var m = readJSON(KEY_SYNC_META); m = isObj(m) ? m : {}; if (!isObj(m.files)) m.files = {}; return m; }
   function setMeta(m){ writeJSON(KEY_SYNC_META, m); }
   function patchMeta(fn){ var m = meta(); fn(m); setMeta(m); return m; }
-  function defaults(){
+  function siteRepo(){
     var host = location.hostname, parts = location.pathname.split('/').filter(Boolean), gh = host.slice(-10) === '.github.io';
     return { owner: gh ? host.slice(0, -10) : 'vua5l', repo: gh && parts[0] && !/\.html?$/i.test(parts[0]) ? parts[0] : 'engl-pass' };
   }
+  function defaults(){ var s = siteRepo(); return { owner:s.owner, repo:'engl-pass-progress' }; }
+  function isSiteRepo(c){ var s = siteRepo(); return !!c && String(c.owner).toLowerCase() === String(s.owner).toLowerCase() && String(c.repo).toLowerCase() === String(s.repo).toLowerCase(); }
   function fileOf(k){ return k === KEY_G ? DIR + '/course.json' : DIR + '/lesson-' + k.slice('ep4.lesson.'.length) + '.json'; }
   function keyOf(path){ var n = String(path).split('/').pop(); if (n === 'course.json') return KEY_G; var m = /^lesson-(.+)\.json$/.exec(n); return m ? 'ep4.lesson.' + m[1] : null; }
   function localKeys(){ var out = []; try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && (k === KEY_G || k.indexOf('ep4.lesson.') === 0)) out.push(k); } } catch (e) {} return out; }
@@ -2944,7 +3075,15 @@ function createSync(){
       if (r.status === 200) { branchOK = true; return; }
       return gh('GET', '').then(function(rr){
         if (rr.status !== 200) throw fail('norepo');
-        return gh('GET', '/git/ref/heads/' + ((rr.body && rr.body.default_branch) || 'main'));
+        var main = (rr.body && rr.body.default_branch) || 'main';
+        return gh('GET', '/git/ref/heads/' + main).then(function(m){
+          if (m.status !== 404 && m.status !== 409) return m;
+          /* مستودع جديد فارغ بلا أول حفظ: يُكتب فيه ملف تعريف قصير، ثم يُتفرع منه فرع التقدم. */
+          return gh('PUT', '/contents/README.md', { message:'بداية مستودع التقدم', content:b64e('# English Passport · progress\n\nتقدم المتعلم في موقع جواز الإنجليزية. يكتبه الموقع وحده.\n') }).then(function(p0){
+            if (p0.status !== 201 && p0.status !== 200) throw fail(p0.status === 404 ? 'noperm' : 'offline');
+            return gh('GET', '/git/ref/heads/' + main);
+          });
+        });
       }).then(function(m){
         if (m.status !== 200 || !m.body || !m.body.object) throw fail('norepo');
         return gh('POST', '/git/refs', { ref:'refs/heads/' + BRANCH, sha:m.body.object.sha });
@@ -3087,6 +3226,7 @@ function createSync(){
         nodes.push(
           h('label', { class:'sync-lbl', for:'syncToken' }, 'GitHub key'), tok,
           h('details', { class:'sync-adv' }, h('summary', {}, 'Repository: ' + d.owner + '/' + d.repo), h('div', { class:'sync-grid' }, own, rep)),
+          h('p', { class:'muted sm' }, biNode('Use a private repository for your progress: it holds your answers and your writing.', 'اجعل تقدمك في مستودع خاص، ففيه إجاباتك وكتابتك.')),
           h('button', { class:'btn sm', type:'button', id:'syncConnect', on:{ click:function(){
             var t = tok.value.trim();
             if (!t) { toast('Paste the key first'); return; }
@@ -3099,6 +3239,8 @@ function createSync(){
           } } }, ico('check'), biBtn('Connect', 'ربط')),
           h('p', { class:'muted sm' }, biNode('The key stays on this device and is never uploaded.', 'المفتاح يبقى في هذا الجهاز ولا يُرفع إلى GitHub.')));
       } else {
+        nodes.push(h('p', { class:'muted sm', dir:'ltr' }, 'Repository: ' + c.owner + '/' + c.repo));
+        if (isSiteRepo(c)) nodes.push(h('div', { class:'tip', id:'syncPublic' }, biNode('This is the public site repository: anyone can read your progress and your writing. To move it to a private repository, remove the key below and connect a key for the private one.', 'هذا مستودع الموقع العام، فيقرأ أي أحد تقدمك وكتابتك. ولنقله إلى مستودع خاص: احذف المفتاح أدناه، ثم اربط مفتاح المستودع الخاص.')));
         nodes.push(
           h('div', { class:'wbtns' },
             h('button', { class:'btn sm', type:'button', id:'syncNow', on:{ click:function(){ saveLocal(); pull().then(function(){ return push(false); }); } } }, ico('review'), biBtn('Sync now', 'زامن الآن')),

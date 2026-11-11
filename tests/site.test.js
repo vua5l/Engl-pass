@@ -64,8 +64,8 @@ function serve() {
 }
 
 /* محاكاة GitHub API بالقدر الذي تستعمله المزامنة. */
-function fakeGitHub(token) {
-  const st = { branch: false, files: {}, log: [], conflictOnce: false, n: 0 };
+function fakeGitHub(token, opts) {
+  const st = { branch: false, files: {}, log: [], conflictOnce: false, n: 0, empty: !!(opts && opts.empty), readme: false };
   const cors = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Authorization, Accept, Content-Type', 'Access-Control-Allow-Methods': 'GET, PUT, POST, OPTIONS', 'Access-Control-Expose-Headers': 'X-RateLimit-Remaining' };
   const reply = (route, status, body) => route.fulfill({ status, headers: Object.assign({ 'Content-Type': 'application/json', 'X-RateLimit-Remaining': '4999' }, cors), body: JSON.stringify(body || {}) });
   async function handler(route) {
@@ -73,11 +73,12 @@ function fakeGitHub(token) {
     if (m === 'OPTIONS') return route.fulfill({ status: 204, headers: cors, body: '' });
     st.log.push(m + ' ' + u.pathname);
     if ((req.headers()['authorization'] || '') !== 'Bearer ' + token) return reply(route, 401, { message: 'Bad credentials' });
-    const base = '/repos/vua5l/engl-pass';
+    const base = '/repos/vua5l/engl-pass-progress';   // مستودع التقدم الخاص منذ 11 نوفمبر 2026، لا مستودع الموقع
     if (!u.pathname.startsWith(base)) return reply(route, 404, {});
     const p = u.pathname.slice(base.length);
-    if (m === 'GET' && p === '') return reply(route, 200, { default_branch: 'main' });
-    if (m === 'GET' && p === '/git/ref/heads/main') return reply(route, 200, { object: { sha: 'mainsha' } });
+    if (m === 'GET' && p === '') return reply(route, 200, { default_branch: 'main', private: true });
+    if (m === 'GET' && p === '/git/ref/heads/main') return st.empty ? reply(route, 409, { message: 'Git Repository is empty.' }) : reply(route, 200, { object: { sha: 'mainsha' } });
+    if (m === 'PUT' && p === '/contents/README.md') { const body = JSON.parse(req.postData() || '{}'); st.empty = false; st.readme = !body.branch; return reply(route, 201, { content: { sha: 'readme' } }); }
     if (m === 'GET' && p === '/git/ref/heads/progress') return st.branch ? reply(route, 200, { object: { sha: 'progsha' } }) : reply(route, 404, {});
     if (m === 'POST' && p === '/git/refs') { st.branch = true; return reply(route, 201, {}); }
     if (p === '/contents/progress' && m === 'GET') {
@@ -768,6 +769,83 @@ function fakeGitHub(token) {
     ok(words.every(w => w.say === 1) && asked.some(u => u.includes('Sapaa-studying.wav')) && asked.some(u => u.includes('Vealhurl-raining.wav')), 'studying and raining play their real recordings: ' + asked.length);
     ok(!asked.some(u => /En-us-(studying|raining)\.ogg/.test(u)), 'the engine no longer guesses a file name');
     ok(page.errors.length === 0, 'no page errors (pronunciation): ' + page.errors.join(' | '));
+    await ctx.close();
+  }
+
+  /* ---------------- 11 نوفمبر 2026: الفحص الآلي بلا درجة، والتصحيح بالنسخ واللصق، و«اسأل المعلم» بالنسخ، والقراءة الحرة، والمستودع الخاص ---------------- */
+  {
+    const { ctx, page } = await newPage(null);
+    await ctx.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: new URL(URL0).origin }).catch(() => {});
+    await startApp(page);
+    await page.locator('.tp-btn.pstep', { hasText: 'Writing' }).click(); await sleep(300);
+    const para = 'I am a law student. i studing at the university every day. My brother work in a bank. We like our city.';
+    await page.locator('#wText').fill(para); await sleep(250);
+    await page.click('#wCheck'); await sleep(250);
+    const quick = await page.innerText('.fbk');
+    ok(/Quick Check/.test(quick) && !/Teacher Feedback/.test(quick) && (await page.locator('.fbk .ring-w').count()) === 0, 'the automatic check says what it is and shows no score');
+    await page.click('#wCopy'); await sleep(300);
+    const clip = await page.evaluate(() => navigator.clipboard.readText()).catch(() => '');
+    ok(clip.includes('أعد JSON وحده') && clip.includes('My brother work in a bank') && clip.includes('"cat"'), 'Copy for Correction copies the fixed request with the paragraph');
+    ok((await page.locator('details.paste[open]').count()) === 1, 'after copying, the paste box opens');
+    const reply = 'Here is the correction:\n```json\n' + JSON.stringify({ by: 'Gemini', score: 6, praise: 'جمل قصيرة واضحة.',
+      grammarMistakes: [{ wrong: 'My brother work', right: 'My brother works', why: 'مع he نضيف s.', cat: 'agreement' }, { wrong: 'i studing', right: 'I study', why: 'عادة يومية.', cat: 'tense' }],
+      spellingMistakes: [{ wrong: 'studing', right: 'studying', why: 'study + ing.' }],
+      corrected: 'I am a law student. I study at the university every day. My brother works in a bank. We like our city.', next: 'راجع s مع he.' }) + '\n```\nGood luck!';
+    const g0 = await getJSON(page, 'ep4.course');
+    await page.fill('#wPaste', 'sorry, there is nothing to read here'); await page.click('#wPasteGo'); await sleep(250);
+    ok(/Could not read this reply/.test(await page.innerText('#toast')), 'a reply without the correction block is refused with a clear message');
+    await page.fill('#wPaste', reply); await page.click('#wPasteGo'); await sleep(350);
+    const fbText = await page.innerText('.fbk'), g1 = await getJSON(page, 'ep4.course');
+    const dl = k => ((g1.errorLab[k] || {}).count || 0) - ((g0.errorLab[k] || {}).count || 0);
+    ok(/Feedback from Gemini/.test(fbText) && (await page.locator('.fbk .ring-w').count()) === 1 && fbText.includes('My brother works'), 'a pasted reply shows as feedback from Gemini, with its score and corrections');
+    ok(dl('agreement') === 1 && dl('tense') === 1 && dl('spelling') === 1, 'its mistakes enter the Error Lab by type (agreement +' + dl('agreement') + ', tense +' + dl('tense') + ', spelling +' + dl('spelling') + ')');
+    await page.click('details.paste summary'); await sleep(150);
+    await page.fill('#wPaste', reply); await page.click('#wPasteGo'); await sleep(300);
+    const g2 = await getJSON(page, 'ep4.course');
+    ok(g2.errorLab.agreement.count === g1.errorLab.agreement.count && g2.errorLab.spelling.count === g1.errorLab.spelling.count, 'pasting a reply again for the same paragraph does not count its mistakes twice');
+    const l1 = await getJSON(page, 'ep4.lesson.u0l1');
+    ok(l1.writing.fb && l1.writing.fb.src === 'ai' && l1.writing.fb.score === 6, 'the correction is saved with the lesson');
+    ok(page.errors.length === 0, 'no page errors (writing correction): ' + page.errors.join(' | '));
+    await ctx.close();
+  }
+  {
+    const { ctx, page } = await newPage(null);
+    await ctx.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: new URL(URL0).origin }).catch(() => {});
+    await startApp(page);
+    await page.locator('.tool', { hasText: 'Ask the teacher' }).click(); await sleep(250);
+    await page.locator('.ask-chip').first().click(); await page.click('#askCopy'); await sleep(300);
+    const q = await page.evaluate(() => navigator.clipboard.readText()).catch(() => '');
+    ok(q.includes('سؤال المتعلم:') && q.includes('جواز الإنجليزية') && !q.includes('ليش'), 'Ask the teacher works without Claude in the page: it copies the question with the lesson context');
+    await page.click('#sheetBox .close'); await sleep(150);
+    await page.locator('.tool', { hasText: 'Free reading' }).click(); await sleep(250);
+    await page.fill('.free-in', '20'); await page.click('#freeRead'); await sleep(200);
+    await page.fill('.free-in', '10'); await page.click('#freeListen'); await sleep(200);
+    const gl = await getJSON(page, 'ep4.course');
+    ok(gl.freeLogs.length === 2 && gl.freeLogs[0].kind === 'read' && gl.freeLogs[0].mins === 20 && gl.freeLogs[1].kind === 'listen', 'free reading and listening are logged with their minutes');
+    ok((await page.innerText('#sheetBox')).includes('Last 7 days: 20 min reading · 10 min listening'), 'the free log shows the last 7 days');
+    await page.click('#sheetBox .close'); await sleep(150);
+    await page.locator('.jr-more').first().click(); await sleep(250);
+    ok(/30m\s*Free/.test(await page.innerText('#sheetBox')), 'the dashboard counts free reading and listening in the study hours');
+    await page.click('#sheetBox .close'); await sleep(150);
+    // التقدم ما زال في مستودع الموقع العام: تنبيه في الترس
+    await page.evaluate(() => localStorage.setItem('ep4.sync', JSON.stringify({ token: 'x', owner: 'vua5l', repo: 'Engl-pass' })));
+    await page.click('#gearBtn'); await sleep(250);
+    ok((await page.locator('#syncPublic').count()) === 1, 'sync on the public site repository shows a warning to move it to a private one');
+    ok(page.errors.length === 0, 'no page errors (ask, free log, public warning): ' + page.errors.join(' | '));
+    await ctx.close();
+  }
+  {
+    // مستودع خاص جديد فارغ: يُكتب فيه ملف تعريف، ثم يُتفرع فرع التقدم ويُرفع كل شيء
+    const ghE = fakeGitHub('test-token', { empty: true });
+    const { ctx, page } = await newPage(ghE);
+    await startApp(page);
+    await page.click('#gearBtn'); await sleep(200);
+    ok((await page.innerText('#syncBox')).includes('vua5l/engl-pass-progress'), 'the suggested repository is the private progress repository');
+    await page.fill('#syncToken', 'test-token');
+    await page.click('#syncConnect');
+    for (let i = 0; i < 100 && !ghE.files['progress/course.json']; i++) await sleep(100);
+    ok(ghE.readme && ghE.branch && !!ghE.files['progress/course.json'], 'an empty new repository gets a first file, then the progress branch and the upload');
+    ok(page.errors.length === 0, 'no page errors (empty private repository): ' + page.errors.join(' | '));
     await ctx.close();
   }
 

@@ -913,3 +913,15 @@ body{font-family:var(--f-en)}
 
 /* الجوال الضيق (320px): تبقى الجداول داخل بطاقتها بلا سحب جانبي. */
 @media (max-width:350px){.tbl table{font-size:13px}.tbl th,.tbl td{padding:7px 6px}.tbl td:first-child{font-size:11.5px;width:20%}}
+
+/* التصحيح بالنسخ واللصق، والقراءة والاستماع الحر (11 نوفمبر 2026) */
+.model.paste>*:not(summary){margin-top:10px}
+.model.paste a.btn{display:inline-flex;text-decoration:none}
+.paste-in{display:block;width:100%;min-height:120px;font-family:var(--f-en);font-size:15px;font-weight:500;line-height:1.5;padding:12px 14px;border-radius:16px;border:1.5px solid var(--line-dark);background:var(--surface);color:var(--ink);resize:vertical}
+.paste-in:focus{outline:none;box-shadow:0 0 0 3px rgba(44,74,110,.22)}
+.ask-copy-in{min-height:96px}
+.copy-area{min-height:220px;font-size:13.5px}
+a.btn{text-decoration:none}
+.free-src{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.free-src li{display:flex;flex-direction:column;gap:1px;padding:8px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface)}
+.free-src a{color:var(--dark);font-family:var(--f-en);font-weight:700;font-size:14.5px;text-decoration:none}

@@ -2,14 +2,17 @@
 /* خريطة الكورس لأول كل جلسة عمل (مهارة english-passport-workshop).
    تطبع HTML خريطة «ما بُني وما بقي» من حالة الموقع نفسها: مراحل الرحلة، ووحدات A2 بمربعات دروسها،
    واختبار كل وحدة، والاختبارات القبلية. يُعطى ناتجها كما هو لأداة show_widget، وهو HTML ثابت بلا <script>.
-   الاستعمال: node tests/course-map.js [جذر الموقع]
+   الاستعمال: node tests/course-map.js [جذر الموقع] [--page]
+   --page: صفحة كاملة بألوان الموقع، تكتبها tools/register-lessons.js في map.html عند كل نشر،
+   فيفتحها المتعلم من جواله بلا رصيد (11 نوفمبر 2026).
    البيانات من `node tests/content-check.js --map`، فلا تُكتب الخريطة باليد ولا تتأخر عن الموقع.
    ويطبع سطر خلاصة على stderr لمن يكتب تحت الخريطة. */
 'use strict';
 const { execFileSync } = require('child_process');
 const path = require('path');
 
-const root = path.resolve(process.argv[2] || process.cwd());
+const ARGS = process.argv.slice(2), PAGE = ARGS.includes('--page');
+const root = path.resolve(ARGS.filter(a => !a.startsWith('--'))[0] || process.cwd());
 let raw;
 try { raw = execFileSync(process.execPath, [path.join(__dirname, 'content-check.js'), root, '--map'], { encoding: 'utf8' }); }
 catch (e) { raw = e.stdout || ''; }
@@ -55,7 +58,7 @@ const GRID = U.map((B, i) => '<div class="row">' + B.map(([n, ti, g, l, q, p]) =
   '<div class="c"><b>' + esc(n) + '</b> · ' + esc(ti) + '<small dir="ltr" style="text-align:right">' + esc(g) + '</small>' +
   '<div style="display:flex;gap:3px;margin-top:5px">' + [...l].map(c => sq(c)).join('') + '<span style="width:3px"></span>' + sq(q, ' o') + '</div>' +
   (p ? '<span class="chip">اختبار قبلي مبني · الإصدار ' + p + '</span>' : '') + '</div>').join('') + '</div>').join('\n');
-process.stdout.write(`<h2 class="sr-only">خريطة كورس الإنجليزية: ما بُني وما بقي</h2>
+const BODY = (`<h2 class="sr-only">خريطة كورس الإنجليزية: ما بُني وما بقي</h2>
 <style>
 .m{direction:rtl;font-size:13px;line-height:1.6;color:var(--text-primary);padding:.5rem 0}.m b{font-weight:500}
 .lb{font-size:12px;color:var(--text-secondary);margin:1.1rem 0 6px}
@@ -81,3 +84,19 @@ ${GRID}
 <div style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:11px;color:var(--text-secondary)"><span><span class="k b"></span> مبني</span><span><span class="k x"></span> الوحدة الحالية</span><span><span class="k"></span> باقٍ</span><span><span class="k o"></span> اختبار الوحدة</span></div>
 </div>
 `);
+/* الصفحة الكاملة: ألوان الموقع مكان متغيرات أداة العرض، ولا برنامج فيها. وتاريخها تاريخ آخر درس تغيّر، لا وقت التشغيل،
+   فلا تتغير الصفحة إلا إذا تغيّر الكورس. */
+function pageOf(body) {
+  const css = ':root{--text-primary:#1E2A33;--text-secondary:#5A6B7C;--border:#E2D9CC;--border-strong:#5A6B7C;--surface-2:#FFFDF8;' +
+    '--fill-accent:#2C4A6E;--border-accent:#B94A33;--text-accent:#A8432E;--bg-warning:#FDF4E7;--text-warning:#8A5A12}' +
+    'body{margin:0;background:#F7F3EC;font-family:"Readex Pro",system-ui,-apple-system,sans-serif}' +
+    '.wrap{max-width:720px;margin:0 auto;padding:18px 16px 40px}h1{font-size:19px;color:#1E2A33;margin:0 0 4px;direction:rtl}' +
+    '.sub{font-size:12.5px;color:#5A6B7C;margin:0;direction:rtl}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}' +
+    'a{color:#2C4A6E}';
+  return '<!doctype html>\n<html lang="ar" dir="rtl">\n<head>\n<meta charset="utf-8">\n' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1">\n<meta name="robots" content="noindex">\n' +
+    '<title>خريطة البناء · جواز الإنجليزية</title>\n<style>' + css + '</style>\n</head>\n<body>\n<div class="wrap">\n' +
+    '<h1>خريطة البناء: ما بُني وما بقي</h1>\n<p class="sub">' + esc((t.lessonsBuilt || 0) + ' درسًا مبنيًا · ') + '<a href="./">العودة إلى الموقع</a></p>\n' +
+    body + '</div>\n</body>\n</html>\n';
+}
+process.stdout.write(PAGE ? pageOf(BODY) : BODY);
