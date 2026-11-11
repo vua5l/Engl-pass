@@ -986,17 +986,73 @@ function stripMarkup(s){ return s
   .replace(/<<[sct]:(.+?)>>/g, '$1')
   .replace(/\{([^}|]+)(?:\|[^}]+)?\}/g, '$1')
   .replace(/\[\[([^\]|]+)\|[^\]]+\]\]/g, '$1'); }
-function emailBody(plain){
-  return h('div', { class:'mail-body' + (plain ? ' mail-plain' : ''), dir:'ltr', html:D.reading.paras.map(function(p){ return '<p>' + (plain ? stripMarkup(p) : parseMarkup(p)) + '</p>'; }).join('') });
-}
 /* رأس الإيميل: الصورة (reading.art) وسطر المرسل (reading.fromMeta) من الدرس نفسه؛
    ودرس بلا صورة لا صورة له، وبلا fromMeta يظهر اسم المرسل وحده. */
 function mailHead(r){ return [
   r.art ? h('div', { class:'mail-art', html:r.art }) : null,
   h('div', { class:'mail-meta' }, h('div', {}, h('span', { class:'k' }, 'FROM'), r.fromMeta || r.from || ''), h('div', {}, h('span', { class:'k' }, 'TO'), r.to), h('div', {}, h('span', { class:'k' }, 'SUBJECT'), h('span', { class:'subj' }, r.title)))]; }
+
+/* أشكال نص القراءة (11 نوفمبر 2026): reading.form واحد من خمسة، والإيميل إن لم يُذكر، فالدروس القديمة كما كانت.
+   وبطاقة واحدة (readingCard) لكل مكان يظهر فيه النص: القراءة الأولى بلا علامات، والثانية بالكلمات الملموسة والتظليل،
+   وقراءة الطلاقة. وشكل كل بطاقة من العينات التي اختارها المتعلم، وأنماطها في آخر app.css (.rf). */
+var READING_FORMS = ['email', 'article', 'notice', 'story', 'chat'];
+function readingForm(r){ var f = r && r.form; return READING_FORMS.indexOf(f) > 0 ? f : 'email'; }
+/* فقرة القصة التي هي *** فاصل مشهد، لا نص. */
+function isStoryBreak(p){ return String(p).trim() === '***'; }
+/* رسالة المحادثة «Name: text»، والاسم من reading.people، وإلا null. */
+function chatLine(r, p){ var m = /^\s*([^:<>{}]{1,40}?)\s*:\s*([\s\S]*)$/.exec(String(p)), ppl = (r && r.people) || [];
+  return m && ppl.indexOf(m[1]) >= 0 ? { who:m[1], text:m[2] } : null; }
+/* كل ما يقرؤه المتعلم من النص بعلاماته: الفقرات (بلا فاصل القصة ولا أسماء المحادثة)، وdek في المقال،
+   وsub وقيم facts وstamp في الإعلان. والاقتباس (quote) لا يُعدّ، لأنه يكرر كلمات النص. */
+function readingTexts(r){ if (!r) return []; var f = readingForm(r), out = [];
+  (r.paras || []).forEach(function(p){ if (f === 'story' && isStoryBreak(p)) return; var c = f === 'chat' ? chatLine(r, p) : null; out.push(c ? c.text : String(p)); });
+  if (f === 'article' && r.dek) out.push(String(r.dek));
+  if (f === 'notice') { if (r.sub) out.push(String(r.sub)); (r.facts || []).forEach(function(x){ if (x && x.v) out.push(String(x.v)); }); if (r.stamp) out.push(String(r.stamp)); }
+  return out; }
 /* عدد كلمات نص القراءة بعد حذف علامات التلوين والوسوم. */
-function readingWords(r){ var t = ((r && r.paras) || []).map(function(p){ return stripMarkup(String(p)).replace(/<[^>]*>/g, ' '); }).join(' ');
+function readingWords(r){ var t = readingTexts(r).map(function(p){ return stripMarkup(String(p)).replace(/<[^>]*>/g, ' '); }).join(' ');
   return (t.match(/[A-Za-z0-9]+(?:['’][A-Za-z]+)*/g) || []).length; }
+/* الحرفان الأولان من اسمين: «Sara Ali» → SA، و[Noor, Sara] → NS. */
+function initialsOf(names){ return names.filter(Boolean).slice(0, 2).map(function(n){ return String(n).trim().charAt(0).toUpperCase(); }).join(''); }
+function namesLine(ppl){ return ppl.length < 2 ? ppl.join('') : ppl.slice(0, -1).join(', ') + ' & ' + ppl[ppl.length - 1]; }
+/* بطاقة نص القراءة. o.plain: القراءة الأولى والطلاقة (بلا علامات ولا لمس)، و o.hl: التظليل ظاهر، و o.noArt: بلا رسم،
+   و o.aria و o.hidden. والإيميل يُبنى كما كان حرفًا بحرف (mail و mailHead و mail-body). */
+function readingCard(r, o){ o = o || {}; var f = readingForm(r), plain = !!o.plain;
+  function mk(s){ s = String(s == null ? '' : s); return plain ? stripMarkup(s) : parseMarkup(s); }
+  function paras(list){ return list.map(function(p){ return '<p>' + mk(p) + '</p>'; }).join(''); }
+  var head = o.noArt ? { from:r.from, fromMeta:r.fromMeta, to:r.to, title:r.title } : r;
+  if (f === 'email') return h('article', { class:'mail' + (o.hl ? ' hl-on' : ''), hidden:!!o.hidden, 'aria-label':o.aria }, mailHead(head),
+    h('div', { class:'mail-body' + (plain ? ' mail-plain' : ''), dir:'ltr', html:paras(r.paras || []) }));
+  var ps = r.paras || [], kids = [], body;
+  if (f === 'article') {
+    var by = r.byline ? String(r.byline) : '', mins = Math.max(1, Math.round(readingTarget(r) / 60));
+    kids.push(h('div', { class:'rf-head' },
+      r.kicker ? h('div', { class:'rf-kick' }, String(r.kicker)) : null,
+      h('h2', { class:'rf-title' }, r.title),
+      r.dek ? h('p', { class:'rf-dek', html:mk(r.dek) }) : null,
+      by ? h('div', { class:'rf-by' }, h('span', { class:'av' }, initialsOf(by.split(/\s+/))), h('span', {}, 'By ' + by), h('span', {}, '·'), h('span', {}, mins + ' min read')) : null));
+    body = ps.map(function(p, i){ return '<p>' + mk(p) + '</p>' + (i === 0 && r.quote ? '<div class="rf-quote">' + esc(stripMarkup(String(r.quote))) + '</div>' : ''); }).join('');
+  } else if (f === 'notice') {
+    kids.push(h('div', { class:'rf-band' }, h('span', {}, String(r.band || 'NOTICE')), r.bandRight ? h('b', {}, String(r.bandRight)) : null),
+      h('div', { class:'rf-head' }, h('h2', { class:'rf-title' }, r.title), r.sub ? h('div', { class:'rf-sub', html:mk(r.sub) }) : null),
+      (r.facts || []).length ? h('div', { class:'rf-facts' }, r.facts.map(function(x){ return h('div', {}, h('span', { class:'rf-k' }, String(x.k || '')), h('span', { html:mk(x.v) })); })) : null);
+    body = paras(ps);
+  } else if (f === 'story') {
+    kids.push(h('div', { class:'rf-head' }, h('div', { class:'rf-k' }, String(r.kicker || 'A SHORT STORY')), h('h2', { class:'rf-title' }, r.title), h('div', { class:'rf-orn', 'aria-hidden':'true' }, '◆ ◆ ◆')));
+    body = ps.map(function(p){ return isStoryBreak(p) ? '<div class="rf-sep" aria-hidden="true">• • •</div>' : '<p>' + mk(p) + '</p>'; }).join('');
+  } else {
+    var ppl = (r.people || []).map(String), times = r.times || [];
+    kids.push(h('div', { class:'rf-chead' }, h('span', { class:'av' }, initialsOf(ppl)), h('span', {}, h('b', {}, namesLine(ppl)), r.chatTitle ? h('small', {}, String(r.chatTitle)) : null)));
+    kids.push(h('div', { class:'rf-msgs', html:'<span class="day">' + esc(r.day || 'TODAY') + '</span>' + ps.map(function(p, i){
+      var c = chatLine(r, p), me = c && c.who === r.me;
+      return '<div class="msg ' + (me ? 'out' : 'in') + '">' + (c && !me ? '<span class="who">' + esc(c.who) + '</span>' : '') + mk(c ? c.text : p) +
+        (times[i] ? '<span class="t">' + esc(times[i]) + '</span>' : '') + '</div>'; }).join('') }));
+  }
+  if (body != null) kids.push(h('div', { class:'rf-body', html:body }));
+  if (f === 'notice' && r.stamp) kids.push(h('div', { class:'rf-stamp' }, stripMarkup(String(r.stamp))));
+  return h('article', { class:'rf rf-' + f + (plain ? ' mail-plain' : '') + (o.hl ? ' hl-on' : ''), hidden:!!o.hidden, 'aria-label':o.aria, dir:'ltr' },
+    r.art && !o.noArt ? h('div', { class:'mail-art', html:r.art }) : null, kids);
+}
 /* هدف مؤقت القراءة الأولى: targetSeconds من الدرس، وإلا نحو 100 كلمة في الدقيقة مقرّبًا إلى 10 ثوانٍ. */
 function readingTarget(r){ var t = Number(r && r.targetSeconds); return t > 0 ? Math.round(t) : Math.max(30, Math.round(readingWords(r) * 0.6 / 10) * 10); }
 function arMinutes(n){ return n === 1 ? 'دقيقة' : n === 2 ? 'دقيقتين' : arDigits(n) + (n <= 10 ? ' دقائق' : ' دقيقة'); }
@@ -1136,6 +1192,7 @@ var EN_LABELS = {
   'أنهيت القراءة الأولى': 'Finished First Reading',
   'القراءة الثانية': 'Second Reading (Details)',
   'قرأت الإيميل': 'To Comprehension Questions',
+  'قرأت النص': 'To Comprehension Questions',
   'إلى الأسئلة': 'To Questions',
   'ابدأ الاختبار': 'Start Quiz',
   'أعد الاختبار': 'Retake Quiz',
@@ -1602,8 +1659,7 @@ function fluencyText(){ var id = D.reading && D.reading.fluencyFrom, L = id && t
 function stFluency(ctl){
   var r = fluencyText(), words = readingWords(r), sec = 0;
   ctl.enable('التالي');
-  var mail = h('article', { class:'mail', hidden:true, 'aria-label':'Fluency Reading' }, mailHead({ from:r.from, fromMeta:r.fromMeta, to:r.to, title:r.title }),
-    h('div', { class:'mail-body mail-plain', dir:'ltr', html:r.paras.map(function(p){ return '<p>' + stripMarkup(p) + '</p>'; }).join('') }));
+  var mail = readingCard(r, { plain:true, noArt:true, hidden:true, aria:'Fluency Reading' }), isMail = readingForm(r) === 'email';
   var tSpan = h('span', { class:'rtimer-t' }, '00:00');
   function bestLine(){ var b = S.fluency; return b ? 'Your best: ' + b.wpm + ' words a minute (' + fmtSec(b.sec) + ')' : 'About ' + words + ' words'; }
   var line = h('p', { class:'hint' }, bestLine());
@@ -1626,7 +1682,8 @@ function stFluency(ctl){
   });
   return [
     label('Warm-up · Fluency Reading', 'تمهيد · قراءة الطلاقة'),
-    instr('Read this old email again, a little faster than before. You know these words, so do not stop. Tap Finished at the end.', 'أعد قراءة هذا الإيميل القديم أسرع قليلًا من قبل. كلماته تعرفها فلا تتوقف، واضغط Finished في آخره.'),
+    isMail ? instr('Read this old email again, a little faster than before. You know these words, so do not stop. Tap Finished at the end.', 'أعد قراءة هذا الإيميل القديم أسرع قليلًا من قبل. كلماته تعرفها فلا تتوقف، واضغط Finished في آخره.')
+      : instr('Read this old text again, a little faster than before. You know these words, so do not stop. Tap Finished at the end.', 'أعد قراءة هذا النص القديم أسرع قليلًا من قبل. كلماته تعرفها فلا تتوقف، واضغط Finished في آخره.'),
     h('div', { class:'rtimer', style:'position:sticky;top:8px;z-index:3' }, btn, tSpan),
     line, mail
   ];
@@ -1655,7 +1712,7 @@ function stRead1(ctl){
   var tSpan = h('span', { class:'rtimer-t' }, '00:00 / ' + tgt);
   clearReadTimer();
   readTimerId = setInterval(function(){ sec++; tSpan.textContent = fmtSec(sec) + ' / ' + tgt; }, 1000);
-  var mail = h('article', { class:'mail', 'aria-label':'First Reading · القراءة الأولى' }, mailHead(r), emailBody(true));
+  var mail = readingCard(r, { plain:true, aria:'First Reading · القراءة الأولى' });
   return [
     label('Step 2 · First Reading (Main Idea)', 'الخطوة 2', h('span', { class:'tag' }, 'No dictionary')),
     h('div', { class:'rtimer' },
@@ -1684,9 +1741,9 @@ function stReveal(ctl){ var p = D.reading.predict, ins = D.reading.insight; ctl.
   ];
 }
 
-function stEmail(ctl){ var r = D.reading, raw = (r.paras || []).join(' ');
-  ctl.enable('قرأت الإيميل');
-  var mail = h('article', { class:'mail' + (S.hl ? ' hl-on' : ''), 'aria-label':'Second Reading · القراءة الثانية' }, mailHead(r), emailBody(false));
+function stEmail(ctl){ var r = D.reading, raw = readingTexts(r).join(' ');
+  ctl.enable(readingForm(r) === 'email' ? 'قرأت الإيميل' : 'قرأت النص');
+  var mail = readingCard(r, { hl:S.hl, aria:'Second Reading · القراءة الثانية' });
   /* أسماء الألوان من الدرس (reading.lg1 / lg2 / lg3)، ولا يُشرح لون لا يستعمله نصه. */
   var legend = h('div', { class:'legend', hidden:!S.hl },
     raw.indexOf('<<s:') >= 0 ? h('span', { class:'lg s' }, enOnly(r.lg1) || 'Present Simple') : null,
