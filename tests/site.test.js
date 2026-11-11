@@ -1138,10 +1138,19 @@ function fakeGitHub(token, opts) {
         if (f === 'notice') { const st = el.querySelector('.rf-stamp'); return { ok: t('.rf-band span') === 'NOTICE' && t('.rf-band b') === 'THIS WEEKEND' && q('.rf-facts > div') === 3 && q('.rf-facts .w.gl') === 1 && q('.rf-sub .w.gl') === 1 && !!st && getComputedStyle(st).cursor !== 'pointer' && st.tagName === 'DIV' && !st.onclick, stamp: st && st.textContent }; }
         if (f === 'story') { const p = el.querySelector('.rf-body p:first-child'); return { ok: t('.rf-k') === 'A SHORT STORY' && q('.rf-sep') === 1 && !!p && getComputedStyle(p, '::first-letter').float === 'left' && !/\*\*\*/.test(el.textContent), sep: q('.rf-sep') }; }
         const outs = el.querySelectorAll('.msg.out'), ins = el.querySelectorAll('.msg.in');
-        return { ok: t('.rf-chead b') === 'Lama & Sophie' && t('.rf-chead small') === 'A special night' && t('.rf-chead .av') === 'LS' && t('.day') === 'TODAY' && outs.length > 0 && ins.length > 0 &&
-          [...outs].every(m => !m.querySelector('.who')) && [...ins].every(m => (m.querySelector('.who') || {}).textContent === 'Lama') && q('.msg .t') === outs.length + ins.length && !/(Lama|Sophie):/.test(el.textContent), outs: outs.length, ins: ins.length };
+        const gl = el.querySelector('.msg.out .w.gl'), glc = gl ? getComputedStyle(gl).borderBottomColor : '';
+        return { ok: !!gl && glc !== 'rgb(90, 107, 124)' && t('.rf-chead b') === 'Lama & Sophie' && t('.rf-chead small') === 'A special night' && t('.rf-chead .av') === 'LS' && t('.day') === 'TODAY' && outs.length > 0 && ins.length > 0 &&
+          [...outs].every(m => !m.querySelector('.who')) && [...ins].every(m => (m.querySelector('.who') || {}).textContent === 'Lama') && q('.msg .t') === outs.length + ins.length && !/(Lama|Sophie):/.test(el.textContent), outs: outs.length, ins: ins.length, glc };
       }, f);
       ok(s.ok, f + ': the card has the parts of the approved sample: ' + JSON.stringify(s));
+      // كلمة مساعدة في حقل غير الفقرات (dek في المقال، والحقائق في الإعلان) تفتح القاموس بمعناها العربي
+      const extra = { article: ['.rf-dek .w.gl', 'مميزة'], notice: ['.rf-facts .w.gl', 'المكتبة'] }[f];
+      if (extra) {
+        await page.evaluate(() => { const d = document.querySelector('#dict'); if (d) d.hidden = true; });
+        await card.locator(extra[0]).first().click(); await sleep(150);
+        const dd = { open: await page.locator('#dict:visible').count(), ar: await page.locator('#dAr').innerText().catch(() => '') };
+        ok(dd.open === 1 && dd.ar.trim() === extra[1], f + ': a helper word in ' + extra[0].split(' ')[0] + ' opens the dictionary with its Arabic meaning: ' + JSON.stringify(dd));
+      }
       ok(!/\bemail\b/i.test(r2.scr) && !/\bemail\b/i.test(r1.lbl + r2.lbl), f + ': the engine says nothing about an email around the text');
       ok(page.errors.length === 0, f + ': no page errors: ' + page.errors.join(' | '));
       await ctx.close();

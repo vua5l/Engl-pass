@@ -63,10 +63,11 @@
  *   predict question whose correct option sits in one position in more than half of the lessons (WARN).
  *   Reading formats (11 Nov 2026): reading.form must be email (the default), article, notice, story or chat, with the
  *   fields of its format (ERROR): email from + to; article kicker + dek + byline; notice band, 2-4 facts {k, v} and at
- *   least one paragraph; story at least 3 text paragraphs ("***" is a scene break) and not starting with "***"; chat
+ *   least one paragraph (WARN above 3); story at least 3 text paragraphs ("***" is a scene break) and not starting with
+ *   "***" (WARN when it starts with a marked word); chat
  *   2-3 people, me among them, every paragraph "Name: text" with a known name, times (if any) one per paragraph. WARN
  *   for markup in a field the card shows as plain text, a pull quote with words that are not in the text, a times entry
- *   that is not HH:MM, and a vocab word that is not marked {…} anywhere in the text. Every text field of the format
+ *   that is not HH:MM, and a vocab word that is not marked {…} anywhere in the text (the stamp does not count). Every text field of the format
  *   (readingParts: paragraphs without the story break and the chat names, dek, sub, facts[].v, stamp) is read by the
  *   sentence-repetition checks and counted in the "counts" INFO line (format and words, as the engine counts them).
  *   Arabic terms: words the learner did not understand and replaced on 5 Nov 2026 (OLD_TERMS) must not come back (ERROR).
@@ -498,10 +499,12 @@ function checkReadingForm(log, R) {
     if (!isArr(R.facts) || R.facts.length < 2 || R.facts.length > 4) log.error('reading.facts', `a notice has 2-4 fact rows { k: 'WHEN', v: '…' } (now ${isArr(R.facts) ? R.facts.length : 'none'})`);
     else R.facts.forEach((x, i) => { if (!x || !isStr(x.k) || !isStr(x.v)) log.error(`reading.facts[${i}]`, 'needs "k" (the label, e.g. WHEN) and "v" (the text)'); });
     if (!paras.some(isStr)) log.error('reading.paras', 'a notice needs at least one paragraph of body text');
+    else if (paras.length > 3) log.warn('reading.paras', `a notice has 1-3 paragraphs of body text (now ${paras.length})`);
   } else if (f === 'story') {
     const n = paras.filter(p => isStr(p) && !isStoryBreak(p)).length;
     if (n < 3) log.error('reading.paras', `a story has at least 3 text paragraphs (now ${n}; "***" is a scene break, not text)`);
     if (paras.length && isStoryBreak(paras[0])) log.error('reading.paras[0]', 'a story starts with text, not with the scene break "***" (the first paragraph gets the large first letter)');
+    else if (isStr(paras[0]) && /^\s*["'“]?\s*(\{|\[\[|<<)/.test(paras[0])) log.warn('reading.paras[0]', 'start the story with a plain word; the large first letter splits a marked word');
   } else {
     const ppl = R.people;
     if (!strList(ppl) || ppl.length < 2 || ppl.length > 3) log.error('reading.people', `a chat has 2-3 people (names), now ${isArr(ppl) ? ppl.length : 'none'}`);
@@ -1045,7 +1048,8 @@ function checkLesson(id, L, S) {
     if (!isArr(L.reading.paras) || !L.reading.paras.length) log.error('reading.paras', 'missing or empty');
     checkReadingForm(log, L.reading);
     // every lesson word is marked {word|key} somewhere in the text the learner reads (any text field of the format)
-    const marked = new Set(readingParts(L.reading).flatMap(x => [...String(x.text).matchAll(/\{([^}|]+)(?:\|([^}]+))?\}/g)].map(m => (m[2] || m[1]).trim().toLowerCase())));
+    // the stamp is shown as plain text, so a word marked there cannot be tapped
+    const marked = new Set(readingParts(L.reading).filter(x => x.field !== 'reading.stamp').flatMap(x => [...String(x.text).matchAll(/\{([^}|]+)(?:\|([^}]+))?\}/g)].map(m => (m[2] || m[1]).trim().toLowerCase())));
     A('vocab').forEach((v, i) => {
       if (v && isStr(v.en) && ![v.en, v.headword].some(w => isStr(w) && marked.has(w.trim().toLowerCase())))
         log.warn(`vocab[${i}]`, `${q(v.en)} is not marked {${v.en}} in the reading text, so the learner cannot tap it there`);
