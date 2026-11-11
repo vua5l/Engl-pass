@@ -42,6 +42,7 @@ tools/word-bank.js          يكتب بنك الكلمات في آخر content.j
 tools/night-guard.js        حارس العمل الليلي (موقوف منذ 11 نوفمبر 2026): يرفض أي تغيير خارج lessons/ وcontent.js وnight-reports/
 tools/hear.py               يحوّل صوت مقطع الاستماع إلى نص، ليطابق المراجع الأسئلة بما يُقال فعلًا (لا يُرفع ناتجه)
 tests/content-check.js      فاحص آلي لمحتوى الدروس والاختبارات بـ Node وحده، في أقل من ثانية
+tests/writing-checks.test.js يجرّب مكتبة فحوص الكتابة في app.js على الجمل الصحيحة والخاطئة في tests/writing-checks.cases.js
 tests/map-check.js          يطابق كل درس بخريطة وحدته
 tests/link-check.js         يتأكد أن روابط المقاطع وملفات النطق تفتح (يعمل في GitHub)
 tests/site.test.js          اختبار شامل في Chrome (يحاكي GitHub، ولا يلمس مستودعًا حقيقيًا)
@@ -148,6 +149,23 @@ CHANGELOG.md        سجل التغييرات
 - **Ask the Teacher:** داخل claude.ai كما كان. وخارجه `openAskCopy`: يكتب المتعلم سؤاله أو يختار من `askChips`، فيُنسخ مع سياق الدرس (`RULES()`) ليلصقه في Gemini. فالزر ظاهر دائمًا، و`askChips` مطلوبة كما كانت.
 - **النسخ:** `copyText` يستعمل الحافظة، وإن رفضها المتصفح فتح نافذة فيها النص محدَّدًا.
 
+## مكتبة فحوص الكتابة (منذ 11 نوفمبر 2026)
+
+- **لماذا:** كان كل درس يكتب برنامج فحوص كتابته بنفسه (`writing.checks` بدوال `ok`)، فيتكرر البرنامج نفسه في الدروس ويكلّف الكاتب والمراجع.
+- **الآن:** يسمّي الدرس الجديد ما يريده من المكتبة (`WCHECK_LIB` في `app.js`)، ويحوّلها `resolveChecks(list, lesson)` إلى فحوص، ويقرؤها `writingChecks()` في شاشة الكتابة و«Quick Check»:
+  ```
+  checks: [ { use:'sentences', n:4 }, { use:'tense', tense:'pastSimple', n:2 }, { use:'sequence', n:2 }, { use:'words', n:2 } ]
+  ```
+  - `sentences`: عدد الجمل `n`، و`runOn:true` و`capitalI:true` اختياريان.
+  - `tense`: الزمن `tense` من `WL_TENSES` (present وpresentSimple وpresentContinuous وpastSimple وpastContinuous وgoingTo وwill وpresentPerfect)، و`n` عدد الجمل التي فيها الزمن. ويرفض الصيغ الخاطئة الشائعة لعائلة الزمن (I am work، He don't، didn't went، I was go، buyed، I going to، will to go، have went، he have seen) إلا بـ `clean:false`.
+  - `words`: كلمات الدرس وعبارته القانونية (`a.used`)، أو `list` قائمة يختارها الدرس، و`n`.
+  - `email`: أجزاء الإيميل `parts` من greeting وpurpose وclosing (الثلاثة إن لم تُذكر).
+  - `sequence`: كلمات الترتيب المختلفة (First وThen وAfter that وFinally وأخواتها) `n`.
+  - `phrases`: عبارات يطلبها الدرس `any` أو يمنعها `not`، نصوصًا (و`…` كلمة إلى ثلاث: `not as … as`) أو تعابير `/…/`، و`n` عدد المختلف منها. ويكتب له الدرس `k` و`tEn` و`t`، لأن المكتبة لا تعرف غرضه (المقارنة مثلًا).
+- النص الإنجليزي والعربي والمثال تصنعها الخيارات، وللدرس أن يغيّرها بـ `tEn` و`t` و`ex` و`k`. والفحص بدالة `ok` يبقى كما هو، فلم تتغير فحوص الدروس الخمسة والعشرين، ويجوز الخلط بينهما في درس واحد.
+- **الفحص:** `node tests/writing-checks.test.js` يجرّب كل فحص على الجمل الصحيحة والخاطئة في `tests/writing-checks.cases.js` (وفي GitHub عند كل رفع). وإذا رفض فحص جملة صحيحة، تضاف إلى `pass` هناك ثم تُصلح المكتبة. والفاحص `content-check.js` يحوّل الأسماء كما يحوّلها الموقع، ويمنع الاسم المجهول والخيار الخاطئ (ERROR)، ويجرّب الفحوص على `model` و`acceptExamples` كما كان.
+- **عدّ الجمل:** `analyze` لا يعدّ سطر الختام في الإيميل جملة (`isClosingLine`: Best regards, Usama · Kind regards,⏎Usama Ali · Thanks, see you)، ويعدّ «Thank you for your help.» جملة.
+
 ## القراءة والاستماع الحر (منذ 11 نوفمبر 2026)
 
 - زر **Free reading** في Today يفتح `openFreeLog`: روابط مصادر مجانية (`FREE_SOURCES`)، ودقائق يسجلها المتعلم قراءةً أو استماعًا في `G.freeLogs` (`at` و`kind` و`mins`).
@@ -177,9 +195,8 @@ CHANGELOG.md        سجل التغييرات
 - كلمات بلا تسجيل بشري معروف، وعددها 23 في بنك الكلمات، أكثرها جموع مثل managers وwitnesses وأسماء أعلام، فلا يظهر لها زر نطق، ورابط أكسفورد يفتح مفردها.
 - ملفات النطق من Wikimedia Commons: يتحقق من وجودها فحص الروابط في GitHub. وجد أول فحص (26 أكتوبر 2026) خمسة أسماء غير موجودة في Commons ولا في بيانات Wiktionary، هي scientist وdata وcontract في u1l1 وdraft وpolite في u0l4، فأُبدلت بتسجيلات بشرية تذكرها بيانات Wiktionary، وحُذف زر to من go to court لأن تسجيله المنفرد مشدد. وتُسمع «hire a lawyer» بلا a. وأسماء المسجّلين ورخصهم في `wikiCredit` القديمة لم يُتحقق منها، وكل ملف يفتح صفحته في Commons من صفحة المصادر.
 - ملفات النطق الجديدة في u1l2 إلى u1l5 وفي الوحدتين 2 و3 لم تُجرَّب على الجوال بعد، وفحص الروابط في GitHub يؤكد وجودها. فصفحات Wikimedia Commons لا تُفتح من بيئة عمل Claude، فتحقق الكتّاب والمراجعون من أسمائها من بيانات Wiktionary (موقع kaikki.org). وبعضها تسجيلات Lingua Libre بصيغة wav، والمحرك يقبلها.
-- عدّاد الجمل في الكتابة (`analyze` في `app.js`) يعدّ سطر الختام مثل «Best regards, Name» جملةً إن بلغ ثلاث كلمات. فدرس الإيميل u1l5 يكتب فحص جمله الخاص، ويحذف التحية والختام قبل العد.
 - قسم Words في Practice يعرض كلمات الدرس الحالي وحده.
-- فحوص الكتابة الافتراضية في المحرك (`CHECKS`) عن المضارع البسيط والمستمر، فيكتب كل درس `checks` خاصة به، والفاحص يجرّبها على نموذجه.
+- فحوص الكتابة الافتراضية في المحرك (`CHECKS`) عن المضارع البسيط والمستمر، فيسمّي كل درس فحوصه من مكتبة فحوص الكتابة (القسم أعلاه)، والفاحص يجرّبها على نموذجه. والمكتبة قواعد تقريبية تخطئ أحيانًا، فما لا تقدر عليه يكتبه الدرس بدالة `ok` كما كان.
 
 ## تشغيل الاختبار
 

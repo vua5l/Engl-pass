@@ -1881,7 +1881,8 @@ var WRITING_TYPOS = {
 function minSentences(){ return (D.writing && D.writing.minSentences) || 4; }
 function analyze(t){ var text = fixQuotes(t);
   var words = (text.match(/[A-Za-z']+/g) || []).length;
-  var sentences = text.split(/[.!?]+/).filter(function(s){ return (s.match(/[A-Za-z']+/g) || []).length >= 3; }).length;
+  /* سطر الختام في الإيميل (Best regards, Usama) لا يُعدّ جملة (isClosingLine). */
+  var sentences = text.split(/[.!?]+/).filter(function(s){ return (s.match(/[A-Za-z']+/g) || []).length >= 3 && !isClosingLine(s); }).length;
   var runOn = words >= 28 && sentences < 4;
   var cont = 0, m; CONT_RE.lastIndex = 0; while ((m = CONT_RE.exec(text))) { if (ING_NOT.indexOf(m[1].toLowerCase()) < 0) cont++; }
   var sig = (text.match(SIG_RE) || []).length;
@@ -1894,6 +1895,429 @@ var CHECKS = [
   { k:'sig', tEn:'At least 2 routine signal words', t:'كلمتا روتين على الأقل', ex:'usually · every day · often', ok:function(a){ return a.sig >= 2; } },
   { k:'vocab', tEn:'3 words/phrases from the lesson', t:'3 كلمات أو عبارات من الدرس', ok:function(a){ return a.used.length >= 3; } }
 ];
+
+/* ---------- مكتبة فحوص الكتابة (منذ 11 نوفمبر 2026) ----------
+   يكتب الدرس الجديد في writing.checks أسماء فحوص من هذه المكتبة بدل أن يكتب برنامجها، مثل:
+     checks: [ { use:'sentences', n:4 }, { use:'tense', tense:'pastSimple', n:2 }, { use:'sequence', n:2 }, { use:'words', n:2 } ]
+   ولكل فحص نص إنجليزي (tEn) وعربي (t) ومثال (ex) تصنعها خياراته، وللدرس أن يغيّرها بالحقول نفسها، وأن يسمّيه بـ k.
+   والفحص القديم بدالة ok يبقى كما هو، فلم تتغير فحوص الدروس الخمسة والعشرين المبنية قبل المكتبة.
+   وجُرّبت كلها على جمل صحيحة وخاطئة في tests/writing-checks.cases.js، يشغّلها tests/writing-checks.test.js.
+     sentences  عدد الجمل n، وrunOn:true يمنع الجملة الطويلة الموصولة، وcapitalI:true يمنع i الصغيرة.
+     tense      الزمن tense (من WL_TENSES)، وn عدد الجمل التي فيها هذا الزمن، والصيغ الخاطئة الشائعة ترفضه إلا بـ clean:false.
+     words      كلمات الدرس وعبارته القانونية: n، أو list قائمة أخرى يختارها الدرس.
+     email      أجزاء الإيميل parts من greeting وpurpose وclosing، والثلاثة إن لم تُذكر.
+     sequence   كلمات الترتيب (First وThen وAfter that وFinally): n كلمات مختلفة.
+     phrases    عبارات يطلبها الدرس (any) أو يمنعها (not)، نصوصًا أو تعابير /…/، و… في النص كلمة إلى ثلاث، وn عدد المختلف منها،
+                ويكتب الدرس له k وtEn وt لأن المكتبة لا تعرف غرضه. */
+var WL_TENSES = ['present', 'presentSimple', 'presentContinuous', 'pastSimple', 'pastContinuous', 'goingTo', 'will', 'presentPerfect'];
+/* أسماء الأفعال الشاذة خارج قائمة الكورس (base:past:pp)، وما يُكتب بـ ed منها صحيحًا فلا يُعد خطأً (learned, dreamed, lighted). */
+var WL_IRR_EXTRA = 'get:got:got/gotten ride:rode:ridden wake:woke:woken ring:rang:rung sing:sang:sung swim:swam:swum throw:threw:thrown grow:grew:grown draw:drew:drawn steal:stole:stolen shake:shook:shaken bite:bit:bitten blow:blew:blown beat:beat:beaten fight:fought:fought feed:fed:fed lead:led:led hide:hid:hidden hang:hung:hung lie:lay:lain lay:laid:laid light:lit:lit rise:rose:risen shoot:shot:shot sink:sank:sunk stick:stuck:stuck strike:struck:struck tear:tore:torn sweep:swept:swept dig:dug:dug weep:wept:wept learn:learnt/learned:learnt/learned show:showed:shown forgive:forgave:forgiven freeze:froze:frozen quit:quit:quit burst:burst:burst spread:spread:spread shine:shone:shone flee:fled:fled bend:bent:bent deal:dealt:dealt'.split(' ');
+var WL_REG_OK = /^(?:seed|felled|lighted|learned|dreamed|burned|spelled|smelled|showed|hanged|shined|costed|leaded|putted|wined|lied|teared|ringed|singed|waked|quitted)$/;
+/* ما ينتهي بـ ed وليس فعلًا ماضيًا: need وأخواتها، والأسماء (Ahmed)، والصفات. */
+var WL_ED_NOT = /^(?:need|feed|bleed|breed|speed|succeed|exceed|proceed|indeed|seed|weed|heed|shed|shred|wed|embed|plead|red|bed|hundred|greed|deed|creed|reed|steed|tweed|sacred|naked|wicked|beloved|rugged|ragged|ahmed|mohammed|mohamed|muhammed|khaled|majed|saeed|sayed|waleed|hamed|hameed|rashed|rasheed|fahed|raed|zayed|majeed|fareed|waheed|tired|interested|excited|bored|worried|united|advanced|crowded|pleased|married|scared|surprised|confused|disappointed|embarrassed|amazed|annoyed|satisfied|qualified|talented|skilled|experienced)$/;
+/* ما ينتهي بـ ing وليس فعلًا مستمرًا، وما يكون فعلًا مع الشخص وصفةً مع الشيء (I'm relaxing / It's relaxing). */
+var WL_ING_NOT = /^(?:thing|things|string|sting|swing|sing|ring|bring|wing|king|spring|during|ceiling|morning|evening|nothing|something|anything|everything|building|wedding|sibling|darling|pudding|amazing|interesting|exciting|boring|tiring|surprising|shocking|charming|frightening|confusing|disappointing|embarrassing|terrifying|exhausting|outstanding|thrilling|inspiring|challenging|fascinating|satisfying|rewarding|pleasing|depressing|entertaining|refreshing|amusing|disgusting|astonishing|alarming|appealing|demanding|promising|welcoming|striking|overwhelming|convincing|outgoing|willing|upcoming|ongoing)$/;
+var WL_ING_BOTH = /^(?:relaxing|worrying|annoying|encouraging|loving|caring|missing)$/;
+var WL_ADVERB = /^(?:not|also|still|just|already|never|ever|always|usually|often|sometimes|really|even|only|probably|definitely|certainly|actually|finally|recently|nearly|almost|hardly|quickly|slowly|suddenly|carefully|happily|easily|completely|totally|simply|clearly|mostly|currently|now)$/;
+var WL_PRON = /^(?:i|you|he|she|it|we|they)$/;
+var WL_POSS = /^(?:the|my|your|his|her|our|their)$/;
+/* بعد هذه الكلمات لا تكون الكلمة المنتهية بـ ed ماضيًا بسيطًا: am / is + صفة، have + تصريف ثالث، a / the + صفة، to / will + فعل. */
+var WL_NOT_PAST_BEFORE = /^(?:am|is|are|'s|be|been|being|have|has|having|get|gets|getting|feel|feels|look|looks|seem|seems|become|becomes|a|an|the|my|your|his|her|our|their|its|this|that|these|those|very|so|too|will|to|can|must|should|would|may|might|shall|do|does)$/;
+var WL_PAST_TIME = / (?:yesterday|ago|last|earlier|once|then|in (?:19|20)[0-9][0-9]|when (?:i|we|he|she|they) (?:was|were)|this morning) /;
+/* was / were قبل أصل الفعل خطأ (I was go). ولا يُعد هنا ما يصح بعدها (live, like, read, work). */
+var WL_BE_BASE = /^(?:go|come|see|call|study|walk|run|sit|stand|take|give|know|tell|feel|eat|drink|sleep|write|talk|play|watch|happen|learn|teach|want|ask|start|finish|travel|wake|get|make|do|have|say|speak|buy|meet|find|think|pray|visit|arrive|stay|try|listen|move|pay|send|stop|swim|wash|wear|use|cook)$/;
+var WL_STATE_ING = /^(?:knowing|wanting|needing|preferring|understanding|believing|owning|belonging)$/;
+/* بعد going to: مكان لا فعل (going to the market، going to Jeddah)، فليس مستقبلًا. */
+var WL_TO_PLACE = /^(?:the|a|an|my|your|his|her|our|their|this|that|these|those|some|school|work|university|college|bed|class|church|mosque|court|hospital|home|bank|market|mall|office|library|lunch|dinner|breakfast|party)$/;
+var WL_THIRD_S = /^(?:am|is|are|was|were|does|did|has|goes|makes|takes|comes|gives|gets|says|knows|sees|wants|needs|likes|works|studies|lives|tries|buys|pays|stays|calls|starts|visits|leaves|meets|writes|reads|eats|drinks|sleeps|thinks|feels|tells|speaks|talks|walks|runs|drives|flies|swims|plays|helps|travels|rains)$/;
+var WL_PERF_PP_S = /^(?:been|gone|seen|done|eaten|written|taken|given|spoken|driven|flown|begun|drunk|ridden|chosen|forgotten|fallen|grown|thrown|drawn|swum|sung|rung|stolen|hidden|risen|woken|worn|known)$/;
+
+/* صيغ الأفعال الشاذة من قائمة الكورس (irregularVerbs) وما في WL_IRR_EXTRA: past وpp وما يأتي للماضي وحده (went, saw)،
+   والصيغ المنتظمة الخاطئة (goed, buyed). وتُحسب مرة واحدة عند أول فحص، بعد تحميل content.js. */
+function wlRegular(b){
+  if (/e$/.test(b)) return [b + 'd'];
+  if (/[^aeiou]y$/.test(b)) return [b.slice(0, -1) + 'ied', b + 'ed'];
+  return /[^aeiou][aeiou][bdgklmnprt]$/.test(b) ? [b + 'ed', b + b.slice(-1) + 'ed'] : [b + 'ed'];
+}
+function wlIrr(){
+  if (wlIrr.c) return wlIrr.c;
+  var I = { base:{}, past:{}, pp:{}, pastOnly:{}, wrong:{} };
+  var list = function(x){ return String(x || '').split('/').map(function(p){ return p.trim().toLowerCase(); }).filter(Boolean); };
+  var add = function(b, p, q){
+    b = String(b || '').trim().toLowerCase();
+    if (!b || b === 'be') return;
+    var ps = list(p), qs = list(q);
+    I.base[b] = 1;
+    ps.forEach(function(x){ I.past[x] = 1; if (qs.indexOf(x) < 0 && x !== b) I.pastOnly[x] = 1; });
+    qs.forEach(function(x){ I.pp[x] = 1; });
+    wlRegular(b).forEach(function(x){ if (ps.indexOf(x) < 0 && !WL_REG_OK.test(x)) I.wrong[x] = 1; });
+  };
+  ((typeof DATA !== 'undefined' && DATA && DATA.irregularVerbs) || []).forEach(function(v){ if (v) add(v.base, v.past, v.pp); });
+  WL_IRR_EXTRA.forEach(function(s){ var p = s.split(':'); add(p[0], p[1], p[2]); });
+  Object.keys(I.pastOnly).forEach(function(x){ if (I.base[x]) delete I.pastOnly[x]; });   /* lay: ماضي lie وأصل lay */
+  return (wlIrr.c = I);
+}
+/* الجملة بحروف صغيرة، والاختصارات مفكوكة (don't → do not، I'm → i am، it's → it 's)، بلا علامات. */
+function wlNorm(s){
+  return ' ' + fixQuotes(s).toLowerCase()
+    .replace(/\bwon't\b/g, 'will not').replace(/\bcan't\b/g, 'can not').replace(/n't\b/g, ' not')
+    .replace(/'m\b/g, ' am').replace(/'re\b/g, ' are').replace(/'ve\b/g, ' have').replace(/'ll\b/g, ' will')
+    .replace(/'d\b/g, " 'd").replace(/'s\b/g, " 's").replace(/[^a-z0-9' ]+/g, ' ').replace(/\s+/g, ' ').replace(/^ | $/g, '') + ' ';
+}
+function wlToks(s){ return wlNorm(s).trim().split(' ').filter(Boolean); }
+function wlPieces(text){ return fixQuotes(text).split(/[.!?]+/).filter(function(p){ return /[A-Za-z]{2}/.test(p); }); }
+function wlIsEdPast(w){ return w.length > 3 && /ed$/.test(w) && !WL_ED_NOT.test(w); }
+function wlPrev(t, i){ var j = i - 1; while (j >= 0 && WL_ADVERB.test(t[j])) j--; return j >= 0 ? t[j] : ''; }
+/* be + فعل بـ ing: «am / is / are» أو «was / were»، وبينهما not أو ظرف أو فاعل السؤال (Are you working? Is Sara working?). */
+function wlBeIng(t, bes){
+  var n = 0;
+  for (var i = 0; i < t.length; i++) {
+    if (bes.indexOf(t[i]) < 0) continue;
+    var j = i + 1;
+    if (t[j] === 'not') j++;
+    var w = t[j] || '';
+    if (!/ing$/.test(w)) {
+      if (WL_ADVERB.test(w) || WL_PRON.test(w)) j++;
+      else if (WL_POSS.test(w) && t[j + 1] && !/ing$/.test(t[j + 1])) j += 2;
+      else if (i === 0 && w && !/^(?:a|an|this|that|there|here|very|so|too|some|any|no)$/.test(w)) j++;
+      else continue;
+      if (t[j] === 'not') j++;
+    }
+    var v = t[j] || '', who = WL_PRON.test(t[i + 1] || '') ? t[i + 1] : (t[i - 1] || '');
+    if (v.length < 5 || !/ing$/.test(v) || WL_ING_NOT.test(v)) continue;
+    if (WL_ING_BOTH.test(v) && !/^(?:am|are|were)$/.test(t[i]) && !/^(?:i|he|she|we|they|you)$/.test(who)) continue;
+    n++;
+  }
+  return n;
+}
+/* was / were مع صفة أو اسم أو مكان أو فاعل السؤال: ماضٍ بسيط. لا مع ing (مستمر) ولا مع أصل الفعل (خطأ). */
+function wlBePast(t){
+  for (var i = 0; i < t.length; i++) {
+    if (t[i] !== 'was' && t[i] !== 'were') continue;
+    var j = i + 1;
+    if (t[j] === 'not') j++;
+    var v = t[j] || '';
+    if (v.length > 4 && /ing$/.test(v) && !WL_ING_NOT.test(v)) continue;
+    if (WL_BE_BASE.test(v) && t.slice(0, i).indexOf('do') < 0 && t.slice(0, i).indexOf('did') < 0) continue;
+    return true;
+  }
+  return false;
+}
+/* المضارع البسيط بفعل عادي (لا يكفي am / is وحدها): كلمة عادة، أو do / does، أو فاعل بعده فعل غير ماضٍ، أو he / she / اسم بعده فعل بـ s. */
+var WL_HABIT = /\b(?:usually|often|always|sometimes|never|normally|rarely|every\s+[a-z]+|once\s+a\s+[a-z]+|twice\s+a\s+[a-z]+|on\s+(?:saturday|sunday|monday|tuesday|wednesday|thursday|friday)s|(?:at|on)\s+weekends?)\b/i;
+var WL_DO = /\b(?:don't|doesn't|do\s+not|does\s+not|do|does)\s+[a-z]+/i;
+var WL_NOT_SIMPLE = /^(?:am|are|is|was|were|will|would|can|could|should|must|may|might|shall|had|did|a|an|the|for|to|and|or|but|so|very|too|at|in|on|with|from|of|about|as|if|when|because|that|this|these|those|all|both|each|my|your|our|their|his|her|its|here|there|now|today|tomorrow|yesterday|again|more|much|not|no|guys|two|three|alone)$/i;
+var WL_PLAIN = /\b(?:i|we|they|you)\s+(?:(?:also|still|really|just|usually|often|always|sometimes|never|normally|rarely)\s+)?([a-z]+)\b/gi;
+var WL_THIRD = /\b(?:[Hh]e|[Ss]he|(?!(?:My|Our|The|His|Her|Their|Your|This|That|These|Those|On|In|At|We|They|You|Yesterday|Last)\b)[A-Z][a-z]+|(?:[Mm]y|[Oo]ur|[Tt]he|[Hh]is|[Hh]er|[Tt]heir|[Yy]our)\s+[a-z]+)\s+(?:(?:also|still|really|usually|often|always|sometimes|never|normally)\s+)?([a-z]+s)\b/g;
+var WL_PLURAL = /\b(?:my|our|the|his|her|their|your)\s+[a-z]+s\s+(?:(?:often|also|still|really|usually|always|sometimes|never)\s+)?(?:start|begin|finish|end|open|close|work|go|study|live|come|eat|help|teach|sleep|wake|like|love|have|play|watch|want|need|know|prefer|read|write|visit|call|cook|make|take|get|drink|miss|think|say|send|buy|sell|use|speak|talk|walk|drive|run|sit|stay|meet|leave|sign|do)\b/i;
+function wlSimple(p){
+  var s = fixQuotes(p), I = wlIrr(), m, t = wlToks(p);
+  var past = wlPastSimple(p), sure = WL_DO.test(s);
+  if (sure) return true;
+  if (!past && (WL_HABIT.test(s) || WL_PLURAL.test(s))) return true;
+  WL_PLAIN.lastIndex = 0;
+  while ((m = WL_PLAIN.exec(s))) {
+    var w = m[1].toLowerCase();
+    if (WL_NOT_SIMPLE.test(w) || (I.past[w] && !I.base[w]) || (/(?:ed|ing)$/.test(w) && w !== 'need')) continue;
+    return true;
+  }
+  WL_THIRD.lastIndex = 0;
+  while ((m = WL_THIRD.exec(s))) { if (!/^(?:is|was|has)$/i.test(m[1])) return true; }
+  return t.indexOf('has') >= 0 && !wlPerfect(p);   /* she has a car */
+}
+/* المضارع بأي صورة: am / is / are أو do / does أو فاعل بعده فعل غير ماضٍ (لا تُعد am في 7 am). */
+function wlPresent(p){
+  var s = fixQuotes(p).replace(/\b[0-9]{1,2}(?:[:.][0-9]{2})?\s*[ap]m\b/gi, ' ');
+  if (/\b(?:am|is|are|isn't|aren't|do|does|don't|doesn't|i'm|you're|we're|they're|he's|she's|it's|that's|there's|what's|who's|here's)\b/i.test(s)) return true;
+  return wlSimple(s);
+}
+function wlPastSimple(p){
+  var s = wlNorm(p), t = s.trim().split(' '), I = wlIrr(), time = WL_PAST_TIME.test(s);
+  if (/ did | could not /.test(s) || wlBePast(t)) return true;
+  for (var i = 0; i < t.length; i++) {
+    var w = t[i];
+    if (!(I.past[w] && (!I.base[w] || time)) && !wlIsEdPast(w)) continue;
+    if (!WL_NOT_PAST_BEFORE.test(wlPrev(t, i))) return true;
+  }
+  return false;
+}
+function wlGoingTo(p){
+  var s = fixQuotes(p), m, re = /\b(?:(?:am|is|are|isn't|aren't|'m|'re|'s)\s+(?:not\s+)?(?:(?:really|also|just|still|definitely|probably|never)\s+)?|(?:am|is|are)\s+(?:i|you|he|she|it|we|they|[A-Z][a-z]+|(?:the|my|your|his|her|our|their)\s+[a-z]+)\s+(?:not\s+)?)going\s+to\s+([A-Za-z]+)\b/gi;
+  while ((m = re.exec(s))) { if (!/^[A-Z]/.test(m[1]) && !WL_TO_PLACE.test(m[1])) return true; }
+  return false;
+}
+function wlWill(p){
+  var t = wlToks(p);
+  for (var i = 0; i < t.length; i++) {
+    if (t[i] !== 'will' || /^(?:a|the|my|his|her|your|their|our|free|good|own|last)$/.test(t[i - 1] || '')) continue;
+    var j = i + 1;
+    if (t[j] === 'not') j++;
+    if (WL_PRON.test(t[j] || '')) j++;
+    while (WL_ADVERB.test(t[j] || '')) j++;
+    var v = t[j] || '';
+    if (v && v !== 'to' && !WL_TO_PLACE.test(v) && !/^(?:of|and|or|is|was)$/.test(v)) return true;
+  }
+  return false;
+}
+function wlPerfect(p){
+  var t = wlToks(p), I = wlIrr();
+  for (var i = 0; i < t.length; i++) {
+    var aux = t[i];
+    if (aux !== 'have' && aux !== 'has' && aux !== "'s") continue;
+    var j = i + 1;
+    if (aux !== "'s" && WL_PRON.test(t[j] || '') && (i === 0 || /^(?:what|where|how|why|who|which|when)$/.test(t[i - 1]))) j++;   /* Have you … ? */
+    while (WL_ADVERB.test(t[j] || '')) j++;
+    var v = t[j] || '';
+    if (aux === "'s" ? WL_PERF_PP_S.test(v) : (v === 'been' || I.pp[v] || wlIsEdPast(v))) return true;
+  }
+  return false;
+}
+
+/* الصيغ الخاطئة الشائعة، لكل عائلة زمن. */
+var WL_BE_BASE_P = /\b(?:i\s+am|i'm|he\s+is|he's|she\s+is|she's|we\s+are|we're|they\s+are|they're|you\s+are|you're)\s+(?:not\s+)?(?:(?:usually|always|often|also)\s+)?(?:work|go|study|write|eat|drink|walk|drive|sleep|wake|play|cook|help|teach|learn|sit)\b(?!\s+(?:colleagues?|friends?|partners?|groups?))/i;
+var WL_BE_Q = /\b(?:is|are|am)\s+(?:he|she|you|they|we|i)\s+(?:work|go|study|write|eat|drink|walk|drive|sleep|wake|play|cook|help|teach|learn|sit)\b/i;
+var WL_HE_DONT = /\b(?:he|she|it)\s+don't\b|(?:^|[.!?,]\s+)my\s+(?:father|mother|brother|sister|son|daughter|uncle|aunt|cousin|friend|teacher|manager|colleague)\s+don't\b/im;
+var WL_STATE_BAD = /(?:\b(?:am|is|are|was|were)|'m|'re|'s)\s+(?:not\s+)?(?:knowing|wanting|needing|preferring|understanding|believing|owning|belonging)\b/i;
+/* فاعل بعده فعل بـ ing بلا am / is / are أو was / were (I working). وفي السؤال يتقدم الفعل (Are you working?)، فيُحذف قبل الفحص. */
+function wlNoBe(p){
+  var s = fixQuotes(p).replace(/\b(?:am|is|are|was|were)(?:n't)?\s+(?:not\s+)?(?:i|you|he|she|it|we|they)\b/gi, ' '), m;
+  var re = /\b(i|you|he|she|we|they)\s+(?:(?:also|still|really|just|always|usually|often|never|now)\s+)?([a-z]{3,}ing)\b/gi;
+  while ((m = re.exec(s))) {
+    var w = m[2].toLowerCase(), before = (s.slice(0, m.index).match(/([A-Za-z']+)[^A-Za-z']*$/) || [])[1];
+    /* you بعد فعل مفعول به لا فاعل (I saw you walking)، فلا يُحسب إلا في أول الجملة أو بعد أداة ربط. */
+    if (/^you$/i.test(m[1]) && before && !/[,;:]\s*$/.test(s.slice(0, m.index)) && !/^(?:and|but|so|because|when|while|if|that|then|now|today|tonight|also|still|yesterday|tomorrow)$/i.test(before)) continue;
+    if (w.length > 4 && !WL_ING_NOT.test(w)) return true;
+  }
+  return false;
+}
+function wlBadPresent(p){ var s = fixQuotes(p); return WL_BE_BASE_P.test(s) || WL_BE_Q.test(s) || WL_HE_DONT.test(s) || WL_STATE_BAD.test(s) || wlNoBe(s); }
+function wlBadPast(p){
+  var t = wlToks(p), I = wlIrr();
+  for (var i = 0; i < t.length; i++) {
+    var w = t[i];
+    if (I.wrong[w]) return true;                                    /* buyed, goed, eated */
+    if (w === 'did') {                                              /* didn't went · Did you went? */
+      var j = i + 1;
+      if (t[j] === 'not') j++;
+      if (WL_PRON.test(t[j] || '')) j++; else if (WL_POSS.test(t[j] || '') && t[j + 1]) j += 2;
+      while (WL_ADVERB.test(t[j] || '')) j++;
+      var v = t[j] || '';
+      if (I.pastOnly[v] || wlIsEdPast(v)) return true;
+    }
+    if ((w === 'was' || w === 'were') && t.slice(0, i).indexOf('do') < 0 && t.slice(0, i).indexOf('did') < 0) {   /* I was go · I was went · I was knowing (لا: All we could do was go) */
+      var k = i + 1;
+      if (t[k] === 'not') k++;
+      var u = t[k] || '';
+      if (WL_BE_BASE.test(u) || I.pastOnly[u] || WL_STATE_ING.test(u)) return true;
+    }
+  }
+  return wlNoBe(p);
+}
+function wlBadGoing(p){
+  var s = fixQuotes(p), I = wlIrr(), m, re = /\bgoing\s+to\s+([A-Za-z]+)\b/g;
+  while ((m = re.exec(s))) {
+    var v = m[1].toLowerCase();
+    if (/^[A-Z]/.test(m[1])) continue;
+    if ((v.length > 4 && /ing$/.test(v) && !WL_ING_NOT.test(v)) || I.pastOnly[v] || wlIsEdPast(v) || WL_THIRD_S.test(v)) return true;
+  }
+  return wlNoBe(s);
+}
+function wlBadWill(p){
+  var t = wlToks(p), I = wlIrr();
+  for (var i = 0; i < t.length; i++) {
+    if (t[i] !== 'will' || /^(?:a|the|my|his|her|your|their|our|free|good|own|last)$/.test(t[i - 1] || '')) continue;
+    var j = i + 1;
+    if (t[j] === 'not') j++;
+    while (WL_ADVERB.test(t[j] || '')) j++;
+    var v = t[j] || '';
+    if (v === 'to' || WL_THIRD_S.test(v) || I.pastOnly[v] || (wlIsEdPast(v) && !I.base[v]) || (v.length > 4 && /ing$/.test(v) && !WL_ING_NOT.test(v))) return true;
+  }
+  return false;
+}
+function wlBadPerfect(p){
+  var t = wlToks(p), I = wlIrr();
+  for (var i = 0; i < t.length; i++) {
+    var aux = t[i];
+    if (aux !== 'have' && aux !== 'has') continue;
+    var j = i + 1, who = t[i - 1] || '';
+    if (t[j] === 'not') j++;
+    if (WL_PRON.test(t[j] || '')) { who = t[j]; j++; }
+    while (WL_ADVERB.test(t[j] || '')) j++;
+    var v = t[j] || '';
+    if (I.pastOnly[v]) return true;                                 /* have went · Have you ever saw? */
+    if (v === 'been' || I.pp[v] || wlIsEdPast(v)) {
+      if (aux === 'have' && /^(?:he|she|it)$/.test(who)) return true; /* he have seen */
+      if (aux === 'has' && /^(?:i|you|we|they)$/.test(who)) return true;
+    }
+  }
+  return false;
+}
+var WL_TENSE = {
+  present:          { fam:'present', is:wlPresent,            bad:wlBadPresent, en:'in the present', ar:'بالمضارع', ex:'I am a student. · I study law. · I\'m reading a lot this week.' },
+  presentSimple:    { fam:'present', is:wlSimple,             bad:wlBadPresent, en:'in the Present Simple', ar:'بالمضارع البسيط', ex:'I usually work at nine. · She lives in Riyadh.' },
+  presentContinuous:{ fam:'present', is:function(p){ return wlBeIng(wlToks(p), ['am', 'is', 'are', "'s"]) > 0; }, bad:wlBadPresent, en:'with am / is / are + verb-ing', ar:'بالمضارع المستمر: am / is / are مع الفعل وing', ex:'I\'m reading a report now. · They are waiting.' },
+  pastSimple:       { fam:'past', is:wlPastSimple,         bad:wlBadPast,    en:'in the Past Simple', ar:'بالماضي البسيط', ex:'I went to Jeddah. · We visited the museum. · It was hot.' },
+  pastContinuous:   { fam:'past', is:function(p){ return wlBeIng(wlToks(p), ['was', 'were']) > 0; }, bad:wlBadPast, en:'with was / were + verb-ing', ar:'بالماضي المستمر: was / were مع الفعل وing', ex:'I was walking home. · They were waiting.' },
+  goingTo:          { fam:'goingTo', is:wlGoingTo,            bad:wlBadGoing,   en:'with am / is / are going to + verb', ar:'بالمستقبل: am / is / are going to مع أصل الفعل', ex:'I\'m going to visit my uncle. · It\'s going to rain.' },
+  will:             { fam:'will', is:wlWill,               bad:wlBadWill,    en:'with will + verb', ar:'بالمستقبل: will مع أصل الفعل', ex:'I\'ll call you tomorrow. · It will be hot.' },
+  presentPerfect:   { fam:'perfect', is:wlPerfect,            bad:wlBadPerfect, en:'with have / has + past participle', ar:'بالمضارع التام: have / has مع التصريف الثالث', ex:'I have visited Abha. · She has never seen snow.' }
+};
+/* ما يُذكر في نص الفحص من الصيغ الخاطئة التي يرفضها، لكل عائلة زمن. */
+var WL_CLEAN = {
+  present:  [', not \'I am work\' or \'He don\'t\'', '، دون I am work أو He don\'t'],
+  past:     [', not \'didn\'t went\' or \'I was go\'', '، دون didn\'t went أو I was go'],
+  goingTo:  [', not \'I going to\' or \'going to visited\'', '، دون I going to أو going to visited'],
+  will:     [', not \'will to go\' or \'will went\'', '، دون will to go أو will went'],
+  perfect:  [', not \'have went\' or \'he have seen\'', '، دون have went أو he have seen']
+};
+/* صيغة العدد العربية لنصوص الفحوص: «جملة واحدة» و«جملتان» و«3 جمل» و«11 جملة». */
+function wlAr(n, one, two, few, many){ return n === 1 ? one : n === 2 ? two : (n >= 3 && n <= 10) ? n + ' ' + few : n + ' ' + many; }
+function wlN(o, def){ var n = o.n == null ? def : o.n; return (typeof n === 'number' && n % 1 === 0 && n >= 1 && n <= 20) ? n : null; }
+/* سطر الختام في الإيميل (Best regards, Usama) ليس جملة. */
+var WL_CLOSINGS = ['best regards', 'kind regards', 'warm regards', 'warmest regards', 'many thanks', 'thanks again', 'best wishes', 'yours sincerely', 'yours faithfully', 'yours truly', 'sincerely yours', 'all the best', 'with thanks', 'thank you', 'take care', 'regards', 'sincerely', 'respectfully', 'thanks', 'cheers', 'best'];
+function isClosingLine(piece){
+  var s = String(piece == null ? '' : piece).replace(/^\s+|\s+$/g, ''), low = s.toLowerCase().replace(/\s+/g, ' ');
+  for (var i = 0; i < WL_CLOSINGS.length; i++) {
+    var c = WL_CLOSINGS[i];
+    if (low.indexOf(c) !== 0) continue;
+    var m = new RegExp('^' + c.replace(/ /g, '\\s+'), 'i').exec(s);
+    var rest = m ? s.slice(m[0].length) : '';
+    if (rest && !/^[\s,]/.test(rest)) continue;                      /* Bestow ليست Best */
+    var lenient = /^[ \t]*[,\n]/.test(rest), name = rest.replace(/^[\s,]+|[\s,]+$/g, '');
+    if (!name) return true;
+    var words = name.split(/[\s,]+/);
+    if (words.length <= 4 && words.every(function(w){ return /^[A-Z][A-Za-z'.-]*$/.test(w); })) return true;   /* Usama Ali */
+    if (lenient && words.length <= 2 && words.every(function(w){ return /^[A-Za-z'.-]+$/.test(w); })) return true;
+  }
+  return false;
+}
+var WL_SEQ_START = '(?:^|[.!?;:,]\\s*|\\b(?:and|but|so)\\s+)';
+var WL_SEQ = [
+  ['first', new RegExp(WL_SEQ_START + '(?:first(?:ly)?|at\\s+first|first\\s+of\\s+all)\\b', 'm')],
+  ['second', new RegExp(WL_SEQ_START + 'second(?:ly)?\\b', 'm')],
+  ['third', new RegExp(WL_SEQ_START + 'third(?:ly)?\\b', 'm')],
+  ['then', /\bthen\b/],
+  ['next', new RegExp(WL_SEQ_START + 'next\\b(?!\\s+(?:day|week|weekend|month|year|morning|afternoon|evening|night|time|monday|tuesday|wednesday|thursday|friday|saturday|sunday|summer|winter|spring|autumn|semester|term|lesson|class))', 'm')],
+  ['after that', /\bafter\s+that\b/],
+  ['afterwards', /\bafterwards?\b/],
+  ['later', new RegExp(WL_SEQ_START + '(?:(?:a\\s+little|[a-z]+\\s+(?:minutes?|hours?|days?|weeks?|months?|years?))\\s+)?later\\b', 'm')],
+  ['before that', /\bbefore\s+that\b/],
+  ['finally', /\bfinally\b/],
+  ['lastly', /\blastly\b/],
+  ['in the end', /\b(?:in|at)\s+the\s+end\b(?!\s+of)/],
+  ['meanwhile', /\bmeanwhile\b/]
+];
+/* نص أو تعبير يطلبه الدرس: النص كلمات كاملة بلا فرق بين الحرف الكبير والصغير، و… فيه كلمة إلى ثلاث (not as … as). */
+function wlPattern(x){
+  if (Object.prototype.toString.call(x) === '[object RegExp]') return new RegExp(x.source, String(x.flags || '').replace('g', '') + 'g');
+  var s = typeof x === 'string' ? x.replace(/^\s+|\s+$/g, '') : '';
+  if (!s) return null;
+  var esc = function(w){ return w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); };
+  var body = s.split(/\s*(?:…|\.\.\.)\s*/).map(function(part){ return part.split(/\s+/).map(esc).join('\\s+'); }).join("(?:\\s+[A-Za-z'-]+){1,3}\\s+");
+  return new RegExp('(?:^|\\b)' + body + '(?:\\b|$)', 'gi');
+}
+var WCHECK_LIB = {
+  sentences: function(o){
+    var n = wlN(o, 4);
+    if (!n) return { problem:'n must be a whole number from 1 to 20' };
+    return { k:'sentences',
+      tEn:'At least ' + n + ' separate sentence' + (n > 1 ? 's' : '') + ' (end each with a period .)' + (o.capitalI ? ', and \'I\' is always a capital' : '') + (o.runOn ? ', not one long connected sentence' : ''),
+      t:wlAr(n, 'جملة منفصلة واحدة', 'جملتان منفصلتان', 'جمل منفصلة', 'جملة منفصلة') + ' على الأقل (بنقطة في نهاية كل جملة)' + (o.capitalI ? '، والضمير I بحرف كبير دائمًا' : '') + (o.runOn ? '، لا جملة واحدة طويلة موصولة' : ''),
+      ok:function(a, text){ return a.sentences >= n && !(o.runOn && a.runOn) && !(o.capitalI && /\bi\b/.test(String(text || ''))); } };
+  },
+  tense: function(o){
+    var T = WL_TENSE.hasOwnProperty(o.tense) ? WL_TENSE[o.tense] : null, n = wlN(o, 1);
+    if (!T) return { problem:'tense must be one of: ' + WL_TENSES.join(', ') };
+    if (!n) return { problem:'n must be a whole number from 1 to 20' };
+    var clean = o.clean !== false, sx = WL_CLEAN[T.fam];
+    return { k:o.tense,
+      tEn:'At least ' + n + ' sentence' + (n > 1 ? 's ' : ' ') + T.en + (clean ? sx[0] : ''),
+      t:wlAr(n, 'جملة واحدة', 'جملتان', 'جمل', 'جملة') + ' على الأقل ' + T.ar + (clean ? sx[1] : ''),
+      ex:T.ex,
+      ok:function(a, text){
+        var ps = wlPieces(text);
+        if (clean && ps.some(T.bad)) return false;
+        return ps.filter(T.is).length >= n; } };
+  },
+  words: function(o, L){
+    var n = wlN(o, 2), list = o.list;
+    if (!n) return { problem:'n must be a whole number from 1 to 20' };
+    if (list != null && (!Array.isArray(list) || !list.length || list.some(function(w){ return typeof w !== 'string' || !w.trim(); }))) return { problem:'list must be a non-empty array of words or phrases' };
+    if (list && list.length < n) return { problem:'list has fewer words than n' };
+    var shown = list || ((L && L.vocab) || []).map(function(v){ return v && v.en; }).concat(L && L.legalPhrase && L.legalPhrase.en ? [L.legalPhrase.en] : []).filter(Boolean);
+    return { k:'vocab',
+      tEn:'At least ' + n + (n > 1 ? ' words/phrases' : ' word or phrase') + ' from today\'s lesson',
+      t:wlAr(n, 'كلمة أو عبارة واحدة', 'كلمتان أو عبارتان', 'كلمات أو عبارات', 'كلمة أو عبارة') + ' على الأقل من درس اليوم',
+      ex:shown.slice(0, 8).join(' · ') || undefined,
+      ok:function(a, text){
+        if (!list) return ((a && a.used) || []).length >= n;
+        return list.filter(function(w){ return matchVocabInText({ en:w }, String(text || '')); }).length >= n; } };
+  },
+  email: function(o){
+    var all = ['greeting', 'purpose', 'closing'], parts = o.parts == null ? all : o.parts;
+    if (!Array.isArray(parts) || !parts.length || parts.some(function(p){ return all.indexOf(p) < 0; })) return { problem:'parts must be a list from: greeting, purpose, closing' };
+    var en = { greeting:'a greeting', purpose:'your purpose with \'I\'m writing to\'', closing:'a closing' };
+    var ar = { greeting:'تحية', purpose:'الغرض بـ I\'m writing to', closing:'ختام' };
+    var ex = { greeting:'Dear Dr Hassan,', purpose:'I\'m writing to ask …', closing:'Best regards, Saad' };
+    var pick = all.filter(function(p){ return parts.indexOf(p) >= 0; });
+    var join = function(xs, last){ return xs.length < 2 ? xs.join('') : xs.slice(0, -1).join(', ') + last + xs[xs.length - 1]; };
+    return { k:'parts',
+      tEn:'Email parts: ' + join(pick.map(function(p){ return en[p]; }), ', and '),
+      t:'أجزاء الإيميل: ' + pick.map(function(p){ return ar[p]; }).join('، و'),
+      ex:pick.map(function(p){ return ex[p]; }).join(' · '),
+      ok:function(a, text){
+        var s = fixQuotes(text), lines = s.split(/\n/).filter(function(x){ return /[A-Za-z]/.test(x); });
+        var has = {
+          greeting:/^\s*(?:dear|hi|hello|good\s+(?:morning|afternoon|evening))\b/i.test(lines[0] || ''),
+          purpose:/\b(?:i'm|i\s+am)\s+writing\s+(?:(?:this|an?)\s+(?:email|message|letter)\s+|(?:to\s+)?you\s+)?(?:to|because|about)\b/i.test(s),
+          closing:lines.slice(-3).some(function(x){ return WL_CLOSINGS.some(function(c){ return x.replace(/^\s+/, '').toLowerCase().replace(/\s+/g, ' ').indexOf(c) === 0; }); }) || s.split(/[.!?]+/).some(isClosingLine)
+        };
+        return pick.every(function(p){ return has[p]; }); } };
+  },
+  sequence: function(o){
+    var n = wlN(o, 2);
+    if (!n) return { problem:'n must be a whole number from 1 to 20' };
+    return { k:'sequence',
+      tEn:'At least ' + n + (n > 1 ? ' different sequence words' : ' sequence word') + ' (First, Then, After that, Finally)',
+      t:wlAr(n, 'كلمة ترتيب واحدة', 'كلمتا ترتيب', 'كلمات ترتيب', 'كلمة ترتيب') + ' على الأقل (First وThen وAfter that وFinally)',
+      ex:'First, I … · Then I … · After that, … · Finally, …',
+      ok:function(a, text){ var s = fixQuotes(text).toLowerCase(); return WL_SEQ.filter(function(x){ return x[1].test(s); }).length >= n; } };
+  },
+  phrases: function(o){
+    var n = wlN(o, 1), any = o.any, not = o.not == null ? [] : o.not;
+    if (!n) return { problem:'n must be a whole number from 1 to 20' };
+    if (typeof o.k !== 'string' || !o.k || typeof o.tEn !== 'string' || !o.tEn || typeof o.t !== 'string' || !o.t) return { problem:'phrases needs its own k, tEn and t (the library cannot tell what it is for)' };
+    if (!Array.isArray(any) || !any.length || !Array.isArray(not)) return { problem:'any must be a non-empty array (and not an array) of phrases or /regular expressions/' };
+    var want = any.map(wlPattern), ban = not.map(wlPattern);
+    if (want.concat(ban).some(function(r){ return !r; })) return { problem:'every entry of any and not must be a non-empty phrase or a /regular expression/' };
+    return { k:o.k, tEn:o.tEn, t:o.t,
+      ok:function(a, text){
+        var s = fixQuotes(text), seen = {};
+        if (ban.some(function(r){ r.lastIndex = 0; return r.test(s); })) return false;
+        want.forEach(function(r){ var m; r.lastIndex = 0; while ((m = r.exec(s))) { if (!m[0]) { r.lastIndex++; continue; } seen[m[0].toLowerCase().replace(/\s+/g, ' ').replace(/^ | $/g, '')] = 1; } });
+        return Object.keys(seen).length >= n; } };
+  }
+};
+/* فحوص الدرس بعد تحويل أسماء المكتبة ({ use:'tense', … }) إلى فحوص. وما كان بدالة ok يبقى كما هو.
+   والاسم غير المعروف أو الخيار الخاطئ يصير فحصًا لا يتحقق، وفيه problem ليمنعه الفاحص قبل النشر. */
+function resolveChecks(list, lesson){
+  return (Array.isArray(list) ? list : []).map(function(c){
+    if (!c || typeof c !== 'object' || typeof c.ok === 'function' || typeof c.use !== 'string') return c;
+    var make = WCHECK_LIB.hasOwnProperty(c.use) ? WCHECK_LIB[c.use] : null, out;
+    try { out = make ? make(c, lesson || {}) : { problem:'unknown check "' + c.use + '" (the library has: ' + Object.keys(WCHECK_LIB).join(', ') + ')' }; }
+    catch (e) { out = { problem:'cannot be built: ' + (e && e.message) }; }
+    if (out.problem) { out.k = c.k || c.use; out.tEn = c.tEn || c.use; out.t = c.t || ''; out.ok = function(){ return false; }; return out; }
+    ['k', 'tEn', 't', 'ex'].forEach(function(f){ if (typeof c[f] === 'string' && c[f]) out[f] = c[f]; });
+    return out;
+  });
+}
+var WCK_MEMO = { src:null, out:null };
+function writingChecks(){
+  var w = D.writing;
+  if (!w || !Array.isArray(w.checks)) return CHECKS;
+  if (WCK_MEMO.src !== w.checks) { WCK_MEMO.src = w.checks; WCK_MEMO.out = resolveChecks(w.checks, D); }
+  return WCK_MEMO.out;
+}
 
 function localWritingCheck(text){
   text = fixQuotes(text); /* «I don’t» من الآيفون تُفحص كـ «I don't» في كل الفحوص */
@@ -1923,7 +2347,7 @@ function localWritingCheck(text){
   if (a.runOn) {
     sMist.push({ wrong:'One long connected sentence', right:minSentences() + ' separate sentences with periods (.)', why:'Split long sentences with a period (.) and start the next sentence with a capital letter.' });
   }
-  var activeCks = (D.writing && Array.isArray(D.writing.checks)) ? D.writing.checks : CHECKS;
+  var activeCks = writingChecks();
   var met = activeCks.filter(function(c){ return c.ok(a, text); }).length, all = met >= activeCks.length;
   /* فحص محدود بلا درجة: درجته القديمة كانت تعطي 10 من 10 لفقرة لم يصححها أحد. */
   return {
@@ -1944,7 +2368,7 @@ function stWriting(ctl){
   var ta = h('textarea', { class:'wt', id:'wText', rows:'8', placeholder:W.placeholder || 'Write your sentences here…', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', 'aria-label':'Your paragraph in English · فقرتك بالإنجليزي' }); ta.value = S.writing.text || '';
   var checks = h('ul', { class:'checks', 'aria-live':'polite' }), count = h('p', { class:'wcount' }), runOnWarn = h('div', { class:'tip', hidden:true }), fbBox = h('div', { hidden:true, 'aria-live':'polite' });
   function paint(){ var a = analyze(ta.value), text = fixQuotes(ta.value);
-    var activeCks = (D.writing && Array.isArray(D.writing.checks)) ? D.writing.checks : CHECKS;
+    var activeCks = writingChecks();
     put(checks, activeCks.map(function(c){ var on = c.ok(a, text); return h('li', { class:on ? 'on' : '' }, h('span', { class:'cb' }, on ? ico('check') : null), h('div', { class:'ck-t' }, h('span', { class:'ck-en' }, c.tEn || c.t), c.ex ? h('span', { class:'ck-ex', dir:'ltr', lang:'en' }, c.ex) : null, (c.k === 'vocab' && a.used.length) ? h('span', { class:'used' }, a.used.map(function(u){ return h('span', {}, u); })) : null)); }));
     count.textContent = 'Words: ' + a.words + ' · Separate sentences: ' + a.sentences + ' / ' + minSentences();
     runOnWarn.hidden = !a.runOn;

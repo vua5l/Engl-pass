@@ -265,6 +265,7 @@ function loadChecker(site) {
   site.unitTestTyping = utq == null ? null : /\bTyping\s*\(/.test(utq);
   site.checkerNames = [...loaded];
   loadWritingEngine(site);
+  loadCheckLibrary(site);
   site.writingNames = [...loaded].filter(n => !site.checkerNames.includes(n));
   return loaded;
 }
@@ -305,6 +306,33 @@ function loadWritingEngine(site) {
     site.writing = { analyze, buildIndex, setVocab };
   } catch (e) { site.writingWhy = e.message; }
 }
+/* The writing-check library (since 11 Nov 2026): a lesson may name checks such as { use:'tense', tense:'pastSimple', n:2 }
+   in writing.checks instead of writing ok() functions; resolveChecks(list, lesson) in app.js turns them into checks, as
+   the writing screen does (writingChecks). Every declaration of the library is loaded, so the ok() functions find their
+   helpers when they run later. site.resolveChecks stays null when app.js has no library (older engine). */
+function loadCheckLibrary(site) {
+  site.resolveChecks = null;
+  try {
+    if (!site.load('resolveChecks')) return;
+    for (const m of site.appSrc.matchAll(/(?:^|\n)(?:function|var)\s+((?:wl|WL_|WCHECK_LIB)\w*)/g)) site.load(m[1]);
+    site.resolveChecks = vm.runInContext('resolveChecks', site.engineCtx);
+  } catch (e) { site.resolveChecksWhy = e.message; }
+}
+/* The checks the writing screen runs for a lesson: its own writing.checks, with library names resolved. Each check the
+   library refuses (unknown name, wrong option) is an ERROR, because on the page it would never be met. */
+function lessonChecks(log, L, S) {
+  const W = L.writing, list = W.checks;
+  if (!list.some(c => c && typeof c === 'object' && typeof c.use === 'string' && typeof c.ok !== 'function')) return list;
+  if (!S.resolveChecks) {
+    log.error('writing.checks', `names library checks ({ use: ... }) but ${S.engine} has no resolveChecks()${S.resolveChecksWhy ? ' (' + S.resolveChecksWhy + ')' : ''}`);
+    return list.filter(c => c && typeof c.ok === 'function');
+  }
+  let out;
+  try { out = engineCall(S, () => S.resolveChecks(list, Object.assign({}, S.DATA || {}, L))); }
+  catch (e) { log.error('writing.checks', `the library checks cannot be built: ${clip(e && e.message, 80)}`); return list.filter(c => c && typeof c.ok === 'function'); }
+  out.forEach((c, i) => { if (c && isStr(c.problem)) log.error(`writing.checks[${i}]`, `{ use: "${list[i].use}" } ${c.problem}`); });
+  return out;
+}
 /* The lesson words the writing screen gives analyze(): buildIndex(lessonData(id)).ALL_VOCAB, i.e. the vocab list and
    the legal phrase (lessonData() in app.js lays the lesson over DATA). */
 function lessonVocab(S, L) {
@@ -329,7 +357,7 @@ function rejectingChecks(S, L, checks, text) {
     const name = c && isStr(c.k) ? `"${c.k}"` : `checks[${i}]`;
     if (!c || typeof c.ok !== 'function') { bad.push(`${name} (has no ok function)`); return; }
     let ok;
-    try { ok = c.ok(a, t); } catch (e) { bad.push(`${name} (ok() throws: ${clip(e && e.message, 60)})`); return; }
+    try { ok = engineCall(S, () => c.ok(a, t)); } catch (e) { bad.push(`${name} (ok() throws: ${clip(e && e.message, 60)})`); return; }
     if (!ok) bad.push(name + (isStr(c.tEn) ? ` (${clip(c.tEn, 56)})` : ''));
   });
   return { a, bad };
@@ -683,7 +711,7 @@ function checkWriting(log, L, S) {
   need(log, 'writing', W, 'taskEn'); need(log, 'writing', W, 'task', 'warn');
   if (!need(log, 'writing', W, 'model')) { /* reported */ }
   const own = isArr(W.checks);
-  const checks = own ? W.checks : S.defaultChecks;
+  const checks = own ? lessonChecks(log, L, S) : S.defaultChecks;
   const probe = checks ? enforcedSentences(checks) : { n: null }, enforced = probe.n;
   const stated = statedSentences(W.taskEn);
   if (W.checks != null && !own) log.warn('writing.checks', 'is not an array, so the engine ignores it and uses the default CHECKS');

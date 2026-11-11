@@ -1,7 +1,7 @@
 # Free automatic checks for English Passport (GitHub Actions is free for public repositories).
 #
 #   content      every push (except the progress branch), PRs to main, manual runs and the weekly run:
-#                tests/content-check.js, tests/map-check.js when present, and on main and PRs to main
+#                tests/content-check.js, tests/writing-checks.test.js and tests/map-check.js when present, and on main and PRs to main
 #                tools/register-lessons.js --check when present.
 #   links        pushes to main and to claude/* branches, PRs to main, manual runs and the weekly run (links rot):
 #                tests/link-check.js (lesson clips, links in the data, Wikimedia pronunciation audio).
@@ -53,6 +53,14 @@ jobs:
 
       - name: Content check (tests/content-check.js)
         run: node tests/content-check.js
+
+      - name: Writing check library (tests/writing-checks.test.js)
+        run: |
+          if [ -f tests/writing-checks.test.js ]; then
+            node tests/writing-checks.test.js
+          else
+            echo "tests/writing-checks.test.js is not in this commit; skipped."
+          fi
 
       - name: Unit map check (tests/map-check.js)
         run: |
