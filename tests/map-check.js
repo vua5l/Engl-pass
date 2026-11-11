@@ -185,7 +185,10 @@ function learnerText(L) {
     put(side, `${key}[${i}].whyEn`, x.whyEn);
   });
   each('recall', x => [x.promptEn, ...list(x.ans).map(a => around(x.sentPre, a, x.sentPost))]);
-  for (const key of ['vocabGaps', 'gA', 'quiz']) each(key, x => [filled(x), x.opts]);
+  for (const key of ['vocabGaps', 'gA']) each(key, x => [filled(x), x.opts]);
+  // Quiz writing items (11 Nov 2026): typing like gC, fix = the sentence and its corrections, order like gD.
+  each('quiz', x => (x.type === 'typing' ? [x.verb, ...list(x.ans).map(a => around(x.pre, a, x.post))]
+    : x.type === 'fix' ? [x.s, ...list(x.ans)] : x.type === 'order' ? [x.ans, x.chips] : [filled(x), x.opts]));
   each('gB', x => [x.s, x.fix]);
   each('gC', x => [x.verb, ...list(x.ans).map(a => around(x.pre, a, x.post))]);
   each('gD', x => [x.ans, x.chips]);

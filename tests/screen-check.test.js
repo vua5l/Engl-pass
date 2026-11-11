@@ -63,7 +63,7 @@ function serve() {
       /* باب للاختبار وحده: يصل إلى الخطوات مباشرة. يُضاف هنا في الذاكرة، ولا يوجد في ملف الموقع. */
       if (p === '/app.js') {
         const t = body.toString('utf8'), i = t.lastIndexOf('boot();');
-        body = t.slice(0, i) + "window.__ep={openPart:openPart,goStep:goStep,selectLesson:selectLesson,go:go,steps:function(){return P?P.steps:null},i:function(){return P?P.i:null},G:function(){return G},session:function(k){P={part:k,steps:stepsFor(k),i:0,session:true};G.ui.part=k;G.ui.view='player';render()}};\n" + t.slice(i);
+        body = t.slice(0, i) + "window.__ep={openPart:openPart,goStep:goStep,selectLesson:selectLesson,go:go,steps:function(){return P?P.steps:null},i:function(){return P?P.i:null},G:function(){return G},startQuiz:startQuiz,session:function(k){P={part:k,steps:stepsFor(k),i:0,session:true};G.ui.part=k;G.ui.view='player';render()}};\n" + t.slice(i);
       }
       resp.writeHead(200, { 'Content-Type': types[path.extname(f)] || 'application/octet-stream' });
       resp.end(body);
@@ -125,6 +125,16 @@ function measure() {
 const open = () => {
   document.querySelectorAll('#screen .ar-btn').forEach(b => { if (b.getAttribute('aria-expanded') === 'false') b.click(); });
   const o = document.querySelector('#screen .opt:not([disabled])'); if (o) o.click();
+  /* سؤال الكتابة في اختبار أو في مراجعة الأخطاء (منذ 11 نوفمبر 2026): يُجاب جوابًا خاطئًا طويلًا، فتظهر بطاقة الجواب الصحيح. */
+  const st = (__ep.steps() || [])[__ep.i()];
+  if (st && (/^(quizQ|unitTestQ|unitMiniQ)$/.test(st.t) || st.review)) {
+    const inp = document.querySelector('#screen .gap-in:not([disabled])');
+    if (inp) { inp.value = 'my answer is much longer than the right one here'; inp.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); }
+    else if (document.querySelector('#screen .b-pool .chip:not([disabled])')) {
+      let c; while ((c = document.querySelector('#screen .b-pool .chip:not([disabled])'))) c.click();
+      const b = document.querySelector('.pl-foot .btn'); if (b && !b.disabled) b.click();
+    }
+  }
   document.querySelectorAll('#screen .ar-btn').forEach(b => { if (b.getAttribute('aria-expanded') === 'false') b.click(); });
   document.querySelectorAll('#screen details').forEach(d => { d.open = true; });
 };
@@ -168,6 +178,31 @@ const open = () => {
     Object.keys(LESSONS).forEach(id => { const L = LESSONS[id]; if (Number(L.unit) >= 100) return;
       (L.vocab || []).concat(L.legalPhrase ? [L.legalPhrase] : []).forEach(v => { if (v && v.en) G.wordSr[id + '|' + v.en] = { lid: id, en: v.en, box: 0, t: 0, due: 0 }; }); }); });
   for (const k of SESSIONS) { await page.evaluate(k => __ep.session(k), k); await walk(k); }
+  /* أسئلة الكتابة في الاختبارات (11 نوفمبر 2026): تُحقن في الصفحة وحدها (لا في content.js ولا في ملف درس) ستة أسئلة في أول اختبار وحدة،
+     وأربعة في اختبار أول درس، ثم تُعرض شاشاتها: السؤال مجابًا خطأً، والنتيجة وقائمة الأخطاء، والاختبار المصغر، ومراجعة الأخطاء. */
+  const W = [
+    { type: 'typing', pre: 'My sister', verb: 'study', post: 'law at the university in Riyadh.', ans: ['studies'], errCat: 'tense', whyEn: 'She → studies.', why: 'مع she نضيف s إلى الفعل.' },
+    { type: 'fix', s: "My younger sister don't like coffee in the morning before her classes.", ans: ["My younger sister doesn't like coffee in the morning before her classes."], errCat: 'tense', whyEn: "She → doesn't.", why: 'مع she نستعمل does.' },
+    { type: 'order', chips: ['every', 'We', 'visit', 'Friday afternoon.', 'our grandparents'], ans: 'We visit our grandparents every Friday afternoon.', errCat: 'word_order', whyEn: 'Subject + verb + object + time.', why: 'الفاعل ثم الفعل ثم المفعول ثم الزمن.' },
+    { type: 'typing', pre: 'Yesterday I', verb: 'buy', post: 'a new phone.', ans: ['bought'], errCat: 'tense', whyEn: 'buy → bought.', why: 'ماضي buy هو bought.' },
+    { type: 'fix', s: 'My brothers is at the airport now.', ans: ['My brothers are at the airport now.'], errCat: 'be_verb', whyEn: 'brothers → are.', why: 'الجمع مع are.' },
+    { type: 'order', chips: ['is', 'The pharmacy', 'next to', 'the bank.'], ans: 'The pharmacy is next to the bank.', errCat: 'word_order', whyEn: 'Subject + is + place.', why: 'الفاعل ثم is ثم المكان.' }
+  ];
+  const wInfo = await page.evaluate(W => {
+    const u = Object.keys(DATA.unitTests || {})[0], ut = u != null ? DATA.unitTests[u] : null;
+    if (ut) { ut.questions = ut.questions.slice(); W.forEach((w, i) => { ut.questions[i] = Object.assign({ lesson: ut.questions[i].lesson }, w); }); }
+    const id = Object.keys(LESSONS).find(k => Array.isArray(LESSONS[k].quiz) && LESSONS[k].quiz.length >= 4), q = LESSONS[id].quiz;
+    [W[3], W[1], W[5], W[4]].forEach((w, i) => { q[i] = Object.assign({ tag: 'Grammar' }, w); });
+    return { u, id, other: Object.keys(LESSONS).find(k => k !== id) };
+  }, W);
+  if (wInfo.u != null) {
+    await page.evaluate(k => __ep.session(k), 'unitTest:' + wInfo.u); await walk('writing unitTest:' + wInfo.u);
+    await page.evaluate(k => __ep.session(k), 'unitMini:' + wInfo.u); await walk('writing unitMini:' + wInfo.u);
+  }
+  await page.evaluate(w => { __ep.selectLesson(w.other); __ep.selectLesson(w.id); __ep.openPart('quiz'); __ep.startQuiz(); }, wInfo);
+  await walk('writing ' + wInfo.id + ' quiz');
+  await page.evaluate(id => { const G = __ep.G(); Object.keys(G.mistakes).forEach(k => { if (k.indexOf(id + '|qz-') === 0 && /-[0-3]$/.test(k)) G.mistakes[k].due = 0; else delete G.mistakes[k]; }); __ep.session('review'); }, wInfo.id);
+  await walk('writing review');
   for (const v of (only ? [] : ['home', 'lessons', 'review'])) {
     await page.evaluate(v => __ep.go(v), v); screens++;
     await shoot(page, 'view ' + v);

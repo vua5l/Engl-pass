@@ -40,9 +40,14 @@
  *      lesson's own, else the default CHECKS) that reject writing.model or an entry of the optional array
  *      writing.acceptExamples, run through the engine's analyze() as the writing screen does, together with the
  *      sentence rule of its "finish" button. "Task says N sentences but the checks enforce M" stays a WARN.
- *   12 lesson quiz other than 10 questions: ERROR
- *   Unit tests: numbered units other than 20 questions (ERROR), typed answers, MCQ validity, sentences reused from the
- *   unit's lessons.
+ *   12 lesson quiz other than 10 questions: ERROR. From unit 4 on (not week 103): exactly 4 writing items of at least
+ *      two kinds (ERROR); units 0-3 and 103 keep their multiple-choice quizzes.
+ *   Writing items (11 Nov 2026), in unit tests and lesson quizzes, by "type": typing (as gC: pre/verb/post/ans, checks
+ *   4-6, and a cue that offers a choice between words is an ERROR here), fix (s + ans; every ans must differ from s
+ *   after the engine's own fixNorm, ERROR) and order (4-6 chips that can be arranged into ans, ERROR). LENGTH_CUE and
+ *   the other multiple-choice rules apply to multiple-choice items only.
+ *   Unit tests: numbered units other than 20 questions (ERROR), exactly 10 writing items with each kind at least 3
+ *   times (ERROR, every unit test), MCQ validity, sentences reused from the unit's lessons.
  *   Pre-tests: item count, typed share, checks 4-7, version field.
  *   Cross-lesson (course order): an item introduced as new that an earlier lesson of the course already introduced as
  *   new (ERROR); exercise / quiz sentences repeated (Jaccard >= 0.8) from earlier lessons of the same unit or from any
@@ -70,6 +75,9 @@ const CFG = {
   comprehensionQuestions: 8,           // check 10: reading or listening questions per lesson
   quizQuestions: 10,                   // check 12: lesson quiz (pass = 8 of 10)
   unitTestQuestions: 20,               // numbered unit tests (the unit 0 test is only reported)
+  unitTestWriting: 10, writingKindMin: 3,   // every unit test: 10 writing items, each kind (typing, fix, order) >= 3 times
+  quizWriting: 4, quizWritingKinds: 2, quizWritingFromUnit: 4,   // lesson quiz from unit 4 on (rank, so week 103 keeps MCQ)
+  orderChipsMin: 4, orderChipsMax: 6,  // "order" writing items
   preTestItems: 10, preTestTypedMin: 0.8,
   singleAnswerShare: 0.5,              // check 6
   legalShareMax: 0.25,                 // check 9 (the brief: legal content a quarter or less)
@@ -253,16 +261,20 @@ function loadChecker(site) {
       if (!m || !load(m[1])) throw new Fatal('answer checker from app.js does not run in the sandbox: ' + e.message);
     }
   }
-  const fx = vm.runInContext('({fixQuotes, norm, exactNorm, typedLooseOK, typedExactOK, typedOK})', ctx);
+  // The "correct the sentence" matcher (fixNorm / fixOK); without it the fix checks cannot run as on the page.
+  for (const n of ['foldContractions', 'fixNorm', 'fixOK'])
+    if (!load(n)) throw new Fatal(`cannot find "${n}" in ${site.engine} (the "fix" answer checker moved or was renamed; update content-check.js)`);
+  const fx = vm.runInContext('({fixQuotes, norm, exactNorm, typedLooseOK, typedExactOK, typedOK, fixNorm, fixOK})', ctx);
   // Optional pieces: category names and the default writing checks (missing ones only disable the matching extra check).
   const opt = name => (load(name) ? vm.runInContext(name, ctx) : null);
   site.fx = fx;
   site.load = load;
   site.errCats = (o => (o && typeof o === 'object' ? new Set(Object.keys(o)) : null))(opt('ERR_CATS'));
   site.defaultChecks = (c => (isArr(c) ? c : null))(opt('CHECKS'));
-  // Can the engine show a typed question inside a unit test? (stUnitTestQ renders multiple choice only today.) null = unknown.
-  const utq = extractDecl(site.appSrc, 'stUnitTestQ');
-  site.unitTestTyping = utq == null ? null : /\bTyping\s*\(/.test(utq);
+  // Can the engine show writing items inside a unit test and a lesson quiz? null = unknown.
+  const utq = extractDecl(site.appSrc, 'stUnitTestQ'), qzq = extractDecl(site.appSrc, 'stQuizQ');
+  site.unitTestWriting = utq == null ? null : /\b(?:writeQ|Typing)\s*\(/.test(utq);
+  site.quizWriting = qzq == null ? null : /\bwriteQ\s*\(/.test(qzq);
   site.checkerNames = [...loaded];
   loadWritingEngine(site);
   loadCheckLibrary(site);
@@ -472,6 +484,7 @@ function itemSentences(kind, x) {
     case 'recall': return isArr(x.ans) && isStr(x.ans[0]) ? [wholeSentence({ pre: x.sentPre, post: x.sentPost }, x.ans[0], true)] : [];
     case 'typing': return isArr(x.ans) ? x.ans.filter(isStr).slice(0, 3).map(a => wholeSentence(x, a, true)) : [];
     case 'gB': return [x.s, x.fix].filter(isStr);
+    case 'fix': return [x.s, isArr(x.ans) ? x.ans[0] : null].filter(isStr);   // the wrong sentence and its correction
     case 'gD': return [x.ans].filter(isStr);
     default: return mcqSentences(x);
   }
@@ -581,7 +594,7 @@ function checkCue(log, t) {
         const parts = f.split('/').map(p => fx.norm(p)).filter(Boolean);
         const ans = x.ans.find(a => parts.includes(fx.norm(a)));
         if (parts.length >= 2 && ans) {
-          log.warn(t.field, `cue ${q(cue)} lists ${parts.length === 2 ? 'two options' : parts.length + ' options'} and the answer ${q(ans)} is one of them (a choice disguised as typing)`);
+          log[t.strictChoice ? 'error' : 'warn'](t.field, `cue ${q(cue)} lists ${parts.length === 2 ? 'two options' : parts.length + ' options'} and the answer ${q(ans)} is one of them (a choice disguised as typing)`);
           return;
         }
       }
@@ -611,6 +624,45 @@ function checkTypedGroup(log, field, list) {
   list.forEach(t => { checkAcceptedAnswers(log, t); checkCue(log, t); });
   checkSingleAnswer(log, field, list);
 }
+// ------------------------------------------------------------------ writing items in tests (11 Nov 2026)
+/* Unit tests and lesson quizzes: {type: 'typing'} (as gC), {type: 'fix', s, ans: [...]}, {type: 'order', chips, ans}. */
+const WRITE_KINDS = ['typing', 'fix', 'order'];
+const writeKindOf = x => (x && WRITE_KINDS.includes(x.type) ? x.type : null);
+const writeCounts = list => WRITE_KINDS.map(k => `${k}=${list.filter(t => t.kind === k).length}`).join(' ');
+/* The itemSentences kind of a quiz / unit-test item: its sentences for the reuse and repetition checks. */
+const sentenceKind = x => ({ typing: 'typing', fix: 'fix', order: 'gD' })[writeKindOf(x)] || 'mcq';
+/* list: [{x, field, kind}]. Fields, answers and cues as the engine shows and marks them. */
+function checkWriteItems(log, group, list, S) {
+  const typed = [];
+  for (const { x, field: f, kind } of list) {
+    if (kind === 'typing') {
+      for (const k of ['pre', 'post']) if (typeof x[k] !== 'string') log.error(f, `missing "${k}" (use "" when empty)`);
+      need(log, f, x, 'verb');
+      typed.push({ x, field: f, recall: false, strictChoice: true });       // checks 4-6; "is / are" is an ERROR here
+    } else if (kind === 'fix') {
+      need(log, f, x, 's');
+      if (!strList(x.ans, 1)) log.error(f, '"ans" must be a non-empty array of non-empty strings (the corrected sentence first)');
+      else if (isStr(x.s)) {
+        const wrong = fx.fixNorm(x.s);
+        x.ans.forEach((a, j) => {
+          if (fx.fixNorm(a) === wrong) log.error(f, `ans[${j}] ${q(a)} is the sentence "s" itself once case, punctuation and contractions are ignored (nothing to correct, and the site would mark it wrong)`);
+          else for (const v of [a, a.toLowerCase().replace(/[.!?]+$/, ''), a.replace(/'/g, '\u2019')])
+            if (!fx.fixOK(x, v)) { log.error(f, `ans[${j}] typed as ${q(v)} is rejected by the site checker (fixOK)`); break; }
+        });
+      }
+      if (x.exact) log.warn(f, '"exact" has no effect on a "fix" item (case is always ignored)');
+    } else {
+      if (!strList(x.chips, 1)) { log.error(f, '"chips" must be an array of non-empty strings'); needWhy(log, f, x); checkErrCat(log, f, x, S); continue; }
+      if (x.chips.length < CFG.orderChipsMin || x.chips.length > CFG.orderChipsMax)
+        log.error(f, `${x.chips.length} chips; an "order" item has ${CFG.orderChipsMin}-${CFG.orderChipsMax}`);
+      if (!isStr(x.ans)) log.error(f, 'missing "ans" (the chips joined by one space in the correct order)');
+      else if (!canOrder(x.chips, x.ans)) log.error(f, '"ans" is not the chips joined by one space in some order (the learner can never be right)');
+      else if (x.chips.join(' ') === x.ans) log.warn(f, 'chips are already in the correct order');
+    }
+    needWhy(log, f, x); checkErrCat(log, f, x, S);
+  }
+  if (typed.length) checkTypedGroup(log, group, typed);
+}
 /* Recall hint such as "s _ _ _ g (8 letters)" must fit at least one accepted answer. */
 function checkRecallHint(log, field, x) {
   const m = /^\s*((?:[A-Za-z_]\s+)*[A-Za-z_])\s*\((\d+)\s+letters?/i.exec(typeof x.hint === 'string' ? x.hint : '');
@@ -627,7 +679,8 @@ function checkRecallHint(log, field, x) {
 function exerciseItems(L) {                                              // every graded sentence of a lesson
   const items = [];
   const add = (key, kind) => (isArr(L[key]) ? L[key] : []).forEach((x, i) => items.push({ field: `${key}[${i}]`, kind, x }));
-  add('recall', 'recall'); add('vocabGaps', 'mcq'); add('gA', 'mcq'); add('gB', 'gB'); add('gC', 'typing'); add('gD', 'gD'); add('quiz', 'mcq');
+  add('recall', 'recall'); add('vocabGaps', 'mcq'); add('gA', 'mcq'); add('gB', 'gB'); add('gC', 'typing'); add('gD', 'gD');
+  (isArr(L.quiz) ? L.quiz : []).forEach((x, i) => items.push({ field: `quiz[${i}]`, kind: sentenceKind(x), x }));
   return items;
 }
 /* Example sentences the learner has just been shown: grammar cards (primary), vocab and insight examples (secondary). */
@@ -921,9 +974,24 @@ function checkLesson(id, L, S) {
   checkListening(log, L);
   checkComprehension(log, L.listening, 'listening');
   const w = checkWriting(log, L, S) || {};
-  A('quiz').forEach((x, i) => { checkMcq(log, `quiz[${i}]`, x); needWhy(log, `quiz[${i}]`, x); checkErrCat(log, `quiz[${i}]`, x, S); });
+  const quizWrite = [];
+  A('quiz').forEach((x, i) => {
+    const f = `quiz[${i}]`, wk = writeKindOf(x);
+    if (wk) { quizWrite.push({ x, field: f, kind: wk }); return; }
+    if (isArr(x.ans) && !isArr(x.opts)) log.error(f, 'has "ans" but no "type" ("typing", "fix" or "order"): the engine would show it as multiple choice and fail');
+    else checkMcq(log, f, x);
+    needWhy(log, f, x); checkErrCat(log, f, x, S);
+  });
+  if (quizWrite.length && S.quizWriting === false) log.error('quiz', 'writing items in the quiz, but stQuizQ in the engine does not render them (writeQ)');
+  checkWriteItems(log, 'quiz', quizWrite, S);
   if (A('quiz').length && A('quiz').length !== CFG.quizQuestions)
     log.error('quiz', `${A('quiz').length} questions; the lesson quiz has exactly ${CFG.quizQuestions} (pass = ${Math.ceil(CFG.quizQuestions * 0.8)})`);
+  // From unit 4 on (week 103 ranks 3.5 and keeps its quiz): 4 writing items of at least two kinds among the 10.
+  if (unitRank(L.unit) >= CFG.quizWritingFromUnit && A('quiz').length) {
+    const kinds = new Set(quizWrite.map(t => t.kind));
+    if (quizWrite.length !== CFG.quizWriting || kinds.size < CFG.quizWritingKinds)
+      log.error('quiz', `${quizWrite.length} writing items (${writeCounts(quizWrite)}); from unit ${CFG.quizWritingFromUnit} on the quiz has exactly ${CFG.quizWriting} writing items of at least ${CFG.quizWritingKinds} kinds among its ${CFG.quizQuestions} questions`);
+  }
 
   // 8. explanation examples reused in exercises; 9. legal share
   checkExampleReuse(log, L);
@@ -935,7 +1003,7 @@ function checkLesson(id, L, S) {
     log.warn('askChips', 'lessons from unit 2 on need 4 "askChips" (short Arabic questions about this lesson\'s grammar); without them "Ask the Teacher" suggests unit 1 questions');
 
   log.head('counts', `mode=${L.mode} recall=${A('recall').length} vocab=${A('vocab').length} vocabGaps=${A('vocabGaps').length} gCards=${A('gCards').length} ` +
-    `grammar=${gTotal} (gA=${g[0]} gB=${g[1]} gC=${g[2]} gD=${g[3]}) quiz=${A('quiz').length} | ` +
+    `grammar=${gTotal} (gA=${g[0]} gB=${g[1]} gC=${g[2]} gD=${g[3]}) quiz=${A('quiz').length}${quizWrite.length ? ` (writing ${quizWrite.length}: ${writeCounts(quizWrite)})` : ''} | ` +
     `${L.reading ? 'reading' : 'listening'} questions=${((L.reading || L.listening || {}).questions || []).length} | ` +
     `writing needs ${w.enforced != null ? w.enforced : '?'} sentences (${w.own ? 'own checks' : 'default checks'}) | legal share ${pct(ls.legal, ls.total)} (${ls.legal}/${ls.total})`);
   recycling.forEach(([field, msg]) => log.head(field, msg));                 // INFO lines right after the counts line
@@ -1163,30 +1231,34 @@ function checkUnitTest(S, u, ut) {
   for (const k of ['masteryPct', 'passPct']) if (typeof ut[k] !== 'number') log.warn(k, 'missing or not a number (the engine defaults to 90 / 80)');
   const byLesson = {};
   qs.forEach(x => { byLesson[x.lesson || '?'] = (byLesson[x.lesson || '?'] || 0) + 1; });
-  log.head('counts', `questions=${qs.length}, typed=${qs.filter(isTypedQ).length}, by lesson: ${Object.entries(byLesson).map(([k, n]) => `${k}=${n}`).join(' ')}`);
+  const writeList = [];
+  qs.forEach((x, i) => { const wk = writeKindOf(x); if (wk) writeList.push({ x, field: `questions[${i}]`, kind: wk }); });
+  log.head('counts', `questions=${qs.length}, writing=${writeList.length} (${writeCounts(writeList)}), by lesson: ${Object.entries(byLesson).map(([k, n]) => `${k}=${n}`).join(' ')}`);
   if (unit >= 1 && qs.length !== CFG.unitTestQuestions) log.error('questions', `${qs.length} questions; numbered unit tests have exactly ${CFG.unitTestQuestions}`);
-  const typedList = [];
+  // Every unit test (11 Nov 2026): half writing, each kind at least 3 times.
+  const wc = WRITE_KINDS.map(k => writeList.filter(t => t.kind === k).length);
+  if (writeList.length !== CFG.unitTestWriting || wc.some(n => n < CFG.writingKindMin))
+    log.error('questions', `${writeList.length} writing items (${writeCounts(writeList)}); a unit test has exactly ${CFG.unitTestWriting} writing items among its ${CFG.unitTestQuestions} questions, each kind (typing, fix, order) at least ${CFG.writingKindMin} times`);
+  if (writeList.length && S.unitTestWriting === false) log.error('questions', 'writing items in a unit test, but stUnitTestQ in the engine renders multiple choice only');
+  else if (writeList.length && S.unitTestWriting == null) log.warn('questions', 'writing items in a unit test: stUnitTestQ was not found in app.js, so their support is unconfirmed');
   qs.forEach((x, i) => {
     const f = `questions[${i}]`;
-    if (isTypedQ(x)) {
-      if (S.unitTestTyping === false) log.error(f, 'typed question in a unit test: the engine (stUnitTestQ) renders unit-test questions as multiple choice only');
-      else if (S.unitTestTyping == null) log.warn(f, 'typed question in a unit test: stUnitTestQ was not found in app.js, so support for typed questions is unconfirmed');
-      typedList.push({ x, field: f, recall: false });
-    } else checkMcq(log, f, x);
-    needWhy(log, f, x); checkErrCat(log, f, x, S);
+    if (writeKindOf(x)) { /* checked below with the other writing items */ }
+    else if (isArr(x.ans) && !isArr(x.opts)) log.error(f, 'has "ans" but no "type" ("typing", "fix" or "order"): the engine would show it as multiple choice and fail');
+    else { checkMcq(log, f, x); needWhy(log, f, x); checkErrCat(log, f, x, S); }
     if (x.lesson && !S.LESSONS[x.lesson] && !(S.DATA && isArr(S.DATA[`unit${u}Lessons`]) ? S.DATA[`unit${u}Lessons`] : []).some(l => l && l.id === x.lesson))
       log.warn(f, `lesson ${q(x.lesson)} is not a lesson of this unit`);
   });
-  if (typedList.length) checkTypedGroup(log, 'questions', typedList);
+  checkWriteItems(log, 'questions', writeList, S);
   const pool = unitPool(S, unit);
   if (!pool.length) log.info('reuse', `no built lessons for unit ${u}; sentence-reuse check skipped`);
   else {
-    qs.forEach((x, i) => checkReuse(log, `questions[${i}]`, itemSentences(isTypedQ(x) ? 'typing' : 'mcq', x), pool));
+    qs.forEach((x, i) => checkReuse(log, `questions[${i}]`, itemSentences(sentenceKind(x), x), pool));
     ((ut.legalCorner && ut.legalCorner.terms) || []).forEach((t, i) => checkReuse(log, `legalCorner.terms[${i}].ex`, plainSentences(t.ex), pool));
   }
   // The same sentence twice in one test (two questions that differ only in a word or two count as well).
   const own = [];
-  qs.forEach((x, i) => itemSentences(isTypedQ(x) ? 'typing' : 'mcq', x).forEach(s => { const e = entry(s, `questions[${i}]`, { i }); if (e) own.push(e); }));
+  qs.forEach((x, i) => itemSentences(sentenceKind(x), x).forEach(s => { const e = entry(s, `questions[${i}]`, { i }); if (e) own.push(e); }));
   const done = new Set();
   own.forEach(e => {
     const m = bestOverlap(e.text, own.filter(p => p.i < e.i));
