@@ -702,7 +702,7 @@ var DATA = window.DATA = {
         ]
       },
       questions: [
-        { type: "fix", s: "At 10 pm, my father were waiting for us at the station.", ans: ["At 10 pm, my father was waiting for us at the station.", "At 10 pm, my father waited for us at the station.", "At 10 p.m., my father was waiting for us at the station.", "At 10 p.m., my father waited for us at the station."], errCat: "agreement", lesson: "u3l1",
+        { type: "fix", s: "Late last night, my father were waiting for us at the station.", ans: ["Late last night, my father was waiting for us at the station.", "Late last night, my father waited for us at the station."], errCat: "agreement", lesson: "u3l1",
           whyEn: "'my father' is one person (he), so the Past Continuous uses was: was waiting, not were waiting.",
           why: "الفاعل my father مفرد (he)، فنستعمل was مع ing: was waiting، لا were waiting." },
         { s: "For six years at primary school, my father ___ a white thobe every day.", opts: ["wore", "was wearing", "weared"], a: 0, errCat: "tense", lesson: "u3l1",
