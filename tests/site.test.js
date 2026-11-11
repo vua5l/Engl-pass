@@ -831,7 +831,6 @@ function fakeGitHub(token, opts) {
     const gl = await getJSON(page, 'ep4.course');
     ok(gl.freeLogs.length === 2 && gl.freeLogs[0].kind === 'read' && gl.freeLogs[0].mins === 20 && gl.freeLogs[1].kind === 'listen', 'free reading and listening are logged with their minutes');
     ok((await page.innerText('#sheetBox')).includes('Last 7 days: 20 min reading · 10 min listening'), 'the free log shows the last 7 days');
-    page.once('dialog', d => d.accept());
     await page.click('#freeUndo'); await sleep(250);
     ok((await getJSON(page, 'ep4.course')).freeLogs.length === 1, 'a mistaken free log can be removed');
     await page.fill('.free-in', '10'); await page.click('#freeListen'); await sleep(200);
