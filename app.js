@@ -885,7 +885,9 @@ function practiceWords(){
   var due = wn ? h('div', { class:'rv-hero', id:'wordsHero' },
       h('div', {}, h('span', { class:'rv-n' }, String(wd)), h('span', { class:'rv-l' }, (wd ? 'Words due today' : 'No words due today') + ' · ' + wn + ' in your reviews')),
       wd ? h('button', { class:'btn light sm', type:'button', on:{ click:function(){ openSession('words'); } } }, 'Review words', ico('fwd')) : null) : null;
-  return [due, h('p', { class:'p-sum' }, k + ' known · ' + r + ' to review · ' + (ALL_VOCAB.length - k - r) + ' new'), h('div', { class:'card wlist' }, ALL_VOCAB.map(function(v){ var st = S.cards[v.en];
+  /* بطاقة Words في أعلى Practice تفتح مراجعة الكلمات حين يستحق شيء منها، فتبقى البطاقات هنا بنقرة واحدة. */
+  var cards = wd ? h('button', { class:'link', type:'button', id:'cardsLink', on:{ click:function(){ openSession('cards'); } } }, r ? 'Review hard words' : 'Flashcards') : null;
+  return [due, h('p', { class:'p-sum' }, k + ' known · ' + r + ' to review · ' + (ALL_VOCAB.length - k - r) + ' new'), cards, h('div', { class:'card wlist' }, ALL_VOCAB.map(function(v){ var st = S.cards[v.en];
       return h('details', { class:'wrow' },
         h('summary', {}, h('span', { class:'w-st' + (st ? ' ' + st : ''), 'aria-hidden':'true' }),
           sayBtn(v, 'Play ' + v.en),
@@ -1465,7 +1467,7 @@ function typedExactOK(x, v){ var n = exactNorm(v), pre = (x.pre && x.pre !== '__
     return forms.indexOf(n) >= 0; }); }
 function typedOK(x, v){ return x.exact ? typedExactOK(x, v) : typedLooseOK(x, v); }
 function Typing(x, o, ctl){ o = o || {}; var quiet = !!o.quiet;
-  var inp = h('input', { class:'gap-in' + (o.wide ? ' wide' : ''), type:'text', dir:'ltr', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', enterkeyhint:'done', 'aria-label':(isVerbCue(x) ? 'Verb form' : 'Correct form') + x.verb });
+  var inp = h('input', { class:'gap-in' + (o.wide ? ' wide' : ''), type:'text', dir:'ltr', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', enterkeyhint:'done', 'aria-label':o.label || ((isVerbCue(x) ? 'Verb form' : 'Correct form') + x.verb) });
   var noSpace = /^[.!?,]/.test(x.post);
   var sent = h('p', { class:'q-en', dir:'ltr' }, x.pre + ' ', inp, ' ', h('span', { class:'verb' }, '(' + x.verb + ')'), noSpace ? '' : ' ', x.post);
   var fb = h('div', { hidden:true }), done = false;
@@ -1899,9 +1901,12 @@ function matchVocabInText(v, text){ var re = vocabRe(v); return !!re && re.test(
 /* سؤال الكلمة في المراجعة: جملة مثالها (ex) وفيها فراغ مكان الكلمة كما كُتبت فيها (cases)، ويُقبل معها أصلها (case).
    فإن لم تكن الكلمة في مثالها فالفراغ وحده، والمعنى العربي يدل عليها. */
 function wordQuestion(v){
-  var ex = fixQuotes(v.ex || ''), re = vocabRe(v), m = re && ex ? re.exec(ex) : null, ans = [];
+  /* الفراغ للعبارة كلها (wakes up، gets out of bed) لا لكلمتها الرئيسة (headword)، والكلمة الرئيسة وحدها لا تُقبل جوابًا لعبارة (advice لـ give legal advice). */
+  var ex = fixQuotes(v.ex || ''), ans = [], m = null;
+  [vocabRe({ en:v.en }), vocabRe(v)].forEach(function(re){ if (!m && re && ex) m = re.exec(ex); });
   if (m && m[0]) ans.push(m[0]);
-  [v.en, v.headword].forEach(function(a){ if (a && ans.indexOf(a) < 0) ans.push(a); });
+  var nw = function(x){ return String(x || '').trim().split(/\s+/).length; };
+  [v.en].concat(v.headword && nw(v.headword) === nw(v.en) ? [v.headword] : []).forEach(function(a){ if (a && ans.indexOf(a) < 0) ans.push(a); });
   var word = ans[0], n = word.split(/\s+/).length;
   return { pre:m ? ex.slice(0, m.index).replace(/\s+$/, '') : '', post:m ? ex.slice(m.index + m[0].length).replace(/^\s+/, '') : '',
     ans:ans, full:m ? ex : '', hint:n > 1 ? n + ' words' : word.replace(/[^A-Za-z]/g, '').length + ' letters' }; }
@@ -1957,14 +1962,14 @@ var CHECKS = [
                 ويكتب الدرس له k وtEn وt لأن المكتبة لا تعرف غرضه. */
 var WL_TENSES = ['present', 'presentSimple', 'presentContinuous', 'pastSimple', 'pastContinuous', 'goingTo', 'will', 'presentPerfect'];
 /* أسماء الأفعال الشاذة خارج قائمة الكورس (base:past:pp)، وما يُكتب بـ ed منها صحيحًا فلا يُعد خطأً (learned, dreamed, lighted). */
-var WL_IRR_EXTRA = 'get:got:got/gotten ride:rode:ridden wake:woke:woken ring:rang:rung sing:sang:sung swim:swam:swum throw:threw:thrown grow:grew:grown draw:drew:drawn steal:stole:stolen shake:shook:shaken bite:bit:bitten blow:blew:blown beat:beat:beaten fight:fought:fought feed:fed:fed lead:led:led hide:hid:hidden hang:hung:hung lie:lay:lain lay:laid:laid light:lit:lit rise:rose:risen shoot:shot:shot sink:sank:sunk stick:stuck:stuck strike:struck:struck tear:tore:torn sweep:swept:swept dig:dug:dug weep:wept:wept learn:learnt/learned:learnt/learned show:showed:shown forgive:forgave:forgiven freeze:froze:frozen quit:quit:quit burst:burst:burst spread:spread:spread shine:shone:shone flee:fled:fled bend:bent:bent deal:dealt:dealt'.split(' ');
+var WL_IRR_EXTRA = 'get:got:got/gotten ride:rode:ridden wake:woke:woken ring:rang:rung sing:sang:sung swim:swam:swum throw:threw:thrown grow:grew:grown draw:drew:drawn steal:stole:stolen shake:shook:shaken bite:bit:bitten blow:blew:blown beat:beat:beaten fight:fought:fought feed:fed:fed lead:led:led hide:hid:hidden hang:hung:hung lie:lay:lain lay:laid:laid light:lit:lit rise:rose:risen shoot:shot:shot sink:sank:sunk stick:stuck:stuck strike:struck:struck tear:tore:torn sweep:swept:swept dig:dug:dug weep:wept:wept learn:learnt/learned:learnt/learned show:showed:shown/showed forgive:forgave:forgiven freeze:froze:frozen quit:quit:quit burst:burst:burst spread:spread:spread shine:shone:shone flee:fled:fled bend:bent:bent deal:dealt:dealt'.split(' ');
 var WL_REG_OK = /^(?:seed|felled|lighted|learned|dreamed|burned|spelled|smelled|showed|hanged|shined|costed|leaded|putted|wined|lied|teared|ringed|singed|waked|quitted)$/;
 /* ما ينتهي بـ ed وليس فعلًا ماضيًا: need وأخواتها، والأسماء (Ahmed)، والصفات. */
 var WL_ED_NOT = /^(?:need|feed|bleed|breed|speed|succeed|exceed|proceed|indeed|seed|weed|heed|shed|shred|wed|embed|plead|red|bed|hundred|greed|deed|creed|reed|steed|tweed|sacred|naked|wicked|beloved|rugged|ragged|ahmed|mohammed|mohamed|muhammed|khaled|majed|saeed|sayed|waleed|hamed|hameed|rashed|rasheed|fahed|raed|zayed|majeed|fareed|waheed|tired|interested|excited|bored|worried|united|advanced|crowded|pleased|married|scared|surprised|confused|disappointed|embarrassed|amazed|annoyed|satisfied|qualified|talented|skilled|experienced)$/;
 /* ما ينتهي بـ ing وليس فعلًا مستمرًا، وما يكون فعلًا مع الشخص وصفةً مع الشيء (I'm relaxing / It's relaxing). */
-var WL_ING_NOT = /^(?:thing|things|string|sting|swing|sing|ring|bring|wing|king|spring|during|ceiling|morning|evening|nothing|something|anything|everything|building|wedding|sibling|darling|pudding|amazing|interesting|exciting|boring|tiring|surprising|shocking|charming|frightening|confusing|disappointing|embarrassing|terrifying|exhausting|outstanding|thrilling|inspiring|challenging|fascinating|satisfying|rewarding|pleasing|depressing|entertaining|refreshing|amusing|disgusting|astonishing|alarming|appealing|demanding|promising|welcoming|striking|overwhelming|convincing|outgoing|willing|upcoming|ongoing)$/;
-var WL_ING_BOTH = /^(?:relaxing|worrying|annoying|encouraging|loving|caring|missing)$/;
-var WL_ADVERB = /^(?:not|also|still|just|already|never|ever|always|usually|often|sometimes|really|even|only|probably|definitely|certainly|actually|finally|recently|nearly|almost|hardly|quickly|slowly|suddenly|carefully|happily|easily|completely|totally|simply|clearly|mostly|currently|now)$/;
+var WL_ING_NOT = /^(?:thing|things|string|sting|swing|sing|ring|bring|wing|king|spring|during|ceiling|morning|evening|nothing|something|anything|everything|wedding|sibling|darling|pudding|amazing|interesting|exciting|boring|tiring|surprising|shocking|charming|frightening|confusing|disappointing|embarrassing|terrifying|exhausting|outstanding|thrilling|fascinating|satisfying|rewarding|pleasing|depressing|refreshing|amusing|disgusting|astonishing|alarming|appealing|overwhelming|outgoing|willing|upcoming|ongoing)$/;
+var WL_ING_BOTH = /^(?:relaxing|worrying|annoying|encouraging|loving|caring|missing|welcoming|entertaining|challenging|demanding|convincing|promising|striking|inspiring)$/;
+var WL_ADVERB = /^(?:all|both|not|also|still|just|already|never|ever|always|usually|often|sometimes|really|even|only|probably|definitely|certainly|actually|finally|recently|nearly|almost|hardly|quickly|slowly|suddenly|carefully|happily|easily|completely|totally|simply|clearly|mostly|currently|now)$/;
 var WL_PRON = /^(?:i|you|he|she|it|we|they)$/;
 var WL_POSS = /^(?:the|my|your|his|her|our|their)$/;
 /* بعد هذه الكلمات لا تكون الكلمة المنتهية بـ ed ماضيًا بسيطًا: am / is + صفة، have + تصريف ثالث، a / the + صفة، to / will + فعل. */
@@ -1972,7 +1977,7 @@ var WL_NOT_PAST_BEFORE = /^(?:am|is|are|'s|be|been|being|have|has|having|get|get
 var WL_PAST_TIME = / (?:yesterday|ago|last|earlier|once|then|in (?:19|20)[0-9][0-9]|when (?:i|we|he|she|they) (?:was|were)|this morning) /;
 /* was / were قبل أصل الفعل خطأ (I was go). ولا يُعد هنا ما يصح بعدها (live, like, read, work). */
 var WL_BE_BASE = /^(?:go|come|see|call|study|walk|run|sit|stand|take|give|know|tell|feel|eat|drink|sleep|write|talk|play|watch|happen|learn|teach|want|ask|start|finish|travel|wake|get|make|do|have|say|speak|buy|meet|find|think|pray|visit|arrive|stay|try|listen|move|pay|send|stop|swim|wash|wear|use|cook)$/;
-var WL_STATE_ING = /^(?:knowing|wanting|needing|preferring|understanding|believing|owning|belonging)$/;
+var WL_STATE_ING = /^(?:knowing|wanting|needing|preferring|believing|owning|belonging)$/;   /* لا understanding: صفة أيضًا (She is very understanding) */
 /* بعد going to: مكان لا فعل (going to the market، going to Jeddah)، فليس مستقبلًا. */
 var WL_TO_PLACE = /^(?:the|a|an|my|your|his|her|our|their|this|that|these|those|some|school|work|university|college|bed|class|church|mosque|court|hospital|home|bank|market|mall|office|library|lunch|dinner|breakfast|party)$/;
 var WL_THIRD_S = /^(?:am|is|are|was|were|does|did|has|goes|makes|takes|comes|gives|gets|says|knows|sees|wants|needs|likes|works|studies|lives|tries|buys|pays|stays|calls|starts|visits|leaves|meets|writes|reads|eats|drinks|sleeps|thinks|feels|tells|speaks|talks|walks|runs|drives|flies|swims|plays|helps|travels|rains)$/;
@@ -1996,7 +2001,7 @@ function wlIrr(){
     I.base[b] = 1;
     ps.forEach(function(x){ I.past[x] = 1; if (qs.indexOf(x) < 0 && x !== b) I.pastOnly[x] = 1; });
     qs.forEach(function(x){ I.pp[x] = 1; });
-    wlRegular(b).forEach(function(x){ if (ps.indexOf(x) < 0 && !WL_REG_OK.test(x)) I.wrong[x] = 1; });
+    wlRegular(b).forEach(function(x){ if (ps.indexOf(x) < 0 && !WL_REG_OK.test(x) && !WL_ED_NOT.test(x)) I.wrong[x] = 1; });
   };
   ((typeof DATA !== 'undefined' && DATA && DATA.irregularVerbs) || []).forEach(function(v){ if (v) add(v.base, v.past, v.pp); });
   WL_IRR_EXTRA.forEach(function(s){ var p = s.split(':'); add(p[0], p[1], p[2]); });
@@ -2012,6 +2017,8 @@ function wlNorm(s){
 }
 function wlToks(s){ return wlNorm(s).trim().split(' ').filter(Boolean); }
 function wlPieces(text){ return fixQuotes(text).split(/[.!?]+/).filter(function(p){ return /[A-Za-z]{2}/.test(p); }); }
+/* All we could do was go · All I wanted was sleep · What I did was rest: بعد was أصل الفعل صحيح. */
+function wlCleft(t, i){ var before = t.slice(0, i); return before.indexOf('do') >= 0 || before.indexOf('did') >= 0 || before[0] === 'all' || before[0] === 'what'; }
 function wlIsEdPast(w){ return w.length > 3 && /ed$/.test(w) && !WL_ED_NOT.test(w); }
 function wlPrev(t, i){ var j = i - 1; while (j >= 0 && WL_ADVERB.test(t[j])) j--; return j >= 0 ? t[j] : ''; }
 /* be + فعل بـ ing: «am / is / are» أو «was / were»، وبينهما not أو ظرف أو فاعل السؤال (Are you working? Is Sara working?). */
@@ -2023,7 +2030,8 @@ function wlBeIng(t, bes){
     if (t[j] === 'not') j++;
     var w = t[j] || '';
     if (!/ing$/.test(w)) {
-      if (WL_ADVERB.test(w) || WL_PRON.test(w)) j++;
+      if (WL_ADVERB.test(w) || WL_PRON.test(w) || /^[a-z]{3,}ly$/.test(w)) j++;
+      else if (/^(?:at|in)$/.test(w) && /^(?:home|work|school|university|college|class|bed)$/.test(t[j + 1] || '') && /ing$/.test(t[j + 2] || '')) j += 2;
       else if (WL_POSS.test(w) && t[j + 1] && !/ing$/.test(t[j + 1])) j += 2;
       else if (i === 0 && w && !/^(?:a|an|this|that|there|here|very|so|too|some|any|no)$/.test(w)) j++;
       else continue;
@@ -2031,7 +2039,7 @@ function wlBeIng(t, bes){
     }
     var v = t[j] || '', who = WL_PRON.test(t[i + 1] || '') ? t[i + 1] : (t[i - 1] || '');
     if (v.length < 5 || !/ing$/.test(v) || WL_ING_NOT.test(v)) continue;
-    if (WL_ING_BOTH.test(v) && !/^(?:am|are|were)$/.test(t[i]) && !/^(?:i|he|she|we|they|you)$/.test(who)) continue;
+    if (WL_ING_BOTH.test(v) && !/^(?:am|are|were)$/.test(t[i]) && !/^(?:i|he|she|we|they|you)$/.test(who) && !/^(?:the|a|an|my|your|his|her|our|their|this|that|these|those|me|him|us|them|some|more)$/.test(t[j + 1] || '')) continue;
     n++;
   }
   return n;
@@ -2044,7 +2052,7 @@ function wlBePast(t){
     if (t[j] === 'not') j++;
     var v = t[j] || '';
     if (v.length > 4 && /ing$/.test(v) && !WL_ING_NOT.test(v)) continue;
-    if (WL_BE_BASE.test(v) && t.slice(0, i).indexOf('do') < 0 && t.slice(0, i).indexOf('did') < 0) continue;
+    if (WL_BE_BASE.test(v) && !wlCleft(t, i)) continue;
     return true;
   }
   return false;
@@ -2067,6 +2075,10 @@ function wlSimple(p){
     if (WL_NOT_SIMPLE.test(w) || (I.past[w] && !I.base[w]) || (/(?:ed|ing)$/.test(w) && w !== 'need')) continue;
     return true;
   }
+  /* فاعل جمع أو اسمان في أول الجملة بلا أداة (Lawyers help people. Ahmed and Sara study law.) */
+  m = /^\s*(?:(?:many|most|some|all|young|old|saudi)\s+)?(people|children|men|women|[A-Za-z]+s|[A-Z][a-z]+\s+and\s+(?:I|[A-Z][a-z]+))\s+(?:(?:also|still|really|usually|often|always|sometimes|never|normally)\s+)?([a-z]+)\b/i.exec(s);
+  if (m && !/^(?:this|his|its|hers|ours|yours|theirs|is|was|has|does|yes|as|us|thus|plus|always|sometimes|perhaps|unless|across|less|news|bus|class|business)$/i.test(m[1])
+      && !WL_NOT_SIMPLE.test(m[2]) && !WL_PRON.test(m[2]) && !WL_POSS.test(m[2]) && !(I.past[m[2].toLowerCase()] && !I.base[m[2].toLowerCase()]) && !/(?:ed|ing|s)$/i.test(m[2])) return true;
   WL_THIRD.lastIndex = 0;
   while ((m = WL_THIRD.exec(s))) { if (!/^(?:is|was|has)$/i.test(m[1])) return true; }
   return t.indexOf('has') >= 0 && !wlPerfect(p);   /* she has a car */
@@ -2095,13 +2107,13 @@ function wlGoingTo(p){
 function wlWill(p){
   var t = wlToks(p);
   for (var i = 0; i < t.length; i++) {
-    if (t[i] !== 'will' || /^(?:a|the|my|his|her|your|their|our|free|good|own|last)$/.test(t[i - 1] || '')) continue;
+    if (t[i] !== 'will' || /^(?:a|the|my|his|her|your|their|our|free|good|own|last|'s)$/.test(t[i - 1] || '')) continue;
     var j = i + 1;
     if (t[j] === 'not') j++;
     if (WL_PRON.test(t[j] || '')) j++;
     while (WL_ADVERB.test(t[j] || '')) j++;
     var v = t[j] || '';
-    if (v && v !== 'to' && !WL_TO_PLACE.test(v) && !/^(?:of|and|or|is|was)$/.test(v)) return true;
+    if (v && v !== 'to' && !/^(?:the|a|an|my|your|his|her|our|their|this|that|these|those|some|of|and|or|is|was)$/.test(v)) return true;
   }
   return false;
 }
@@ -2123,7 +2135,7 @@ function wlPerfect(p){
 var WL_BE_BASE_P = /\b(?:i\s+am|i'm|he\s+is|he's|she\s+is|she's|we\s+are|we're|they\s+are|they're|you\s+are|you're)\s+(?:not\s+)?(?:(?:usually|always|often|also)\s+)?(?:work|go|study|write|eat|drink|walk|drive|sleep|wake|play|cook|help|teach|learn|sit)\b(?!\s+(?:colleagues?|friends?|partners?|groups?))/i;
 var WL_BE_Q = /\b(?:is|are|am)\s+(?:he|she|you|they|we|i)\s+(?:work|go|study|write|eat|drink|walk|drive|sleep|wake|play|cook|help|teach|learn|sit)\b/i;
 var WL_HE_DONT = /\b(?:he|she|it)\s+don't\b|(?:^|[.!?,]\s+)my\s+(?:father|mother|brother|sister|son|daughter|uncle|aunt|cousin|friend|teacher|manager|colleague)\s+don't\b/im;
-var WL_STATE_BAD = /(?:\b(?:am|is|are|was|were)|'m|'re|'s)\s+(?:not\s+)?(?:knowing|wanting|needing|preferring|understanding|believing|owning|belonging)\b/i;
+var WL_STATE_BAD = /(?:\b(?:am|is|are|was|were)|'m|'re|'s)\s+(?:not\s+)?(?:knowing|wanting|needing|preferring|believing|owning|belonging)\b/i;
 /* فاعل بعده فعل بـ ing بلا am / is / are أو was / were (I working). وفي السؤال يتقدم الفعل (Are you working?)، فيُحذف قبل الفحص. */
 function wlNoBe(p){
   var s = fixQuotes(p).replace(/\b(?:am|is|are|was|were)(?:n't)?\s+(?:not\s+)?(?:i|you|he|she|it|we|they)\b/gi, ' '), m;
@@ -2142,7 +2154,7 @@ function wlBadPast(p){
   for (var i = 0; i < t.length; i++) {
     var w = t[i];
     if (I.wrong[w]) return true;                                    /* buyed, goed, eated */
-    if (w === 'did') {                                              /* didn't went · Did you went? */
+    if (w === 'did' && (t[i + 1] === 'not' || i === 0 || /^(?:what|where|when|why|how|who|which)$/.test(t[i - 1]))) {   /* didn't went · Did you went? (not: I did my homework, cleaned …) */
       var j = i + 1;
       if (t[j] === 'not') j++;
       if (WL_PRON.test(t[j] || '')) j++; else if (WL_POSS.test(t[j] || '') && t[j + 1]) j += 2;
@@ -2150,7 +2162,7 @@ function wlBadPast(p){
       var v = t[j] || '';
       if (I.pastOnly[v] || wlIsEdPast(v)) return true;
     }
-    if ((w === 'was' || w === 'were') && t.slice(0, i).indexOf('do') < 0 && t.slice(0, i).indexOf('did') < 0) {   /* I was go · I was went · I was knowing (لا: All we could do was go) */
+    if ((w === 'was' || w === 'were') && !wlCleft(t, i)) {   /* I was go · I was went · I was knowing (لا: All we could do was go) */
       var k = i + 1;
       if (t[k] === 'not') k++;
       var u = t[k] || '';
@@ -2171,7 +2183,7 @@ function wlBadGoing(p){
 function wlBadWill(p){
   var t = wlToks(p), I = wlIrr();
   for (var i = 0; i < t.length; i++) {
-    if (t[i] !== 'will' || /^(?:a|the|my|his|her|your|their|our|free|good|own|last)$/.test(t[i - 1] || '')) continue;
+    if (t[i] !== 'will' || /^(?:a|the|my|his|her|your|their|our|free|good|own|last|'s)$/.test(t[i - 1] || '')) continue;
     var j = i + 1;
     if (t[j] === 'not') j++;
     while (WL_ADVERB.test(t[j] || '')) j++;
@@ -2188,6 +2200,7 @@ function wlBadPerfect(p){
     var j = i + 1, who = t[i - 1] || '';
     if (t[j] === 'not') j++;
     if (WL_PRON.test(t[j] || '')) { who = t[j]; j++; }
+    else if (/^(?:you|it)$/.test(who) && i > 1 && !/^(?:and|but|so|because|when|while|if|that|then)$/.test(t[i - 2])) who = '';   /* The man who helped you has left */
     while (WL_ADVERB.test(t[j] || '')) j++;
     var v = t[j] || '';
     if (I.pastOnly[v]) return true;                                 /* have went · Have you ever saw? */
@@ -2201,9 +2214,9 @@ function wlBadPerfect(p){
 var WL_TENSE = {
   present:          { fam:'present', is:wlPresent,            bad:wlBadPresent, en:'in the present', ar:'بالمضارع', ex:'I am a student. · I study law. · I\'m reading a lot this week.' },
   presentSimple:    { fam:'present', is:wlSimple,             bad:wlBadPresent, en:'in the Present Simple', ar:'بالمضارع البسيط', ex:'I usually work at nine. · She lives in Riyadh.' },
-  presentContinuous:{ fam:'present', is:function(p){ return wlBeIng(wlToks(p), ['am', 'is', 'are', "'s"]) > 0; }, bad:wlBadPresent, en:'with am / is / are + verb-ing', ar:'بالمضارع المستمر: am / is / are مع الفعل وing', ex:'I\'m reading a report now. · They are waiting.' },
+  presentContinuous:{ fam:'present', is:function(p){ return wlBeIng(wlToks(p), ['am', 'is', 'are', "'s"]) > 0; }, count:function(p){ return wlBeIng(wlToks(p), ['am', 'is', 'are', "'s"]); }, bad:wlBadPresent, en:'with am / is / are + verb-ing', ar:'بالمضارع المستمر: am / is / are مع الفعل وing', ex:'I\'m reading a report now. · They are waiting.' },
   pastSimple:       { fam:'past', is:wlPastSimple,         bad:wlBadPast,    en:'in the Past Simple', ar:'بالماضي البسيط', ex:'I went to Jeddah. · We visited the museum. · It was hot.' },
-  pastContinuous:   { fam:'past', is:function(p){ return wlBeIng(wlToks(p), ['was', 'were']) > 0; }, bad:wlBadPast, en:'with was / were + verb-ing', ar:'بالماضي المستمر: was / were مع الفعل وing', ex:'I was walking home. · They were waiting.' },
+  pastContinuous:   { fam:'past', is:function(p){ return wlBeIng(wlToks(p), ['was', 'were']) > 0; }, count:function(p){ return wlBeIng(wlToks(p), ['was', 'were']); }, bad:wlBadPast, en:'with was / were + verb-ing', ar:'بالماضي المستمر: was / were مع الفعل وing', ex:'I was walking home. · They were waiting.' },
   goingTo:          { fam:'goingTo', is:wlGoingTo,            bad:wlBadGoing,   en:'with am / is / are going to + verb', ar:'بالمستقبل: am / is / are going to مع أصل الفعل', ex:'I\'m going to visit my uncle. · It\'s going to rain.' },
   will:             { fam:'will', is:wlWill,               bad:wlBadWill,    en:'with will + verb', ar:'بالمستقبل: will مع أصل الفعل', ex:'I\'ll call you tomorrow. · It will be hot.' },
   presentPerfect:   { fam:'perfect', is:wlPerfect,            bad:wlBadPerfect, en:'with have / has + past participle', ar:'بالمضارع التام: have / has مع التصريف الثالث', ex:'I have visited Abha. · She has never seen snow.' }
@@ -2220,7 +2233,7 @@ var WL_CLEAN = {
 function wlAr(n, one, two, few, many){ return n === 1 ? one : n === 2 ? two : (n >= 3 && n <= 10) ? n + ' ' + few : n + ' ' + many; }
 function wlN(o, def){ var n = o.n == null ? def : o.n; return (typeof n === 'number' && n % 1 === 0 && n >= 1 && n <= 20) ? n : null; }
 /* سطر الختام في الإيميل (Best regards, Usama) ليس جملة. */
-var WL_CLOSINGS = ['best regards', 'kind regards', 'warm regards', 'warmest regards', 'many thanks', 'thanks again', 'best wishes', 'yours sincerely', 'yours faithfully', 'yours truly', 'sincerely yours', 'all the best', 'with thanks', 'thank you', 'take care', 'regards', 'sincerely', 'respectfully', 'thanks', 'cheers', 'best'];
+var WL_CLOSINGS = ['best regards', 'kind regards', 'warm regards', 'warmest regards', 'many thanks', 'thanks again', 'best wishes', 'yours sincerely', 'yours faithfully', 'yours truly', 'sincerely yours', 'all the best', 'with thanks', 'see you soon', 'see you later', 'talk soon', 'speak soon', 'with love', 'see you', 'love', 'bye', 'thank you', 'take care', 'regards', 'sincerely', 'respectfully', 'thanks', 'cheers', 'best'];
 function isClosingLine(piece){
   var s = String(piece == null ? '' : piece).replace(/^\s+|\s+$/g, ''), low = s.toLowerCase().replace(/\s+/g, ' ');
   for (var i = 0; i < WL_CLOSINGS.length; i++) {
@@ -2243,7 +2256,7 @@ var WL_SEQ = [
   ['second', new RegExp(WL_SEQ_START + 'second(?:ly)?\\b', 'm')],
   ['third', new RegExp(WL_SEQ_START + 'third(?:ly)?\\b', 'm')],
   ['then', /\bthen\b/],
-  ['next', new RegExp(WL_SEQ_START + 'next\\b(?!\\s+(?:day|week|weekend|month|year|morning|afternoon|evening|night|time|monday|tuesday|wednesday|thursday|friday|saturday|sunday|summer|winter|spring|autumn|semester|term|lesson|class))', 'm')],
+  ['next', new RegExp(WL_SEQ_START + 'next\\b(?!\\s+(?:to|day|week|weekend|month|year|morning|afternoon|evening|night|time|monday|tuesday|wednesday|thursday|friday|saturday|sunday|summer|winter|spring|autumn|semester|term|lesson|class))', 'm')],
   ['after that', /\bafter\s+that\b/],
   ['afterwards', /\bafterwards?\b/],
   ['later', new RegExp(WL_SEQ_START + '(?:(?:a\\s+little|[a-z]+\\s+(?:minutes?|hours?|days?|weeks?|months?|years?))\\s+)?later\\b', 'm')],
@@ -2269,21 +2282,21 @@ var WCHECK_LIB = {
     return { k:'sentences',
       tEn:'At least ' + n + ' separate sentence' + (n > 1 ? 's' : '') + ' (end each with a period .)' + (o.capitalI ? ', and \'I\' is always a capital' : '') + (o.runOn ? ', not one long connected sentence' : ''),
       t:wlAr(n, 'جملة منفصلة واحدة', 'جملتان منفصلتان', 'جمل منفصلة', 'جملة منفصلة') + ' على الأقل (بنقطة في نهاية كل جملة)' + (o.capitalI ? '، والضمير I بحرف كبير دائمًا' : '') + (o.runOn ? '، لا جملة واحدة طويلة موصولة' : ''),
-      ok:function(a, text){ return a.sentences >= n && !(o.runOn && a.runOn) && !(o.capitalI && /\bi\b/.test(String(text || ''))); } };
+      ok:function(a, text){ return a.sentences >= n && !(o.runOn && wlPieces(text).some(function(p){ return (p.match(/[A-Za-z']+/g) || []).length >= 28; })) && !(o.capitalI && /\bi\b/.test(String(text || ''))); } };
   },
   tense: function(o){
     var T = WL_TENSE.hasOwnProperty(o.tense) ? WL_TENSE[o.tense] : null, n = wlN(o, 1);
     if (!T) return { problem:'tense must be one of: ' + WL_TENSES.join(', ') };
     if (!n) return { problem:'n must be a whole number from 1 to 20' };
-    var clean = o.clean !== false, sx = WL_CLEAN[T.fam];
+    var clean = o.clean !== false, sx = WL_CLEAN[T.fam], verbs = !!T.count;
     return { k:o.tense,
-      tEn:'At least ' + n + ' sentence' + (n > 1 ? 's ' : ' ') + T.en + (clean ? sx[0] : ''),
-      t:wlAr(n, 'جملة واحدة', 'جملتان', 'جمل', 'جملة') + ' على الأقل ' + T.ar + (clean ? sx[1] : ''),
+      tEn:'At least ' + n + (verbs ? ' verb' : ' sentence') + (n > 1 ? 's ' : ' ') + T.en + (clean ? sx[0] : ''),
+      t:(verbs ? wlAr(n, 'فعل واحد', 'فعلان', 'أفعال', 'فعلًا') : wlAr(n, 'جملة واحدة', 'جملتان', 'جمل', 'جملة')) + ' على الأقل ' + T.ar + (clean ? sx[1] : ''),
       ex:T.ex,
       ok:function(a, text){
         var ps = wlPieces(text);
         if (clean && ps.some(T.bad)) return false;
-        return ps.filter(T.is).length >= n; } };
+        return (verbs ? ps.reduce(function(sum, p){ return sum + T.count(p); }, 0) : ps.filter(T.is).length) >= n; } };
   },
   words: function(o, L){
     var n = wlN(o, 2), list = o.list;
@@ -2314,9 +2327,9 @@ var WCHECK_LIB = {
       ok:function(a, text){
         var s = fixQuotes(text), lines = s.split(/\n/).filter(function(x){ return /[A-Za-z]/.test(x); });
         var has = {
-          greeting:/^\s*(?:dear|hi|hello|good\s+(?:morning|afternoon|evening))\b/i.test(lines[0] || ''),
+          greeting:/^\s*(?:dear|hi|hello|hey|good\s+(?:morning|afternoon|evening))\b/i.test(lines[0] || ''),
           purpose:/\b(?:i'm|i\s+am)\s+writing\s+(?:(?:this|an?)\s+(?:email|message|letter)\s+|(?:to\s+)?you\s+)?(?:to|because|about)\b/i.test(s),
-          closing:lines.slice(-3).some(function(x){ return WL_CLOSINGS.some(function(c){ return x.replace(/^\s+/, '').toLowerCase().replace(/\s+/g, ' ').indexOf(c) === 0; }); }) || s.split(/[.!?]+/).some(isClosingLine)
+          closing:lines.slice(-3).some(function(x){ var low = x.replace(/^\s+/, '').toLowerCase().replace(/\s+/g, ' '); return WL_CLOSINGS.some(function(c){ return low.indexOf(c) === 0 && !/[a-z]/.test(low.charAt(c.length)); }); }) || s.split(/[.!?]+/).some(isClosingLine)
         };
         return pick.every(function(p){ return has[p]; }); } };
   },
@@ -2346,11 +2359,15 @@ var WCHECK_LIB = {
 };
 /* فحوص الدرس بعد تحويل أسماء المكتبة ({ use:'tense', … }) إلى فحوص. وما كان بدالة ok يبقى كما هو.
    والاسم غير المعروف أو الخيار الخاطئ يصير فحصًا لا يتحقق، وفيه problem ليمنعه الفاحص قبل النشر. */
+var WCHECK_KEYS = { sentences:['n', 'runOn', 'capitalI'], tense:['tense', 'n', 'clean'], words:['n', 'list'], email:['parts'], sequence:['n'], phrases:['any', 'not', 'n'] };
 function resolveChecks(list, lesson){
   return (Array.isArray(list) ? list : []).map(function(c){
     if (!c || typeof c !== 'object' || typeof c.ok === 'function' || typeof c.use !== 'string') return c;
     var make = WCHECK_LIB.hasOwnProperty(c.use) ? WCHECK_LIB[c.use] : null, out;
-    try { out = make ? make(c, lesson || {}) : { problem:'unknown check "' + c.use + '" (the library has: ' + Object.keys(WCHECK_LIB).join(', ') + ')' }; }
+    var odd = make ? Object.keys(c).filter(function(k){ return ['use', 'k', 'tEn', 't', 'ex'].concat(WCHECK_KEYS[c.use] || []).indexOf(k) < 0; }) : [];
+    try { out = !make ? { problem:'unknown check "' + c.use + '" (the library has: ' + Object.keys(WCHECK_LIB).join(', ') + ')' }
+      : odd.length ? { problem:'unknown option ' + odd.join(', ') + ' (this check takes: ' + WCHECK_KEYS[c.use].join(', ') + ', and k, tEn, t, ex)' }
+      : make(c, lesson || {}); }
     catch (e) { out = { problem:'cannot be built: ' + (e && e.message) }; }
     if (out.problem) { out.k = c.k || c.use; out.tEn = c.tEn || c.use; out.t = c.t || ''; out.ok = function(){ return false; }; return out; }
     ['k', 'tEn', 't', 'ex'].forEach(function(f){ if (typeof c[f] === 'string' && c[f]) out[f] = c[f]; });
@@ -2542,19 +2559,28 @@ function stExpressIntro(ctl){
     ].map(function(x){ return h('li', {}, ico(x[0]), biNode(x[1], x[2])); })));
 }
 /* سؤال الكلمة في مراجعة الكلمات: تكتب الكلمة في فراغ جملة مثالها، ومعناها العربي فوقها، والتصحيح التلقائي مطفأ
-   في المربع (Typing) فلا يكتب الجوال الكلمة عن المتعلم. وبعد الجواب الجملة كاملة والنطق وصفحة أكسفورد. */
+   في المربع (Typing) فلا يكتب الجوال الكلمة عن المتعلم. وبعد الجواب الجملة كاملة وموعد عودتها والنطق وصفحة أكسفورد.
+   والجواب يُحفظ في الجلسة (P.answered)، فالرجوع إلى سؤال مُجاب يعرضه مجابًا ولا يحسبه مرتين. */
+function wordNextText(key){ var w = G.wordSr[key];
+  if (!isObj(w)) return '';
+  if (w.done) return 'You know this word now: it will not come back.';
+  var d = Math.max(1, Math.round(((w.due || 0) - Date.now()) / 864e5));
+  return d <= 1 ? 'It comes back tomorrow.' : 'It comes back in ' + d + ' days.'; }
 function stWordQ(st, ctl){
   var v = wordOf(st.key);
   if (!v) { ctl.enable('التالي'); return h('p', {}, ''); }
   var q = wordQuestion(v), pos = POS_AR[v.pos] || '', phrase = q.ans[0].indexOf(' ') >= 0;
-  var x = { pre:q.pre, post:q.post, verb:q.hint, ans:q.ans,
-    whyEn:(q.full ? 'The sentence: ' + q.full + ' ' : '') + 'A right answer brings it back in 3, 7, then 30 days; a wrong one, tomorrow.',
-    why:v.en + ': ' + (v.ar || '') + (v.exAr ? '. ' + v.exAr : '') };
-  var nodes = Typing(x, { wide:phrase, onAnswer:function(ok){
-    wordAnswered(st.key, ok);
+  if (P && !P.answered) P.answered = {};
+  var saved = P && P.answered[st.key];
+  var x = { pre:q.pre, post:q.post, verb:q.hint, ans:q.ans, whyEn:q.full ? 'The sentence: ' + q.full : '', why:v.en + ': ' + (v.ar || '') + (v.exAr ? '. ' + v.exAr : '') };
+  var nodes, after = function(){
     var t = nodes[1] && nodes[1].querySelector && nodes[1].querySelector('.fb-t');
-    if (t) t.append(h('div', { class:'audio-row' }, sayBtn(v, 'Human Pronunciation'), oxBtn(v)));
-    ctl.enable('التالي'); } }, ctl);
+    if (t) t.append(h('p', { class:'en' }, wordNextText(st.key)), h('div', { class:'audio-row' }, sayBtn(v, 'Human Pronunciation'), oxBtn(v)));
+    ctl.enable('التالي'); };
+  nodes = Typing(x, { wide:phrase, label:'The missing ' + (phrase ? 'phrase' : 'word') + ', ' + q.hint, saved:saved || null, onAnswer:function(ok, val){
+    if (P && P.answered) P.answered[st.key] = { v:val, c:ok };
+    wordAnswered(st.key, ok); after(); } }, ctl);
+  if (saved) after();
   return [label('Word ' + st.pos + ' of ' + st.total), instr('Type the missing ' + (phrase ? 'phrase' : 'word') + '. Its meaning:', (pos ? pos + ': ' : '') + (v.ar || ''))].concat(nodes);
 }
 function stIrrDrill(st, ctl){
@@ -2655,7 +2681,7 @@ function stSessionDone(k, ctl){
     : k === 'words'
     ? 'Each word comes back after 1 day, 3 days, a week and a month. A wrong answer brings it back tomorrow.'
     : isRev
-    ? (left ? left + ' item(s) still due today. Error Lab priorities updated.' : 'Nothing else is due today. Correct answers come back later on the spaced schedule.')
+    ? (left ? left + ' item(s) still due today. Error Lab priorities updated.' : wordDueKeys().length ? 'No questions left today. ' + wordDueKeys().length + ' word(s) are due in Practice › Words.' : 'Nothing else is due today. Correct answers come back later on the spaced schedule.')
     : 'Words marked "Review later" will appear first next time.';
   return h('div', { class:'fin' }, h('span', { class:'done-ic pop' }, ico('check')),
     h('h1', { class:'bi-h' }, h('span', { class:'en', dir:'ltr' }, titleEn), h('small', {}, titleAr)),

@@ -317,6 +317,11 @@ function fakeGitHub(token, opts) {
       ok(/2\s*words due today/i.test(card) && /Review words/.test(card), 'the Words card on Practice shows the words due today (' + card.replace(/\s+/g, ' ') + ')');
       await page.locator('.seg-b').nth(1).click(); await sleep(200);
       ok(await page.locator('#wordsHero').count() === 1 && /Words due today/.test(await page.locator('#wordsHero').innerText()), 'the Words tab shows the words due today above the lesson words');
+      ok(await page.locator('#cardsLink').count() === 1, 'while words are due, the flashcards stay one tap away in the Words tab');
+      await page.locator('#cardsLink').click(); await sleep(250);
+      ok(await page.locator('.flash, .fc, [class*="flash"]').count() > 0 || /I know it|Review later/.test(await text(page)), 'the flashcards still open while words are due');
+      await page.click('[aria-label="Close · إغلاق"]'); await sleep(200);
+      if (!(await page.locator('#wordsHero').count())) { await page.locator('.nav-it').nth(2).click(); await sleep(200); await page.locator('.seg-b').nth(1).click(); await sleep(200); }
       await page.locator('#wordsHero .btn').click(); await sleep(250);
       const inp = page.locator('.gap-in:enabled');
       const attrs = await inp.evaluate(el => [el.getAttribute('autocorrect'), el.getAttribute('autocapitalize'), el.getAttribute('spellcheck')].join(','));
@@ -324,7 +329,7 @@ function fakeGitHub(token, opts) {
       ok(/Type the missing word/.test(q1) && q1.includes('My cousin is a') && q1.includes('in Riyadh') && /6 letters/.test(q1) && attrs === 'off,off,false',
         'a word question is the example sentence with a blank, the letter count and the Arabic meaning, with autocorrect off (' + attrs + ')');
       await inp.fill('lawyer'); await inp.press('Enter'); await sleep(200);
-      ok(await page.locator('.gap-in.ok').count() === 1 && await page.locator('.fb .audio-row').count() === 1, 'the right word is accepted, then its pronunciation and Oxford page are shown');
+      ok(await page.locator('.gap-in.ok').count() === 1 && await page.locator('.fb .audio-row').count() === 1 && /comes back in 3 days/.test(await text(page)), 'the right word is accepted, then its next review, pronunciation and Oxford page are shown');
       g = await getJSON(page, 'ep4.course');
       const lw = g.wordSr['u0l1|lawyer'];
       ok(lw.box === 1 && Math.abs((lw.due - Date.now()) / day - 3) < 0.05, 'a right answer sends the word to the next review in 3 days');
@@ -335,6 +340,11 @@ function fakeGitHub(token, opts) {
       const cw = g.wordSr['u0l1|client'];
       ok(await page.locator('.gap-in.bad').count() === 1 && cw.box === 0 && Math.abs((cw.due - Date.now()) / day - 1) < 0.05 && (await text(page)).includes('client'),
         'a misspelled word is marked wrong, shows the right spelling, and comes back tomorrow');
+      // الرجوع إلى سؤال مُجاب يعرضه مجابًا، ولا يحسبه مرة ثانية
+      await page.click('[aria-label="Previous step · الخطوة السابقة"]').catch(() => {}); await sleep(250);
+      const back = { enabled: await page.locator('.gap-in:enabled').count(), ok: await page.locator('.gap-in.ok').count() };
+      g = await getJSON(page, 'ep4.course');
+      ok(back.enabled === 0 && back.ok === 1 && g.wordSr['u0l1|lawyer'].box === 1, 'going back to an answered word shows it answered and does not count it twice (' + JSON.stringify(back) + ')');
       await page.click('[aria-label="Close · إغلاق"]'); await sleep(150);
     }
     ok(page.errors.length === 0, 'no page errors (tools): ' + page.errors.join(' | '));

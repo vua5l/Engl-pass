@@ -59,7 +59,7 @@ function call(fn) {
   }
 }
 vm.runInContext('var ALL_VOCAB = [];', ctx);
-for (const n of ['fixQuotes', 'analyze', 'resolveChecks', 'isClosingLine'])
+for (const n of ['fixQuotes', 'analyze', 'resolveChecks', 'isClosingLine', 'wordQuestion', 'typedLooseOK'])
   if (!load(n)) { console.error(`FATAL cannot find "${n}" in app.js`); process.exit(2); }
 // Every declaration of the library, so that the ok() functions find their helpers when they run later.
 for (const m of appSrc.matchAll(/(?:^|\n)(?:function|var)\s+((?:wl|WL_|WCHECK_LIB)\w*)/g)) load(m[1]);
@@ -102,6 +102,16 @@ for (const c of CASES.checks || []) {
 for (const c of CASES.refused || []) {
   const chk = call(() => resolveChecks([c], {}))[0];
   ok(chk && typeof chk.problem === 'string' && chk.problem && chk.ok && chk.ok() === false, `${label(c)} must be refused with a problem`);
+}
+
+// 3b) The word question of the spaced word review: where the blank goes, and which answers count.
+for (const c of CASES.questions || []) {
+  const q = call(() => vm.runInContext('wordQuestion', ctx)(c.word)), typed = vm.runInContext('typedLooseOK', ctx);
+  const blank = q.full ? q.ans[0] : null;                                   // the words as written in the sentence
+  ok((c.blank === null ? !q.full : blank === c.blank), `wordQuestion(${c.word.en}) blanks ${show(blank)}, expected ${show(c.blank)}`);
+  const x = { pre: q.pre, post: q.post, ans: q.ans };
+  (c.accept || []).forEach(v => ok(call(() => typed(x, v)), `wordQuestion(${c.word.en}) must accept ${show(v)}`));
+  (c.reject || []).forEach(v => ok(!call(() => typed(x, v)), `wordQuestion(${c.word.en}) must reject ${show(v)}`));
 }
 
 // 4) The texts the screen shows for a check.

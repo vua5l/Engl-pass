@@ -37,7 +37,8 @@ module.exports = {
              "I study law. i'm in Riyadh. My brother is a doctor. We visit our uncle on Fridays."]
     },
     { check: { use: 'sentences', n: 2, runOn: true },
-      pass: ['I study law at the university. I live in Riyadh with my family.'],
+      pass: ['I study law at the university. I live in Riyadh with my family.',
+             'I study law at King Saud University in Riyadh. I live with my family near the campus. My brother is a doctor in a big hospital.'],
       fail: ['I study law at King Saud University in Riyadh and I live with my family near the university and my brother is a doctor in a big hospital in the city. We visit our uncle.']
     },
 
@@ -49,8 +50,11 @@ module.exports = {
              'Ahmed studies law. The class starts at eight.',
              'My friends play football on Fridays. I prefer basketball.',
              'Does she teach at the university? She has a car.',
-             'I need a new laptop. You know the answer.'],
+             'I need a new laptop. You know the answer.',
+             'Lawyers help people. Judges work in courts.',
+             'Ahmed and Sara study law. Children go to school at seven.'],
       fail: ['I am a student. My sister is a doctor.',
+             'This bag is mine. Sometimes I went home.',
              'I went to the court yesterday. We visited my uncle.',
              'I usually wake up at six. I am work in a bank.',
              "He don't work on Fridays. My sister works in a bank.",
@@ -69,7 +73,10 @@ module.exports = {
              'We are relaxing at home.',
              "It's raining in Abha.",
              'What is your brother doing?',
-             'You are working hard, and you look tired.'],
+             'You are working hard, and you look tired.',
+             'They are building a new mall.',
+             'My parents are welcoming the guests.',
+             'We are both working today.'],
       fail: ['This book is interesting.',
              'There is a meeting today.',
              'It is relaxing here.',
@@ -82,7 +89,7 @@ module.exports = {
     },
     /* ---------- tense: present (any) ---------- */
     { check: { use: 'tense', tense: 'present', n: 1 },
-      pass: ['I am a student.', 'I study law.', "We're reading a story.", 'My father works at 7 am.'],
+      pass: ['I am a student.', 'I study law.', "We're reading a story.", 'My father works at 7 am.', 'My mother is understanding and kind.'],
       fail: ['I was a student.', 'We went home.', 'I was at work at 7 am.']
     },
     /* ---------- tense: pastSimple ---------- */
@@ -94,7 +101,10 @@ module.exports = {
              'We were at home. They had dinner.',
              'I used to play football. My father worked in a bank.',
              'The court was closed. The lawyers waited outside.',
-             'I saw you walking with your brother. All we could do was go to bed.'],
+             'I saw you walking with your brother. All we could do was go to bed.',
+             'Yesterday I did my homework, cleaned my room and went out. It was a long day.',
+             'Last week my friend Sayed visited me. We went to the mall.',
+             "My grandfather's will was clear. All I wanted was sleep."],
       fail: ['I go to Jeddah every week. We visit the old town.',
              'I read books every day. I put my bag here.',
              'I am interested in law. The street is crowded.',
@@ -108,7 +118,13 @@ module.exports = {
     },
     /* ---------- tense: pastContinuous ---------- */
     { check: { use: 'tense', tense: 'pastContinuous', n: 1 },
-      pass: ['I was walking home when it started to rain.',
+      pass: ['They were building a house.',
+             'We were welcoming our guests.',
+             'My mother was entertaining the guests.',
+             'My father was quietly reading the news.',
+             'My brother was at home studying.',
+             'We were all watching TV.',
+             'I was walking home when it started to rain.',
              'They were waiting outside.',
              'What were you doing at eight?',
              'Were they sleeping?',
@@ -121,6 +137,11 @@ module.exports = {
              'I was knowing the answer.',
              'I was walk home when it rained.',
              'I was walking when they arriving.']
+    },
+    /* The continuous tenses count verbs, so two of them may sit in one sentence (u3l1: "at least 2 Past Continuous verbs"). */
+    { check: { use: 'tense', tense: 'pastContinuous', n: 2 },
+      pass: ['Last night was special. At nine, my father was cooking and my brother was watching TV. I felt happy. We ate together.'],
+      fail: ['At nine, my father was cooking. Then we ate.']
     },
     /* ---------- tense: goingTo ---------- */
     { check: { use: 'tense', tense: 'goingTo', n: 1 },
@@ -144,7 +165,9 @@ module.exports = {
              'Will you help me?',
              "I won't be late.",
              'The court will probably decide next week.',
-             'Maybe it will rain.'],
+             'Maybe it will rain.',
+             'I will work in a law firm.',
+             "After university, I'll work as a lawyer."],
       fail: ['He wrote his will last year.',
              "I'm going to call you.",
              'I will to call you tomorrow.',
@@ -159,7 +182,9 @@ module.exports = {
              "We've finished the report.",
              "He's already gone home.",
              "They haven't eaten yet.",
-             'What have you done?'],
+             'What have you done?',
+             'The man who helped you has left.',
+             'She has showed me the way.'],
       fail: ['I visited Abha last year.',
              'I have a car.',
              'I have to study.',
@@ -189,10 +214,13 @@ module.exports = {
       pass: ["Dear Dr Hassan,\nI'm writing to ask about the deadline. I need more time.\nBest regards,\nSaad",
              "Hi Sara,\nI am writing because I can't come tomorrow. I'm sick.\nThanks,\nOmar",
              "Hello Mr Ali,\nI'm writing to introduce myself. I am a new student in your class.\nThank you for your help.\nMajed",
-             "Good morning Ms Collins,\nI'm writing to you about the meeting. Is it on Monday? Kind regards, Fahad"],
+             "Good morning Ms Collins,\nI'm writing to you about the meeting. Is it on Monday? Kind regards, Fahad",
+             "Hey Sami,\nI'm writing to invite you to my party. It is on Friday.\nTalk soon,\nFahad",
+             "Hi Noura,\nI'm writing to say thank you for the book.\nSee you soon,\nReem"],
       fail: ["I'm writing to ask about the deadline. I need more time.\nBest regards,\nSaad",
              'Dear Dr Hassan,\nI need more time for the project.\nBest regards,\nSaad',
-             "Dear Dr Hassan,\nI'm writing to ask about the deadline. I need more time."]
+             "Dear Dr Hassan,\nI'm writing to ask about the deadline. I need more time.",
+             "Dear Sara,\nI'm writing to ask about the meeting. Is it on Monday?\nLovely weather today"]
     },
     { check: { use: 'email', parts: ['greeting', 'closing'] },
       pass: ['Dear Sara,\nThe meeting is at ten.\nKind regards,\nAli'],
@@ -209,14 +237,20 @@ module.exports = {
       fail: ['This is my first job. I wake up at six.',
              'Next week I will travel. I wake up at six.',
              'At the end of the day, I sleep. I wake up at six.',
-             'First, I wake up at six.']
+             'First, I wake up at six.',
+             'Next to my house is a park. I wake up at six.']
     },
 
     /* ---------- phrases (a lesson's own structure, here comparatives) ---------- */
     { check: { use: 'phrases', k: 'compare', tEn: "At least 2 comparisons with 'than'", t: 'مقارنتان على الأقل بـ than',
-               any: [/\b[a-z]+er\s+than\b/i, /\bmore\s+[a-z]+\s+than\b/i], not: [/\bmore\s+[a-z]+er\b/i, /\b[a-z]+er\s+from\b/i], n: 2 },
+               any: [/\b[a-z]+er\s+than\b/i, /\b(?:more|less)\s+[a-z]+\s+than\b/i, /\bworse\s+than\b/i],
+               not: [/\b(?:is|are|am|was|were|'s|'re|'m)\s+(?:much\s+|a\s+lot\s+)?more\s+[a-z]+er\b/i,
+                     /\b(?:is|are|am|was|were|'s|'re|'m)\s+(?:much\s+|a\s+lot\s+)?[a-z]+er\s+from\b/i], n: 2 },
       pass: ['Abha is cooler than Riyadh. Riyadh is more crowded than Abha.',
-             'Riyadh is bigger than Abha, and it is hotter than Jeddah.'],
+             'Riyadh is bigger than Abha, and it is hotter than Jeddah.',
+             'Jeddah has more water than Riyadh. Abha is cooler than Riyadh.',
+             'A teacher from Abha told me that it is colder than Taif. Riyadh is hotter than Abha.',
+             'Abha is better than Riyadh. Riyadh is worse than Jeddah.'],
       fail: ['Riyadh is bigger than Abha.',
              'Riyadh is bigger than Abha. Riyadh is bigger than Abha.',
              'Riyadh is bigger than Abha. It is more bigger than Jeddah.',
@@ -243,7 +277,18 @@ module.exports = {
     { use: 'phrases', k: 'x', tEn: 'x', t: 'x', any: ['  '] },
     { use: 'email', parts: ['sign'] },
     { use: 'words', list: [] },
-    { use: 'words', n: 3, list: ['a', 'b'] }
+    { use: 'words', n: 3, list: ['a', 'b'] },
+    { use: 'tense', tense: 'pastSimple', clen: false },
+    { use: 'sentences', min: 5 }
+  ],
+
+  /* سؤال الكلمة في المراجعة المتباعدة (wordQuestion): الفراغ للعبارة كلها، وما يُقبل جوابًا وما يُرفض. */
+  questions: [
+    { word: { en: 'lawyer', ex: 'My cousin is a lawyer in Riyadh.' }, blank: 'lawyer', accept: ['lawyer', 'Lawyer'], reject: ['lawyr', 'lawyers'] },
+    { word: { en: 'case', ex: 'There are two important cases today.' }, blank: 'cases', accept: ['cases', 'case'], reject: ['casses', 'a case'] },
+    { word: { en: 'wake up', headword: 'wake', ex: 'My sister wakes up at six.' }, blank: 'wakes up', accept: ['wakes up', 'wake up'], reject: ['wake', 'wakes', 'up'] },
+    { word: { en: 'give legal advice', headword: 'advice', ex: 'Lawyers give legal advice to their clients.' }, blank: 'give legal advice', accept: ['give legal advice'], reject: ['advice', 'legal advice'] },
+    { word: { en: 'watch a match', ex: 'My brothers watched a football match at a café near our house.' }, blank: null, accept: ['watch a match'], reject: ['match'] }
   ],
 
   texts: [
@@ -256,7 +301,10 @@ module.exports = {
       tEn: "At least 2 sentences in the Past Simple, not 'didn't went' or 'I was go'",
       t: "جملتان على الأقل بالماضي البسيط، دون didn't went أو I was go" },
     { check: { use: 'tense', tense: 'presentContinuous', n: 1, clean: false },
-      tEn: 'At least 1 sentence with am / is / are + verb-ing', t: 'جملة واحدة على الأقل بالمضارع المستمر: am / is / are مع الفعل وing' },
+      tEn: 'At least 1 verb with am / is / are + verb-ing', t: 'فعل واحد على الأقل بالمضارع المستمر: am / is / are مع الفعل وing' },
+    { check: { use: 'tense', tense: 'pastContinuous', n: 2 },
+      tEn: "At least 2 verbs with was / were + verb-ing, not 'didn't went' or 'I was go'",
+      t: "فعلان على الأقل بالماضي المستمر: was / were مع الفعل وing، دون didn't went أو I was go" },
     { check: { use: 'words', n: 3 }, lesson: { vocab: [{ en: 'climate' }, { en: 'noisy' }], legalPhrase: { en: 'city council' } }, k: 'vocab',
       tEn: "At least 3 words/phrases from today's lesson", t: '3 كلمات أو عبارات على الأقل من درس اليوم', ex: 'climate · noisy · city council' },
     { check: { use: 'email' }, k: 'parts',

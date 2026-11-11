@@ -234,6 +234,9 @@ function oxfordEntry(slug) {
 }
 /* Lingua Libre writes "Speaker: X Recorder: X": one name when both are the same person. */
 function oneName(a) {
+  /* Commons writes "No machine-readable author provided. Celestianpower assumed (based on copyright claims)." for old files. */
+  const nm = a && /No machine-readable author provided\.\s*(.+?)\s+assumed\b/i.exec(a);
+  if (nm) a = nm[1];
   const sr = a && /^Speaker:\s*(.+?)\s+Recorder:\s*(.+)$/.exec(a);
   return sr ? (sr[1] === sr[2] ? sr[1] : 'Speaker: ' + sr[1] + ', Recorder: ' + sr[2]) : a;
 }

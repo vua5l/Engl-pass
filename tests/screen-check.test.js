@@ -49,7 +49,7 @@ const INDEX_HTML = generateIndexHtml(ROOT);
 const { DATA, lessons } = collectLessons(ROOT);
 const IDS = lessons.filter(l => l.open && (!only || only.has(l.id))).map(l => l.id);
 const SESSIONS = only ? [] : Object.keys(DATA.unitTests || {}).map(u => 'unitTest:' + u)
-  .concat(Object.keys(DATA.preTests || {}).map(u => 'pretest:' + u), ['errlab', 'irregular']);
+  .concat(Object.keys(DATA.preTests || {}).map(u => 'pretest:' + u), ['errlab', 'irregular', 'words']);
 
 function serve() {
   const types = { '.html': 'text/html; charset=utf-8', '.js': 'application/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8' };
@@ -163,6 +163,10 @@ const open = () => {
       await walk(id + ' ' + part);
     }
   }
+  /* مراجعة الكلمات: كل كلمات الدروس المبنية (إلا أسابيع التثبيت) مستحقة، فيمر الفحص بسؤال كل كلمة. */
+  if (SESSIONS.includes('words')) await page.evaluate(() => { const G = __ep.G(); G.wordSr = {};
+    Object.keys(LESSONS).forEach(id => { const L = LESSONS[id]; if (Number(L.unit) >= 100) return;
+      (L.vocab || []).concat(L.legalPhrase ? [L.legalPhrase] : []).forEach(v => { if (v && v.en) G.wordSr[id + '|' + v.en] = { lid: id, en: v.en, box: 0, t: 0, due: 0 }; }); }); });
   for (const k of SESSIONS) { await page.evaluate(k => __ep.session(k), k); await walk(k); }
   for (const v of (only ? [] : ['home', 'lessons', 'review'])) {
     await page.evaluate(v => __ep.go(v), v); screens++;
