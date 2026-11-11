@@ -116,6 +116,34 @@ for (const c of CASES.texts || []) {
   ok(call(() => resolveChecks([own], {}))[0] === own, 'a check with its own ok() must stay as it is');
 }
 
+// 6) The short model lesson (notes/model-lesson.js): its library checks accept its own model and acceptExamples, with
+//    the words of the full lesson it was cut from (the model keeps one vocab item).
+{
+  const f = path.join(ROOT, 'notes', 'model-lesson.js');
+  if (fs.existsSync(f)) {
+    const mctx = vm.createContext({});
+    vm.runInContext(fs.readFileSync(f, 'utf8'), mctx, { filename: 'notes/model-lesson.js' });
+    const M = vm.runInContext('typeof MODEL_LESSON === "undefined" ? null : MODEL_LESSON', mctx);
+    ok(M && M.writing && Array.isArray(M.writing.checks), 'notes/model-lesson.js defines MODEL_LESSON with writing.checks');
+    if (M && M.writing && Array.isArray(M.writing.checks)) {
+      const m = /^u(\d+)l(\d+)$/.exec(M.id || ''), lf = m && path.join(ROOT, 'lessons', 'u' + m[1], 'l' + m[2] + '.js');
+      vm.runInContext('if (typeof LESSONS === "undefined") { var LESSONS = {}; }', dataCtx);
+      if (lf && fs.existsSync(lf)) vm.runInContext(fs.readFileSync(lf, 'utf8'), dataCtx, { filename: lf });
+      const full = (dataCtx.LESSONS && dataCtx.LESSONS[M.id]) || M;
+      const vocab = (full.vocab || []).concat(full.legalPhrase ? [full.legalPhrase] : []);
+      const checks = call(() => resolveChecks(M.writing.checks, full));
+      checks.forEach((c, i) => ok(c && !c.problem, `notes/model-lesson.js writing.checks[${i}] is refused: ${c && c.problem}`));
+      for (const text of [M.writing.model].concat(M.writing.acceptExamples || [])) {
+        setVocab(vocab);
+        try {
+          const a = call(() => analyze(text));
+          checks.forEach(c => { if (c && !c.problem) ok(call(() => c.ok(a, fixQuotes(text))), `notes/model-lesson.js check "${c.k}" must accept ${show(text)}`); });
+        } finally { setVocab([]); }
+      }
+    }
+  }
+}
+
 for (const l of out) console.log(l);
 console.log(`\nSUMMARY: ${pass} passed, ${fail} failed (writing-check library in ${path.join(ROOT, 'app.js')})`);
 process.exitCode = fail ? 1 : 0;

@@ -3,7 +3,7 @@
 موقع كورس إنجليزي على GitHub Pages، بلا خطوة بناء: `index.html` يحمّل `content.js` ثم ملفات الدروس ثم المحرك `app.js`. هذه قواعد البناء وحدها، وتفصيلها في `LESSON-BRIEF.md` و`README.md`.
 
 ## المرجع
-- المرجع الحاكم لبناء الدروس: `LESSON-BRIEF.md` وخرائط الوحدات في `maps/`. وما لم يُذكر فيهما فلا تجتهد فيه، واذكره في تقريرك.
+- المرجع الحاكم لبناء الدروس: `LESSON-BRIEF.md` (القواعد العامة)، وخريطة كل وحدة `maps/u<N>.json` وقراراتها `maps/u<N>.md`. وما لم يُذكر فيهما فلا تجتهد فيه، واذكره في تقريرك.
 - لا تعدّل ورقة التعليمات ولا الخرائط إلا بطلب المنسّق.
 
 ## الأدوار
@@ -13,7 +13,8 @@
 - المراجع نسخة مستقلة لم تشارك في كتابة الدرس الذي يراجعه.
 
 ## الكاتب
-- يقرأ `LESSON-BRIEF.md`، وصف درسه في خريطة وحدته، ودرسًا نموذجيًا واحدًا من نوع درسه. ولا يحتاج `README.md` ولا `CHANGELOG.md`.
+- يقرأ `LESSON-BRIEF.md`، و`maps/u<U>.md`، وصف درسه في `maps/u<U>.json`، والدرس النموذجي المختصر `notes/model-lesson.js`، وورقة كلمات الوحدة التي يكتبها المنسّق بـ `node tools/word-bank.js --unit <U>` قبل الكتّاب. ولا يحتاج `README.md` ولا `CHANGELOG.md`.
+- يسمّي فحوص الكتابة من مكتبة الفحوص في المحرك (`{ use: 'tense', … }`)، ولا يكتب برنامجها إلا لما لا تقدر عليه.
 - قبل التسليم يشغّل `node tests/content-check.js --unit <U>` و`node tests/map-check.js --unit <U>`، ولا يسلّم درسًا فيه ERROR، ويرفق النتيجة، ويفحص نفسه بقائمة القسم 7 في ورقة التعليمات.
 
 ## العمل الليلي
@@ -25,5 +26,5 @@
 - لا يتغيّر شكل الموقع ولا تصميمه إلا بإذن صاحب الموقع.
 - التقدم في مستودع خاص منذ 11 نوفمبر 2026 (`vua5l/engl-pass-progress`، فرع `progress`)، لأن هذا المستودع عام. وفرع `progress` القديم هنا لا يُمس حتى يحذفه صاحب الموقع.
 - عند النشر: `node tools/register-lessons.js` يكتب سطور الدروس وأرقام الإصدار في `index.html`، وخريطة البناء `map.html`، ويُوثَّق كل تعديل منشور في `CHANGELOG.md`. ولا يُعدَّل أي منهما باليد.
-- الفحوص: `node tests/content-check.js`، و`node tests/map-check.js`، و`node tools/register-lessons.js --check`، و`node tools/word-bank.js --check`، والاختبار الشامل وفحص الشاشات `tests/screen-check.test.js` في المتصفح كما في `README.md`.
+- الفحوص: `node tests/content-check.js`، و`node tests/writing-checks.test.js`، و`node tests/map-check.js`، و`node tools/register-lessons.js --check`، و`node tools/word-bank.js --check`، والاختبار الشامل وفحص الشاشات `tests/screen-check.test.js` في المتصفح كما في `README.md`.
 - لا يكتشف المتعلم عيوب الشاشة بنفسه: لا يُنشر درس قبل أن يمر فحص الشاشات بعرض 375، وقبل أن يكتمل بنك الكلمات بـ `node tools/word-bank.js`.
