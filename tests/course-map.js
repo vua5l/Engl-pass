@@ -84,8 +84,8 @@ ${GRID}
 <div style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:11px;color:var(--text-secondary)"><span><span class="k b"></span> مبني</span><span><span class="k x"></span> الوحدة الحالية</span><span><span class="k"></span> باقٍ</span><span><span class="k o"></span> اختبار الوحدة</span></div>
 </div>
 `);
-/* الصفحة الكاملة: ألوان الموقع مكان متغيرات أداة العرض، ولا برنامج فيها. وتاريخها تاريخ آخر درس تغيّر، لا وقت التشغيل،
-   فلا تتغير الصفحة إلا إذا تغيّر الكورس. */
+/* الصفحة الكاملة: ألوان الموقع مكان متغيرات أداة العرض، ولا برنامج فيها، ولا تاريخ ولا وقت تشغيل،
+   فلا تتغير إلا إذا تغيّر الكورس. */
 function pageOf(body) {
   const css = ':root{--text-primary:#1E2A33;--text-secondary:#5A6B7C;--border:#E2D9CC;--border-strong:#5A6B7C;--surface-2:#FFFDF8;' +
     '--fill-accent:#2C4A6E;--border-accent:#B94A33;--text-accent:#A8432E;--bg-warning:#FDF4E7;--text-warning:#8A5A12}' +

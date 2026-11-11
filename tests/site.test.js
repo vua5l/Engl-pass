@@ -79,7 +79,7 @@ function fakeGitHub(token, opts) {
     if (m === 'GET' && p === '') return reply(route, 200, { default_branch: 'main', private: true });
     if (m === 'GET' && p === '/git/ref/heads/main') return st.empty ? reply(route, 409, { message: 'Git Repository is empty.' }) : reply(route, 200, { object: { sha: 'mainsha' } });
     if (m === 'PUT' && p === '/contents/README.md') { const body = JSON.parse(req.postData() || '{}'); st.empty = false; st.readme = !body.branch; return reply(route, 201, { content: { sha: 'readme' } }); }
-    if (m === 'GET' && p === '/git/ref/heads/progress') return st.branch ? reply(route, 200, { object: { sha: 'progsha' } }) : reply(route, 404, {});
+    if (m === 'GET' && p === '/git/ref/heads/progress') return st.branch ? reply(route, 200, { object: { sha: 'progsha' } }) : reply(route, st.empty ? 409 : 404, st.empty ? { message: 'Git Repository is empty.' } : {});
     if (m === 'POST' && p === '/git/refs') { st.branch = true; return reply(route, 201, {}); }
     if (p === '/contents/progress' && m === 'GET') {
       const list = Object.keys(st.files).map(k => ({ type: 'file', path: k, name: k.split('/').pop(), sha: st.files[k].sha }));
@@ -787,6 +787,10 @@ function fakeGitHub(token, opts) {
     const clip = await page.evaluate(() => navigator.clipboard.readText()).catch(() => '');
     ok(clip.includes('أعد JSON وحده') && clip.includes('My brother work in a bank') && clip.includes('"cat"'), 'Copy for Correction copies the fixed request with the paragraph');
     ok((await page.locator('details.paste[open]').count()) === 1, 'after copying, the paste box opens');
+    await page.fill('#wPaste', clip); await page.click('#wPasteGo'); await sleep(250);
+    ok(((await getJSON(page, 'ep4.lesson.u0l1')).writing.fb || {}).src !== 'ai' && /This is the request/.test(await page.innerText('#toast')), 'pasting the copied request itself is refused');
+    await page.fill('#wPaste', '{"score": 8}'); await page.click('#wPasteGo'); await sleep(250);
+    ok(((await getJSON(page, 'ep4.lesson.u0l1')).writing.fb || {}).src !== 'ai', 'a reply with a score and no list of mistakes is refused');
     const reply = 'Here is the correction:\n```json\n' + JSON.stringify({ by: 'Gemini', score: 6, praise: 'جمل قصيرة واضحة.',
       grammarMistakes: [{ wrong: 'My brother work', right: 'My brother works', why: 'مع he نضيف s.', cat: 'agreement' }, { wrong: 'i studing', right: 'I study', why: 'عادة يومية.', cat: 'tense' }],
       spellingMistakes: [{ wrong: 'studing', right: 'studying', why: 'study + ing.' }],
@@ -805,6 +809,10 @@ function fakeGitHub(token, opts) {
     ok(g2.errorLab.agreement.count === g1.errorLab.agreement.count && g2.errorLab.spelling.count === g1.errorLab.spelling.count, 'pasting a reply again for the same paragraph does not count its mistakes twice');
     const l1 = await getJSON(page, 'ep4.lesson.u0l1');
     ok(l1.writing.fb && l1.writing.fb.src === 'ai' && l1.writing.fb.score === 6, 'the correction is saved with the lesson');
+    ok(g1.errorLab.agreement.lastSample === 'My brother work', 'the Error Lab keeps the wrong form as its example (it is shown struck through)');
+    await page.click('#wCheck'); await sleep(250);
+    const l2 = await getJSON(page, 'ep4.lesson.u0l1');
+    ok(l2.writing.fb.src === 'ai' && l2.writing.fb.score === 6, 'Quick Check does not replace a saved real correction');
     ok(page.errors.length === 0, 'no page errors (writing correction): ' + page.errors.join(' | '));
     await ctx.close();
   }
@@ -823,6 +831,10 @@ function fakeGitHub(token, opts) {
     const gl = await getJSON(page, 'ep4.course');
     ok(gl.freeLogs.length === 2 && gl.freeLogs[0].kind === 'read' && gl.freeLogs[0].mins === 20 && gl.freeLogs[1].kind === 'listen', 'free reading and listening are logged with their minutes');
     ok((await page.innerText('#sheetBox')).includes('Last 7 days: 20 min reading · 10 min listening'), 'the free log shows the last 7 days');
+    page.once('dialog', d => d.accept());
+    await page.click('#freeUndo'); await sleep(250);
+    ok((await getJSON(page, 'ep4.course')).freeLogs.length === 1, 'a mistaken free log can be removed');
+    await page.fill('.free-in', '10'); await page.click('#freeListen'); await sleep(200);
     await page.click('#sheetBox .close'); await sleep(150);
     await page.locator('.jr-more').first().click(); await sleep(250);
     ok(/30m\s*Free/.test(await page.innerText('#sheetBox')), 'the dashboard counts free reading and listening in the study hours');
@@ -845,6 +857,8 @@ function fakeGitHub(token, opts) {
     await page.click('#syncConnect');
     for (let i = 0; i < 100 && !ghE.files['progress/course.json']; i++) await sleep(100);
     ok(ghE.readme && ghE.branch && !!ghE.files['progress/course.json'], 'an empty new repository gets a first file, then the progress branch and the upload');
+    await sleep(300);
+    ok((await page.locator('#syncPublic').count()) === 0 && (await getJSON(page, 'ep4.syncmeta')).pub === false, 'a private progress repository shows no public warning');
     ok(page.errors.length === 0, 'no page errors (empty private repository): ' + page.errors.join(' | '));
     await ctx.close();
   }

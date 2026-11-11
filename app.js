@@ -1934,7 +1934,7 @@ function localWritingCheck(text){
     spellingMistakes: sMist,
     mistakes: gMist.concat(sMist),
     corrected: '',
-    next: 'For a real correction, use Copy for Correction, then paste the reply below.'
+    next: 'For a real correction, tap Copy for Correction, then paste the reply in Paste the Correction above.'
   };
 }
 
@@ -1960,16 +1960,17 @@ function stWriting(ctl){
   var pasteGo = h('button', { class:'btn sm', type:'button', id:'wPasteGo' }, ico('check'), biBtn('Show Correction', 'اعرض التصحيح'));
   var pasteBox = h('details', { class:'model paste' },
     h('summary', {}, 'Paste the Correction'),
-    instr('Tap Copy for Correction, paste it in Gemini and send. Then copy the whole reply and paste it here.', 'اضغط «نسخ للتصحيح»، والصقه في Gemini وأرسله، ثم انسخ رده كله والصقه هنا.'),
+    instr('Tap Copy for Correction, paste it in Gemini and send. Then copy the whole reply and paste it here.', 'اضغط Copy for Correction، ثم الصق النص في Gemini وأرسله، ثم انسخ رده كله والصقه هنا.'),
     h('a', { class:'btn out sm', href:GEMINI_URL, target:'_blank', rel:'noopener noreferrer' }, 'Open Gemini ↗'),
     pasteIn, pasteGo);
   copy.addEventListener('click', function(){ var text = ta.value.trim(); if (analyze(text).words < 12) { toast('Paragraph is too short to correct.'); return; }
     S.writing.text = ta.value; S.writing.sent = text; touch(); pasteBox.open = true;
     copyText(WPROMPT(fixQuotes(text)), 'Copied! Paste it in Gemini, then paste the reply below.'); });
   pasteGo.addEventListener('click', function(){
+    if (pasteIn.value.indexOf(REQ_MARK) >= 0) { toast('This is the request, not the reply. Send it in Gemini, then copy the reply.'); return; }
     var fb = parsePastedFeedback(pasteIn.value);
     if (!fb) { toast('Could not read this reply. Copy all of it, from { to }.'); return; }
-    var n = labFromFeedback(fb, S.writing.sent || ta.value);
+    var n = labFromFeedback(fb);
     S.writing.fb = fb; S.writing.text = ta.value; touch(); updateProgress(); SYNC.soon();
     pasteIn.value = ''; pasteBox.open = false; fbBox.hidden = false; paintFeedback(fbBox, fb);
     toast(n ? 'Correction saved: ' + n + ' mistake(s) added to your Error Lab.' : 'Correction saved.');
@@ -2676,6 +2677,11 @@ function openFreeLog(){
       return h('div', { class:'c-log' }, h('span', {}, h('b', { class:'en', dir:'ltr' }, (l.kind === 'listen' ? 'Listening' : 'Reading') + ' · ' + new Date(l.at || Date.now()).toLocaleDateString('en-GB'))),
         h('span', { class:'qtile-badge' }, l.mins + ' min'));
     }) : h('p', { class:'muted sm' }, 'Nothing logged yet.'));
+    /* لمسة زائدة تُصلَح: يُحذف آخر تسجيل في يومه. */
+    var all = G.freeLogs || [], last = all[all.length - 1];
+    if (last && Date.now() - (last.at || 0) < 864e5) logsBox.append(h('button', { class:'link', type:'button', id:'freeUndo', style:'align-self:flex-start', on:{ click:function(){
+      if (!window.confirm('أتحذف آخر تسجيل (' + last.mins + ' دقيقة)؟')) return;
+      G.freeLogs.pop(); touch(); SYNC.soon(); drawLogs(); render(); } } }, 'Remove the last entry'));
   }
   function logIt(kind){
     var mins = Math.max(5, Math.min(180, Math.round(Number(inMins.value) || 15)));
@@ -2894,37 +2900,47 @@ function aiFeedback(r, by){
     .filter(function(m){ return m.wrong || m.right; }) : []; };
   var gM = mapM(r.grammarMistakes, true), sM = mapM(r.spellingMistakes, false);
   if (!gM.length && !sM.length && Array.isArray(r.mistakes)) gM = mapM(r.mistakes, true);
-  var hasScore = r.score != null && r.score !== '' && isFinite(Number(r.score));
+  var sc = typeof r.score === 'number' ? r.score : typeof r.score === 'string' ? parseFloat(r.score.replace(/[\u0660-\u0669]/g, function(d){ return d.charCodeAt(0) - 1632; }).replace(',', '.')) : NaN;
+  var hasScore = isFinite(sc);
   if (!gM.length && !sM.length && !hasScore && !String(r.corrected || '').trim()) return null;
-  return { src:'ai', by:String(r.by || by || 'AI').replace(/[<>]/g, '').trim().slice(0, 24) || 'AI', score:hasScore ? Math.max(0, Math.min(10, Math.round(Number(r.score)))) : null,
+  return { src:'ai', by:String(r.by || by || 'AI').replace(/[<>]/g, '').trim().slice(0, 24) || 'AI', score:hasScore ? Math.max(0, Math.min(10, Math.round(sc))) : null,
     praise:String(r.praise || ''), grammarMistakes:gM, spellingMistakes:sM, mistakes:gM.concat(sM),
     corrected:String(r.corrected || ''), next:String(r.next || ''), at:Date.now() };
 }
-/* يقرأ الرد الملصوق: كتلة ```json إن وُجدت، ثم من أول { إلى آخر }، ولو جاءت علامات التنصيص منحنية. */
+/* يقرأ الرد الملصوق: كتلة ```json إن وُجدت، ثم من أول { إلى آخر }، ولو جاءت علامات التنصيص منحنية.
+   ويرفض الطلب نفسه إن لُصق (فيه نموذج JSON بقيم مثالية)، وكل رد بلا قائمة أخطاء ولو فارغة. */
+var REQ_MARK = 'أعد JSON وحده';
 function parsePastedFeedback(raw){
-  var s = String(raw || '').trim(); if (!s) return null;
+  /* مسافات الجوال غير المرئية وعلامات الاتجاه تفسد قراءة JSON، فتُنظَّف أولًا. */
+  var s = String(raw || '').replace(/[   ]/g, ' ').replace(/[​-‏‪-‮⁦-⁩﻿]/g, '').trim(); if (!s) return null;
+  if (s.indexOf(REQ_MARK) >= 0) return null;
   var fence = s.match(/```(?:json)?\s*([\s\S]*?)```/i); if (fence && fence[1].indexOf('{') >= 0) s = fence[1];
   var a = s.indexOf('{'), b = s.lastIndexOf('}'); if (a < 0 || b <= a) return null;
   s = s.slice(a, b + 1);
   var r = null;
-  try { r = JSON.parse(s); } catch (e) { try { r = JSON.parse(s.replace(/[“”„‟″]/g, '"')); } catch (e2) { r = null; } }
+  try { r = JSON.parse(s); } catch (e) { try { r = JSON.parse(s.replace(/[“”„‟″]/g, '"').replace(/,\s*([}\]])/g, '$1')); } catch (e2) { r = null; } }
+  if (!isObj(r) || (!Array.isArray(r.grammarMistakes) && !Array.isArray(r.spellingMistakes) && !Array.isArray(r.mistakes))) return null;
+  if (r.by === 'اسمك، مثل Gemini' || r.corrected === 'الفقرة كاملة بعد التصحيح') return null;
   return aiFeedback(r, '');
 }
-function textKey(t){ var s = fixQuotes(String(t || '')).replace(/\s+/g, ' ').trim(), x = 5381; for (var i = 0; i < s.length; i++) x = ((x << 5) + x + s.charCodeAt(i)) | 0; return x + ':' + s.length; }
-/* أخطاء التصحيح الحقيقي تدخل مختبر الأخطاء مرة واحدة لكل فقرة، فلا يتضاعف العدّ إن لُصق رد ثانٍ للفقرة نفسها. */
-function labFromFeedback(fb, text){
+/* كل خطأ من التصحيح الحقيقي يدخل مختبر الأخطاء مرة واحدة في الدرس، فلا يتضاعف بلصق رد ثانٍ ولا بنسخة معدّلة من الفقرة.
+   والعيّنة الصيغة الخاطئة وحدها، لأن المختبر يعرضها مشطوبة. */
+function labFromFeedback(fb){
   if (!fb || fb.src !== 'ai') return 0;
-  var key = textKey(text); if (!key || S.writing.labbed === key) return 0;
-  var n = 0;
-  (fb.grammarMistakes || []).forEach(function(m){ if (m.cat && m.cat !== 'vocab') { bumpErrorLab(m.cat, m.wrong + ' → ' + m.right); n++; } });
-  (fb.spellingMistakes || []).forEach(function(m){ bumpErrorLab('spelling', m.wrong + ' → ' + m.right); n++; });
-  S.writing.labbed = key; return n;
+  var seen = Array.isArray(S.writing.labSeen) ? S.writing.labSeen : (S.writing.labSeen = []), n = 0;
+  function add(cat, m){ var k = cat + '|' + fixQuotes(m.wrong).toLowerCase().replace(/\s+/g, ' ').trim();
+    if (seen.indexOf(k) >= 0) return; seen.push(k); bumpErrorLab(cat, m.wrong); n++; }
+  (fb.grammarMistakes || []).forEach(function(m){ if (m.cat && m.cat !== 'vocab') add(m.cat, m); });
+  (fb.spellingMistakes || []).forEach(function(m){ add('spelling', m); });
+  if (seen.length > 200) seen.splice(0, seen.length - 200);
+  return n;
 }
 /* نسخ نص طويل: بالحافظة إن سمح المتصفح، وإلا نافذة فيها النص محدَّدًا لينسخه المتعلم بيده. */
 function copyText(txt, okMsg){
   function manual(){ var area = h('textarea', { class:'paste-in copy-area', rows:'8', readonly:'readonly', dir:'auto', 'aria-label':'Text to copy · النص المطلوب نسخه' }); area.value = txt;
-    openSheet('Copy This Text', 'انسخ هذا النص', [instr('Select all the text, then copy it.', 'حدّد النص كله ثم انسخه.'), area]);
-    setTimeout(function(){ try { area.focus(); area.select(); } catch (e) {} }, 80); }
+    area.addEventListener('focus', function(){ try { area.setSelectionRange(0, area.value.length); } catch (e) {} });
+    openSheet('Copy This Text', 'انسخ هذا النص', [instr('Tap the text, then Select All, then Copy.', 'المس النص، ثم اختر تحديد الكل، ثم نسخ.'), area,
+      h('a', { class:'btn out sm', href:GEMINI_URL, target:'_blank', rel:'noopener noreferrer' }, 'Open Gemini ↗')]); }
   try { navigator.clipboard.writeText(txt).then(function(){ toast(okMsg); }, manual); } catch (e) { manual(); }
 }
 function correctWriting(ta, btn, box){
@@ -2932,7 +2948,9 @@ function correctWriting(ta, btn, box){
   if (a.words < 12) { toast('Paragraph is too short to check.'); return; }
   if (!SAMPLE) {
     var localFb = localWritingCheck(text);
-    S.writing.fb = localFb; S.writing.text = ta.value; touch();
+    /* الفحص الآلي يُعرض ولا يحل محل تصحيح حقيقي محفوظ. */
+    if (isLocalFb(S.writing.fb)) S.writing.fb = localFb;
+    S.writing.text = ta.value; touch();
     box.hidden = false; paintFeedback(box, localFb);
     return;
   }
@@ -2940,11 +2958,12 @@ function correctWriting(ta, btn, box){
   try { box.scrollIntoView({ block:'nearest', behavior:RM ? 'auto' : 'smooth' }); } catch (e) {}
   SAMPLE.json(WPROMPT(text), { modelTier:'default' }).then(function(r){
     var fb = aiFeedback(r, 'Claude'); if (!fb) throw { code:'invalid_json' };
-    S.writing.fb = fb; S.writing.text = ta.value; labFromFeedback(fb, text); touch(); paintFeedback(box, fb);
+    S.writing.fb = fb; S.writing.text = ta.value; labFromFeedback(fb); touch(); paintFeedback(box, fb);
   }).catch(function(e){ var code = e && e.code;
     if (code === 'cancelled') { box.hidden = true; return; }
     var localFb = localWritingCheck(text);
-    S.writing.fb = localFb; S.writing.text = ta.value; touch();
+    if (isLocalFb(S.writing.fb)) S.writing.fb = localFb;
+    S.writing.text = ta.value; touch();
     paintFeedback(box, localFb);
   }).then(function(){ btn.disabled = false; }); }
 
@@ -3044,6 +3063,8 @@ function createSync(){
     return { owner: gh ? host.slice(0, -10) : 'vua5l', repo: gh && parts[0] && !/\.html?$/i.test(parts[0]) ? parts[0] : 'engl-pass' };
   }
   function defaults(){ var s = siteRepo(); return { owner:s.owner, repo:'engl-pass-progress' }; }
+  /* هل مستودع التقدم عام؟ من جواب GitHub نفسه، فيظهر التنبيه لأي مستودع عام لا لمستودع الموقع وحده. */
+  function checkPublic(){ return gh('GET', '').then(function(r){ if (r.status === 200) patchMeta(function(m){ m.pub = !!(r.body && r.body.private === false); }); }, function(){}); }
   function isSiteRepo(c){ var s = siteRepo(); return !!c && String(c.owner).toLowerCase() === String(s.owner).toLowerCase() && String(c.repo).toLowerCase() === String(s.repo).toLowerCase(); }
   function fileOf(k){ return k === KEY_G ? DIR + '/course.json' : DIR + '/lesson-' + k.slice('ep4.lesson.'.length) + '.json'; }
   function keyOf(path){ var n = String(path).split('/').pop(); if (n === 'course.json') return KEY_G; var m = /^lesson-(.+)\.json$/.exec(n); return m ? 'ep4.lesson.' + m[1] : null; }
@@ -3192,7 +3213,7 @@ function createSync(){
     window.addEventListener('pagehide', function(){ push(true); });
     window.addEventListener('online', function(){ push(false); });
     setInterval(function(){ var m = meta(); if (cfg() && m.dirtyAt && Date.now() - m.dirtyAt > 180000) push(false); }, 60000);
-    if (cfg()) pull().then(function(){ return push(false); });
+    if (cfg()) pull().then(function(){ return push(false); }).then(function(){ if (meta().pub == null) return checkPublic(); });
     paintDot();
   }
   function ago(t){
@@ -3226,13 +3247,13 @@ function createSync(){
         nodes.push(
           h('label', { class:'sync-lbl', for:'syncToken' }, 'GitHub key'), tok,
           h('details', { class:'sync-adv' }, h('summary', {}, 'Repository: ' + d.owner + '/' + d.repo), h('div', { class:'sync-grid' }, own, rep)),
-          h('p', { class:'muted sm' }, biNode('Use a private repository for your progress: it holds your answers and your writing.', 'اجعل تقدمك في مستودع خاص، ففيه إجاباتك وكتابتك.')),
+          instr('Use a private repository: your answers and your writing are in it.', 'اجعل تقدمك في مستودع خاص، ففيه إجاباتك وكتابتك.'),
           h('button', { class:'btn sm', type:'button', id:'syncConnect', on:{ click:function(){
             var t = tok.value.trim();
             if (!t) { toast('Paste the key first'); return; }
             writeJSON(KEY_SYNC, { token:t, owner:own.value.trim() || d.owner, repo:rep.value.trim() || d.repo });
             setMeta({ files:{} }); branchOK = false; saveLocal(); draw();
-            pull().then(function(){ return push(false); }).then(function(){
+            pull().then(function(){ return push(false); }).then(function(){ return checkPublic(); }).then(function(){
               var mm = meta(); draw();
               toast(mm.err && MSG[mm.err] ? MSG[mm.err][0] : 'Connected');
             });
@@ -3240,7 +3261,7 @@ function createSync(){
           h('p', { class:'muted sm' }, biNode('The key stays on this device and is never uploaded.', 'المفتاح يبقى في هذا الجهاز ولا يُرفع إلى GitHub.')));
       } else {
         nodes.push(h('p', { class:'muted sm', dir:'ltr' }, 'Repository: ' + c.owner + '/' + c.repo));
-        if (isSiteRepo(c)) nodes.push(h('div', { class:'tip', id:'syncPublic' }, biNode('This is the public site repository: anyone can read your progress and your writing. To move it to a private repository, remove the key below and connect a key for the private one.', 'هذا مستودع الموقع العام، فيقرأ أي أحد تقدمك وكتابتك. ولنقله إلى مستودع خاص: احذف المفتاح أدناه، ثم اربط مفتاح المستودع الخاص.')));
+        if (isSiteRepo(c) || m.pub) nodes.push(h('div', { class:'tip', id:'syncPublic' }, instr('Anyone can see this repository. Your answers and your writing are in it. To move them: tap Sync now, then Remove key, then connect a key for your private repository.', 'هذا المستودع يراه أي أحد، وفيه إجاباتك وكتابتك. ولنقلها: اضغط Sync now، ثم Remove key from this device، ثم اربط مفتاح مستودعك الخاص.')));
         nodes.push(
           h('div', { class:'wbtns' },
             h('button', { class:'btn sm', type:'button', id:'syncNow', on:{ click:function(){ saveLocal(); pull().then(function(){ return push(false); }); } } }, ico('review'), biBtn('Sync now', 'زامن الآن')),
