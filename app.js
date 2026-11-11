@@ -310,7 +310,9 @@ function rebuildLessonIndex(){
 }
 
 /* ترتيب الكلمات (gD وorder) بلا جملة ولا فراغ: قطعه بينها «/». وكان يظهر « ___ » وحده في دفتر الأخطاء. */
+/* وتمرين الكتابة (gC وtyping) بتلميحه: «Yesterday I ___ (buy) a new phone.». */
 function itemText(it){ var x = it.x; if (Array.isArray(x.chips) && !x.prompt && !x.s) return x.chips.join(' / ');
+  if (x.verb != null && Array.isArray(x.ans) && !x.s) return writeText(Object.assign({}, x, { type:'typing' }));
   return x.prompt || x.s || x.q || x.cueEn || (x.sentPre ? (x.sentPre + ' ___ ' + (x.sentPost || '')) : '') || ((x.pre || '') + ' ___ ' + (x.post || '')) || (Array.isArray(x.ans) ? x.ans[0] : x.ans) || ''; }
 
 /* ---------- state ----------
@@ -1530,13 +1532,16 @@ function foldContractions(s){ return String(s).replace(/\bcannot\b/g, 'can not')
 function fixNorm(s){ return foldContractions(norm(s)).replace(/\s+/g, ' ').trim(); }
 function fixOK(x, v){ var n = fixNorm(v); if (!n || n === fixNorm(x.s)) return false; return (x.ans || []).some(function(a){ return fixNorm(a) === n; }); }
 function Fix(x, o, ctl){ o = o || {}; var quiet = !!o.quiet;
-  var inp = h('input', { class:'gap-in fix-in', type:'text', dir:'ltr', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', enterkeyhint:'done', 'aria-label':o.label || 'Correct sentence' });
+  /* مربع نص لا سطر واحد: الجملة أطول من عرض الجوال، والخانة المقفلة لا تُسحب في iOS، فيُرى الجواب كله. وارتفاعه يتبع نصه (fit). */
+  var inp = h('textarea', { class:'gap-in fix-in', rows:'3', dir:'ltr', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', enterkeyhint:'done', 'aria-label':o.label || 'Correct sentence' });
+  function fit(){ if (!inp.scrollHeight) return; inp.style.height = 'auto'; inp.style.height = (inp.scrollHeight + 2) + 'px'; }
+  inp.addEventListener('input', fit);
   var sent = h('p', { class:'q-en sm', dir:'ltr' }, x.s);
   var fb = h('div', { hidden:true }), done = false;
   function check(){ if (done) return; var v = inp.value.trim();
     if (!v) { inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); inp.focus(); return; }
     var ok = fixOK(x, v); show(v, ok); if (o.onAnswer) o.onAnswer(ok, v); }
-  function show(v, ok){ done = true; inp.value = v; inp.disabled = true; fb.hidden = false;
+  function show(v, ok){ done = true; inp.value = v; inp.disabled = true; fb.hidden = false; fit(); setTimeout(fit, 0);
     if (quiet) { inp.classList.add('saved'); put(fb, savedNote()); return; }
     inp.classList.add(ok ? 'ok' : 'bad');
     put(fb, fbCard(ok, x.why, null, ok ? null : ['Correct sentence', x.ans[0]], x.whyEn)); }
@@ -2920,8 +2925,11 @@ function stUnitTestQ(st, ctl){
   return head.concat(nodes);
 }
 /* ما كتبه المتعلم خطأً في سؤال كتابة، مثالًا لنمطه في مختبر الأخطاء (يظهر فيه مشطوبًا). */
+function typedWhole(q, v){ var nv = norm(v), np = norm(q.pre), nq = norm(q.post); return !!((np && nv.indexOf(np + ' ') === 0) || (nq && nv.length > nq.length && nv.slice(-nq.length) === nq)); }
 function writeSample(q, v){ var k = writeKind(q);
   if (k === 'order') return Array.isArray(v) ? v.map(function(i){ return (q.chips || [])[i]; }).join(' ') : writeText(q);
+  /* من كتب الجملة كلها: تبقى كما كتبها، فلا يتكرر ما قبل الفراغ وما بعده. */
+  if (k === 'typing' && typedWhole(q, v)) return String(v);
   if (k === 'typing') return [q.pre, v, q.post].filter(function(t){ return t; }).join(' ').replace(/\s+([.!?,])/g, '$1');
   return String(v || q.s || ''); }
 
@@ -3167,6 +3175,11 @@ function ptReviewItem(item, idx, N, a){
     var mineW = !answered ? null : wk === 'order' ? (Array.isArray(a.v) ? a.v.map(function(i){ return item.chips[i]; }).join(' ') : String(a.v)) : String(a.v);
     sent = h('div', {}, h('p', { class:'q-en sm', dir:'ltr' }, wk === 'fix' ? item.s : item.chips.join(' / ')),
       answered ? h('p', { class:'pt-pick', dir:'ltr' }, h('small', {}, 'Your answer'), h('span', { class:'blank' + mark }, mineW)) : null);
+  } else if (typed && answered && typedWhole(item, a.v)) {
+    /* كتب الجملة كلها: تظهر الجملة بفراغها، وما كتبه تحتها، فلا يتكرر ما قبل الفراغ وما بعده. */
+    var noSp = /^[.!?,]/.test(item.post);
+    sent = h('div', {}, h('p', { class:'q-en sm', dir:'ltr' }, item.pre ? item.pre + ' ' : '', h('span', { class:'blank' }, ' '), ' ', h('span', { class:'verb' }, '(' + item.verb + ')'), noSp ? '' : ' ', item.post),
+      h('p', { class:'pt-pick', dir:'ltr' }, h('small', {}, 'Your answer'), h('span', { class:'blank' + mark }, String(a.v))));
   } else if (typed) {
     var noSpace = /^[.!?,]/.test(item.post);
     sent = h('p', { class:'q-en sm', dir:'ltr' }, item.pre ? item.pre + ' ' : '', h('span', { class:'blank' + mark }, answered ? a.v : ' '), ' ', h('span', { class:'verb' }, '(' + item.verb + ')'), noSpace ? '' : ' ', item.post);

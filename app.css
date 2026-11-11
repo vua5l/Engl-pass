@@ -816,3 +816,4 @@ a.btn{text-decoration:none}
 .fix-q{display:flex;flex-direction:column;gap:14px}
 .gap-in.fix-in{width:100%;font-size:18px;text-align:left;padding:6px 10px}
 .ut-review{margin-top:8px}
+.gap-in.fix-in{display:block;resize:none;line-height:1.4;overflow:hidden;min-height:2.8em}

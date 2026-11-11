@@ -16,6 +16,7 @@
     svg       نص في رسم خارج مربعه أو خارج الرسم، أو نصان متداخلان
     dir       فقرة عربية مرتبة من اليسار، فتظهر جملها معكوسة
     pair      جملة مقسومة أعمدة في .yes أو .no أو أي حاوية مرنة في الشرح
+    input     جواب مقطوع في خانته (.gap-in): لا يُرى ما كتبه المتعلم كله، والخانة المقفلة لا تُسحب في iOS
   ويخرج برمز 1 إن وُجد خطأ. الرسم والخط يُحمَّلان كما في الموقع، فالخطوط تأتي من Google إن توفر الاتصال.
 */
 const { chromium } = require('playwright');
@@ -80,6 +81,7 @@ function measure() {
   const visible = el => { const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0; };
   const se = document.scrollingElement;
   if (se.scrollWidth > vw + 1) say('wide', `the page is ${se.scrollWidth}px wide on a ${vw}px screen`);
+  document.querySelectorAll('#screen .gap-in').forEach(el => { if (visible(el) && el.value && (el.scrollWidth > el.clientWidth + 1 || el.scrollHeight > el.clientHeight + 1)) say('input', 'answer cut off in its box: ' + clip(el.value)); });
   document.querySelectorAll('#screen .tbl').forEach(t => { if (visible(t) && t.scrollWidth > t.clientWidth + 1) say('table', `table ${t.scrollWidth}px in a ${t.clientWidth}px card: ${clip(t.textContent)}`); });
   document.querySelectorAll('#screen *').forEach(el => {
     if (el.closest('svg') || el.closest('.tbl') || !visible(el)) return;
@@ -129,7 +131,8 @@ const open = () => {
   const st = (__ep.steps() || [])[__ep.i()];
   if (st && (/^(quizQ|unitTestQ|unitMiniQ)$/.test(st.t) || st.review)) {
     const inp = document.querySelector('#screen .gap-in:not([disabled])');
-    if (inp) { inp.value = 'my answer is much longer than the right one here'; inp.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); }
+    /* صحّح الجملة: جواب أطول من الصحيح، فيُقاس امتداد مربعه. واكتب الصيغة: كلمتان خاطئتان كما يكتب المتعلم في الفراغ. */
+    if (inp) { inp.value = inp.classList.contains('fix-in') ? 'my answer is much longer than the right one here, and it goes on for a while' : 'did goed'; inp.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); }
     else if (document.querySelector('#screen .b-pool .chip:not([disabled])')) {
       let c; while ((c = document.querySelector('#screen .b-pool .chip:not([disabled])'))) c.click();
       const b = document.querySelector('.pl-foot .btn'); if (b && !b.disabled) b.click();
