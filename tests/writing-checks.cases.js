@@ -20,7 +20,9 @@ module.exports = {
     { text: 'I study law. I live in Riyadh. My brother is a doctor. Thank you very much.', sentences: 4 },
     { text: 'I study law. I live in Riyadh. Best Buy is a big shop. We visit our uncle.', sentences: 4 },
     { text: 'I study law. I live in Riyadh. Thanks for the books. We visit our uncle.', sentences: 4 },
-    { text: 'I study law and I live in Riyadh and my brother is a doctor and we visit our uncle on Fridays', sentences: 1 }
+    { text: 'I study law and I live in Riyadh and my brother is a doctor and we visit our uncle on Fridays', sentences: 1 },
+    { text: 'I study law. I live in Riyadh. It was great. See you later.', sentences: 4 },
+    { text: 'Hi Omar,\nI study law. I live in Riyadh. It was great. We visit our uncle.\nSee you soon, Omar', sentences: 4 }
   ],
 
   checks: [
@@ -55,6 +57,8 @@ module.exports = {
              'Ahmed and Sara study law. Children go to school at seven.'],
       fail: ['I am a student. My sister is a doctor.',
              'This bag is mine. Sometimes I went home.',
+             'Years ago, my father worked in Jeddah. Weeks later we moved to Riyadh.',
+             'Thanks God I passed. It was hard.',
              'I went to the court yesterday. We visited my uncle.',
              'I usually wake up at six. I am work in a bank.',
              "He don't work on Fridays. My sister works in a bank.",
@@ -85,7 +89,10 @@ module.exports = {
              'She is reading, and you sitting there.',
              'My sister\'s wedding is in May.',
              'I am knowing the answer.',
-             'I read the news every day.']
+             'I read the news every day.',
+             'I am understanding the lesson now.',
+             "I'm not understanding this rule.",
+             "My uncle's building is very old."]
     },
     /* ---------- tense: present (any) ---------- */
     { check: { use: 'tense', tense: 'present', n: 1 },
@@ -104,7 +111,10 @@ module.exports = {
              'I saw you walking with your brother. All we could do was go to bed.',
              'Yesterday I did my homework, cleaned my room and went out. It was a long day.',
              'Last week my friend Sayed visited me. We went to the mall.',
-             "My grandfather's will was clear. All I wanted was sleep."],
+             "My grandfather's will was clear. All I wanted was sleep.",
+             'Last summer we went to Abha. The trip was challenging but fun.',
+             'The people were welcoming. The film was inspiring.',
+             'The work was demanding. What I did was rest.'],
       fail: ['I go to Jeddah every week. We visit the old town.',
              'I read books every day. I put my bag here.',
              'I am interested in law. The street is crowded.',
@@ -114,7 +124,10 @@ module.exports = {
              'I buyed a book. We visited the old town.',
              'I was walking home. They were waiting.',
              'I have visited Abha. She has finished the report.',
-             'My brother is married. He lives in a crowded city.']
+             'My brother is married. He lives in a crowded city.',
+             'All my friends were go to the park. We visited the old town.',
+             'All the students was come late. We visited the old town.',
+             'What I was do yesterday? We visited the old town.']
     },
     /* ---------- tense: pastContinuous ---------- */
     { check: { use: 'tense', tense: 'pastContinuous', n: 1 },
@@ -136,7 +149,9 @@ module.exports = {
              'I walked home.',
              'I was knowing the answer.',
              'I was walk home when it rained.',
-             'I was walking when they arriving.']
+             'I was walking when they arriving.',
+             'I was understanding everything.',
+             'It was lovely seeing you.']
     },
     /* The continuous tenses count verbs, so two of them may sit in one sentence (u3l1: "at least 2 Past Continuous verbs"). */
     { check: { use: 'tense', tense: 'pastContinuous', n: 2 },
@@ -191,7 +206,8 @@ module.exports = {
              'I have went to Abha.',
              'He have seen the judge.',
              "It's closed.",
-             'Have you ever went to London?']
+             'Have you ever went to London?',
+             'I think you has finished the report.']
     },
     /* ---------- tense with clean:false (the wrong forms are not checked) ---------- */
     { check: { use: 'tense', tense: 'pastSimple', n: 1, clean: false },

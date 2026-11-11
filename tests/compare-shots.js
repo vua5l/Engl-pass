@@ -7,7 +7,7 @@
  *
  * Without image folders, every screen whose fingerprint changed is listed. With them (runs made with SHOTS_PNG_DIR),
  * the two images of each changed screen are compared pixel by pixel: a difference of at most --noise pixels (100 by
- * default) is noise, because two runs of the same site already differ by a few dozen anti-aliased pixels on a button
+ * default), none of them changed by more than 64 in a colour channel, is noise, because two runs of the same site already differ by a few dozen anti-aliased pixels on a button
  * edge or a card border (flashcards and grammar items), and a real style change moves far more (the lost highlight of
  * the writing model in November 2026 changed about 9,000). Exit code 1 when a real difference or a missing screen is
  * found. Plain Node, no packages: the PNG reader below handles Chrome's 8-bit RGB and RGBA screenshots.
@@ -16,6 +16,7 @@
  */
 'use strict';
 const fs = require('fs'), path = require('path'), zlib = require('zlib');
+const MAX_NOISE = 64;   // edge noise changes a colour channel by at most about 54; a lost dot or a recoloured icon by far more
 
 const args = process.argv.slice(2); let noise = 100;
 const pos = [];
@@ -57,14 +58,15 @@ function readPng(file) {
 function pixelDiff(f1, f2) {
   const A = readPng(f1), B = readPng(f2);
   if (A.w !== B.w || A.h !== B.h) return null;
-  let n = 0, x0 = A.w, y0 = A.h, x1 = -1, y1 = -1;
+  let n = 0, max = 0, x0 = A.w, y0 = A.h, x1 = -1, y1 = -1;
   for (let i = 0; i < A.px.length; i += 4) {
     if (A.px[i] !== B.px[i] || A.px[i + 1] !== B.px[i + 1] || A.px[i + 2] !== B.px[i + 2]) {
-      n++; const k = i / 4, x = k % A.w, y = (k - x) / A.w;
+      n++; max = Math.max(max, Math.abs(A.px[i] - B.px[i]), Math.abs(A.px[i + 1] - B.px[i + 1]), Math.abs(A.px[i + 2] - B.px[i + 2]));
+      const k = i / 4, x = k % A.w, y = (k - x) / A.w;
       if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
     }
   }
-  return { n, box: n ? [x0, y0, x1, y1] : null };
+  return { n, max, box: n ? [x0, y0, x1, y1] : null };
 }
 
 const A = JSON.parse(fs.readFileSync(a, 'utf8')), B = JSON.parse(fs.readFileSync(b, 'utf8'));
@@ -77,8 +79,9 @@ for (const k of keys) {
   const name = k.replace(/[^\w.-]+/g, '_') + '.png', f1 = path.join(da, name), f2 = path.join(db, name);
   if (!fs.existsSync(f1) || !fs.existsSync(f2)) { real++; console.log('DIFFERENT ' + k + ' (no image to compare)'); continue; }
   const d = pixelDiff(f1, f2);
-  if (d && d.n <= noise) { noisy++; console.log('NOISE ' + k + ' (' + d.n + ' pixels in ' + d.box.join(',') + ')'); }
-  else { real++; console.log('DIFFERENT ' + k + (d ? ' (' + d.n + ' pixels in ' + d.box.join(',') + ')' : ' (the size changed)')); }
+  const info = d => ' (' + d.n + ' pixels in ' + d.box.join(',') + ', largest colour change ' + d.max + ')';
+  if (d && d.n <= noise && d.max <= MAX_NOISE) { noisy++; console.log('NOISE ' + k + info(d)); }
+  else { real++; console.log('DIFFERENT ' + k + (d ? info(d) : ' (the size changed)')); }
 }
 console.log(`\nSUMMARY: ${keys.length - real - noisy} of ${keys.length} screens identical, ${noisy} with noise only (at most ${noise} pixels), ${real} different`);
 process.exitCode = real ? 1 : 0;

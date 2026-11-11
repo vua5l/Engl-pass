@@ -886,7 +886,7 @@ function practiceWords(){
       h('div', {}, h('span', { class:'rv-n' }, String(wd)), h('span', { class:'rv-l' }, (wd ? 'Words due today' : 'No words due today') + ' · ' + wn + ' in your reviews')),
       wd ? h('button', { class:'btn light sm', type:'button', on:{ click:function(){ openSession('words'); } } }, 'Review words', ico('fwd')) : null) : null;
   /* بطاقة Words في أعلى Practice تفتح مراجعة الكلمات حين يستحق شيء منها، فتبقى البطاقات هنا بنقرة واحدة. */
-  var cards = wd ? h('button', { class:'link', type:'button', id:'cardsLink', on:{ click:function(){ openSession('cards'); } } }, r ? 'Review hard words' : 'Flashcards') : null;
+  var cards = wd ? h('button', { class:'link credits', type:'button', id:'cardsLink', on:{ click:function(){ openSession('cards'); } } }, r ? 'Review hard words' : 'Flashcards') : null;
   return [due, h('p', { class:'p-sum' }, k + ' known · ' + r + ' to review · ' + (ALL_VOCAB.length - k - r) + ' new'), cards, h('div', { class:'card wlist' }, ALL_VOCAB.map(function(v){ var st = S.cards[v.en];
       return h('details', { class:'wrow' },
         h('summary', {}, h('span', { class:'w-st' + (st ? ' ' + st : ''), 'aria-hidden':'true' }),
@@ -1933,7 +1933,7 @@ function minSentences(){ return (D.writing && D.writing.minSentences) || 4; }
 function analyze(t){ var text = fixQuotes(t);
   var words = (text.match(/[A-Za-z']+/g) || []).length;
   /* سطر الختام في الإيميل (Best regards, Usama) لا يُعدّ جملة (isClosingLine). */
-  var sentences = text.split(/[.!?]+/).filter(function(s){ return (s.match(/[A-Za-z']+/g) || []).length >= 3 && !isClosingLine(s); }).length;
+  var sentences = text.split(/[.!?]+/).filter(function(s){ return (s.match(/[A-Za-z']+/g) || []).length >= 3 && (!isClosingLine(s) || /^\s*(?:see\s+you(?:\s+soon|\s+later)?|talk\s+soon|speak\s+soon|bye)\s*$/i.test(s)); }).length;
   var runOn = words >= 28 && sentences < 4;
   var cont = 0, m; CONT_RE.lastIndex = 0; while ((m = CONT_RE.exec(text))) { if (ING_NOT.indexOf(m[1].toLowerCase()) < 0) cont++; }
   var sig = (text.match(SIG_RE) || []).length;
@@ -1971,6 +1971,7 @@ var WL_ING_NOT = /^(?:thing|things|string|sting|swing|sing|ring|bring|wing|king|
 var WL_ING_BOTH = /^(?:relaxing|worrying|annoying|encouraging|loving|caring|missing|welcoming|entertaining|challenging|demanding|convincing|promising|striking|inspiring)$/;
 var WL_ADVERB = /^(?:all|both|not|also|still|just|already|never|ever|always|usually|often|sometimes|really|even|only|probably|definitely|certainly|actually|finally|recently|nearly|almost|hardly|quickly|slowly|suddenly|carefully|happily|easily|completely|totally|simply|clearly|mostly|currently|now)$/;
 var WL_PRON = /^(?:i|you|he|she|it|we|they)$/;
+var WL_OBJ = /^(?:the|a|an|my|your|his|her|our|their|this|that|these|those|me|him|us|them|some|more)$/;
 var WL_POSS = /^(?:the|my|your|his|her|our|their)$/;
 /* بعد هذه الكلمات لا تكون الكلمة المنتهية بـ ed ماضيًا بسيطًا: am / is + صفة، have + تصريف ثالث، a / the + صفة، to / will + فعل. */
 var WL_NOT_PAST_BEFORE = /^(?:am|is|are|'s|be|been|being|have|has|having|get|gets|getting|feel|feels|look|looks|seem|seems|become|becomes|a|an|the|my|your|his|her|our|their|its|this|that|these|those|very|so|too|will|to|can|must|should|would|may|might|shall|do|does)$/;
@@ -2018,7 +2019,7 @@ function wlNorm(s){
 function wlToks(s){ return wlNorm(s).trim().split(' ').filter(Boolean); }
 function wlPieces(text){ return fixQuotes(text).split(/[.!?]+/).filter(function(p){ return /[A-Za-z]{2}/.test(p); }); }
 /* All we could do was go · All I wanted was sleep · What I did was rest: بعد was أصل الفعل صحيح. */
-function wlCleft(t, i){ var before = t.slice(0, i); return before.indexOf('do') >= 0 || before.indexOf('did') >= 0 || before[0] === 'all' || before[0] === 'what'; }
+function wlCleft(t, i){ var b = t.slice(0, i); return /^(?:do|did)$/.test(b[b.length - 1] || '') || (/^(?:all|what)$/.test(b[0] || '') && WL_PRON.test(b[1] || '') && b.length >= 3 && b.length <= 5); }
 function wlIsEdPast(w){ return w.length > 3 && /ed$/.test(w) && !WL_ED_NOT.test(w); }
 function wlPrev(t, i){ var j = i - 1; while (j >= 0 && WL_ADVERB.test(t[j])) j--; return j >= 0 ? t[j] : ''; }
 /* be + فعل بـ ing: «am / is / are» أو «was / were»، وبينهما not أو ظرف أو فاعل السؤال (Are you working? Is Sara working?). */
@@ -2030,7 +2031,7 @@ function wlBeIng(t, bes){
     if (t[j] === 'not') j++;
     var w = t[j] || '';
     if (!/ing$/.test(w)) {
-      if (WL_ADVERB.test(w) || WL_PRON.test(w) || /^[a-z]{3,}ly$/.test(w)) j++;
+      if (WL_ADVERB.test(w) || WL_PRON.test(w) || (/^[a-z]{3,}ly$/.test(w) && !/^(?:lovely|lonely|friendly|ugly|silly|lively|likely|early|family|holy|daily|weekly|monthly|yearly|costly|elderly)$/.test(w))) j++;
       else if (/^(?:at|in)$/.test(w) && /^(?:home|work|school|university|college|class|bed)$/.test(t[j + 1] || '') && /ing$/.test(t[j + 2] || '')) j += 2;
       else if (WL_POSS.test(w) && t[j + 1] && !/ing$/.test(t[j + 1])) j += 2;
       else if (i === 0 && w && !/^(?:a|an|this|that|there|here|very|so|too|some|any|no)$/.test(w)) j++;
@@ -2039,6 +2040,7 @@ function wlBeIng(t, bes){
     }
     var v = t[j] || '', who = WL_PRON.test(t[i + 1] || '') ? t[i + 1] : (t[i - 1] || '');
     if (v.length < 5 || !/ing$/.test(v) || WL_ING_NOT.test(v)) continue;
+    if (t[i] === "'s" && /^(?:is|was|are|were|has)$/.test(t[j + 1] || '')) continue;   /* My uncle's building is old */
     if (WL_ING_BOTH.test(v) && !/^(?:am|are|were)$/.test(t[i]) && !/^(?:i|he|she|we|they|you)$/.test(who) && !/^(?:the|a|an|my|your|his|her|our|their|this|that|these|those|me|him|us|them|some|more)$/.test(t[j + 1] || '')) continue;
     n++;
   }
@@ -2051,7 +2053,7 @@ function wlBePast(t){
     var j = i + 1;
     if (t[j] === 'not') j++;
     var v = t[j] || '';
-    if (v.length > 4 && /ing$/.test(v) && !WL_ING_NOT.test(v)) continue;
+    if (v.length > 4 && /ing$/.test(v) && !WL_ING_NOT.test(v) && !(WL_ING_BOTH.test(v) && !WL_OBJ.test(t[j + 1] || ''))) continue;
     if (WL_BE_BASE.test(v) && !wlCleft(t, i)) continue;
     return true;
   }
@@ -2077,8 +2079,8 @@ function wlSimple(p){
   }
   /* فاعل جمع أو اسمان في أول الجملة بلا أداة (Lawyers help people. Ahmed and Sara study law.) */
   m = /^\s*(?:(?:many|most|some|all|young|old|saudi)\s+)?(people|children|men|women|[A-Za-z]+s|[A-Z][a-z]+\s+and\s+(?:I|[A-Z][a-z]+))\s+(?:(?:also|still|really|usually|often|always|sometimes|never|normally)\s+)?([a-z]+)\b/i.exec(s);
-  if (m && !/^(?:this|his|its|hers|ours|yours|theirs|is|was|has|does|yes|as|us|thus|plus|always|sometimes|perhaps|unless|across|less|news|bus|class|business)$/i.test(m[1])
-      && !WL_NOT_SIMPLE.test(m[2]) && !WL_PRON.test(m[2]) && !WL_POSS.test(m[2]) && !(I.past[m[2].toLowerCase()] && !I.base[m[2].toLowerCase()]) && !/(?:ed|ing|s)$/i.test(m[2])) return true;
+  if (m && !/^(?:this|his|its|hers|ours|yours|theirs|is|was|has|does|yes|as|us|thus|plus|always|sometimes|perhaps|unless|across|less|news|bus|class|business|thanks|years|weeks|days|months|hours|minutes)$/i.test(m[1])
+      && !WL_NOT_SIMPLE.test(m[2]) && !WL_PRON.test(m[2]) && !WL_POSS.test(m[2]) && !/^(?:ago|later|earlier|before|after|then|god|allah)$/i.test(m[2]) && !(I.past[m[2].toLowerCase()] && !I.base[m[2].toLowerCase()]) && !/(?:ed|ing|s)$/i.test(m[2])) return true;
   WL_THIRD.lastIndex = 0;
   while ((m = WL_THIRD.exec(s))) { if (!/^(?:is|was|has)$/i.test(m[1])) return true; }
   return t.indexOf('has') >= 0 && !wlPerfect(p);   /* she has a car */
@@ -2135,7 +2137,7 @@ function wlPerfect(p){
 var WL_BE_BASE_P = /\b(?:i\s+am|i'm|he\s+is|he's|she\s+is|she's|we\s+are|we're|they\s+are|they're|you\s+are|you're)\s+(?:not\s+)?(?:(?:usually|always|often|also)\s+)?(?:work|go|study|write|eat|drink|walk|drive|sleep|wake|play|cook|help|teach|learn|sit)\b(?!\s+(?:colleagues?|friends?|partners?|groups?))/i;
 var WL_BE_Q = /\b(?:is|are|am)\s+(?:he|she|you|they|we|i)\s+(?:work|go|study|write|eat|drink|walk|drive|sleep|wake|play|cook|help|teach|learn|sit)\b/i;
 var WL_HE_DONT = /\b(?:he|she|it)\s+don't\b|(?:^|[.!?,]\s+)my\s+(?:father|mother|brother|sister|son|daughter|uncle|aunt|cousin|friend|teacher|manager|colleague)\s+don't\b/im;
-var WL_STATE_BAD = /(?:\b(?:am|is|are|was|were)|'m|'re|'s)\s+(?:not\s+)?(?:knowing|wanting|needing|preferring|believing|owning|belonging)\b/i;
+var WL_STATE_BAD = /(?:\b(?:am|is|are|was|were)|'m|'re|'s)\s+(?:not\s+)?(?:(?:knowing|wanting|needing|preferring|believing|owning|belonging)\b|understanding\s+(?:the|this|that|these|those|it|him|her|them|me|you|us|my|your|his|our|their|what|why|how|everything|anything|english|arabic)\b)/i;
 /* فاعل بعده فعل بـ ing بلا am / is / are أو was / were (I working). وفي السؤال يتقدم الفعل (Are you working?)، فيُحذف قبل الفحص. */
 function wlNoBe(p){
   var s = fixQuotes(p).replace(/\b(?:am|is|are|was|were)(?:n't)?\s+(?:not\s+)?(?:i|you|he|she|it|we|they)\b/gi, ' '), m;
@@ -2166,7 +2168,7 @@ function wlBadPast(p){
       var k = i + 1;
       if (t[k] === 'not') k++;
       var u = t[k] || '';
-      if (WL_BE_BASE.test(u) || I.pastOnly[u] || WL_STATE_ING.test(u)) return true;
+      if (WL_BE_BASE.test(u) || I.pastOnly[u] || WL_STATE_ING.test(u) || (u === 'understanding' && /^(?:the|this|that|these|those|it|him|her|them|me|you|us|my|your|his|our|their|what|why|how|everything|anything|english|arabic)$/.test(t[k + 1] || ''))) return true;
     }
   }
   return wlNoBe(p);
@@ -2200,7 +2202,7 @@ function wlBadPerfect(p){
     var j = i + 1, who = t[i - 1] || '';
     if (t[j] === 'not') j++;
     if (WL_PRON.test(t[j] || '')) { who = t[j]; j++; }
-    else if (/^(?:you|it)$/.test(who) && i > 1 && !/^(?:and|but|so|because|when|while|if|that|then)$/.test(t[i - 2])) who = '';   /* The man who helped you has left */
+    else if (/^(?:you|it)$/.test(who) && i > 1 && !/^(?:and|but|so|because|when|while|if|that|then|think|know|hope|believe|guess|say|says|said|sure|mean)$/.test(t[i - 2])) who = '';   /* The man who helped you has left */
     while (WL_ADVERB.test(t[j] || '')) j++;
     var v = t[j] || '';
     if (I.pastOnly[v]) return true;                                 /* have went · Have you ever saw? */
