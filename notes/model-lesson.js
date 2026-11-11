@@ -283,8 +283,38 @@ var MODEL_LESSON = {
       whyEn: "The phrase is 'under international law': there is no 'the', and the adjective comes before the noun.",
       why: "العبارة under international law بلا the، وتأتي الصفة قبل الاسم.",
       errCat: "vocab"
+    },
+    // من الوحدة 4: أربعة من الأسئلة العشرة كتابة، من نوعين على الأقل (LESSON-BRIEF القسم 4). مثال من كل نوع:
+    {
+      type: "typing",
+      pre: "At ten last night, my sister",
+      verb: "study · Past Continuous",
+      post: "in her room.",
+      ans: ["was studying"],
+      tag: "Grammar · قواعد",
+      whyEn: "'my sister' is one person, and the action was in progress at ten → was + verb-ing.",
+      why: "my sister مفرد، والحدث كان مستمرًا في الساعة العاشرة، فنستعمل was والفعل وفي آخره ing.",
+      errCat: "tense"
+    },
+    {
+      type: "fix",
+      s: "We was waiting for the bus when it started to rain.",
+      ans: ["We were waiting for the bus when it started to rain."],
+      tag: "Grammar · قواعد",
+      whyEn: "'We' is plural, so the past of 'be' here is 'were', not 'was'.",
+      why: "الفاعل We جمع، فماضي فعل be معه were لا was.",
+      errCat: "agreement"
+    },
+    {
+      type: "order",
+      chips: ["My father", "was driving", "to work", "at eight."],
+      ans: "My father was driving to work at eight.",
+      tag: "Grammar · قواعد",
+      whyEn: "Subject, then was + verb-ing, then the place, then the time at the end.",
+      why: "الفاعل، ثم was والفعل وفي آخره ing، ثم المكان، ثم الوقت في الآخر.",
+      errCat: "word_order"
     }
-  ]   // ×10: 6–7 Grammar، و2–3 Vocabulary، وواحد Legal Track
+  ]   // ×10: 6–7 Grammar، و2–3 Vocabulary، وواحد Legal Track؛ ومن الوحدة 4 ستة اختيار وأربعة كتابة (typing وfix وorder)
 };
 
 /* درس الاستماع يضع listening مكان reading، وهذا من u3l2 «Accidents Happen»، وquestions ×8 بلا ev. */
