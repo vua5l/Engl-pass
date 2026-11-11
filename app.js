@@ -313,7 +313,7 @@ function seedErrorLab(){
   return lab;
 }
 function GDEFAULT(){ return { v:4, updatedAt:0, startedAt:0, cur:null, ui:{ view:'home', welcomed:false, part:null, wordsTab:'vocab', irrGroup:'all', reviewTab:'lab' }, mistakes:{}, errorLab:seedErrorLab(), irrSr:{}, wordSr:{}, expressSessions:0, practiceMins:0, camblyLogs:[], freeLogs:[], unitTests:{}, preTests:{} }; }
-function LDEFAULT(){ return { v:4, updatedAt:0, cards:{}, match:false, read1Done:false, listen1Done:false, ans:{}, stamps:{}, quiz:{ best:null, attempts:0, last:null }, writing:{ text:'', fb:null }, writingDone:false, predict:null, revealed:false, hl:false, step:{} }; }
+function LDEFAULT(){ return { v:4, updatedAt:0, cards:{}, match:false, read1Done:false, listen1Done:false, ans:{}, stamps:{}, opened:{}, quiz:{ best:null, attempts:0, last:null }, writing:{ text:'', fb:null }, writingDone:false, predict:null, revealed:false, hl:false, step:{} }; }
 function normalizeG(o){ var r = Object.assign(GDEFAULT(), isObj(o) ? o : {});
   ['mistakes','errorLab','irrSr','wordSr','unitTests','preTests'].forEach(function(k){ if (!isObj(r[k])) r[k] = {}; });
   (BASE.errorLabCatalog || []).forEach(function(cat){
@@ -330,7 +330,7 @@ function normalizeG(o){ var r = Object.assign(GDEFAULT(), isObj(o) ? o : {});
   if (['home','lessons','words','review','lesson','player'].indexOf(ui.view) < 0) ui.view = 'home';
   r.ui = ui; return r; }
 function normalizeL(o){ var r = Object.assign(LDEFAULT(), isObj(o) ? o : {});
-  ['cards','ans','stamps','step'].forEach(function(k){ if (!isObj(r[k])) r[k] = {}; });
+  ['cards','ans','stamps','opened','step'].forEach(function(k){ if (!isObj(r[k])) r[k] = {}; });
   r.quiz = Object.assign({ best:null, attempts:0, last:null }, isObj(r.quiz) ? r.quiz : {});
   r.writing = Object.assign({ text:'', fb:null }, isObj(r.writing) ? r.writing : {});
   return r; }
@@ -1069,7 +1069,9 @@ function stepsFor(k){
   }
   return [];
 }
+/* opened: أول فتح لكل مرحلة، فتقيس tools/stage-times.js دقائقها من فتحها إلى إتمامها (stamps)، لا من إتمام المرحلة قبلها. */
 function openPart(k){ clearReadTimer(); M = null; M_POOL = null; var steps = stepsFor(k), i = 0, saved = S.step[k];
+  if (!S.opened[k] && !S.stamps[k]) { S.opened[k] = Date.now(); touch(); }
   if (typeof saved === 'number' && saved > 0 && saved < steps.length) i = saved;
   if (S.stamps[k] && steps[i] && steps[i].t === 'done') i = 0;
   if (k === 'quiz') { Q = null; i = 0; }
