@@ -15,7 +15,8 @@
  * Neither exists for many words (studying, raining), so the buttons were dead. The engine now guesses nothing:
  * a word gets a speaker button only if it has a known recording.
  *
- * Which words: recall answers, the tappable words of reading texts ([[word|ar]] and {word}), the irregular verbs,
+ * Which words: recall answers, the tappable words of reading texts ([[word|ar]] and {word}, in every text field of
+ * the reading format: paragraphs, dek, sub, facts, stamp), the irregular verbs,
  * and the legal corner of the unit tests. A word that a lesson's vocab or legalPhrase already covers, with a sound
  * file and an Oxford page, needs no entry.
  *
@@ -63,6 +64,21 @@ function loadSite(root) {
   return { DATA, LESSONS: vm.runInContext('LESSONS', sandbox) };
 }
 
+/* All the text of a reading, whatever its format (11 Nov 2026), as readingTexts() in app.js reads it: the paragraphs
+   (without a story's "***" and without the "Name:" of a chat message), the article's dek, the notice's sub, facts[].v
+   and stamp. */
+function readingTexts(R) {
+  if (!R || typeof R !== 'object') return [];
+  const f = R.form || 'email', out = [], str = v => typeof v === 'string' && v.trim() !== '';
+  (R.paras || []).forEach(p => {
+    if (!str(p) || (f === 'story' && p.trim() === '***')) return;
+    const m = f === 'chat' ? /^\s*([^:<>{}]{1,40}?)\s*:\s*([\s\S]*)$/.exec(p) : null;
+    out.push(m && (R.people || []).includes(m[1]) ? m[2] : p);
+  });
+  if (f === 'article' && str(R.dek)) out.push(R.dek);
+  if (f === 'notice') [R.sub, ...(R.facts || []).map(x => x && x.v), R.stamp].forEach(t => { if (str(t)) out.push(t); });
+  return out;
+}
 /* Every word a learner can tap: Map lowercased word -> { en, at } (at: the first place it is used). */
 function reachableWords({ DATA, LESSONS }) {
   const out = new Map();
@@ -70,7 +86,7 @@ function reachableWords({ DATA, LESSONS }) {
   for (const id of Object.keys(LESSONS)) {
     const L = LESSONS[id];
     (L.recall || []).forEach(x => add(x.ans && x.ans[0], id + ' recall'));
-    const text = ((L.reading && L.reading.paras) || []).join(' ');
+    const text = readingTexts(L.reading).join(' ');
     for (const m of text.matchAll(/\[\[([^\]|]+)\|[^\]]+\]\]/g)) add(m[1], id + ' reading');
     for (const m of text.matchAll(/\{([^}|]+)(?:\|([^}]+))?\}/g)) add(m[2] || m[1], id + ' reading');
   }

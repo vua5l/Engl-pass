@@ -9,6 +9,9 @@
   والترتيب العشوائي ثابت. ومع SHOTS_PNG_DIR=<مجلد> تُحفظ الصور نفسها، فيفرّق compare-shots بين اختلاف حقيقي وفرق حواف
   صغير يظهر بين تشغيلين للموقع نفسه (بطاقات الكلمات وتمارين القواعد).
 
+  وأشكال نص القراءة الأربعة غير الإيميل (11 نوفمبر 2026: مقال وإعلان وقصة ومحادثة) تُحقن في الصفحة وحدها في نص درس مبني بعد
+  كل الشاشات الأخرى، فتُعرض مرحلة قراءته بكل شكل، وقراءة الطلاقة بعد Start reading (شاشات «forms …»).
+
   الأخطاء التي يمنعها (كل واحد منها ERROR):
     wide      الصفحة أعرض من الشاشة، فيضطر المتعلم إلى السحب جانبًا
     table     جدول أعرض من بطاقته
@@ -208,6 +211,46 @@ const open = () => {
     await shoot(page, 'view ' + v);
     for (const r of await page.evaluate(measure)) found.set(r.kind + ' | view ' + v + ' | ' + r.text, r);
   }
+  /* أشكال نص القراءة (11 نوفمبر 2026): المقال والإعلان والقصة والمحادثة تُحقن في الصفحة وحدها في نص درس قراءة مبني (u3l1 إن وُجد،
+     وفيه رسم)، فتُعرض مرحلة قراءته كلها بكل شكل، وقراءة الطلاقة في u103l1 بنص قديم في الشكل نفسه بعد Start reading.
+     وتأتي بعد كل الشاشات الأخرى، فلا تتغير بصمة شاشة قائمة، ثم يُعاد النص الأصلي. */
+  const rf = await page.evaluate(() => {
+    const ids = Object.keys(LESSONS).filter(k => LESSONS[k].reading && Array.isArray(LESSONS[k].reading.paras) && LESSONS[k].reading.paras.length >= 6);
+    const id = ids.includes('u3l1') ? 'u3l1' : ids[0], fl = LESSONS.u103l1 && LESSONS.u103l1.reading && LESSONS.u103l1.reading.fluencyFrom;
+    return id ? { id, flu: fl && LESSONS[fl] ? fl : null } : null;
+  });
+  for (const f of (rf ? ['article', 'notice', 'story', 'chat'] : [])) {
+    await page.evaluate(({ f, id, flu }) => {
+      const keep = window.__rfKeep = window.__rfKeep || { r: LESSONS[id].reading, fr: flu ? LESSONS[flu].reading : null };
+      const plain = s => String(s).replace(/<<[sct]:(.+?)>>/g, '$1').replace(/\{([^}|]+)(?:\|[^}]+)?\}/g, '$1').replace(/\[\[([^\]|]+)\|[^\]]+\]\]/g, '$1').replace(/<[^>]*>/g, ' ');
+      const mk = r0 => {
+        const r = JSON.parse(JSON.stringify(r0)), body = r.paras.slice(1, -2);
+        r.form = f;
+        if (f === 'article') Object.assign(r, { kicker: 'CITY LIFE', dek: 'Two students moved to a [[bigger|أكبر]] city last year. Here is what they learned.', byline: 'Sara Ali',
+          quote: (plain(body[1] || body[0]).match(/[^.!?]+[.!?]/) || [''])[0].trim(), paras: body });
+        else if (f === 'notice') Object.assign(r, { band: 'NOTICE', bandRight: 'THIS WEEKEND', sub: 'Bigger than last year, with 80 shops and food from 12 [[countries|بلدان]].',
+          facts: [{ k: 'WHEN', v: 'Thursday and Friday, 4 pm – 11 pm' }, { k: 'WHERE', v: 'Al-Masmak Square, next to the [[museum|المتحف]]' }, { k: 'PRICE', v: 'Free for students. Others: 10 riyals' }],
+          stamp: 'Bring this notice and get a free coffee', paras: body.slice(0, 2) });
+        else if (f === 'story') { r.paras = body; r.paras.splice(2, 0, '***'); }
+        else { const P = ['Noor', 'Sara', 'Ali']; Object.assign(r, { people: P, me: 'Sara', chatTitle: 'Weekend plans', paras: body.map((p, i) => P[i % 3] + ': ' + p), times: body.map((_, i) => '18:' + (10 + i)) }); }
+        return r;
+      };
+      LESSONS[id].reading = mk(keep.r); if (flu) LESSONS[flu].reading = mk(keep.fr);
+      __ep.selectLesson(id); __ep.openPart('reading');
+    }, { f, id: rf.id, flu: rf.flu });
+    await walk('forms ' + f + ' ' + rf.id + ' reading');
+    if (rf.flu) {
+      const at = await page.evaluate(() => { __ep.selectLesson('u103l1'); __ep.openPart('reading'); const i = (__ep.steps() || []).findIndex(s => s.t === 'fluency'); if (i >= 0) __ep.goStep(i); return i; });
+      if (at >= 0) {
+        await page.evaluate(() => { const b = [...document.querySelectorAll('#screen button')].find(x => x.textContent === 'Start reading'); if (b) b.click(); });
+        screens++;
+        await shoot(page, 'forms ' + f + ' u103l1 fluency');
+        for (const r of await page.evaluate(measure)) found.set(r.kind + ' | forms ' + f + ' u103l1 fluency | ' + r.text, r);
+        await page.evaluate(() => { const b = [...document.querySelectorAll('#screen button')].find(x => x.textContent === 'Finished'); if (b) b.click(); });
+      }
+    }
+  }
+  if (rf) await page.evaluate(({ id, flu }) => { const k = window.__rfKeep; if (k) { LESSONS[id].reading = k.r; if (flu) LESSONS[flu].reading = k.fr; } }, rf);
   await browser.close(); srv.close();
   if (shotsFile) { fs.writeFileSync(shotsFile, JSON.stringify(shots, null, 1)); console.log('shots: ' + Object.keys(shots).length + ' screens in ' + shotsFile); }
   for (const key of found.keys()) console.log('ERROR ' + key);

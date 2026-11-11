@@ -25,7 +25,9 @@
  *   ERROR  mode differs from the map: the lesson's mode field, or the part the site will show (the engine shows
  *          listening only when the lesson has "listening" and no "reading").
  *   ERROR  a listening lesson's listening.url differs from the map's clip.url.
- *   WARN   a recycled word appears nowhere in the learner-facing text: reading paragraphs, exercises (recall,
+ *   ERROR  a reading row's optional "form" (email, article, notice, story, chat; since 11 Nov 2026) differs from the
+ *          lesson's reading.form (email when absent). A form on a listening row, or an unknown form, is an ERROR too.
+ *   WARN   a recycled word appears nowhere in the learner-facing text: reading text (every field of its format), exercises (recall,
  *          vocabGaps, gA-gD), reading or listening questions and the predict question, quiz, writing model.
  *          Case-insensitive whole words with simple inflections (-s -es -ed -ing and their spelling changes, plus
  *          a few common irregular verbs); in a phrase every word may be inflected ("get home" finds "gets home"),
@@ -153,6 +155,24 @@ function plain(s) {
   } while (t !== prev);
   return unifyApos(decodeEntities(t.replace(/<[^>]*>/g, ' '))).replace(/\s+/g, ' ').trim();
 }
+/* Reading formats (11 Nov 2026), read as readingTexts() in app.js: the paragraphs (without a story's "***" scene break
+   and without the "Name:" of a chat message), the article's dek, the notice's sub, facts[].v and stamp. */
+const READING_FORMS = ['email', 'article', 'notice', 'story', 'chat'];
+function readingParts(R) {
+  const f = R.form == null ? 'email' : R.form, out = [];
+  list(R.paras).forEach((p, i) => {
+    if (!isStr(p) || (f === 'story' && p.trim() === '***')) return;
+    const m = f === 'chat' ? /^\s*([^:<>{}]{1,40}?)\s*:\s*([\s\S]*)$/.exec(p) : null;
+    out.push({ label: `reading.paras[${i}]`, text: m && list(R.people).includes(m[1]) ? m[2] : p });
+  });
+  if (f === 'article') out.push({ label: 'reading.dek', text: R.dek });
+  if (f === 'notice') {
+    out.push({ label: 'reading.sub', text: R.sub });
+    list(R.facts).forEach((x, i) => out.push({ label: `reading.facts[${i}].v`, text: isObj(x) ? x.v : null }));
+    out.push({ label: 'reading.stamp', text: R.stamp });
+  }
+  return out;
+}
 /* Learner-facing text in segments {label, text}. main: what counts as recycling; side: explanations (hint only). */
 function learnerText(L) {
   const main = [], side = [];
@@ -163,7 +183,7 @@ function learnerText(L) {
   const around = (pre, a, post) => [pre, a, post].filter(isStr).join(' ');
   const filled = x => (isStr(x.s) && /_{3,}/.test(x.s) && isArr(x.opts) && isStr(x.opts[x.a]) ? x.s.replace(/_{3,}/, x.opts[x.a]) : x.s);
   const R = isObj(L.reading) ? L.reading : null, A = isObj(L.listening) ? L.listening : null;
-  if (R) list(R.paras).forEach((p, i) => put(main, `reading.paras[${i}]`, p));
+  if (R) readingParts(R).forEach(x => put(main, x.label, x.text));   // every text field of the reading format
   for (const [name, part] of [['reading', R], ['listening', A]]) {
     if (!part) continue;
     list(part.questions).forEach((x, i) => {
@@ -296,6 +316,11 @@ function readMap(rel, map, unit) {
     if (seen.has(id)) { rl.error('id', 'has two rows in the map'); return; }
     seen.add(id);
     const row = { id, file: `lessons/u${m[1]}/l${m[2]}.js`, title: isStr(r.title) ? r.title : null, legal: undefined, fluencyFrom: isStr(r.fluencyFrom) ? r.fluencyFrom : undefined };
+    // the format of the reading text (optional, since 11 Nov 2026): the lesson's reading.form must then be the same
+    if (r.form != null) {
+      if (READING_FORMS.includes(r.form) && r.mode === 'reading') row.form = r.form;
+      else rl.error('form', READING_FORMS.includes(r.form) ? 'only a reading row has a form' : `${JSON.stringify(r.form)} must be one of ${READING_FORMS.join(', ')}`);
+    }
     // mode and clip
     if (MODES.includes(r.mode)) row.mode = r.mode;
     else rl.error('mode', isStr(r.mode) && UNFINISHED_RE.test(r.mode) ? UNFINISHED : `${JSON.stringify(r.mode)} must be "reading" or "listening"`);
@@ -412,6 +437,12 @@ function checkLesson(site, mapRel, row, stats) {
   // the old text the learner reads again before the new one (consolidation weeks)
   if (row.fluencyFrom !== (isObj(L.reading) && isStr(L.reading.fluencyFrom) ? L.reading.fluencyFrom : undefined))
     log.error('reading.fluencyFrom', `${JSON.stringify(isObj(L.reading) ? L.reading.fluencyFrom : undefined)}, but the map row says ${JSON.stringify(row.fluencyFrom)}`);
+
+  // the reading format of the map row (email when the lesson has no reading.form)
+  if (row.form && isObj(L.reading)) {
+    const got = L.reading.form == null ? 'email' : L.reading.form;
+    if (got !== row.form) log.error('reading.form', `${JSON.stringify(got)}${L.reading.form == null ? ' (no form, so email)' : ''}, but the map row says ${JSON.stringify(row.form)}`);
+  }
 
   // 3. new items: vocab[].en and legalPhrase.en against the row, nothing missing and nothing extra
   const lessonLegal = L.legalPhrase == null ? null : headOf(L.legalPhrase);

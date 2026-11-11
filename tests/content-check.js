@@ -61,6 +61,14 @@
  *   more) that is both 15% longer and 4 characters longer than the longest wrong option (ERROR, in every MCQ of the
  *   course); a lesson whose correct option is the longest in more than 5 of its comprehension questions (WARN); a
  *   predict question whose correct option sits in one position in more than half of the lessons (WARN).
+ *   Reading formats (11 Nov 2026): reading.form must be email (the default), article, notice, story or chat, with the
+ *   fields of its format (ERROR): email from + to; article kicker + dek + byline; notice band, 2-4 facts {k, v} and at
+ *   least one paragraph; story at least 3 text paragraphs ("***" is a scene break) and not starting with "***"; chat
+ *   2-3 people, me among them, every paragraph "Name: text" with a known name, times (if any) one per paragraph. WARN
+ *   for markup in a field the card shows as plain text, a pull quote with words that are not in the text, a times entry
+ *   that is not HH:MM, and a vocab word that is not marked {…} anywhere in the text. Every text field of the format
+ *   (readingParts: paragraphs without the story break and the chat names, dek, sub, facts[].v, stamp) is read by the
+ *   sentence-repetition checks and counted in the "counts" INFO line (format and words, as the engine counts them).
  *   Arabic terms: words the learner did not understand and replaced on 5 Nov 2026 (OLD_TERMS) must not come back (ERROR).
  */
 const fs = require('fs');
@@ -446,6 +454,78 @@ function unmark(s) {
       .replace(/<<[a-z]+:/g, '').replace(/>>/g, '');
   } while (t !== prev);
   return t.replace(/<br\s*\/?>/gi, ' ');
+}
+/* Reading formats (11 Nov 2026): reading.form is "email" (the default), "article", "notice", "story" or "chat", read as
+   readingTexts() in app.js reads them. readingParts(R) = every text the learner reads, with markup, and its field:
+   the paragraphs (without the story scene break "***" and without the "Name:" of a chat message), the article's dek,
+   the notice's sub, facts[].v and stamp. The article's pull quote repeats the text, so it is not counted. */
+const READING_FORMS = ['email', 'article', 'notice', 'story', 'chat'];
+const readingFormOf = R => (R && R.form != null ? R.form : 'email');
+const CHAT_LINE_RE = /^\s*([^:<>{}]{1,40}?)\s*:\s*([\s\S]*)$/;
+function chatLineOf(R, p) {
+  const m = CHAT_LINE_RE.exec(String(p));
+  return m && isArr(R.people) && R.people.includes(m[1]) ? { who: m[1], text: m[2] } : null;
+}
+const isStoryBreak = p => String(p).trim() === '***';
+function readingParts(R) {
+  if (!R || typeof R !== 'object') return [];
+  const f = readingFormOf(R), out = [];
+  (isArr(R.paras) ? R.paras : []).forEach((p, i) => {
+    if (!isStr(p) || (f === 'story' && isStoryBreak(p))) return;
+    const c = f === 'chat' ? chatLineOf(R, p) : null;
+    out.push({ field: `reading.paras[${i}]`, text: c ? c.text : p });
+  });
+  if (f === 'article' && isStr(R.dek)) out.push({ field: 'reading.dek', text: R.dek });
+  if (f === 'notice') {
+    if (isStr(R.sub)) out.push({ field: 'reading.sub', text: R.sub });
+    (isArr(R.facts) ? R.facts : []).forEach((x, i) => { if (x && isStr(x.v)) out.push({ field: `reading.facts[${i}].v`, text: x.v }); });
+    if (isStr(R.stamp)) out.push({ field: 'reading.stamp', text: R.stamp });
+  }
+  return out;
+}
+/* Words of the reading text, counted as readingWords() in app.js counts them. */
+const readingWordCount = R => readingParts(R).map(x => unmark(x.text).replace(/<[^>]*>/g, ' ')).join(' ').match(/[A-Za-z0-9]+(?:['’][A-Za-z]+)*/g)?.length || 0;
+/* The fields of each format (ERROR when missing or wrong), markup in a field the card shows as plain text, and a pull
+   quote with words that are not in the text (WARN). */
+function checkReadingForm(log, R) {
+  const f = readingFormOf(R);
+  if (!READING_FORMS.includes(f)) { log.error('reading.form', `${q(String(f))} is not a reading format; use one of ${READING_FORMS.join(', ')} (email when absent)`); return; }
+  const paras = isArr(R.paras) ? R.paras : [];
+  if (f === 'email') ['from', 'to'].forEach(k => need(log, 'reading', R, k));
+  else if (f === 'article') ['kicker', 'dek', 'byline'].forEach(k => need(log, 'reading', R, k));
+  else if (f === 'notice') {
+    need(log, 'reading', R, 'band');
+    if (!isArr(R.facts) || R.facts.length < 2 || R.facts.length > 4) log.error('reading.facts', `a notice has 2-4 fact rows { k: 'WHEN', v: '…' } (now ${isArr(R.facts) ? R.facts.length : 'none'})`);
+    else R.facts.forEach((x, i) => { if (!x || !isStr(x.k) || !isStr(x.v)) log.error(`reading.facts[${i}]`, 'needs "k" (the label, e.g. WHEN) and "v" (the text)'); });
+    if (!paras.some(isStr)) log.error('reading.paras', 'a notice needs at least one paragraph of body text');
+  } else if (f === 'story') {
+    const n = paras.filter(p => isStr(p) && !isStoryBreak(p)).length;
+    if (n < 3) log.error('reading.paras', `a story has at least 3 text paragraphs (now ${n}; "***" is a scene break, not text)`);
+    if (paras.length && isStoryBreak(paras[0])) log.error('reading.paras[0]', 'a story starts with text, not with the scene break "***" (the first paragraph gets the large first letter)');
+  } else {
+    const ppl = R.people;
+    if (!strList(ppl) || ppl.length < 2 || ppl.length > 3) log.error('reading.people', `a chat has 2-3 people (names), now ${isArr(ppl) ? ppl.length : 'none'}`);
+    else if (new Set(ppl).size !== ppl.length) log.error('reading.people', 'the names must be different');
+    if (!isStr(R.me) || !isArr(ppl) || !ppl.includes(R.me)) log.error('reading.me', `"me" must be one of the people (${isArr(ppl) ? ppl.join(', ') : 'none'}): their messages are on the right with no name`);
+    paras.forEach((p, i) => {
+      const c = isStr(p) ? chatLineOf(R, p) : null;
+      if (!c) log.error(`reading.paras[${i}]`, `every chat message is "Name: text" with a name from people: ${q(String(p))}`);
+      else if (!isStr(c.text)) log.error(`reading.paras[${i}]`, `the message of ${c.who} is empty`);
+    });
+    if (R.times != null) {
+      if (!isArr(R.times) || R.times.length !== paras.length) log.error('reading.times', `must have one time per message (${paras.length}), now ${isArr(R.times) ? R.times.length : 'not an array'}`);
+      else R.times.forEach((t, i) => { if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(String(t))) log.warn(`reading.times[${i}]`, `${q(String(t))} is not HH:MM`); });
+    }
+  }
+  const MARK_RE = /\{[^}]*\}|\[\[|<<[sct]:/;
+  for (const k of ['title', 'kicker', 'byline', 'quote', 'band', 'bandRight', 'stamp', 'chatTitle', 'day'])
+    if (isStr(R[k]) && MARK_RE.test(R[k])) log.warn(`reading.${k}`, 'the card shows this field as plain text: its markup ({word}, [[word|…]], <<s:…>>) is not shown and its words cannot be tapped');
+  if (f === 'article' && isStr(R.quote)) {
+    const words = s => (unmark(s).replace(/<[^>]*>/g, ' ').toLowerCase().match(/[a-z0-9]+(?:['’][a-z]+)*/g) || []);
+    const inText = new Set(readingParts(R).flatMap(x => words(x.text)));
+    const extra = [...new Set(words(R.quote))].filter(w => !inText.has(w));
+    if (extra.length) log.warn('reading.quote', `the pull quote repeats the text, but these words are not in it: ${clip(extra.join(', '), 80)}`);
+  }
 }
 /* pre + answer + post as the learner would read it; glue=true attaches a contraction ('s) to the previous word. */
 function wholeSentence(x, a, glue) {
@@ -963,6 +1043,13 @@ function checkLesson(id, L, S) {
   if (L.reading) {
     need(log, 'reading', L.reading, 'title');
     if (!isArr(L.reading.paras) || !L.reading.paras.length) log.error('reading.paras', 'missing or empty');
+    checkReadingForm(log, L.reading);
+    // every lesson word is marked {word|key} somewhere in the text the learner reads (any text field of the format)
+    const marked = new Set(readingParts(L.reading).flatMap(x => [...String(x.text).matchAll(/\{([^}|]+)(?:\|([^}]+))?\}/g)].map(m => (m[2] || m[1]).trim().toLowerCase())));
+    A('vocab').forEach((v, i) => {
+      if (v && isStr(v.en) && ![v.en, v.headword].some(w => isStr(w) && marked.has(w.trim().toLowerCase())))
+        log.warn(`vocab[${i}]`, `${q(v.en)} is not marked {${v.en}} in the reading text, so the learner cannot tap it there`);
+    });
     const from = L.reading.fluencyFrom;                                       // the old text the learner reads again before the new one
     if (from != null) {
       const o = isStr(from) ? S.LESSONS[from] : null;
@@ -1004,7 +1091,8 @@ function checkLesson(id, L, S) {
 
   log.head('counts', `mode=${L.mode} recall=${A('recall').length} vocab=${A('vocab').length} vocabGaps=${A('vocabGaps').length} gCards=${A('gCards').length} ` +
     `grammar=${gTotal} (gA=${g[0]} gB=${g[1]} gC=${g[2]} gD=${g[3]}) quiz=${A('quiz').length}${quizWrite.length ? ` (writing ${quizWrite.length}: ${writeCounts(quizWrite)})` : ''} | ` +
-    `${L.reading ? 'reading' : 'listening'} questions=${((L.reading || L.listening || {}).questions || []).length} | ` +
+    `${L.reading ? 'reading' : 'listening'} questions=${((L.reading || L.listening || {}).questions || []).length}` +
+    `${L.reading ? ` (${readingFormOf(L.reading)}, ${readingWordCount(L.reading)} words)` : ''} | ` +
     `writing needs ${w.enforced != null ? w.enforced : '?'} sentences (${w.own ? 'own checks' : 'default checks'}) | legal share ${pct(ls.legal, ls.total)} (${ls.legal}/${ls.total})`);
   recycling.forEach(([field, msg]) => log.head(field, msg));                 // INFO lines right after the counts line
   // emoji anywhere in the lesson text
@@ -1095,7 +1183,8 @@ function lessonSegments(L) {
   for (const [name, part] of [['reading', L.reading], ['listening', L.listening]]) {
     if (!part) continue;
     add('text', `${name}.introEn`, part.introEn);
-    (isArr(part.paras) ? part.paras : []).forEach((p, i) => add('text', `${name}.paras[${i}]`, unmark(p)));
+    if (name === 'reading') readingParts(part).forEach(x => add('text', x.field, unmark(x.text)));   // every text field of the format
+    else (isArr(part.paras) ? part.paras : []).forEach((p, i) => add('text', `${name}.paras[${i}]`, unmark(p)));
     (isArr(part.questions) ? part.questions : []).forEach((x, i) => add('text', `${name}.questions[${i}]`, [x.q].concat(isArr(x.opts) ? x.opts : []).join('. ')));
     if (part.predict) add('text', `${name}.predict`, [part.predict.qEn].concat(isArr(part.predict.optsEn) ? part.predict.optsEn : []).join('. '));
     if (part.insight) for (const k of Object.keys(part.insight)) if (/^(l\d+En|ex\d*)$/.test(k)) add('text', `${name}.insight.${k}`, part.insight[k]);
@@ -1197,7 +1286,8 @@ function unitPool(S, unit) {
     explanationExamples(L).forEach(e => pool.push(Object.assign({}, e, { src: `${id} ${e.src}` })));
     for (const it of exerciseItems(L)) itemSentences(it.kind, it.x).forEach(s => push(s, `${id} ${it.field}`));
     for (const part of [L.reading, L.listening]) if (part) {
-      (isArr(part.paras) ? part.paras : []).forEach((p, i) => splitSentences(unmark(p)).forEach(s => push(s, `${id} reading.paras[${i}]`)));
+      (part === L.reading ? readingParts(part) : (isArr(part.paras) ? part.paras : []).map((p, i) => ({ field: `reading.paras[${i}]`, text: p })))
+        .forEach(x => splitSentences(unmark(x.text)).forEach(s => push(s, `${id} ${x.field}`)));
       (isArr(part.questions) ? part.questions : []).forEach((x, i) => { push(x.q, `${id} questions[${i}]`); mcqSentences(x).forEach(s => push(s, `${id} questions[${i}]`)); });
     }
     if (L.writing) splitSentences(L.writing.model || '').forEach(s => push(s, `${id} writing.model`));

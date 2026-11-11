@@ -1092,6 +1092,90 @@ function fakeGitHub(token, opts) {
     }
   }
 
+  /* ---------------- ط) أشكال نص القراءة (11 نوفمبر 2026): المقال والإعلان والقصة والمحادثة ----------------
+     كل شكل يُحقن في نص درس قراءة مبني عند تقديم ملفه (u3l1، وفيه رسم وكلمات ملموسة وتظليل)، فلا يُمس ملف درس.
+     ويُمر بالقراءة الأولى والثانية وزرها، ثم بقراءة الطلاقة في u103l1 بنص u1l1 محقونًا قصةً. */
+  if (COURSE.some(l => l.id === 'u3l1')) {
+    const FORMS = {
+      article: "r.form = 'article'; r.kicker = 'SPACE NEWS'; r.dek = 'A [[special|مميزة]] night for one family in Riyadh.'; r.byline = 'Sara Ali'; r.quote = 'It was an amazing journey';",
+      notice: "r.form = 'notice'; r.band = 'NOTICE'; r.bandRight = 'THIS WEEKEND'; r.sub = 'Watch the [[rocket|الصاروخ]] on the big screen.'; r.facts = [{ k: 'WHEN', v: 'Friday, 8 pm' }, { k: 'WHERE', v: 'Next to the [[library|المكتبة]]' }, { k: 'PRICE', v: 'Free for students' }]; r.stamp = 'Bring this notice and get a free coffee';",
+      story: "r.form = 'story'; r.paras = r.paras.slice(1, -2); r.paras.splice(2, 0, '***');",
+      chat: "r.form = 'chat'; r.people = ['Lama', 'Sophie']; r.me = 'Sophie'; r.chatTitle = 'A special night'; r.paras = r.paras.map(function(p, i){ return (i % 2 ? 'Sophie: ' : 'Lama: ') + p; }); r.times = r.paras.map(function(_, i){ return '18:0' + i; });"
+    };
+    const serveAs = (ctx, file, id, js) => ctx.route(new RegExp('/lessons/' + file.replace('.', '\\.') + '(\\?|$)'), r => r.fulfill({ status: 200, contentType: 'application/javascript; charset=utf-8',
+      body: fs.readFileSync(path.join(ROOT, 'lessons', file), 'utf8') + '\n;(function(){ var r = LESSONS.' + id + '.reading; ' + js + ' })();\n' }));
+    // دوال المحرك نفسه، لعدّ الكلمات
+    const hookRf = ctx => ctx.route(/\/app\.js(\?|$)/, r => { const t = fs.readFileSync(path.join(ROOT, 'app.js'), 'utf8'), i = t.lastIndexOf('boot();');
+      return r.fulfill({ status: 200, contentType: 'application/javascript; charset=utf-8', body: t.slice(0, i) + 'window.__rf = { readingWords: readingWords, readingForm: readingForm };\n' + t.slice(i) }); });
+    const ctaLbl = page => page.locator('.pl-foot .btn:visible').last().innerText();
+    for (const f of Object.keys(FORMS)) {
+      const { ctx, page } = await newPage(null);
+      await serveAs(ctx, 'u3/l1.js', 'u3l1', FORMS[f]); await hookRf(ctx);
+      await startApp(page);
+      const opened = await openLesson(page, 'u3l1');
+      await page.locator('.tp-btn.pstep', { hasText: 'Reading' }).click(); await sleep(300);
+      await page.locator('.opt:enabled').first().click(); await sleep(60); await cta(page);     // التوقع ثم القراءة الأولى
+      const card1 = page.locator('#screen article.rf-' + f);
+      const r1 = { card: await card1.count(), mail: await page.locator('#screen .mail, #screen .mail-meta').count(), w: await card1.locator('.w').count(), plain: await card1.evaluate(el => el.classList.contains('mail-plain')).catch(() => false),
+        art: await card1.locator('.mail-art svg').count(), txt: await card1.innerText().catch(() => ''), lbl: await ctaLbl(page) };
+      ok(opened && r1.card === 1 && r1.mail === 0 && r1.w === 0 && r1.plain && r1.art === 1 && !/[{}]|\[\[|<</.test(r1.txt) && /Finished First Reading/.test(r1.lbl),
+        f + ': the first reading shows the ' + f + ' card (with the lesson drawing), no email header, plain text with no tappable words: ' + JSON.stringify(Object.assign({}, r1, { txt: r1.txt.slice(0, 60) })));
+      await cta(page); await cta(page);                                                          // التحقق من التوقع، ثم القراءة الثانية
+      const card = page.locator('#screen article.rf-' + f);
+      const words = await page.evaluate(() => { const L = LESSONS.u3l1.reading; return __rf.readingWords(L); });
+      const tag = await page.locator('.st-lbl .tag').first().innerText();
+      const r2 = { card: await card.count(), w: await card.locator('.w.core').count(), lbl: await ctaLbl(page), tag, words, scr: await text(page) };
+      await card.locator('.w.core').first().click(); await sleep(150);
+      const dict = await page.locator('#dict:visible').count();
+      await page.locator('label.toggle[for="hlToggle"]').click(); await sleep(100);
+      const hl = { on: await card.evaluate(el => el.classList.contains('hl-on')), legend: await page.locator('.legend:visible .lg').count(), ps: await card.locator('.ps').count() };
+      ok(r2.card === 1 && r2.w > 0 && dict === 1 && hl.on && hl.legend > 0 && hl.ps > 0 && r2.lbl.trim() === 'To Comprehension Questions' && r2.tag === '~' + Math.max(10, Math.round(words / 10) * 10) + ' words',
+        f + ': the second reading has tappable lesson words, the highlight toggle colours the whole card, the word tag counts the text, and the button is "To Comprehension Questions": ' + JSON.stringify({ w: r2.w, dict, hl, lbl: r2.lbl, tag, words }));
+      // بنية كل شكل كما في العينات
+      const s = await card.evaluate((el, f) => {
+        const q = x => el.querySelectorAll(x).length, t = x => (el.querySelector(x) || {}).textContent || '';
+        if (f === 'article') return { ok: t('.rf-kick') === 'SPACE NEWS' && t('.rf-by .av') === 'SA' && /By Sara Ali/.test(t('.rf-by')) && /\d+ min read/.test(t('.rf-by')) && q('.rf-dek .w.gl') === 1 && (el.querySelector('.rf-body p:first-child + .rf-quote') !== null), by: t('.rf-by') };
+        if (f === 'notice') { const st = el.querySelector('.rf-stamp'); return { ok: t('.rf-band span') === 'NOTICE' && t('.rf-band b') === 'THIS WEEKEND' && q('.rf-facts > div') === 3 && q('.rf-facts .w.gl') === 1 && q('.rf-sub .w.gl') === 1 && !!st && getComputedStyle(st).cursor !== 'pointer' && st.tagName === 'DIV' && !st.onclick, stamp: st && st.textContent }; }
+        if (f === 'story') { const p = el.querySelector('.rf-body p:first-child'); return { ok: t('.rf-k') === 'A SHORT STORY' && q('.rf-sep') === 1 && !!p && getComputedStyle(p, '::first-letter').float === 'left' && !/\*\*\*/.test(el.textContent), sep: q('.rf-sep') }; }
+        const outs = el.querySelectorAll('.msg.out'), ins = el.querySelectorAll('.msg.in');
+        return { ok: t('.rf-chead b') === 'Lama & Sophie' && t('.rf-chead small') === 'A special night' && t('.rf-chead .av') === 'LS' && t('.day') === 'TODAY' && outs.length > 0 && ins.length > 0 &&
+          [...outs].every(m => !m.querySelector('.who')) && [...ins].every(m => (m.querySelector('.who') || {}).textContent === 'Lama') && q('.msg .t') === outs.length + ins.length && !/(Lama|Sophie):/.test(el.textContent), outs: outs.length, ins: ins.length };
+      }, f);
+      ok(s.ok, f + ': the card has the parts of the approved sample: ' + JSON.stringify(s));
+      ok(!/\bemail\b/i.test(r2.scr) && !/\bemail\b/i.test(r1.lbl + r2.lbl), f + ': the engine says nothing about an email around the text');
+      ok(page.errors.length === 0, f + ': no page errors: ' + page.errors.join(' | '));
+      await ctx.close();
+    }
+    // عدّ الكلمات: أسماء المحادثة وفاصل القصة والاقتباس لا تُعدّ، وdek وsub والحقائق والختم تُعدّ
+    {
+      const { ctx, page } = await newPage(null);
+      await hookRf(ctx); await startApp(page);
+      const c = await page.evaluate(() => { const W = __rf.readingWords, e = { paras: ['Hi Sara, the {city} is big.', 'See you soon.'] };
+        return { email: W(e), chat: W({ form: 'chat', people: ['Noor', 'Sara'], me: 'Sara', paras: ['Noor: Hi Sara, the {city} is big.', 'Sara: See you soon.'] }),
+          story: W({ form: 'story', paras: e.paras.concat(['***']) }), article: W(Object.assign({ form: 'article', dek: 'Two more words.', quote: 'not counted here at all' }, e)),
+          notice: W(Object.assign({ form: 'notice', sub: 'One.', facts: [{ k: 'WHEN', v: 'Friday night' }, { k: 'WHERE', v: 'Here' }], stamp: 'Free coffee' }, e)), bad: __rf.readingForm({ form: 'poem' }) }; });
+      ok(c.email === 9 && c.chat === 9 && c.story === 9 && c.article === 12 && c.notice === 15 && c.bad === 'email', 'readingWords counts every text field of the format, without chat names, the story break or the pull quote: ' + JSON.stringify(c));
+      await ctx.close();
+    }
+    // قراءة الطلاقة بنص قديم في شكل آخر: u103l1 يعيد قراءة u1l1، وهو هنا قصة
+    if (COURSE.some(l => l.id === 'u103l1')) {
+      const { ctx, page } = await newPage(null);
+      await serveAs(ctx, 'u1/l1.js', 'u1l1', FORMS.story);
+      await startApp(page);
+      const opened = await openLesson(page, 'u103l1');
+      await page.locator('.tp-btn.pstep', { hasText: 'Reading' }).click(); await sleep(300);
+      const card = page.locator('#screen article.rf-story');
+      const before = { hidden: !(await card.isVisible()), scr: await text(page) };
+      await page.locator('button', { hasText: 'Start reading' }).click(); await sleep(150);
+      const after = { vis: await card.isVisible(), w: await card.locator('.w').count(), art: await card.locator('.mail-art').count(), mail: await page.locator('#screen .mail').count() };
+      await page.locator('button', { hasText: 'Finished' }).click(); await sleep(100);
+      ok(opened && before.hidden && before.scr.includes('Read this old text again') && !/old email/.test(before.scr) && after.vis && after.w === 0 && after.art === 0 && after.mail === 0,
+        'fluency reading of an old text in another format: the story card stays hidden until Start, has no tappable words and no drawing, and the instruction says "text": ' + JSON.stringify(after));
+      ok(page.errors.length === 0, 'no page errors (fluency reading in another format): ' + page.errors.join(' | '));
+      await ctx.close();
+    }
+  }
+
   await browser.close(); srv.close();
   console.log(results.join('\n'));
   console.log('\n' + (results.length - fails) + '/' + results.length + ' passed');
