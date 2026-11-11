@@ -312,10 +312,10 @@ function seedErrorLab(){
   });
   return lab;
 }
-function GDEFAULT(){ return { v:4, updatedAt:0, startedAt:0, cur:null, ui:{ view:'home', welcomed:false, part:null, wordsTab:'vocab', irrGroup:'all', reviewTab:'lab' }, mistakes:{}, errorLab:seedErrorLab(), irrSr:{}, expressSessions:0, practiceMins:0, camblyLogs:[], freeLogs:[], unitTests:{}, preTests:{} }; }
+function GDEFAULT(){ return { v:4, updatedAt:0, startedAt:0, cur:null, ui:{ view:'home', welcomed:false, part:null, wordsTab:'vocab', irrGroup:'all', reviewTab:'lab' }, mistakes:{}, errorLab:seedErrorLab(), irrSr:{}, wordSr:{}, expressSessions:0, practiceMins:0, camblyLogs:[], freeLogs:[], unitTests:{}, preTests:{} }; }
 function LDEFAULT(){ return { v:4, updatedAt:0, cards:{}, match:false, read1Done:false, listen1Done:false, ans:{}, stamps:{}, quiz:{ best:null, attempts:0, last:null }, writing:{ text:'', fb:null }, writingDone:false, predict:null, revealed:false, hl:false, step:{} }; }
 function normalizeG(o){ var r = Object.assign(GDEFAULT(), isObj(o) ? o : {});
-  ['mistakes','errorLab','irrSr','unitTests','preTests'].forEach(function(k){ if (!isObj(r[k])) r[k] = {}; });
+  ['mistakes','errorLab','irrSr','wordSr','unitTests','preTests'].forEach(function(k){ if (!isObj(r[k])) r[k] = {}; });
   (BASE.errorLabCatalog || []).forEach(function(cat){
     if (!isObj(r.errorLab[cat.key])) r.errorLab[cat.key] = { count: 0, solved: 0, box: 0, nextAt: 0, fromDiag: false, lastSample: '' };
   });
@@ -564,6 +564,35 @@ function record(id, c, v){ if (S.ans[id]) return; S.ans[id] = { c:!!c, v:v };
   touch(); updateProgress(); }
 function allMistakeKeys(){ return Object.keys(G.mistakes).filter(function(k){ return !!itemFor(k); }).sort(function(a, b){ return (G.mistakes[a].due || 0) - (G.mistakes[b].due || 0); }); }
 function mistakeIds(){ var now = Date.now(); return allMistakeKeys().filter(function(k){ return (G.mistakes[k].due || 0) <= now; }); }
+/* ---------- الكلمات في التكرار المتباعد (منذ 11 نوفمبر 2026) ----------
+   كل كلمة جديدة وعبارة قانونية في درس أتم المتعلم مرحلة كلماته تعود بعد يوم، ثم 3 أيام، ثم 7، ثم 30 (SR_DAYS)،
+   بسؤال كتابة يُصنع آليًا من مثالها ومعناها (wordQuestion). وكلمات الدروس المتمّة قبل ذلك تبدأ مواعيدها من أول فتح بعده.
+   وكلمات أسابيع التثبيت عائدة لا جديدة فلا تدخل. والسجل G.wordSr، والجواب الصحيح الرابع يخرجها من المواعيد (done). */
+function lessonWords(L){ return ((L && L.vocab) || []).concat(L && L.legalPhrase ? [L.legalPhrase] : []).filter(function(v){ return v && v.en; }); }
+/* تُقرأ مراحل الدروس الأخرى من الجهاز مرة كل نصف دقيقة على الأكثر، لأن العدّاد يُحسب مع كل شاشة، والدرس الحالي في كل مرة. */
+var WENR = { at:0 };
+function wordEnroll(){
+  var now = Date.now(), added = false, all = now - WENR.at > 30000;
+  if (all) WENR.at = now;
+  if (!isObj(G.wordSr)) G.wordSr = {};
+  courseOrder().forEach(function(id){
+    var L = (typeof LESSONS !== 'undefined' && LESSONS[id]) || null;
+    if (!L || isWeekUnit(L.unit) || (!all && id !== curLessonId) || !stampsOf(id).vocab) return;
+    lessonWords(L).forEach(function(v){ var key = mkey(id, v.en); if (G.wordSr[key]) return; G.wordSr[key] = { lid:id, en:v.en, box:0, t:now, due:now + SR_DAYS[0] * 864e5 }; added = true; });
+  });
+  /* يُحفظ بلا touch: فتح الموقع وحده لا يجعل الجهاز أحدث من السحابة، والكلمات تُسجَّل من جديد إن جاءت نسخة أقدم. */
+  if (added) writeJSON(KEY_G, G);
+}
+function wordOf(key){ var w = G.wordSr && G.wordSr[key], L = w && typeof LESSONS !== 'undefined' && LESSONS[w.lid];
+  return L ? lessonWords(L).filter(function(v){ return v.en === w.en; })[0] || null : null; }
+function wordDueKeys(){ wordEnroll(); var now = Date.now();
+  return Object.keys(G.wordSr).filter(function(k){ var w = G.wordSr[k]; return isObj(w) && !w.done && (w.due || 0) <= now && !!wordOf(k); })
+    .sort(function(a, b){ return (G.wordSr[a].due || 0) - (G.wordSr[b].due || 0); }); }
+function wordCount(){ wordEnroll(); return Object.keys(G.wordSr).filter(function(k){ return !!wordOf(k); }).length; }
+function wordAnswered(key, ok){ var w = G.wordSr[key]; if (!isObj(w)) return;
+  if (ok) { w.box = (w.box || 0) + 1; if (w.box >= SR_DAYS.length) { w.done = true; w.due = null; } else w.due = Date.now() + SR_DAYS[w.box] * 864e5; }
+  else { w.box = 0; w.due = Date.now() + SR_DAYS[0] * 864e5; }
+  w.last = Date.now(); touch(); }
 function courseDay(){ return Math.max(0, Math.floor((Date.now() - (G.startedAt || Date.now())) / 864e5)); }
 
 /* ---------- routing ---------- */
@@ -585,7 +614,7 @@ function render(){
   $('#nav').hidden = !isTab;
   var view = v === 'welcome' ? vWelcome() : v === 'home' ? vHome() : v === 'lessons' ? vLessons() : v === 'words' ? vWords() : v === 'review' ? vReview() : v === 'lesson' ? vLesson() : vPlayer();
   put($('#screen'), view); updateNav(); }
-function updateNav(){ var nav = $('#nav'), n = mistakeIds().length;
+function updateNav(){ var nav = $('#nav'), n = mistakeIds().length + wordDueKeys().length;
   put(nav, TABS.map(function(t){ var on = G.ui.view === t.k;
     return h('button', { class:'nav-it' + (on ? ' on' : ''), type:'button', 'aria-label':t.en, 'aria-current':on ? 'page' : null, on:{ click:function(){ go(t.k); } } },
       ico(t.ic), h('span', { class:'lbl' }, t.en), (t.k === 'review' && n && !on) ? h('span', { class:'nav-dot', 'aria-hidden':'true' }) : null); })); }
@@ -850,9 +879,13 @@ function practiceMistakes(){
   return [h('p', { class:'sec-lbl' }, 'Your mistake patterns'), patterns, h('p', { class:'sec-lbl' }, 'Mistake notebook'), notebook];
 }
 function practiceWords(){
-  var k = 0, r = 0;
+  var k = 0, r = 0, wd = wordDueKeys().length, wn = wordCount();
   ALL_VOCAB.forEach(function(v){ if (S.cards[v.en] === 'k') k++; else if (S.cards[v.en] === 'r') r++; });
-  return [h('p', { class:'p-sum' }, k + ' known · ' + r + ' to review · ' + (ALL_VOCAB.length - k - r) + ' new'), h('div', { class:'card wlist' }, ALL_VOCAB.map(function(v){ var st = S.cards[v.en];
+  /* مراجعة الكلمات المتباعدة للكورس كله، فوق كلمات الدرس الحالي، بشكل دفتر الأخطاء نفسه. */
+  var due = wn ? h('div', { class:'rv-hero', id:'wordsHero' },
+      h('div', {}, h('span', { class:'rv-n' }, String(wd)), h('span', { class:'rv-l' }, (wd ? 'Words due today' : 'No words due today') + ' · ' + wn + ' in your reviews')),
+      wd ? h('button', { class:'btn light sm', type:'button', on:{ click:function(){ openSession('words'); } } }, 'Review words', ico('fwd')) : null) : null;
+  return [due, h('p', { class:'p-sum' }, k + ' known · ' + r + ' to review · ' + (ALL_VOCAB.length - k - r) + ' new'), h('div', { class:'card wlist' }, ALL_VOCAB.map(function(v){ var st = S.cards[v.en];
       return h('details', { class:'wrow' },
         h('summary', {}, h('span', { class:'w-st' + (st ? ' ' + st : ''), 'aria-hidden':'true' }),
           sayBtn(v, 'Play ' + v.en),
@@ -899,7 +932,7 @@ function vReview(){
   var tab = G.ui.practiceTab || 'mistakes';
   var k = 0, r = 0;
   ALL_VOCAB.forEach(function(v){ if (S.cards[v.en] === 'k') k++; else if (S.cards[v.en] === 'r') r++; });
-  var n = ALL_VOCAB.length - k - r, active = activePatternCount(), due = mistakeIds().length;
+  var n = ALL_VOCAB.length - k - r, active = activePatternCount(), due = mistakeIds().length, wd = wordDueKeys().length;
   function setTab(t){ return function(){ G.ui.practiceTab = t; G.ui.wordsTab = t === 'verbs' ? 'irregular' : 'vocab'; saveLocal(); render(); }; }
   var segBtn = function(t, label){ return h('button', { class:'seg-b' + (tab === t ? ' on' : ''), type:'button', role:'tab', 'aria-selected':tab === t ? 'true' : 'false', on:{ click:setTab(t) } }, label); };
   return h('section', { class:'scr gut practice' },
@@ -912,9 +945,9 @@ function vReview(){
         h('button', { class:'btn sm', type:'button', on:{ click:function(){ openSession('errlab'); } } }, 'Practice')),
       h('div', { class:'p-card' },
         h('span', { class:'p-lbl' }, 'Words'),
-        h('b', { class:'p-big' }, String(r || n)),
-        h('span', { class:'p-sub' }, r ? 'hard words to review' : isWeekUnit(D.unit) ? 'words coming back' : 'new phrases'),
-        h('button', { class:'btn sm out', type:'button', on:{ click:function(){ openSession('cards'); } } }, r ? 'Review hard words' : 'Flashcards'))),
+        h('b', { class:'p-big' }, String(wd || r || n)),
+        h('span', { class:'p-sub' }, wd ? 'words due today' : r ? 'hard words to review' : isWeekUnit(D.unit) ? 'words coming back' : 'new phrases'),
+        h('button', { class:'btn sm out', type:'button', on:{ click:function(){ openSession(wd ? 'words' : 'cards'); } } }, wd ? 'Review words' : r ? 'Review hard words' : 'Flashcards'))),
     h('div', { class:'seg three', role:'tablist', 'aria-label':'Practice view' },
       segBtn('mistakes', 'Mistakes'), segBtn('words', 'Words · ' + ALL_VOCAB.length), segBtn('verbs', 'Verbs · ' + (D.irregularVerbs || []).length)),
     tab === 'words' ? practiceWords() : tab === 'verbs' ? practiceVerbs() : practiceMistakes());
@@ -973,6 +1006,7 @@ function stepsFor(k){
   if (k === 'writing') return [{ t:'intro', k:k }, { t:'writing' }, { t:'done', k:k }];
   if (k === 'quiz') { var a = [{ t:'quizIntro' }]; for (var i = 0; i < D.quiz.length; i++) a.push({ t:'quizQ', n:i }); a.push({ t:'quizResult' }); return a; }
   if (k === 'review') return mistakeIds().map(function(key){ return { t:'item', key:key, review:true }; }).concat([{ t:'sessionDone', k:'review' }]);
+  if (k === 'words') { var wk = wordDueKeys(); return wk.map(function(key, i){ return { t:'wordQ', key:key, pos:i + 1, total:wk.length }; }).concat([{ t:'sessionDone', k:'words' }]); }
   if (k === 'cards') { var r = ALL_VOCAB.map(function(v, i){ return S.cards[v.en] === 'r' ? i : -1; }).filter(function(i){ return i >= 0; });
     var idx = r.length ? r : ALL_VOCAB.map(function(_, i){ return i; });
     return idx.map(function(i){ return { t:'flash', i:i, session:true }; }).concat([{ t:'sessionDone', k:'cards' }]); }
@@ -1044,7 +1078,7 @@ function openPart(k){ clearReadTimer(); M = null; M_POOL = null; var steps = ste
 function openSession(k){ clearReadTimer();
   var tm = /^unit(?:Test|Mini):(\d+)$/.exec(String(k));
   if (tm && !(unitTestOf(Number(tm[1])) && unitLessonsDone(Number(tm[1])))) { toast(unitTestOf(Number(tm[1])) ? unitLockText(Number(tm[1])) : 'Test not available yet'); return; }
-  var steps = stepsFor(k); if (steps.length < 2) { toast(k === 'review' ? 'Notebook is empty' : tm ? 'Test not available yet' : 'No cards'); return; }
+  var steps = stepsFor(k); if (steps.length < 2) { toast(k === 'review' ? 'Notebook is empty' : k === 'words' ? 'No words due today' : tm ? 'Test not available yet' : 'No cards'); return; }
   P = { part:k, steps:steps, i:0, session:true }; G.ui.part = k; G.ui.view = 'player'; saveLocal(); render(); try { window.scrollTo(0, 0); } catch (e) {} }
 function closePlayer(){ clearReadTimer(); var sess = P && P.session, k = String((P && P.part) || ''); P = null; G.ui.part = null;
   if (!sess) { go('home'); return; }
@@ -1152,6 +1186,7 @@ function renderStep(st, ctl, foot){
     case 'writing': return stWriting(ctl);
     case 'expressIntro': return stExpressIntro(ctl);
     case 'irrDrill': return stIrrDrill(st, ctl);
+    case 'wordQ': return stWordQ(st, ctl);
     case 'errDrill': return stErrDrill(st, ctl);
     case 'unitLegal': return stUnitLegal(st, ctl);
     case 'unitTestQ': return stUnitTestQ(st, ctl);
@@ -1849,16 +1884,25 @@ function wordForms(w){
   (IRR_EXTRA[w] || []).forEach(function(p){ f.push(p); });
   return f;
 }
-function matchVocabInText(v, text){
-  if (VRE[v.en]) return VRE[v.en].test(text);
+function vocabRe(v){
+  if (VRE[v.en]) return VRE[v.en];
   var hw = (v.headword || v.en || '').trim();
-  if (!hw) return false;
+  if (!hw) return null;
   var esc = function(x){ return x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); };
   var parts = hw.split(/\s+/), head = '(?:' + wordForms(parts[0]).map(esc).join('|') + ')';
-  var re = parts.length === 1 ? new RegExp('\\b' + head + '\\b', 'i')
+  return parts.length === 1 ? new RegExp('\\b' + head + '\\b', 'i')
     : new RegExp('\\b' + head + '\\s+' + parts.slice(1).map(esc).join('\\s+') + '(?:s|es)?\\b', 'i');
-  return re.test(text);
 }
+function matchVocabInText(v, text){ var re = vocabRe(v); return !!re && re.test(text); }
+/* سؤال الكلمة في المراجعة: جملة مثالها (ex) وفيها فراغ مكان الكلمة كما كُتبت فيها (cases)، ويُقبل معها أصلها (case).
+   فإن لم تكن الكلمة في مثالها فالفراغ وحده، والمعنى العربي يدل عليها. */
+function wordQuestion(v){
+  var ex = fixQuotes(v.ex || ''), re = vocabRe(v), m = re && ex ? re.exec(ex) : null, ans = [];
+  if (m && m[0]) ans.push(m[0]);
+  [v.en, v.headword].forEach(function(a){ if (a && ans.indexOf(a) < 0) ans.push(a); });
+  var word = ans[0], n = word.split(/\s+/).length;
+  return { pre:m ? ex.slice(0, m.index).replace(/\s+$/, '') : '', post:m ? ex.slice(m.index + m[0].length).replace(/^\s+/, '') : '',
+    ans:ans, full:m ? ex : '', hint:n > 1 ? n + ' words' : word.replace(/[^A-Za-z]/g, '').length + ' letters' }; }
 var SIG_RE = /\b(usually|always|often|sometimes|never|every\s+(?:day|morning|afternoon|evening|night|week|weekend|month|year|friday|saturday|sunday|monday|tuesday|wednesday|thursday)|on\s+(?:fridays|saturdays|sundays|mondays|tuesdays|wednesdays|thursdays|weekends))\b/gi;
 var CONT_RE = /\b(?:am|is|are|i'm|you're|we're|they're|he's|she's|it's)\s+(?:not\s+|also\s+|still\s+|really\s+)?([a-z]+ing)\b/gi;
 var ING_NOT = ['interesting','boring','amazing','exciting','morning','evening','everything','nothing','something','anything','thing','king','spring','ring','sing','bring','during','ceiling','building','wedding','string','swing','wing','sibling','darling'];
@@ -2495,6 +2539,22 @@ function stExpressIntro(ctl){
       ['spark', '2 Priority Error Lab drills', 'تمرينان من أعلى أنماط مختبر الأخطاء تكرارًا']
     ].map(function(x){ return h('li', {}, ico(x[0]), biNode(x[1], x[2])); })));
 }
+/* سؤال الكلمة في مراجعة الكلمات: تكتب الكلمة في فراغ جملة مثالها، ومعناها العربي فوقها، والتصحيح التلقائي مطفأ
+   في المربع (Typing) فلا يكتب الجوال الكلمة عن المتعلم. وبعد الجواب الجملة كاملة والنطق وصفحة أكسفورد. */
+function stWordQ(st, ctl){
+  var v = wordOf(st.key);
+  if (!v) { ctl.enable('التالي'); return h('p', {}, ''); }
+  var q = wordQuestion(v), pos = POS_AR[v.pos] || '', phrase = q.ans[0].indexOf(' ') >= 0;
+  var x = { pre:q.pre, post:q.post, verb:q.hint, ans:q.ans,
+    whyEn:(q.full ? 'The sentence: ' + q.full + ' ' : '') + 'A right answer brings it back in 3, 7, then 30 days; a wrong one, tomorrow.',
+    why:v.en + ': ' + (v.ar || '') + (v.exAr ? '. ' + v.exAr : '') };
+  var nodes = Typing(x, { wide:phrase, onAnswer:function(ok){
+    wordAnswered(st.key, ok);
+    var t = nodes[1] && nodes[1].querySelector && nodes[1].querySelector('.fb-t');
+    if (t) t.append(h('div', { class:'audio-row' }, sayBtn(v, 'Human Pronunciation'), oxBtn(v)));
+    ctl.enable('التالي'); } }, ctl);
+  return [label('Word ' + st.pos + ' of ' + st.total), instr('Type the missing ' + (phrase ? 'phrase' : 'word') + '. Its meaning:', (pos ? pos + ': ' : '') + (v.ar || ''))].concat(nodes);
+}
 function stIrrDrill(st, ctl){
   var v = (D.irregularVerbs || []).filter(function(x){ return x.base === st.base; })[0] || D.irregularVerbs[0];
   var inPast = h('input', { class:'gap-in', type:'text', dir:'ltr', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', placeholder:'Past Simple…', 'aria-label':'Past Simple of ' + v.base });
@@ -2577,19 +2637,21 @@ function stSessionDone(k, ctl){
     P._logged = true;
     var n = Math.max(0, P.steps.length - 1);
     if (k === 'express') G.expressSessions = (G.expressSessions || 0) + 1;
-    else G.practiceMins = (G.practiceMins || 0) + (k === 'cards' ? Math.round(n / 4) : n);
+    else G.practiceMins = (G.practiceMins || 0) + ((k === 'cards' || k === 'words') ? Math.round(n / 4) : n);
     touch(); SYNC.soon();
   }
   var isRev = (k === 'review' || k === 'errlab' || String(k).indexOf('errlab:') === 0);
   var ctaLbl = k === 'express' ? 'رجوع للدرس' : (isRev ? 'رجوع للمراجعة' : 'رجوع للكلمات');
   ctl.set(ctaLbl, true, closePlayer);
   var left = mistakeIds().length;
-  var titleEn = k === 'express' ? '15-Min Express Review Logged!' : k === 'irregular' ? 'Irregular Verbs Practice Complete!' : isRev ? 'Error Lab & Review Complete!' : 'Flashcards Complete';
-  var titleAr = k === 'express' ? 'سُجّلت جلسة الوضع المختصر (+١٥ دقيقة)!' : k === 'irregular' ? 'أنهيت تدريب الأفعال الشاذة!' : isRev ? 'أنهيت جلسة مختبر الأخطاء والمراجعة!' : 'أنهيت البطاقات';
+  var titleEn = k === 'express' ? '15-Min Express Review Logged!' : k === 'irregular' ? 'Irregular Verbs Practice Complete!' : k === 'words' ? 'Word Review Complete' : isRev ? 'Error Lab & Review Complete!' : 'Flashcards Complete';
+  var titleAr = k === 'express' ? 'سُجّلت جلسة الوضع المختصر (+١٥ دقيقة)!' : k === 'irregular' ? 'أنهيت تدريب الأفعال الشاذة!' : k === 'words' ? 'أنهيت مراجعة الكلمات' : isRev ? 'أنهيت جلسة مختبر الأخطاء والمراجعة!' : 'أنهيت البطاقات';
   var desc = k === 'express'
     ? 'Added +15 minutes to your study hours as a review session (not a completed lesson). Total express sessions: ' + (G.expressSessions || 1) + '.'
     : k === 'irregular'
     ? 'Your Spaced Repetition intervals (+1d, +3d, +7d, +30d) have been updated.'
+    : k === 'words'
+    ? 'Each word comes back after 1 day, 3 days, a week and a month. A wrong answer brings it back tomorrow.'
     : isRev
     ? (left ? left + ' item(s) still due today. Error Lab priorities updated.' : 'Nothing else is due today. Correct answers come back later on the spaced schedule.')
     : 'Words marked "Review later" will appear first next time.';

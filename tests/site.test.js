@@ -300,6 +300,43 @@ function fakeGitHub(token, opts) {
     await page.reload(); await sleep(400);
     await page.locator('.nav-it').nth(0).click(); await sleep(250);
     ok((await text(page)).includes('Two Cases in Court'), "after finishing a lesson on a previous day, today's lesson moves to the next one");
+    // الكلمات في التكرار المتباعد: كلمات الدرس الذي أتم المتعلم مرحلة كلماته تدخل المراجعة بعد يوم، بسؤال كتابة
+    {
+      const words = await page.evaluate(() => LESSONS.u0l1.vocab.map(v => v.en).concat([LESSONS.u0l1.legalPhrase.en]));
+      let g = await getJSON(page, 'ep4.course');
+      const ws = (g && g.wordSr) || {}, mine = words.map(w => ws['u0l1|' + w]).filter(Boolean), day = 864e5;
+      ok(mine.length === words.length && mine.every(w => w.box === 0 && w.due - w.t > day * 0.99 && w.due - w.t < day * 1.01),
+        `the words of a lesson whose word stage is done enter the spaced review, first due a day later (${mine.length}/${words.length})`);
+      ok(!Object.keys(ws).some(k => !k.startsWith('u0l1|')), 'words of lessons whose word stage is not done stay out of the review');
+      // كلمة واحدة مستحقة: lawyer، وجوابها في فراغ جملة مثالها، ثم خطأ في الثانية
+      await page.evaluate(() => { const g = JSON.parse(localStorage.getItem('ep4.course')); const t = Date.now(); g.wordSr['u0l1|lawyer'].due = t - 1000; g.wordSr['u0l1|client'].due = t - 500; localStorage.setItem('ep4.course', JSON.stringify(g)); });
+      await page.reload(); await sleep(400);
+      ok(await page.locator('.nav-it .nav-dot').count() === 1, 'due words show the dot on the Practice tab');
+      await page.locator('.nav-it').nth(2).click(); await sleep(250);
+      const card = await page.locator('.p-cards .p-card').nth(1).innerText();
+      ok(/2\s*words due today/i.test(card) && /Review words/.test(card), 'the Words card on Practice shows the words due today (' + card.replace(/\s+/g, ' ') + ')');
+      await page.locator('.seg-b').nth(1).click(); await sleep(200);
+      ok(await page.locator('#wordsHero').count() === 1 && /Words due today/.test(await page.locator('#wordsHero').innerText()), 'the Words tab shows the words due today above the lesson words');
+      await page.locator('#wordsHero .btn').click(); await sleep(250);
+      const inp = page.locator('.gap-in:enabled');
+      const attrs = await inp.evaluate(el => [el.getAttribute('autocorrect'), el.getAttribute('autocapitalize'), el.getAttribute('spellcheck')].join(','));
+      const q1 = await text(page);
+      ok(/Type the missing word/.test(q1) && q1.includes('My cousin is a') && q1.includes('in Riyadh') && /6 letters/.test(q1) && attrs === 'off,off,false',
+        'a word question is the example sentence with a blank, the letter count and the Arabic meaning, with autocorrect off (' + attrs + ')');
+      await inp.fill('lawyer'); await inp.press('Enter'); await sleep(200);
+      ok(await page.locator('.gap-in.ok').count() === 1 && await page.locator('.fb .audio-row').count() === 1, 'the right word is accepted, then its pronunciation and Oxford page are shown');
+      g = await getJSON(page, 'ep4.course');
+      const lw = g.wordSr['u0l1|lawyer'];
+      ok(lw.box === 1 && Math.abs((lw.due - Date.now()) / day - 3) < 0.05, 'a right answer sends the word to the next review in 3 days');
+      await cta(page); await sleep(150);
+      const inp2 = page.locator('.gap-in:enabled');
+      if (await inp2.count()) { await inp2.fill('cliant'); await inp2.press('Enter'); await sleep(200); }
+      g = await getJSON(page, 'ep4.course');
+      const cw = g.wordSr['u0l1|client'];
+      ok(await page.locator('.gap-in.bad').count() === 1 && cw.box === 0 && Math.abs((cw.due - Date.now()) / day - 1) < 0.05 && (await text(page)).includes('client'),
+        'a misspelled word is marked wrong, shows the right spelling, and comes back tomorrow');
+      await page.click('[aria-label="Close · إغلاق"]'); await sleep(150);
+    }
     ok(page.errors.length === 0, 'no page errors (tools): ' + page.errors.join(' | '));
     await ctx.close();
   }
