@@ -170,6 +170,22 @@ function unitRank(u){ return isWeekUnit(u) ? Number(u) - 99.5 : Number(u); }
 function partIcon(p){ return p.ic === 'aa' ? aa() : ico(p.ic); }
 function mkIds(p, n){ var a = []; for (var i = 0; i < n; i++) a.push(p + '-' + i); return a; }
 function mcqOf(x){ return { prompt:x.s, opts:x.opts, a:x.a, whyEn:x.whyEn, why:x.why, errCat:x.errCat }; }
+/* أسئلة الكتابة في الاختبارات (منذ 11 نوفمبر 2026)، في unitTests وفي quiz الدرس، بالحقل type:
+   typing (اكتب الصيغة، كـ gC)، وfix (صحّح الجملة كلها، المكوّن Fix)، وorder (رتّب الكلمات، كـ gD والمكوّن Builder).
+   والسؤال بلا type اختيار من متعدد كما كان. وتعليمة كل نوع بالإنجليزي وتحتها سطرها العربي (instr). */
+var WRITE_INSTR = {
+  typing: ['Type the missing words. Use the words in brackets.', 'اكتب الكلمات الناقصة مستعينًا بما بين القوسين.'],
+  fix: ['This sentence has one mistake. Type the correct sentence.', 'في هذه الجملة خطأ واحد. اكتب الجملة صحيحة.'],
+  order: ['Put the words in order.', 'رتّب الكلمات.']
+};
+function writeKind(x){ var t = x && x.type; return (t === 'typing' || t === 'fix' || t === 'order') ? t : null; }
+/* نص سؤال الكتابة كما يُعرض في القوائم (تحليل الأخطاء، ومختبر الأخطاء)، وجوابه الصحيح الأول. */
+function writeText(x){ var k = writeKind(x);
+  if (k === 'fix') return x.s || '';
+  if (k === 'order') return (x.chips || []).join(' / ');
+  if (k === 'typing') return (x.pre ? x.pre + ' ' : '') + '___ (' + (x.verb || '') + ')' + (x.post ? (/^[.!?,]/.test(x.post) ? '' : ' ') + x.post : '');
+  return (x && x.s) || ''; }
+function writeAnswer(x){ return writeKind(x) === 'order' ? String(x.ans || '') : (Array.isArray(x.ans) ? x.ans[0] : ''); }
 
 /* أنواع الأخطاء في تحليل الاختبار. لكل قيمة errCat في الدروس وcontent.js مدخل هنا،
    وما لا مدخل له يظهر تحت «general» لا تحت الأزمنة. */
@@ -266,7 +282,10 @@ function buildIndex(L){
   if (L.listening && L.listening.questions) {
     L.listening.questions.forEach(function(x, i){ items['lq-' + i] = x.tf ? { type:'rtf', secEn:'Listening', sec:'الاستماع', groupEn:'Listening Questions (2nd Listen)', group:'أسئلة الاستماع (الاستماع الثاني)', errCat:x.errCat || 'reading', x:x } : { type:'mcq', secEn:'Listening', sec:'الاستماع', groupEn:'Listening Questions (2nd Listen)', group:'أسئلة الاستماع (الاستماع الثاني)', errCat:x.errCat || 'reading', x:{ prompt:x.q, opts:x.opts, a:x.a, whyEn:x.whyEn, why:x.why, ev:x.ev, errCat:x.errCat || 'reading' } }; });
   }
-  (L.quiz || []).forEach(function(x, i){ items['qz-' + i] = { type:'mcq', secEn:'Quiz', sec:'الاختبار', groupEn:'Lesson Quiz', group:'اختبار الدرس', errCat:x.errCat || (x.tag && x.tag.indexOf('Vocabulary') >= 0 ? 'vocab' : 'tense'), x:mcqOf(x) }; });
+  /* سؤال الكتابة في اختبار الدرس يعود في مراجعة الأخطاء بنوعه (typing وfix وorder ← builder) وتعليمته. */
+  (L.quiz || []).forEach(function(x, i){ var k = writeKind(x), ec = x.errCat || (x.tag && x.tag.indexOf('Vocabulary') >= 0 ? 'vocab' : 'tense');
+    items['qz-' + i] = k ? { type:k === 'order' ? 'builder' : k, secEn:'Quiz', sec:'الاختبار', groupEn:WRITE_INSTR[k][0], group:WRITE_INSTR[k][1], errCat:ec, x:x }
+      : { type:'mcq', secEn:'Quiz', sec:'الاختبار', groupEn:'Lesson Quiz', group:'اختبار الدرس', errCat:ec, x:mcqOf(x) }; });
   return { IDS:ids, ITEMS:items, GCARDS:L.gCards || [], ALL_VOCAB:vocab, VOCAB_LIST:vocab.map(function(v){ return v.en; }).join(', ') };
 }
 /* عنوان تمرين الكتابة (gC): «اكتب الفعل» حين يكون التلميح فعلًا (visit · not / like)، وتسمية محايدة
@@ -290,7 +309,9 @@ function rebuildLessonIndex(){
   }
 }
 
-function itemText(it){ var x = it.x; return x.prompt || x.s || x.q || x.cueEn || (x.sentPre ? (x.sentPre + ' ___ ' + (x.sentPost || '')) : '') || ((x.pre || '') + ' ___ ' + (x.post || '')) || (Array.isArray(x.ans) ? x.ans[0] : x.ans) || ''; }
+/* ترتيب الكلمات (gD وorder) بلا جملة ولا فراغ: قطعه بينها «/». وكان يظهر « ___ » وحده في دفتر الأخطاء. */
+function itemText(it){ var x = it.x; if (Array.isArray(x.chips) && !x.prompt && !x.s) return x.chips.join(' / ');
+  return x.prompt || x.s || x.q || x.cueEn || (x.sentPre ? (x.sentPre + ' ___ ' + (x.sentPost || '')) : '') || ((x.pre || '') + ' ___ ' + (x.post || '')) || (Array.isArray(x.ans) ? x.ans[0] : x.ans) || ''; }
 
 /* ---------- state ----------
    حالتان محفوظتان في الجهاز:
@@ -1501,6 +1522,32 @@ function Builder(x, o, ctl){ o = o || {}; var placed = [], locked = false;
   if (o.saved && Array.isArray(o.saved.v)) { placed = o.saved.v.slice(); finish(!!o.saved.c); } else draw();
   return [qCard(line), pool, clear, fb];
 }
+/* صحّح الجملة (fix): يكتب المتعلم الجملة كلها صحيحة. المقارنة بـ norm (الحالة والترقيم والفاصلة العليا)، مع فك الاختصارات
+   في الطرفين: n't ← not، وcan't وcannot ← can not، وwon't ← will not، و'm و're و'll و've. أما 's و'd فمبهمتان فلا تُفكّان،
+   ويذكر الكاتب الصيغتين في ans إن صحّتا. والجواب المطابق للجملة الخاطئة نفسها خطأ. والفاحص يقرأ fixNorm وfixOK من هنا. */
+function foldContractions(s){ return String(s).replace(/\bcannot\b/g, 'can not').replace(/\bcan't\b/g, 'can not').replace(/\bwon't\b/g, 'will not').replace(/\bshan't\b/g, 'shall not')
+  .replace(/n't\b/g, ' not').replace(/'m\b/g, ' am').replace(/'re\b/g, ' are').replace(/'ll\b/g, ' will').replace(/'ve\b/g, ' have'); }
+function fixNorm(s){ return foldContractions(norm(s)).replace(/\s+/g, ' ').trim(); }
+function fixOK(x, v){ var n = fixNorm(v); if (!n || n === fixNorm(x.s)) return false; return (x.ans || []).some(function(a){ return fixNorm(a) === n; }); }
+function Fix(x, o, ctl){ o = o || {}; var quiet = !!o.quiet;
+  var inp = h('input', { class:'gap-in fix-in', type:'text', dir:'ltr', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', enterkeyhint:'done', 'aria-label':o.label || 'Correct sentence' });
+  var sent = h('p', { class:'q-en sm', dir:'ltr' }, x.s);
+  var fb = h('div', { hidden:true }), done = false;
+  function check(){ if (done) return; var v = inp.value.trim();
+    if (!v) { inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); inp.focus(); return; }
+    var ok = fixOK(x, v); show(v, ok); if (o.onAnswer) o.onAnswer(ok, v); }
+  function show(v, ok){ done = true; inp.value = v; inp.disabled = true; fb.hidden = false;
+    if (quiet) { inp.classList.add('saved'); put(fb, savedNote()); return; }
+    inp.classList.add(ok ? 'ok' : 'bad');
+    put(fb, fbCard(ok, x.why, null, ok ? null : ['Correct sentence', x.ans[0]], x.whyEn)); }
+  inp.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); check(); } });
+  if (o.saved && typeof o.saved.v === 'string') show(o.saved.v, !!o.saved.c);
+  else ctl.set(quiet ? 'احفظ الإجابة' : 'تحقق', true, check);
+  return [qCard(h('div', { class:'fix-q' }, sent, inp)), fb];
+}
+/* سؤال كتابة في اختبار (الوحدة، والمصغر، واختبار الدرس): تعليمة نوعه فوقه، ثم مكوّنه. وخانة typing عريضة كما في الاختبار القبلي. */
+function writeInstr(k){ return h('div', { class:'pt-ins' }, h('div', { class:'pt-ins-t' }, instr(WRITE_INSTR[k][0], WRITE_INSTR[k][1]))); }
+function writeQ(k, x, o, ctl){ return k === 'typing' ? Typing(x, Object.assign({ wide:true }, o), ctl) : k === 'fix' ? Fix(x, o, ctl) : Builder(x, o, ctl); }
 function stItem(st, ctl){ var it = st.review ? itemFor(st.key) : ITEMS[st.id]; if (!it) { ctl.enable(); return h('p', {}, ''); }
   var review = !!st.review, saved = review ? null : S.ans[st.id];
   var o = { saved:saved, onAnswer:function(c, v){
@@ -1520,6 +1567,7 @@ function stItem(st, ctl){ var it = st.review ? itemFor(st.key) : ITEMS[st.id]; i
   else if (it.type === 'tf') nodes = TF(it.x, o);
   else if (it.type === 'rtf') nodes = TF(it.x, Object.assign(o, { reading:true }));
   else if (it.type === 'typing') nodes = Typing(it.x, o, ctl);
+  else if (it.type === 'fix') nodes = Fix(it.x, o, ctl);
   else nodes = Builder(it.x, o, ctl);
   if ((it.type === 'mcq' || it.type === 'tf' || it.type === 'rtf') && !saved) ctl.set('التالي', false, nextStep);
   var extra = review ? h('span', { class:'tag' }, 'Review · ' + lessonTag(String(st.key).split('|')[0])) : (it.secEn === 'Listening' && D.listening && D.listening.url ? h('a', { class:'ox-link', href:D.listening.url, target:'_blank', rel:'noopener noreferrer' }, 'Audio Clip ↗') : null);
@@ -1781,15 +1829,19 @@ function stListen3(ctl){
 
 /* ---------- Stage 6: Short Quiz & Lesson Error Analysis ---------- */
 var Q = null;
+/* أسئلة الاختيار تُخلط خياراتها، وسؤال الكتابة (kind: typing أو fix أو order) يحمل عنصره x كما هو. */
 function startQuiz(){ var order = shuffle(D.quiz.map(function(_, i){ return i; }));
-  Q = { score:0, res:[], items:order.map(function(k){ var x = D.quiz[k], perm = shuffle(x.opts.map(function(_, j){ return j; }));
-    return { src:k, prompt:x.s, opts:perm.map(function(j){ return x.opts[j]; }), a:perm.indexOf(x.a), whyEn:x.whyEn, why:x.why, tag:x.tag, errCat:x.errCat || 'tense' }; }) };
+  Q = { score:0, res:[], items:order.map(function(k){ var x = D.quiz[k], wk = writeKind(x);
+    if (wk) return { src:k, kind:wk, x:x, whyEn:x.whyEn, why:x.why, tag:x.tag, errCat:x.errCat || 'tense' };
+    var perm = shuffle(x.opts.map(function(_, j){ return j; }));
+    return { src:k, kind:'mcq', prompt:x.s, opts:perm.map(function(j){ return x.opts[j]; }), a:perm.indexOf(x.a), whyEn:x.whyEn, why:x.why, tag:x.tag, errCat:x.errCat || 'tense' }; }) };
   goStep(1); }
+function quizWriteCount(list){ return (list || []).filter(writeKind).length; }
 function stQuizIntro(ctl){ var best = S.quiz.best;
   ctl.set(best == null ? 'ابدأ الاختبار' : 'أعد الاختبار', true, startQuiz);
   return h('div', { class:'qi' },
     h('h1', { class:'bi-h' }, h('span', { class:'en', dir:'ltr', style:'color:#fff' }, 'Stage 6 · Short Quiz & Error Analysis'), h('small', { style:'color:var(--honey)' }, 'المرحلة 6')),
-    h('p', { class:'en', dir:'ltr', style:'text-align:left;color:#fff;font-weight:600' }, '10 questions on vocabulary and grammar. Score 80% or higher to pass, followed by an analysis of your lesson mistakes and their causes.'),
+    h('p', { class:'en', dir:'ltr', style:'text-align:left;color:#fff;font-weight:600' }, D.quiz.length + ' questions on vocabulary and grammar' + (quizWriteCount(D.quiz) ? ' (' + quizWriteCount(D.quiz) + ' with written answers)' : '') + '. Score 80% or higher to pass, followed by an analysis of your lesson mistakes and their causes.'),
     h('div', { class:'qi-stats' },
       h('div', { class:'qs' }, h('b', {}, String(D.quiz.length)), h('span', {}, 'Questions')),
       h('div', { class:'qs' }, h('b', { dir:'ltr' }, '80%'), h('span', {}, 'To Pass')),
@@ -1798,8 +1850,12 @@ function stQuizIntro(ctl){ var best = S.quiz.best;
 function stQuizQ(n, ctl){ if (!Q) { setTimeout(function(){ goStep(0); }, 0); return h('p', {}, ''); }
   var it = Q.items[n], last = n === Q.items.length - 1;
   ctl.set(last ? 'النتيجة وتحليل الأخطاء' : 'السؤال التالي', Q.res[n] != null, last ? finishQuiz : nextStep);
-  var nodes = MCQ(it, { tag:it.tag, saved:Q.res[n] != null ? { v:Q.res[n].v } : null, onAnswer:function(c, v){ Q.res[n] = { c:c, v:v }; if (c) Q.score++; else { var qt = Date.now(); G.mistakes[mkey(curLessonId, 'qz-' + it.src)] = { lid:curLessonId, id:'qz-' + it.src, box:0, t:qt, due:qt + SR_DAYS[0] * 864e5 }; touch(); updateNav(); } ctl.set(last ? 'النتيجة وتحليل الأخطاء' : 'السؤال التالي', true, last ? finishQuiz : nextStep); } });
-  return [label('Question ' + (n + 1) + ' of ' + Q.items.length, 'السؤال ' + (n + 1) + ' من ' + Q.items.length)].concat(nodes);
+  function onAnswer(c, v){ if (Q.res[n] != null) return; Q.res[n] = { c:c, v:v }; if (c) Q.score++; else { var qt = Date.now(); G.mistakes[mkey(curLessonId, 'qz-' + it.src)] = { lid:curLessonId, id:'qz-' + it.src, box:0, t:qt, due:qt + SR_DAYS[0] * 864e5 }; touch(); updateNav(); } ctl.set(last ? 'النتيجة وتحليل الأخطاء' : 'السؤال التالي', true, last ? finishQuiz : nextStep); }
+  var head = [label('Question ' + (n + 1) + ' of ' + Q.items.length, 'السؤال ' + (n + 1) + ' من ' + Q.items.length)], nodes;
+  /* سؤال الكتابة: زر «تحقق» من مكوّنه حتى يُجاب، ثم «السؤال التالي» أو «النتيجة». */
+  if (it.kind && it.kind !== 'mcq') { head.push(writeInstr(it.kind)); nodes = writeQ(it.kind, it.x, { saved:Q.res[n] || null, onAnswer:onAnswer }, ctl); }
+  else nodes = MCQ(it, { tag:it.tag, saved:Q.res[n] != null ? { v:Q.res[n].v } : null, onAnswer:onAnswer });
+  return head.concat(nodes);
 }
 function finishQuiz(){ if (!Q) return; S.quiz.attempts = (S.quiz.attempts || 0) + 1; S.quiz.last = Q.score; S.quiz.best = Math.max(S.quiz.best || 0, Q.score); touch(); updateProgress(); nextStep(); }
 function ring(v, max){ var r = 42, C = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / max));
@@ -1813,6 +1869,7 @@ function renderErrorAnalysis(quizWrongs){
     grouped[cat].push({ title:title, right:right, whyEn:whyEn, whyAr:whyAr });
   }
   (quizWrongs || []).forEach(function(it){
+    if (it.kind && it.kind !== 'mcq') { addErr(it.errCat || 'tense', writeText(it.x), writeAnswer(it.x), it.whyEn, it.why); return; }
     var pp = it.prompt.split('___');
     var full = pp.length > 1 ? pp[0] + '[' + it.opts[it.a] + ']' + pp[1] : it.prompt + ' → ' + it.opts[it.a];
     addErr(it.errCat || 'tense', full, it.opts[it.a], it.whyEn, it.why);
@@ -1826,7 +1883,7 @@ function renderErrorAnalysis(quizWrongs){
     if (it.type === 'mcq') right = x.opts[x.a];
     else if (it.type === 'tf') right = x.ok ? 'Correct' : x.fix;
     else if (it.type === 'rtf') right = x.a ? 'True' : 'False';
-    else if (it.type === 'typing' || it.type === 'recall') right = x.ans[0];
+    else if (it.type === 'typing' || it.type === 'recall' || it.type === 'fix') right = x.ans[0];
     else if (it.type === 'builder') right = x.ans;
     addErr(it.errCat || 'tense', itemText(it), right, x.whyEn || x.spellNoteEn, x.why || x.spellNote || x.spellNoteAr);
   });
@@ -2813,14 +2870,16 @@ function utNums(ut){ var N = ut.questions.length, m = ut.masteryPct || 90, p = u
 
 function stUnitLegal(st, ctl){
   var ut = unitTestOf(st.unit) || unitTestOf(1), n = utNums(ut);
+  /* عدد أسئلة الكتابة من بيانات الاختبار نفسه، لا رقم مكتوب. */
+  var wN = quizWriteCount(ut.questions);
   var lc = ut.legalCorner, newAr = n.N >= 3 && n.N <= 10 ? arDigits(n.N) + ' أسئلة جديدة' : arDigits(n.N) + ' سؤالًا جديدًا';
   ctl.enable('ابدأ الاختبار');
   return [
     lc ? label('Friday Review · Weekly Legal Corner (10 min)', 'مراجعة الجمعة · الركن القانوني الأسبوعي (١٠ دقائق)') : label('Friday Review', 'مراجعة الجمعة'),
     h('div', { class:'qi' },
       h('h1', { class:'bi-h' }, h('span', { class:'en', dir:'ltr', style:'color:#fff' }, ut.titleEn), h('small', { style:'color:var(--honey)' }, ut.titleAr)),
-      h('p', { class:'en', dir:'ltr', style:'color:#fff;font-weight:600;text-align:left' }, n.N + ' new questions' + (ut.appliedTask ? ' + a short applied writing task' : '') + '. Mastery target: ' + n.m + '% (' + n.mN + '/' + n.N + '). Passing threshold: ' + n.p + '% (' + n.pN + '/' + n.N + ').'),
-      arReveal(newAr + ' لم تظهر في الدروس' + (ut.appliedTask ? ' + مهمة تطبيقية قصيرة' : '') + '. هدف الإتقان ' + arDigits(n.m) + '٪ (' + arDigits(n.mN) + '/' + arDigits(n.N) + ')، وحد العبور ' + arDigits(n.p) + '٪ (' + arDigits(n.pN) + '/' + arDigits(n.N) + '): من ' + arDigits(n.p) + ' إلى ' + arDigits(n.m - 1) + '٪ تعبر الوحدة وتعود أخطاؤك لمختبر الأخطاء مع اختبار مصغر الأسبوع التالي، وأقل من ' + arDigits(n.p) + '٪ تراجع الدروس الضعيفة أولًا.', false),
+      h('p', { class:'en', dir:'ltr', style:'color:#fff;font-weight:600;text-align:left' }, n.N + ' new questions' + (wN ? ' (' + wN + ' with written answers)' : '') + (ut.appliedTask ? ' + a short applied writing task' : '') + '. Mastery target: ' + n.m + '% (' + n.mN + '/' + n.N + '). Passing threshold: ' + n.p + '% (' + n.pN + '/' + n.N + ').'),
+      arReveal(newAr + ' لم تظهر في الدروس' + (wN ? '، ' + (wN === 1 ? 'منها سؤال واحد تكتب جوابه' : wN === 2 ? 'منها سؤالان تكتب جوابيهما' : 'منها ' + arQs(wN) + ' تكتب أجوبتها') : '') + (ut.appliedTask ? ' + مهمة تطبيقية قصيرة' : '') + '. هدف الإتقان ' + arDigits(n.m) + '٪ (' + arDigits(n.mN) + '/' + arDigits(n.N) + ')، وحد العبور ' + arDigits(n.p) + '٪ (' + arDigits(n.pN) + '/' + arDigits(n.N) + '): من ' + arDigits(n.p) + ' إلى ' + arDigits(n.m - 1) + '٪ تعبر الوحدة وتعود أخطاؤك لمختبر الأخطاء مع اختبار مصغر الأسبوع التالي، وأقل من ' + arDigits(n.p) + '٪ تراجع الدروس الضعيفة أولًا.', false),
       h('div', { class:'qi-stats' },
         h('div', { class:'qs' }, h('b', {}, String(n.N)), h('span', {}, 'New questions')),
         h('div', { class:'qs' }, h('b', { dir:'ltr' }, n.m + '%'), h('span', {}, 'Mastery')),
@@ -2841,21 +2900,30 @@ function stUnitLegal(st, ctl){
 function stUnitTestQ(st, ctl){
   var ut = unitTestOf(st.unit) || unitTestOf(1);
   var q = ut.questions[st.qIdx];
-  var saved = UT_STATE && UT_STATE.ans[st.qIdx];
+  var saved = UT_STATE && UT_STATE.ans[st.qIdx], wk = writeKind(q);
   ctl.set('التالي', saved != null, nextStep);
-  var nodes = MCQ({ prompt:q.s, opts:q.opts, a:q.a, whyEn:q.whyEn, why:q.why }, {
+  function onAnswer(ok, v){
+    if (!UT_STATE) UT_STATE = { unit:st.unit, ans:{}, applied:'' };
+    UT_STATE.ans[st.qIdx] = { c:ok, v:v };
+    if (!ok) bumpErrorLab(q.errCat || 'tense', wk ? writeSample(q, v) : q.s);
+    touch();
+    ctl.enable('التالي');
+  }
+  var head = [label('Unit Test · Question ' + (st.qIdx + 1) + ' of ' + ut.questions.length, 'اختبار الوحدة · السؤال ' + (st.qIdx + 1) + ' من ' + ut.questions.length)], nodes;
+  /* سؤال الكتابة: تعليمة نوعه فوقه، وزر «تحقق» حتى يُجاب، ثم الصح أو الخطأ وسببه كسؤال الاختيار. */
+  if (wk) { head.push(writeInstr(wk)); nodes = writeQ(wk, q, { saved:saved || null, onAnswer:onAnswer }, ctl); }
+  else nodes = MCQ({ prompt:q.s, opts:q.opts, a:q.a, whyEn:q.whyEn, why:q.why }, {
     tag:unitNameEn(st.unit) + ' Test · Q' + (st.qIdx + 1) + '/' + ut.questions.length,
     saved: saved != null ? { v:saved.v } : null,
-    onAnswer:function(ok, v){
-      if (!UT_STATE) UT_STATE = { unit:st.unit, ans:{}, applied:'' };
-      UT_STATE.ans[st.qIdx] = { c:ok, v:v };
-      if (!ok) bumpErrorLab(q.errCat || 'tense', q.s);
-      touch();
-      ctl.enable('التالي');
-    }
+    onAnswer:onAnswer
   });
-  return [label('Unit Test · Question ' + (st.qIdx + 1) + ' of ' + ut.questions.length, 'اختبار الوحدة · السؤال ' + (st.qIdx + 1) + ' من ' + ut.questions.length)].concat(nodes);
+  return head.concat(nodes);
 }
+/* ما كتبه المتعلم خطأً في سؤال كتابة، مثالًا لنمطه في مختبر الأخطاء (يظهر فيه مشطوبًا). */
+function writeSample(q, v){ var k = writeKind(q);
+  if (k === 'order') return Array.isArray(v) ? v.map(function(i){ return (q.chips || [])[i]; }).join(' ') : writeText(q);
+  if (k === 'typing') return [q.pre, v, q.post].filter(function(t){ return t; }).join(' ').replace(/\s+([.!?,])/g, '$1');
+  return String(v || q.s || ''); }
 
 function stUnitApplied(st, ctl){
   var ut = unitTestOf(st.unit) || unitTestOf(1), task = ut.appliedTask || {};
@@ -2950,22 +3018,31 @@ function stUnitTestResult(st, ctl){
     weakKeys.length ? h('div', { class:'elab-card', style:'width:100%;text-align:right' },
       biNode('Recommended Lessons to Review:', 'الدروس التي يُنصح بمراجعتها من أخطائك:'),
       h('p', { class:'en', dir:'ltr', style:'font-weight:700;color:var(--accent-ink);text-align:left' }, weakKeys.join(' · '))) : null,
-    h('button', { class:'btn out sm', type:'button', on:{ click:function(){ openSession('unitTest:' + st.unit); } } }, biBtn(isWeekUnit(st.unit) ? 'Retake Week Test' : 'Retake Unit Test', 'إعادة الاختبار')));
+    h('button', { class:'btn out sm', type:'button', on:{ click:function(){ openSession('unitTest:' + st.unit); } } }, biBtn(isWeekUnit(st.unit) ? 'Retake Week Test' : 'Retake Unit Test', 'إعادة الاختبار')),
+    /* قائمة الأسئلة التي أخطأها أو لم يجبها: سؤاله وما كتبه أو اختاره، ثم الصحيح وسببه (بطاقة الاختبار القبلي نفسها). */
+    missedIdxs.length ? h('div', { class:'pt-list ut-review' },
+      label('Review Your Mistakes', 'راجع أخطاءك'),
+      missedIdxs.map(function(idx){ return ptReviewItem(ut.questions[idx], idx, N, UT_STATE && UT_STATE.ans[idx]); })) : null);
 }
 
 function stUnitMiniQ(st, ctl){
   var ut = unitTestOf(st.unit) || unitTestOf(1);
   var q = ut.questions[st.qIdx] || ut.questions[0];
-  ctl.set('التالي', false, nextStep);
-  var nodes = MCQ({ prompt:q.s, opts:q.opts, a:q.a, whyEn:q.whyEn, why:q.why }, {
+  var wk = writeKind(q), saved = MINI_STATE && MINI_STATE.ans[st.qIdx];
+  ctl.set('التالي', saved != null, nextStep);
+  function onAnswer(ok, v){
+    if (!MINI_STATE) MINI_STATE = { unit:st.unit, idxs:[st.qIdx], ans:{} };
+    MINI_STATE.ans[st.qIdx] = { c:ok, v:v };
+    ctl.enable('التالي');
+  }
+  var head = [label('Mini Follow-Up Quiz · ' + st.pos + ' of ' + st.total, 'الاختبار المصغر لأخطاء الوحدة · ' + st.pos + ' من ' + st.total)], nodes;
+  if (wk) { head.push(writeInstr(wk)); nodes = writeQ(wk, q, { saved:saved || null, onAnswer:onAnswer }, ctl); }
+  else nodes = MCQ({ prompt:q.s, opts:q.opts, a:q.a, whyEn:q.whyEn, why:q.why }, {
     tag:'Mini Follow-Up Quiz · ' + st.pos + '/' + st.total,
-    onAnswer:function(ok, v){
-      if (!MINI_STATE) MINI_STATE = { unit:st.unit, idxs:[st.qIdx], ans:{} };
-      MINI_STATE.ans[st.qIdx] = { c:ok, v:v };
-      ctl.enable('التالي');
-    }
+    saved: saved != null ? { v:saved.v } : null,
+    onAnswer:onAnswer
   });
-  return [label('Mini Follow-Up Quiz · ' + st.pos + ' of ' + st.total, 'الاختبار المصغر لأخطاء الوحدة · ' + st.pos + ' من ' + st.total)].concat(nodes);
+  return head.concat(nodes);
 }
 
 function stUnitMiniResult(st, ctl){
@@ -3080,12 +3157,17 @@ function stPreTestQ(st, ctl){
 }
 
 /* بند واحد في قائمة المراجعة: رقمه وجملته (وإجابة المتعلم مظللة) ثم بطاقة fbCard المعتمدة بالإجابة الصحيحة والشرح. */
+/* ويخدم قائمة أخطاء اختبار الوحدة أيضًا، وفيها صحّح الجملة (fix) ورتّب الكلمات (order): الجملة أو القطع، ثم ما كتبه المتعلم تحتها. */
 function ptReviewItem(item, idx, N, a){
-  var typed = item.type === 'typing', answered = !!(a && a.v != null), ok = !!(a && a.c);
-  var correct = typed ? item.ans[0] : item.opts[item.a];
+  var typed = item.type === 'typing', wk = writeKind(item), answered = !!(a && a.v != null), ok = !!(a && a.c);
+  var correct = wk ? writeAnswer(item) : item.opts[item.a];
   var mark = answered ? (ok ? ' ok' : ' bad') : '';
   var sent;
-  if (typed) {
+  if (wk === 'fix' || wk === 'order') {
+    var mineW = !answered ? null : wk === 'order' ? (Array.isArray(a.v) ? a.v.map(function(i){ return item.chips[i]; }).join(' ') : String(a.v)) : String(a.v);
+    sent = h('div', {}, h('p', { class:'q-en sm', dir:'ltr' }, wk === 'fix' ? item.s : item.chips.join(' / ')),
+      answered ? h('p', { class:'pt-pick', dir:'ltr' }, h('small', {}, 'Your answer'), h('span', { class:'blank' + mark }, mineW)) : null);
+  } else if (typed) {
     var noSpace = /^[.!?,]/.test(item.post);
     sent = h('p', { class:'q-en sm', dir:'ltr' }, item.pre ? item.pre + ' ' : '', h('span', { class:'blank' + mark }, answered ? a.v : ' '), ' ', h('span', { class:'verb' }, '(' + item.verb + ')'), noSpace ? '' : ' ', item.post);
   } else {
@@ -3100,7 +3182,7 @@ function ptReviewItem(item, idx, N, a){
   }
   return h('div', { class:'pt-item' },
     qCard(sent, { tag:'Q' + (idx + 1) + '/' + N }),
-    fbCard(ok, item.why, null, ['Correct answer', correct], item.whyEn, answered ? null : 'No answer'));
+    fbCard(ok, item.why, null, [wk === 'fix' ? 'Correct sentence' : wk === 'order' ? 'Correct order' : 'Correct answer', correct], item.whyEn, answered ? null : 'No answer'));
 }
 
 function stPreTestResult(st, ctl){

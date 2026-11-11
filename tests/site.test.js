@@ -161,6 +161,41 @@ function fakeGitHub(token, opts) {
     }
   }
 
+  /* أسئلة الكتابة في الاختبارات (11 نوفمبر 2026): يجيب عن سؤال الكتابة المعروض إجابةً صحيحة من بيانات items (بنود type: typing / fix / order).
+     يتعرف على البند من الشاشة: جملة fix، أو قطع order، أو تلميح typing وما قبل الفراغ. ويرجع false إن لم يكن على الشاشة سؤال كتابة،
+     ومع known: true إن لم يكن البند المعروض من items (فيبقى تمرين gC وgD في مرحلة القواعد لمن يجيب عنه). */
+  function orderPath(chips, ans) {
+    const used = chips.map(() => false), seq = [];
+    const rec = rest => { if (rest === '') return used.every(Boolean);
+      for (let i = 0; i < chips.length; i++) { if (used[i] || !(rest === chips[i] || rest.startsWith(chips[i] + ' '))) continue;
+        used[i] = true; seq.push(chips[i]); if (rec(rest === chips[i] ? '' : rest.slice(chips[i].length + 1))) return true; used[i] = false; seq.pop(); }
+      return false; };
+    return rec(ans) ? seq : null;
+  }
+  async function placeChips(page, seq) { for (const c of seq) { await page.locator('.b-pool .chip:enabled').filter({ hasText: new RegExp('^\\s*' + c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*$') }).first().click(); await sleep(30); } }
+  async function answerWrite(page, items, right, known) {
+    const sq = s => String(s || '').replace(/\s+/g, ' ').trim();
+    if (await page.locator('.fix-in:enabled').count()) {
+      const s = sq(await page.locator('.fix-q .q-en').innerText()), x = items.find(it => it.type === 'fix' && sq(it.s) === s);
+      if (known && !x) return false;
+      await page.locator('.fix-in:enabled').fill(right && x ? x.ans[0] : s); await page.locator('.fix-in:enabled').press('Enter'); await sleep(80); return true;
+    }
+    if (await page.locator('.b-pool .chip:enabled').count()) {
+      const shown = (await page.locator('.b-pool .chip:enabled').allInnerTexts()).map(sq).sort().join('|');
+      const x = items.find(it => it.type === 'order' && it.chips.map(sq).sort().join('|') === shown);
+      if (known && !x) return false;
+      await placeChips(page, right && x ? orderPath(x.chips, x.ans) : x ? x.chips.slice() : (await page.locator('.b-pool .chip:enabled').allInnerTexts()).map(sq));
+      await cta(page); return true;
+    }
+    if (await page.locator('.gap-in:enabled').count() && await page.locator('.qcard .verb').count()) {
+      const cue = sq(await page.locator('.qcard .verb').first().innerText()).replace(/^\(|\)$/g, ''), line = sq(await page.locator('.qcard .q-en').first().innerText());
+      const x = items.find(it => it.type === 'typing' && sq(it.verb) === cue && line.startsWith(sq(it.pre)));
+      if (known && !x) return false;
+      await page.locator('.gap-in:enabled').fill(right && x ? x.ans[0] : 'zzz'); await page.locator('.gap-in:enabled').press('Enter'); await sleep(80); return true;
+    }
+    return false;
+  }
+
   /* ---------------- أ) جهاز جديد بلا مزامنة ---------------- */
   {
     const { ctx, page } = await newPage(null);
@@ -363,7 +398,7 @@ function fakeGitHub(token, opts) {
     const seenListen = {};               // ما يظهر فيهما في مرحلتي الاستماع ١ و٣
     const seenRead = {};                 // رأس الإيميل ومؤقت القراءة الأولى وشارة عدد الكلمات في دروس القراءة
     async function drive(lid) {
-      const data = await page.evaluate(lid => { const L = LESSONS[lid]; const v = (L.vocab || []).concat(L.legalPhrase ? [L.legalPhrase] : []); return { pairs: v.map(x => [x.en, x.ar]), quiz: L.quiz.map(q => [q.s, q.opts[q.a]]) }; }, lid);
+      const data = await page.evaluate(lid => { const L = LESSONS[lid]; const v = (L.vocab || []).concat(L.legalPhrase ? [L.legalPhrase] : []); return { pairs: v.map(x => [x.en, x.ar]), quiz: L.quiz.filter(q => Array.isArray(q.opts)).map(q => [q.s, q.opts[q.a]]), qw: L.quiz.filter(q => q.type) }; }, lid);
       const arOf = Object.fromEntries(data.pairs);
       for (let n = 0; n < 600; n++) {
         if (!(await page.locator('.pl').count())) return true;
@@ -397,6 +432,8 @@ function fakeGitHub(token, opts) {
           if (LISTEN_IDS.includes(lid)) { const scr = await page.innerText('#screen').catch(() => ''); if (/Stage 1 of 3/.test(scr)) seenListen[lid] = Object.assign(seenListen[lid] || {}, { s1: scr }); }
           await cta(page); continue;
         }
+        // أسئلة الكتابة في اختبار الدرس (من الوحدة 4) تُجاب صحيحة، فيعبر الاختبار
+        if (data.qw.length && await answerWrite(page, data.qw, true, true)) { await cta(page); continue; }
         const inp = page.locator('.gap-in:enabled');
         if (await inp.count()) { const c = await inp.count(); for (let i = 0; i < c; i++) await inp.nth(i).fill('x'); await inp.last().press('Enter'); await sleep(60); await cta(page); continue; }
         if (await page.locator('.b-pool .chip:enabled').count()) { while (await page.locator('.b-pool .chip:enabled').count()) await page.locator('.b-pool .chip:enabled').first().click(); await cta(page); continue; }
@@ -488,7 +525,9 @@ function fakeGitHub(token, opts) {
       if (u0open) {
         await u0btn.click(); await sleep(250);
         await cta(page); // الركن القانوني ← السؤال الأول
-        for (let i = 0; i < 60; i++) { const opt = page.locator('.opt:enabled'); if (!(await opt.count())) break; await opt.first().click(); await sleep(60); await cta(page); }
+        // أسئلة الكتابة (نصف الاختبار منذ 11 نوفمبر 2026) تُجاب صحيحة من بيانات الاختبار، والاختيار بأول خيار كما كان
+        const utW0 = await page.evaluate(u => DATA.unitTests[u].questions.filter(q => q.type), 0);
+        for (let i = 0; i < 60; i++) { const opt = page.locator('.opt:enabled'); if (await opt.count()) { await opt.first().click(); await sleep(60); await cta(page); continue; } if (await answerWrite(page, utW0, true)) { await cta(page); continue; } break; }
         if (await page.locator('textarea.wt').count()) {
           // المهمة التطبيقية تطلب minSentences جملة: ثلاث جمل لا تكفي حين تطلب المهمة أربعًا
           const need = await page.evaluate(() => (DATA.unitTests[0].appliedTask || {}).minSentences || 3);
@@ -514,7 +553,9 @@ function fakeGitHub(token, opts) {
       if (t1Btn) {
         await t1Btn.click(); await sleep(250);
         await cta(page); // الركن القانوني ← السؤال الأول
-        for (let i = 0; i < 60; i++) { const opt = page.locator('.opt:enabled'); if (!(await opt.count())) break; await opt.first().click(); await sleep(60); await cta(page); }
+        // أسئلة الكتابة (نصف الاختبار منذ 11 نوفمبر 2026) تُجاب صحيحة من بيانات الاختبار، والاختيار بأول خيار كما كان
+        const utW1 = await page.evaluate(u => DATA.unitTests[u].questions.filter(q => q.type), 1);
+        for (let i = 0; i < 60; i++) { const opt = page.locator('.opt:enabled'); if (await opt.count()) { await opt.first().click(); await sleep(60); await cta(page); continue; } if (await answerWrite(page, utW1, true)) { await cta(page); continue; } break; }
         if (await page.locator('textarea.wt').count()) {
           const need = await page.evaluate(() => (DATA.unitTests[1].appliedTask || {}).minSentences || 3);
           if (need > 3) { await page.fill('textarea.wt', 'I usually study law in the morning. This week I am working on a project. I never break the law.'); await cta(page); t1Min = (await page.locator('textarea.wt').count()) === 1 && /\/ 4\b/.test(await page.locator('.wcount').innerText()); }
@@ -907,6 +948,148 @@ function fakeGitHub(token, opts) {
     ok((await page.locator('#syncPublic').count()) === 0 && (await getJSON(page, 'ep4.syncmeta')).pub === false, 'a private progress repository shows no public warning');
     ok(page.errors.length === 0, 'no page errors (empty private repository): ' + page.errors.join(' | '));
     await ctx.close();
+  }
+
+  /* ---------------- ح) أسئلة الكتابة في الاختبارات (11 نوفمبر 2026): اكتب الصيغة، وصحّح الجملة، ورتّب الكلمات ----------------
+     الأسئلة هنا مصنوعة للاختبار ومحقونة في الصفحة وحدها (DATA في الذاكرة، وملف الدرس عند تقديمه)، فلا يُمس content.js ولا ملف درس. */
+  {
+    const W = [
+      { type: 'typing', pre: 'My sister', verb: 'study', post: 'law at the university.', ans: ['studies'], errCat: 'tense', whyEn: 'She → studies.', why: 'مع she نضيف s.' },
+      { type: 'fix', s: "She don't like coffee in the morning.", ans: ["She doesn't like coffee in the morning."], errCat: 'tense', whyEn: "She → doesn't.", why: 'مع she نستعمل does.' },
+      { type: 'order', chips: ['every', 'We', 'visit', 'Friday.', 'our grandparents'], ans: 'We visit our grandparents every Friday.', errCat: 'word_order', whyEn: 'Subject + verb + object + time.', why: 'الفاعل ثم الفعل ثم المفعول ثم الزمن.' },
+      { type: 'typing', pre: 'Yesterday I', verb: 'buy', post: 'a new phone.', ans: ['bought'], errCat: 'tense', whyEn: 'buy → bought.', why: 'ماضي buy هو bought.' },
+      { type: 'fix', s: 'My brothers is at the airport now.', ans: ['My brothers are at the airport now.'], errCat: 'be_verb', whyEn: 'brothers → are.', why: 'الجمع مع are.' },
+      { type: 'order', chips: ['is', 'The pharmacy', 'next to', 'the bank.'], ans: 'The pharmacy is next to the bank.', errCat: 'word_order', whyEn: 'Subject + is + place.', why: 'الفاعل ثم is ثم المكان.' }
+    ];
+    const hookApp = async ctx => ctx.route(/\/app\.js(\?|$)/, r => { const t = fs.readFileSync(path.join(ROOT, 'app.js'), 'utf8'), i = t.lastIndexOf('boot();');
+      return r.fulfill({ status: 200, contentType: 'application/javascript; charset=utf-8', body: t.slice(0, i) + 'window.__fx = { fixOK: fixOK, fixNorm: fixNorm };\n' + t.slice(i) }); });
+
+    // 1) Fix: الحالة والترقيم والفاصلة العليا المعقوفة والاختصارات لا تغيّر الحكم، والجملة الخاطئة نفسها مرفوضة
+    {
+      const { ctx, page } = await newPage(null);
+      await hookApp(ctx);
+      await startApp(page);
+      const fx = await page.evaluate(() => {
+        const a = { s: "She don't like coffee.", ans: ["She doesn't like coffee."] }, f = (x, v) => __fx.fixOK(x, v);
+        return {
+          same: f(a, "She doesn't like coffee."), caps: f(a, 'SHE DOESN’T LIKE COFFEE'), full: f(a, 'she does not like coffee!'),
+          unchanged: f(a, "She don't like coffee."), unchangedFull: f(a, 'she do not like coffee'), wrong: f(a, 'She not like coffee.'), empty: f(a, '  '),
+          cant: f({ s: 'He can swims.', ans: ["He can't swim."] }, 'He cannot swim') && f({ s: 'He can swims.', ans: ["He can't swim."] }, 'he can not swim.'),
+          wont: f({ s: 'I will not to go.', ans: ["I won't go."] }, 'I will not go.'),
+          am: f({ s: 'I is ready.', ans: ["I'm ready."] }, 'I am ready'), are: f({ s: 'They is here.', ans: ["They're here."] }, 'they are here.'),
+          will: f({ s: 'I will to call.', ans: ["I'll call."] }, 'I will call'), have: f({ s: 'We has finished.', ans: ["We've finished."] }, 'We have finished.'),
+          sNotFolded: f({ s: 'He are tired.', ans: ["He's tired."] }, 'He is tired.'), sBoth: f({ s: 'He are tired.', ans: ["He's tired.", 'He is tired.'] }, 'He is tired.')
+        };
+      });
+      ok(fx.same && fx.caps && fx.full && fx.cant && fx.wont && fx.am && fx.are && fx.will && fx.have && fx.sBoth && !fx.unchanged && !fx.unchangedFull && !fx.wrong && !fx.empty && !fx.sNotFolded,
+        "Fix accepts case, punctuation, curly apostrophe and contraction variants (n't, can't/cannot, won't, 'm, 're, 'll, 've), does not fold 's, and rejects the unchanged sentence: " + JSON.stringify(fx));
+      ok(page.errors.length === 0, 'no page errors (fix matcher): ' + page.errors.join(' | '));
+      await ctx.close();
+    }
+
+    // 2) اختبار وحدة فيه ستة أسئلة كتابة: إجابة صحيحة وخاطئة من كل نوع، والدرجة، وقائمة المراجعة، والاختبار المصغر
+    {
+      const { ctx, page } = await newPage(null);
+      await startApp(page);
+      const u0ids = await page.evaluate(() => DATA.unit0Lessons.filter(l => l && !l.test && l.id).map(l => l.id));
+      await page.evaluate(ids => { const t = Date.now() - 864e5; ids.forEach(id => { const l = JSON.parse(localStorage.getItem('ep4.lesson.' + id) || '{"v":4}'); l.stamps = { recall: t, vocab: t, grammar: t, reading: t, writing: t, quiz: t }; localStorage.setItem('ep4.lesson.' + id, JSON.stringify(l)); }); }, u0ids);
+      await page.reload(); await sleep(400);
+      // الأسئلة 0 إلى 5 تصير أسئلة كتابة (وتبقى دروسها)، والباقي اختيار كما هو
+      const N = await page.evaluate(W => { const q = DATA.unitTests[0].questions; W.forEach((w, i) => { q[i] = Object.assign({ lesson: q[i].lesson }, w); }); return q.length; }, W);
+      const qs = await page.evaluate(() => DATA.unitTests[0].questions);
+      await expandUnit(page, 0);
+      await page.locator('button.u0-test').click(); await sleep(250);
+      const intro = await text(page);
+      ok(/20 new questions \(6 with written answers\)/.test(intro) && (await page.locator('#screen .ar-box').first().evaluate(el => el.textContent)).includes('منها ٦ أسئلة تكتب أجوبتها'), 'unit test intro counts the questions with written answers from the data (6 of 20 here)');
+      await cta(page);
+      // الصحيح: الأول من كل نوع (وصحّح الجملة بصيغة أخرى: حروف كبيرة وبلا نقطة وdoes not)، والخطأ: الثاني من كل نوع (والجملة الخاطئة نفسها في fix)
+      let instrOK = true, checkLbl = true, fbOK = true;
+      for (let i = 0; i < N; i++) {
+        const x = qs[i];
+        if (x.type) {
+          const t = await text(page), lbl = await page.locator('.pl-foot .btn:visible').last().innerText();
+          const ins = { typing: ['Type the missing words. Use the words in brackets.', 'اكتب الكلمات الناقصة مستعينًا بما بين القوسين.'], fix: ['This sentence has one mistake. Type the correct sentence.', 'في هذه الجملة خطأ واحد. اكتب الجملة صحيحة.'], order: ['Put the words in order.', 'رتّب الكلمات.'] }[x.type];
+          instrOK = instrOK && t.includes(ins[0]) && t.includes(ins[1]);
+          checkLbl = checkLbl && /Check/.test(lbl);
+          if (i === 1) { await page.locator('.fix-in').fill('SHE DOES NOT LIKE COFFEE IN THE MORNING'); await page.locator('.fix-in').press('Enter'); await sleep(80); }
+          else await answerWrite(page, W, i < 3);
+          const fb = await page.locator('.fb').innerText().catch(() => '');
+          if (i < 3) fbOK = fbOK && (await page.locator('.fb.bad').count()) === 0 && fb.includes(x.whyEn);
+          else fbOK = fbOK && (await page.locator('.fb.bad').count()) === 1 && fb.includes(x.type === 'fix' ? 'Correct sentence' : x.type === 'order' ? 'Correct order' : 'Correct answer') && fb.includes(x.type === 'order' ? x.ans : x.ans[0]);
+        } else { await page.locator('.opt:enabled').nth(x.a).click(); await sleep(60); }
+        await cta(page);
+      }
+      ok(instrOK && checkLbl, 'unit test writing items show their instruction line (English and Arabic) and a Check button before the answer');
+      ok(fbOK, 'unit test writing items: the right answers (fix typed in capitals, without the period, with "does not") are marked right; the wrong ones show the reason and the correct sentence / order / answer');
+      if (await page.locator('textarea.wt').count()) { await page.fill('textarea.wt', 'I am a law student in Riyadh. My classes are on Sunday. I was at the library yesterday. I do not work on Fridays.'); await cta(page); }
+      const res = await text(page), g = await getJSON(page, 'ep4.course'), rec = g.unitTests && g.unitTests[0];
+      ok((await page.locator('.result .ring-w').count()) === 1 && rec && rec.last === N - 3 && rec.status === 'passed' && JSON.stringify(rec.missedIdxs) === '[3,4,5]', 'unit test with writing items scores 17/20 (three wrong writing items), saves the result and the missed questions: ' + JSON.stringify(rec));
+      const rv = await page.evaluate(() => Array.from(document.querySelectorAll('.ut-review .pt-item')).map(e => e.textContent));
+      ok(rv.length === 3 && rv[0].includes('zzz') && rv[0].includes('bought') && rv[1].includes('Your answer') && rv[1].includes(W[4].s) && rv[1].includes(W[4].ans[0]) && rv[2].includes('is The pharmacy next to the bank.') && rv[2].includes(W[5].ans) && /Review Your Mistakes/.test(res),
+        'unit test result lists the missed questions with the learner\'s answer and the correct one (typing, fix, order): ' + JSON.stringify(rv).slice(0, 300));
+      ok(((g.errorLab.be_verb || {}).lastSample || '') === W[4].s && ((g.errorLab.word_order || {}).lastSample || '') === 'is The pharmacy next to the bank.', 'a wrong writing answer in a unit test sends what the learner wrote to the Error Lab');
+      // الاختبار المصغر: يعرض الأسئلة الثلاثة بأنواعها، والإجابة الصحيحة تُتقن الوحدة
+      await page.locator('.result .btn', { hasText: 'Mini Follow-Up' }).click(); await sleep(250);
+      let miniKinds = '';
+      for (let i = 0; i < 3; i++) { miniKinds += (await page.locator('.fix-in').count()) ? 'f' : (await page.locator('.b-pool').count()) ? 'o' : (await page.locator('.gap-in').count()) ? 't' : '?'; await answerWrite(page, W, true); await cta(page); }
+      const g2 = await getJSON(page, 'ep4.course');
+      ok(miniKinds === 'tfo' && /Mini Follow-Up Quiz Mastered/.test(await text(page)) && g2.unitTests[0].status === 'mastered', 'the mini follow-up quiz shows the missed writing items (typing, fix, order) and clears them: ' + miniKinds);
+      ok(page.errors.length === 0, 'no page errors (unit test writing items): ' + page.errors.join(' | '));
+      await ctx.close();
+    }
+
+    // 3) اختبار درس فيه أربعة أسئلة كتابة محقونة في ملف u0l1 عند تقديمه: الدرجة، ودفتر الأخطاء، وتحليل الأخطاء، ومراجعة كل نوع
+    {
+      const { ctx, page } = await newPage(null);
+      const QW = [W[3], W[1], W[5], W[4]].map(w => Object.assign({ tag: 'Grammar' }, w));   // typing (خطأ)، fix (صحيح)، order (خطأ)، fix (خطأ)
+      await ctx.route(/\/lessons\/u0\/l1\.js(\?|$)/, r => r.fulfill({ status: 200, contentType: 'application/javascript; charset=utf-8',
+        body: fs.readFileSync(path.join(ROOT, 'lessons/u0/l1.js'), 'utf8') + '\n;(function(){ var q = LESSONS.u0l1.quiz, w = ' + JSON.stringify(QW) + '; w.forEach(function(x, i){ q[i] = x; }); })();\n' }));
+      await startApp(page);
+      const quiz = await page.evaluate(() => LESSONS.u0l1.quiz);
+      await page.locator('.tp-btn.pstep[aria-label^="Short Quiz"]').click(); await sleep(250);
+      ok(/10 questions on vocabulary and grammar \(4 with written answers\)/.test(await text(page)), 'lesson quiz intro counts the questions with written answers');
+      await cta(page);
+      const sq = s => String(s || '').replace(/_{3}/g, '').replace(/\s+/g, '').toLowerCase();
+      let kinds = '', lastLbl = '', chk = true;
+      for (let n = 0; n < 10; n++) {
+        if (await page.locator('.opt:enabled').count()) {
+          const q = sq(await page.locator('.q-en').first().innerText()), opts = (await page.locator('.opt:enabled').allInnerTexts()).map(sq);
+          const hit = quiz.find(x => x.opts && sq(x.s) === q && opts.includes(sq(x.opts[x.a])));
+          await page.locator('.opt:enabled').nth(opts.indexOf(sq(hit.opts[hit.a]))).click(); await sleep(60); kinds += 'm';
+        } else {
+          chk = chk && /Check/.test(await page.locator('.pl-foot .btn:visible').last().innerText());
+          const isFix = (await page.locator('.fix-in').count()) > 0;
+          if (isFix && sq(await page.locator('.fix-q .q-en').innerText()) === sq(W[1].s)) { await page.locator('.fix-in').fill("she doesn’t like coffee in the morning"); await page.locator('.fix-in').press('Enter'); await sleep(80); kinds += 'F'; }
+          else { kinds += isFix ? 'f' : (await page.locator('.b-pool').count()) ? 'o' : 't'; await answerWrite(page, QW, false); }
+        }
+        lastLbl = await page.locator('.pl-foot .btn:visible').last().innerText();
+        await cta(page);
+      }
+      const L1 = await getJSON(page, 'ep4.lesson.u0l1'), g = await getJSON(page, 'ep4.course'), res = await text(page);
+      const mk = Object.keys(g.mistakes).filter(k => k.startsWith('u0l1|qz-')).sort();
+      ok(kinds.split('').sort().join('') === 'Ffmmmmmmot' && chk && /Score & Error Analysis/.test(lastLbl) && L1.quiz.last === 7 && L1.quiz.attempts === 1, 'lesson quiz with writing items: each kind renders, the button goes Check → Next → result, and the score is 7/10 (three wrong writing items): ' + kinds + ' ' + JSON.stringify(L1.quiz));
+      ok(JSON.stringify(mk) === JSON.stringify(['u0l1|qz-0', 'u0l1|qz-2', 'u0l1|qz-3']), 'wrong writing answers in the lesson quiz go to the mistake notebook like multiple-choice mistakes: ' + JSON.stringify(mk));
+      ok(res.includes(W[4].s) && res.includes(W[4].ans[0]) && res.includes('is / The pharmacy / next to / the bank.') && res.includes(W[5].ans) && res.includes('Yesterday I ___ (buy) a new phone.') && res.includes('bought'), 'the error analysis shows each wrong writing item and its correct answer');
+      // المراجعة المتباعدة: الأسئلة الثلاثة مستحقة، فيعرضها الدفتر ويعيدها كل واحد بنوعه
+      await page.click('[aria-label="Close · إغلاق"]'); await sleep(200);
+      await page.evaluate(() => { const g = JSON.parse(localStorage.getItem('ep4.course')); Object.keys(g.mistakes).forEach(k => { g.mistakes[k].due = Date.now() - 1000; }); localStorage.setItem('ep4.course', JSON.stringify(g)); });
+      await page.reload(); await sleep(400);
+      await page.locator('.nav-it').nth(2).click(); await sleep(250);
+      const nb = await text(page);
+      ok(nb.includes(W[4].s) && nb.includes('is / The pharmacy / next to / the bank.') && nb.includes('Yesterday I ___ a new phone.'), 'the mistake notebook lists the writing items by their text (the order item by its chips)');
+      await page.locator('#nbHero .btn').click(); await sleep(250);
+      let rk = '', rInstr = true;
+      for (let i = 0; i < 3; i++) {
+        const t = await text(page);
+        rk += (await page.locator('.fix-in').count()) ? 'f' : (await page.locator('.b-pool').count()) ? 'o' : (await page.locator('.gap-in').count()) ? 't' : '?';
+        rInstr = rInstr && t.includes('Review · F1') && /Type the missing words|This sentence has one mistake|Put the words in order/.test(t);
+        await answerWrite(page, QW, true); await cta(page);
+      }
+      const g3 = await getJSON(page, 'ep4.course');
+      ok(rk.split('').sort().join('') === 'fot' && rInstr && ['u0l1|qz-0', 'u0l1|qz-2', 'u0l1|qz-3'].every(k => g3.mistakes[k] && g3.mistakes[k].box === 1), 'the spaced review renders each writing kind with its instruction, and a right answer moves it to step 2: ' + rk);
+      ok(page.errors.length === 0, 'no page errors (lesson quiz writing items): ' + page.errors.join(' | '));
+      await ctx.close();
+    }
   }
 
   await browser.close(); srv.close();
