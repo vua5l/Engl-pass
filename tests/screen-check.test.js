@@ -35,8 +35,13 @@ const shots = {};
 async function shoot(page, name) {
   if (!shotsFile) return;
   let key = name, n = 2; while (shots[key]) key = name + ' #' + n++;
-  const buf = await page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide', mask: [page.locator('.rtimer-t')] });
+  /* صورة ثابتة: تُعاد حتى تتطابق صورتان متتاليتان، فلا تُلتقط بطاقة في منتصف ظهورها. */
+  const snap = () => page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide', mask: [page.locator('.rtimer-t')] });
+  let buf = await snap();
+  for (let t = 0; t < 4; t++) { await page.waitForTimeout(80); const b2 = await snap(); if (b2.equals(buf)) break; buf = b2; }
   shots[key] = require('crypto').createHash('sha1').update(buf).digest('hex');
+  /* SHOTS_PNG_DIR يحفظ الصورة نفسها أيضًا، لفحص شاشة اختلفت بصمتها بالعين. */
+  if (process.env.SHOTS_PNG_DIR) fs.writeFileSync(path.join(process.env.SHOTS_PNG_DIR, key.replace(/[^\w.-]+/g, '_') + '.png'), buf);
 }
 
 const INDEX_HTML = generateIndexHtml(ROOT);
