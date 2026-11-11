@@ -7,6 +7,9 @@
  *   node tools/word-bank.js [siteRoot]            add the words that have no entry yet, keep the rest
  *   node tools/word-bank.js [siteRoot] --refresh  look every word up again
  *   node tools/word-bank.js [siteRoot] --check    write nothing, ask no website; exit 1 and list the missing words
+ *   node tools/word-bank.js [siteRoot] --unit 4 [--out folder]
+ *                                                 the unit sheet (since 11 Nov 2026): before any writer starts, look up
+ *                                                 once every new word of maps/u4.json and the text of its clips (below)
  *
  * Why it exists: the engine used to guess a file called En-us-<word>.ogg and an Oxford page called <word>.
  * Neither exists for many words (studying, raining), so the buttons were dead. The engine now guesses nothing:
@@ -182,14 +185,169 @@ function writeBank(root, bank) {
   fs.writeFileSync(file, s >= 0 && e > s ? text.slice(0, s) + body + text.slice(e + END.length) : text.replace(/\s*$/, '\n\n') + body + '\n');
 }
 
+// ------------------------------------------------------------------ the unit sheet (since 11 Nov 2026)
+/*
+ * node tools/word-bank.js --unit 4 [--out folder] runs once, when the coordinator has written maps/u4.json and before
+ * any writer starts. For every new word of the map (vocab and legalPhrase, without the words in brackets) it writes:
+ *   Oxford   the entry (oxfordSlug, as the lessons need it), its CEFR level in the Oxford 3000/5000 (none = not in
+ *            the lists, so the word may not be a vocab word), its part of speech, and its first meaning;
+ *   sound    the human recording(s) as entryFor() picks them (wikiFile or wikiFiles), with the recorder's name and
+ *            the licence from Wikimedia Commons, joined in a ready wikiCredit for the lesson's sources page;
+ * and for every listening clip the text of its page (the ELLLO script, or a block whose id or class says transcript).
+ * The writers and reviewers read <out>/u4-words.md instead of opening these pages one by one, which used to cost each
+ * of them the same lookups. The clip texts are copyrighted: they stay in the work folder (default: the system temp
+ * folder), never in the repository, and the tool refuses an --out inside it.
+ */
+const UA = 'engl-pass-word-bank/1.0 (https://github.com/vua5l/Engl-pass; personal study site)';   // Wikimedia asks every caller to name itself
+const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', '#39': "'", rsquo: '’', lsquo: '‘', ldquo: '“', rdquo: '”', hellip: '…', mdash: '—', ndash: '–' };
+const decode = t => String(t || '').replace(/&(#?\w+);/g, (m, e) => (ENTITIES[e] != null ? ENTITIES[e] : /^#\d+$/.test(e) ? String.fromCodePoint(+e.slice(1)) : /^#x[0-9a-f]+$/i.test(e) ? String.fromCodePoint(parseInt(e.slice(2), 16)) : m));
+const plainText = h => decode(String(h || '').replace(/<(?:br|\/p|\/li|\/div|\/h\d)\b[^>]*>/gi, '\n').replace(/<[^>]+>/g, ' '))
+  .split('\n').map(l => l.replace(/[ \t ]+/g, ' ').trim()).filter(Boolean).join('\n');
+/* The inner HTML of the element whose opening tag matches `open` (balanced over the same tag name), or null. */
+function innerOf(html, open) {
+  const m = open.exec(html);
+  if (!m) return null;
+  const tag = /^<(\w+)/.exec(m[0])[1].toLowerCase(), re = new RegExp('<(/?)' + tag + '\\b[^>]*>', 'gi');
+  re.lastIndex = m.index + m[0].length;
+  for (let depth = 1, x; (x = re.exec(html));) if ((depth += x[1] ? -1 : 1) === 0) return html.slice(m.index + m[0].length, x.index);
+  return null;
+}
+/* Oxford's entry page: headword, part of speech, level (A1–C1 in the Oxford 3000/5000, or null) and first meaning. */
+function oxfordEntry(slug) {
+  const key = 'p:' + slug;
+  if (cache[key] !== undefined) return cache[key];
+  const url = 'https://www.oxfordlearnersdictionaries.com/definition/english/' + encodeURIComponent(slug).replace(/%23/g, '#');
+  const page = curl(url.split('#')[0], ['-L']);              // Oxford refuses unknown agents (403); curl's own works, as for the search
+  pause(800);
+  if (!/<span class="def"/.test(page)) throw new Error(`Oxford's page for "${slug}" did not open; try again later`);
+  const sym = /class="ox([35])ksym_([abc][12])"/.exec(page);
+  const def = innerOf(page, /<span class="def"[^>]*>/);
+  return (cache[key] = {
+    slug, url: url.split('#')[0],
+    headword: plainText((/<h1 class="headword"[^>]*>([\s\S]*?)<\/h1>/.exec(page) || [])[1]) || null,
+    pos: plainText((/<span class="pos"[^>]*>([^<]*)</.exec(page) || [])[1]) || null,
+    level: sym ? sym[2].toUpperCase() : null,
+    list: sym ? 'Oxford ' + sym[1] + '000' : null,
+    phon: plainText((/<span class="phon">([^<]*)</.exec(page) || [])[1]) || null,
+    def: def ? plainText(def).replace(/\s*\n\s*/g, ' ') : null,
+  });
+}
+/* Lingua Libre writes "Speaker: X Recorder: X": one name when both are the same person. */
+function oneName(a) {
+  const sr = a && /^Speaker:\s*(.+?)\s+Recorder:\s*(.+)$/.exec(a);
+  return sr ? (sr[1] === sr[2] ? sr[1] : 'Speaker: ' + sr[1] + ', Recorder: ' + sr[2]) : a;
+}
+/* Recorder and licence of Wikimedia Commons files, 50 files a request: Map file -> { artist, license, licenseUrl, page }. */
+function commonsCredits(files) {
+  const out = new Map(), todo = [];
+  for (const f of files) { const c = cache['c:' + f]; if (c) out.set(f, Object.assign({}, c, { artist: oneName(c.artist) })); else todo.push(f); }
+  for (let i = 0; i < todo.length; i += 50) {
+    const batch = todo.slice(i, i + 50);
+    const url = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=imageinfo&iiprop=extmetadata' +
+      '&iiextmetadatafilter=Artist%7CLicenseShortName%7CLicenseUrl&titles=' + encodeURIComponent(batch.map(f => 'File:' + f).join('|'));
+    let d = null;
+    for (const wait of [0, 15000, 45000]) {                // Wikimedia asks callers to slow down rather than retry fast
+      if (wait) pause(wait);
+      try { d = JSON.parse(curl(url, ['-A', UA])); break; } catch (_) { d = null; }
+    }
+    if (!d || !d.query) continue;                           // no answer: these files get credit null, and the sheet says so
+    const back = new Map(batch.map(f => ['File:' + f, f]));
+    for (const n of d.query.normalized || []) if (back.has(n.from)) back.set(n.to, back.get(n.from));
+    for (const p of Object.values(d.query.pages || {})) {
+      const f = back.get(p.title), m = (p.imageinfo && p.imageinfo[0] && p.imageinfo[0].extmetadata) || null;
+      if (!f || !m) continue;
+      const c = { artist: oneName(plainText(m.Artist && m.Artist.value).replace(/\n/g, ' ')) || null, license: (m.LicenseShortName && m.LicenseShortName.value) || null,
+        licenseUrl: (m.LicenseUrl && m.LicenseUrl.value) || null, page: 'https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(f) };
+      out.set(f, (cache['c:' + f] = c));
+    }
+    pause(1000);
+  }
+  return out;
+}
+/* The text of a clip page: ELLLO's script (#transcript), else the first block whose id or class says transcript. */
+function clipTranscript(url) {
+  const page = curl(url, ['-L']);
+  if (!page) return { text: null, why: 'the page did not open' };
+  const html = innerOf(page, /<div[^>]+id="transcript"[^>]*>/i) || innerOf(page, /<(?:div|section)[^>]+(?:id|class)="[^"]*transcript[^"]*"[^>]*>/i);
+  const text = html && plainText(html.replace(/<div id="menuright">[\s\S]*?<\/table>\s*<\/div>/i, '')).replace(/ +:/g, ':');
+  return text && text.length > 80 ? { text } : { text: null, why: 'no transcript on the page: run tools/hear.py on the audio' };
+}
+const bare = w => String(w || '').replace(/\s*\(.*$/, '').trim();
+function unitSheet(root, unit, outDir) {
+  const file = path.join(root, 'maps', 'u' + unit + '.json');
+  if (!fs.existsSync(file)) throw new Error(`no map ${path.relative(root, file)}: write the unit map first`);
+  const rel = path.relative(path.resolve(root), path.resolve(outDir));
+  if (!rel.startsWith('..') && !path.isAbsolute(rel)) throw new Error('--out must be outside the repository (the clip texts are copyrighted)');
+  const map = JSON.parse(fs.readFileSync(file, 'utf8')), words = [], clips = [];
+  for (const L of map.lessons || []) {
+    (L.vocab || []).forEach(v => words.push({ lesson: L.id, en: bare(v), kind: 'vocab' }));
+    if (L.legalPhrase) words.push({ lesson: L.id, en: bare(L.legalPhrase), kind: 'legalPhrase' });
+    if (L.clip && L.clip.url) clips.push({ lesson: L.id, url: L.clip.url, title: L.clip.title || '' });
+  }
+  for (const w of words) {
+    const e = entryFor(w.en.toLowerCase(), w.en);
+    w.oxford = e.oxfordSlug ? oxfordEntry(e.oxfordSlug) : null;
+    w.sound = e.wikiFile ? [e.wikiFile] : e.wikiFiles || [];
+    /* A phrase often has no page of its own (legal system → system): the level and meaning are then the other word's. */
+    const hw = w.oxford && w.oxford.headword && w.oxford.headword.toLowerCase().replace(/\s+/g, ' ');
+    if (hw && hw !== w.en.toLowerCase()) w.oxfordPageOf = w.oxford.headword;
+    /* No recording of exactly this word: the files Wiktionary has for it (desert-noun, record-verb), for an OVERRIDES line. */
+    if (!w.sound.length) w.candidates = kaikkiFiles(w.en.toLowerCase()).slice(0, 6);
+    try { fs.writeFileSync(CACHE, JSON.stringify(cache)); } catch (_) { /* the cache only saves time */ }
+  }
+  const credits = commonsCredits([...new Set(words.flatMap(w => w.sound))]);
+  for (const w of words) {
+    w.credits = w.sound.map(f => Object.assign({ file: f }, credits.get(f) || { artist: null, license: null }));
+    w.wikiCredit = w.sound.length ? w.credits.map(c => 'File:' + c.file + (c.artist ? ' · ' + c.artist : '') + (c.license ? ' · ' + c.license : '')).join(' & ') + ' · Wikimedia Commons' : null;
+  }
+  fs.mkdirSync(outDir, { recursive: true });
+  for (const c of clips) {
+    const t = clipTranscript(c.url);
+    if (t.text) { c.transcriptFile = path.join(outDir, c.lesson + '-clip.txt'); fs.writeFileSync(c.transcriptFile, t.text + '\n'); }
+    else c.why = t.why;
+    pause(500);
+  }
+  try { fs.writeFileSync(CACHE, JSON.stringify(cache)); } catch (_) { /* the cache only saves time */ }
+  const made = new Date().toISOString().slice(0, 10), json = path.join(outDir, 'u' + unit + '-words.json'), md = path.join(outDir, 'u' + unit + '-words.md');
+  fs.writeFileSync(json, JSON.stringify({ unit, made, words, clips }, null, 1) + '\n');
+  const cell = x => String(x == null ? '—' : x).replace(/\|/g, '/').replace(/\n/g, ' ');
+  const lines = ['# Unit ' + unit + ' words · كلمات الوحدة ' + unit, '',
+    `Made by \`node tools/word-bank.js --unit ${unit}\` on ${made}. Read this instead of opening Oxford, Wiktionary and Wikimedia pages; copy \`oxfordSlug\`, \`wikiFile\` (or \`wikiFiles\`) and \`wikiCredit\` into the lesson as they are.`,
+    'يقرأ الكاتب والمراجع هذا الملف بدل فتح الصفحات، وينقلان oxfordSlug وwikiFile وwikiCredit كما هي.', ''];
+  for (const L of map.lessons || []) {
+    lines.push('## ' + L.id + ' · ' + (L.title || ''), '', '| word | level | part of speech | first meaning (Oxford) | oxfordSlug | sound file | wikiCredit |', '|---|---|---|---|---|---|---|');
+    for (const w of words.filter(x => x.lesson === L.id)) {
+      const o = w.oxford || {};
+      const level = w.oxfordPageOf ? 'page of «' + w.oxfordPageOf + '»' + (o.level ? ': ' + o.level : '') : o.level ? o.level + ' · ' + o.list : (w.oxford ? 'not in Oxford 3000/5000' : 'no Oxford page');
+      lines.push('| ' + [w.en + (w.kind === 'legalPhrase' ? ' (legal)' : ''), level, o.pos, o.def, o.slug, w.sound.join(' + ') || 'no human recording', w.wikiCredit].map(cell).join(' | ') + ' |');
+    }
+    const c = clips.find(x => x.lesson === L.id);
+    if (c) lines.push('', 'Clip: ' + c.url + (c.transcriptFile ? '  \nText of the clip page (copyrighted, not for the site): `' + c.transcriptFile + '`' : '  \nNo text: ' + c.why));
+    lines.push('');
+  }
+  const warn = words.filter(w => w.kind === 'vocab' && !w.oxfordPageOf && !(w.oxford && w.oxford.level)).map(w => w.lesson + ' ' + w.en + ': not in Oxford 3000/5000')
+    .concat(words.filter(w => w.oxfordPageOf).map(w => w.lesson + ' ' + w.en + ': Oxford\'s page is for «' + w.oxfordPageOf + '»; check that its meaning is the lesson\'s, and the level of the phrase itself'))
+    .concat(words.filter(w => !w.sound.length).map(w => w.lesson + ' ' + w.en + ': no human recording of exactly this word (no speaker button)' + (w.candidates && w.candidates.length ? '; Wiktionary has: ' + w.candidates.join(', ') + ' (pick one in OVERRIDES)' : '')))
+    .concat(words.filter(w => w.sound.length && w.credits.some(c => !c.artist)).map(w => w.lesson + ' ' + w.en + ': recorder not found on Commons (open the file page)'));
+  if (warn.length) lines.push('## To check · للمراجعة', '', ...warn.map(x => '- ' + x), '');
+  fs.writeFileSync(md, lines.join('\n'));
+  console.log(`unit ${unit}: ${words.length} words, ${clips.filter(c => c.transcriptFile).length}/${clips.length} clip texts, ${warn.length} to check\n  ${md}\n  ${json}`);
+  warn.forEach(x => console.log('  ' + x));
+  return 0;
+}
+
 function main(argv) {
-  let root = path.join(__dirname, '..'), check = false, refresh = false;
-  for (const a of argv) {
+  let root = path.join(__dirname, '..'), check = false, refresh = false, unit = null, out = null;
+  for (let i = 0; i < argv.length; i++) {
+    const a = argv[i];
     if (a === '--check') check = true;
     else if (a === '--refresh') refresh = true;
-    else if (a.startsWith('-')) { console.error('usage: node tools/word-bank.js [siteRoot] [--check] [--refresh]'); return 2; }
+    else if (a === '--unit' && /^\d+$/.test(argv[i + 1] || '')) unit = +argv[++i];
+    else if (a === '--out' && argv[i + 1]) out = path.resolve(argv[++i]);
+    else if (a.startsWith('-')) { console.error('usage: node tools/word-bank.js [siteRoot] [--check] [--refresh] [--unit N [--out folder]]'); return 2; }
     else root = path.resolve(a);
   }
+  if (unit != null) return unitSheet(root, unit, out || path.join(os.tmpdir(), 'engl-pass-unit-' + unit));
   const site = loadSite(root), bank = currentBank(root), vocab = vocabWords(site.LESSONS), words = reachableWords(site);
   const missing = [...words.keys()].filter(k => !covered(vocab.get(k)) && !bank[k]);
   if (check) {
