@@ -189,7 +189,8 @@ function fakeGitHub(token, opts) {
     }
     if (await page.locator('.gap-in:enabled').count() && await page.locator('.qcard .verb').count()) {
       const cue = sq(await page.locator('.qcard .verb').first().innerText()).replace(/^\(|\)$/g, ''), line = sq(await page.locator('.qcard .q-en').first().innerText());
-      const x = items.find(it => it.type === 'typing' && sq(it.verb) === cue && line.startsWith(sq(it.pre)));
+      // أطول ما قبل الفراغ أولًا، وما بعده يطابق أيضًا: بندان بتلميح واحد (study) لا يختلطان
+      const x = items.filter(it => it.type === 'typing' && sq(it.verb) === cue && line.startsWith(sq(it.pre)) && line.endsWith(sq(it.post))).sort((a, b) => sq(b.pre).length - sq(a.pre).length)[0];
       if (known && !x) return false;
       await page.locator('.gap-in:enabled').fill(right && x ? x.ans[0] : 'zzz'); await page.locator('.gap-in:enabled').press('Enter'); await sleep(80); return true;
     }
@@ -1000,34 +1001,52 @@ function fakeGitHub(token, opts) {
       await expandUnit(page, 0);
       await page.locator('button.u0-test').click(); await sleep(250);
       const intro = await text(page);
-      ok(/20 new questions \(6 with written answers\)/.test(intro) && (await page.locator('#screen .ar-box').first().evaluate(el => el.textContent)).includes('منها ٦ أسئلة تكتب أجوبتها'), 'unit test intro counts the questions with written answers from the data (6 of 20 here)');
+      // الاختبار نفسه قد يكون فيه أسئلة كتابة أخرى (نصفه منذ 11 نوفمبر 2026): العدد من البيانات بعد الحقن
+      const wN = qs.filter(q => q.type).length;
+      ok(new RegExp(N + ' new questions \\(' + wN + ' with written answers\\)').test(intro) && (await page.locator('#screen .ar-box').first().evaluate(el => el.textContent)).includes('تكتب أجوبتها'), 'unit test intro counts the questions with written answers from the data (' + wN + ' of ' + N + ' here)');
       await cta(page);
       // الصحيح: الأول من كل نوع (وصحّح الجملة بصيغة أخرى: حروف كبيرة وبلا نقطة وdoes not)، والخطأ: الثاني من كل نوع (والجملة الخاطئة نفسها في fix)
-      let instrOK = true, checkLbl = true, fbOK = true;
+      let instrOK = true, checkLbl = true, fbOK = true, backOK = null, chipsOK = null;
       for (let i = 0; i < N; i++) {
         const x = qs[i];
+        if (i === 2) {
+          // «رجوع» إلى سؤال كتابة مُجاب (Q2، صحّح الجملة): الخانة مقفلة بما كتبه، والزر Next، ثم «التالي» يعيد Q3
+          await page.locator('.pl-foot .ib.back').click(); await sleep(150);
+          const fx = page.locator('.fix-in');
+          backOK = (await fx.count()) === 1 && await fx.isDisabled() && (await fx.inputValue()) === 'SHE DOES NOT LIKE COFFEE IN THE MORNING' && /Next/.test(await page.locator('.pl-foot .btn:visible').last().innerText()) && (await page.locator('.fb:not(.bad)').count()) === 1;
+          await cta(page);
+          // رتّب الكلمات: زر Check معطّل حتى توضع القطع كلها
+          const btn = page.locator('.pl-foot .btn:visible').last(), dis0 = await btn.isDisabled();
+          await page.locator('.b-pool .chip:enabled').first().click(); await sleep(40);
+          const dis1 = await btn.isDisabled();
+          await page.locator('button.link', { hasText: 'Reset words' }).click(); await sleep(40);
+          chipsOK = dis0 && dis1 && /Check/.test(await btn.innerText()) && (await page.locator('.b-pool .chip:enabled').count()) === x.chips.length;
+        }
         if (x.type) {
           const t = await text(page), lbl = await page.locator('.pl-foot .btn:visible').last().innerText();
           const ins = { typing: ['Type the missing words. Use the words in brackets.', 'اكتب الكلمات الناقصة مستعينًا بما بين القوسين.'], fix: ['This sentence has one mistake. Type the correct sentence.', 'في هذه الجملة خطأ واحد. اكتب الجملة صحيحة.'], order: ['Put the words in order.', 'رتّب الكلمات.'] }[x.type];
           instrOK = instrOK && t.includes(ins[0]) && t.includes(ins[1]);
           checkLbl = checkLbl && /Check/.test(lbl);
           if (i === 1) { await page.locator('.fix-in').fill('SHE DOES NOT LIKE COFFEE IN THE MORNING'); await page.locator('.fix-in').press('Enter'); await sleep(80); }
-          else await answerWrite(page, W, i < 3);
+          else if (i === 3) { await page.locator('.gap-in:enabled').fill('Yesterday I buyed a new phone.'); await page.locator('.gap-in:enabled').press('Enter'); await sleep(80); }   // الجملة كلها، خطأً
+          else await answerWrite(page, i < 6 ? W : qs, i < 3 || i >= 6);
           const fb = await page.locator('.fb').innerText().catch(() => '');
-          if (i < 3) fbOK = fbOK && (await page.locator('.fb.bad').count()) === 0 && fb.includes(x.whyEn);
+          if (i < 3 || i >= 6) fbOK = fbOK && (await page.locator('.fb.bad').count()) === 0 && fb.includes(x.whyEn);
           else fbOK = fbOK && (await page.locator('.fb.bad').count()) === 1 && fb.includes(x.type === 'fix' ? 'Correct sentence' : x.type === 'order' ? 'Correct order' : 'Correct answer') && fb.includes(x.type === 'order' ? x.ans : x.ans[0]);
         } else { await page.locator('.opt:enabled').nth(x.a).click(); await sleep(60); }
         await cta(page);
       }
       ok(instrOK && checkLbl, 'unit test writing items show their instruction line (English and Arabic) and a Check button before the answer');
+      ok(backOK === true, 'going back to an answered fix question shows the box locked with the typed answer, its feedback, and a Next button');
+      ok(chipsOK === true, 'the order question keeps Check disabled until every chip is placed (and Reset words returns them)');
       ok(fbOK, 'unit test writing items: the right answers (fix typed in capitals, without the period, with "does not") are marked right; the wrong ones show the reason and the correct sentence / order / answer');
       if (await page.locator('textarea.wt').count()) { await page.fill('textarea.wt', 'I am a law student in Riyadh. My classes are on Sunday. I was at the library yesterday. I do not work on Fridays.'); await cta(page); }
       const res = await text(page), g = await getJSON(page, 'ep4.course'), rec = g.unitTests && g.unitTests[0];
       ok((await page.locator('.result .ring-w').count()) === 1 && rec && rec.last === N - 3 && rec.status === 'passed' && JSON.stringify(rec.missedIdxs) === '[3,4,5]', 'unit test with writing items scores 17/20 (three wrong writing items), saves the result and the missed questions: ' + JSON.stringify(rec));
       const rv = await page.evaluate(() => Array.from(document.querySelectorAll('.ut-review .pt-item')).map(e => e.textContent));
-      ok(rv.length === 3 && rv[0].includes('zzz') && rv[0].includes('bought') && rv[1].includes('Your answer') && rv[1].includes(W[4].s) && rv[1].includes(W[4].ans[0]) && rv[2].includes('is The pharmacy next to the bank.') && rv[2].includes(W[5].ans) && /Review Your Mistakes/.test(res),
+      ok(rv.length === 3 && rv[0].includes('Your answer') && rv[0].includes('Yesterday I buyed a new phone.') && !rv[0].includes('Yesterday I Yesterday') && rv[0].includes('bought') && rv[1].includes('Your answer') && rv[1].includes(W[4].s) && rv[1].includes(W[4].ans[0]) && rv[2].includes('is The pharmacy next to the bank.') && rv[2].includes(W[5].ans) && /Review Your Mistakes/.test(res),
         'unit test result lists the missed questions with the learner\'s answer and the correct one (typing, fix, order): ' + JSON.stringify(rv).slice(0, 300));
-      ok(((g.errorLab.be_verb || {}).lastSample || '') === W[4].s && ((g.errorLab.word_order || {}).lastSample || '') === 'is The pharmacy next to the bank.', 'a wrong writing answer in a unit test sends what the learner wrote to the Error Lab');
+      ok(((g.errorLab.tense || {}).lastSample || '') === 'Yesterday I buyed a new phone.' && ((g.errorLab.be_verb || {}).lastSample || '') === W[4].s && ((g.errorLab.word_order || {}).lastSample || '') === 'is The pharmacy next to the bank.', 'a wrong writing answer in a unit test sends what the learner wrote to the Error Lab (a whole typed sentence once, not doubled)');
       // الاختبار المصغر: يعرض الأسئلة الثلاثة بأنواعها، والإجابة الصحيحة تُتقن الوحدة
       await page.locator('.result .btn', { hasText: 'Mini Follow-Up' }).click(); await sleep(250);
       let miniKinds = '';
@@ -1076,7 +1095,7 @@ function fakeGitHub(token, opts) {
       await page.reload(); await sleep(400);
       await page.locator('.nav-it').nth(2).click(); await sleep(250);
       const nb = await text(page);
-      ok(nb.includes(W[4].s) && nb.includes('is / The pharmacy / next to / the bank.') && nb.includes('Yesterday I ___ a new phone.'), 'the mistake notebook lists the writing items by their text (the order item by its chips)');
+      ok(nb.includes(W[4].s) && nb.includes('is / The pharmacy / next to / the bank.') && nb.includes('Yesterday I ___ (buy) a new phone.'), 'the mistake notebook lists the writing items by their text (the order item by its chips)');
       await page.locator('#nbHero .btn').click(); await sleep(250);
       let rk = '', rInstr = true;
       for (let i = 0; i < 3; i++) {

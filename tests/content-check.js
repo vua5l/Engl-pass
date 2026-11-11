@@ -693,7 +693,7 @@ function checkSingleAnswer(log, field, list) {
   const found = new Map();                                            // "hit indexes" -> {c, hits}
   for (const c of cands) {
     const hits = typed.filter(t => fx.typedOK(asChecker(t), c));
-    if (hits.length / typed.length >= CFG.singleAnswerShare) {
+    if (hits.length >= 2 && hits.length / typed.length >= CFG.singleAnswerShare) {
       const key = hits.map(t => t.field).join(',') + '|' + fx.norm(c);
       if (!found.has(key)) found.set(key, { c, hits });
     }
@@ -734,6 +734,8 @@ function checkWriteItems(log, group, list, S) {
         });
       }
       if (x.exact) log.warn(f, '"exact" has no effect on a "fix" item (case is always ignored)');
+      if ([x.s, ...(isArr(x.ans) ? x.ans : [])].some(t => isStr(t) && /\d/.test(t)))
+        log.warn(f, 'digits are ignored by the matcher (norm): any number is accepted and a number in words is rejected; avoid numbers or list the word form in ans');
     } else {
       if (!strList(x.chips, 1)) { log.error(f, '"chips" must be an array of non-empty strings'); needWhy(log, f, x); checkErrCat(log, f, x, S); continue; }
       if (x.chips.length < CFG.orderChipsMin || x.chips.length > CFG.orderChipsMax)

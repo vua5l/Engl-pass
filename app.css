@@ -875,3 +875,4 @@ a.btn{text-decoration:none}
 .rf-chat .out .w{border-bottom-color:var(--on-dark-2)}
 .rf-chat .out .w.on{background:var(--honey);color:var(--dark-deep)}
 .rf-chat.hl-on .out .pt{outline-color:var(--on-dark-2)}
+.gap-in.fix-in{display:block;resize:none;line-height:1.4;overflow:hidden;min-height:2.8em}
