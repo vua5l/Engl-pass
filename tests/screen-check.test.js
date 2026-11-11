@@ -2,7 +2,11 @@
   screen-check.test.js: يفتح كل شاشة في كل درس وكل اختبار بعرض الجوال في Chrome، ويقيس ما يراه المتعلم فعلًا،
   لأن الفاحص الآخر يقرأ الملفات ولا يرى الشاشة. أُضيف في 5 نوفمبر 2026 بعد أن اكتشف المتعلم هذه العيوب بنفسه.
 
-    NODE_PATH=/opt/npm-tools/node_modules node tests/screen-check.test.js [--only u0l1,u2l3] [--width 375]
+    NODE_PATH=/opt/npm-tools/node_modules node tests/screen-check.test.js [--only u0l1,u2l3] [--width 375] [--shots file.json]
+
+  و--shots يحفظ بصمة صورة كاملة لكل شاشة في ملف JSON (منذ 11 نوفمبر 2026)، فتُقارن صور الشاشات قبل تعديل في التنسيق
+  وبعده بـ tests/compare-shots.js دون حفظ الصور: الصورتان المتطابقتان بصمتهما واحدة. والمؤقتات (.rtimer-t) مغطاة،
+  والحركة موقوفة، لأنها تتغير بين تشغيلين.
 
   الأخطاء التي يمنعها (كل واحد منها ERROR):
     wide      الصفحة أعرض من الشاشة، فيضطر المتعلم إلى السحب جانبًا
@@ -19,11 +23,20 @@ const { generateIndexHtml, collectLessons } = require('../tools/register-lessons
 const ROOT = path.resolve(__dirname, '..');
 const CHROME = process.env.CHROME_PATH || (fs.existsSync('/opt/google/chrome/chrome') ? '/opt/google/chrome/chrome' : undefined);
 
-const argv = process.argv.slice(2); let only = null, width = 375;
+const argv = process.argv.slice(2); let only = null, width = 375, shotsFile = null;
 for (let i = 0; i < argv.length; i++) {
   if (argv[i] === '--only') only = new Set((argv[++i] || '').split(',').filter(Boolean));
   else if (argv[i] === '--width') width = Number(argv[++i]) || 375;
-  else { console.error('usage: node tests/screen-check.test.js [--only u0l1,u2l3] [--width 375]'); process.exit(2); }
+  else if (argv[i] === '--shots' && argv[i + 1]) shotsFile = path.resolve(argv[++i]);
+  else { console.error('usage: node tests/screen-check.test.js [--only u0l1,u2l3] [--width 375] [--shots file.json]'); process.exit(2); }
+}
+const shots = {};
+/* بصمة صورة الشاشة كاملة (sha1 لملف PNG)، والمؤقتات مغطاة والحركة موقوفة. */
+async function shoot(page, name) {
+  if (!shotsFile) return;
+  let key = name, n = 2; while (shots[key]) key = name + ' #' + n++;
+  const buf = await page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide', mask: [page.locator('.rtimer-t')] });
+  shots[key] = require('crypto').createHash('sha1').update(buf).digest('hex');
 }
 
 const INDEX_HTML = generateIndexHtml(ROOT);
@@ -117,6 +130,8 @@ const open = () => {
   const page = await ctx.newPage();
   await page.route(/commons\.wikimedia/, r => r.abort());
   const crashes = []; page.on('pageerror', e => crashes.push(String(e)));
+  /* للبصمات: ترتيب عشوائي واحد لكل شاشة (لعبة المطابقة وخلط الخيارات)، فلا تختلف الصورة إلا بتغير الموقع. */
+  if (shotsFile) await page.addInitScript(() => { let x = 42; window.__seed = n => { x = n; }; Math.random = () => { x = (x * 16807) % 2147483647; return (x - 1) / 2147483646; }; });
   await page.goto(`http://127.0.0.1:${port}/index.html`);
   await page.waitForFunction(() => window.__ep);
   await page.evaluate(() => document.fonts.ready);
@@ -125,9 +140,10 @@ const open = () => {
   async function walk(label) {
     const n = await page.evaluate(() => (__ep.steps() || []).length);
     for (let i = 0; i < n; i++) {
-      const name = await page.evaluate(i => { __ep.goStep(i); const s = __ep.steps()[__ep.i()]; return s ? s.t + (s.id ? ':' + s.id : '') + (s.i != null ? ':' + s.i : '') + (s.qIdx != null ? ':' + s.qIdx : '') : ''; }, i);
+      const name = await page.evaluate(i => { if (window.__seed) __seed(42 + i); __ep.goStep(i); const s = __ep.steps()[__ep.i()]; return s ? s.t + (s.id ? ':' + s.id : '') + (s.i != null ? ':' + s.i : '') + (s.qIdx != null ? ':' + s.qIdx : '') : ''; }, i);
       await page.evaluate(open);
       screens++;
+      await shoot(page, label + ' ' + name);
       for (const r of await page.evaluate(measure)) {
         const key = r.kind + ' | ' + label + ' ' + name + ' | ' + r.text;
         if (!found.has(key)) found.set(key, r);
@@ -144,9 +160,11 @@ const open = () => {
   for (const k of SESSIONS) { await page.evaluate(k => __ep.session(k), k); await walk(k); }
   for (const v of (only ? [] : ['home', 'lessons', 'review'])) {
     await page.evaluate(v => __ep.go(v), v); screens++;
+    await shoot(page, 'view ' + v);
     for (const r of await page.evaluate(measure)) found.set(r.kind + ' | view ' + v + ' | ' + r.text, r);
   }
   await browser.close(); srv.close();
+  if (shotsFile) { fs.writeFileSync(shotsFile, JSON.stringify(shots, null, 1)); console.log('shots: ' + Object.keys(shots).length + ' screens in ' + shotsFile); }
   for (const key of found.keys()) console.log('ERROR ' + key);
   crashes.slice(0, 5).forEach(c => console.log('ERROR crash | ' + c));
   console.log(`\nSUMMARY: ${found.size + crashes.length} ERROR on ${screens} screens at ${width}px (${IDS.length} lessons, ${SESSIONS.length} tests and practice sessions)`);
